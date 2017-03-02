@@ -1,0 +1,3 @@
+Podejmowanie decyzji przez roboty lokalnie
+Podejmowanie decyzji na podstawie centralnego systemu
+porównanie wielu róźnych algorytmów nawigacji
