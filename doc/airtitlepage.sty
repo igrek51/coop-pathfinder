@@ -1,0 +1,87 @@
+% ------------------------------------------------------------------------
+% STRONA TYTUŁOWA
+% ------------------------------------------------------------------------
+
+\ProvidesPackage{stronatytulowa}
+
+
+\def \uczelnia#1{\gdef\@uczelnia{#1}}
+
+%\newcommand\uczelnia{}
+
+\def \uczelniaNazwa#1{\gdef\@uczelniaNazwa{#1}}
+\def \uczelniaLogo#1{\gdef\@uczelniaLogo{#1}}
+\def \wydzial#1{\gdef\@wydzial{#1}}
+\def \instytut#1{\gdef\@instytut{#1}}
+\def \rok#1{\gdef\@rok{#1}}
+\def \promotor#1{\gdef\@promotor{#1}}
+\def \temat#1{\gdef\@temat{#1}}
+\def \autor#1{\gdef\@autor{#1}}
+\def \miasto#1{\gdef\@miasto{#1}}
+
+%Wartości domyślne zmiennych
+\uczelniaNazwa{Uczelnia}
+\uczelniaLogo{}
+\wydzial{Wydział}
+\instytut{Instytut}
+\rok{Rok}
+\promotor{Promotor}
+\temat{Temat}
+\autor{Autor}
+\miasto{Miasto}
+
+
+\def \stronatytulowa{
+	\newgeometry{tmargin=3cm, bmargin=3cm, lmargin=2cm, rmargin=2cm}
+	
+	\thispagestyle {empty}
+	
+	\begin{center}
+		%logo uczelni
+		\includegraphics[scale=0.4]{\@uczelniaLogo}
+		
+		\vspace{0.5cm}
+		
+		{\fontsize{20}{20}\selectfont \@uczelniaNazwa}
+		
+		\vspace{1.5cm}
+		
+		\textbf{{\fontsize{14}{14}\selectfont \@wydzial}}
+		
+		\vspace{1cm}
+		
+		\textbf{{\fontsize{14}{14}\selectfont Praca dyplomowa inżynierska}}
+	
+		\vspace{2.0cm}
+		
+		{\fontsize{14}{14}\selectfont \@autor}
+		
+		\vspace{1cm}
+		
+		{\fontsize{32}{32}\selectfont \@temat}
+		
+		\vspace{1cm}
+		\begin{flushright}
+			{\fontsize{14}{14}\selectfont Opiekun pracy: \\ 
+			\@promotor}
+		
+			\vspace{1cm}
+		
+			{\fontsize{12}{12}\selectfont Jednostka dyplomująca: \\
+			\@instytut}
+		
+		\end{flushright}
+		
+%		\vspace{4cm}
+		\vspace{\fill}
+		
+		{\fontsize{12}{12}\selectfont \@miasto, \@rok}
+		
+		%\cleardoublepage %nie działa
+		
+		%\clearpage\mbox{}\clearpage
+	\end{center}
+	\restoregeometry
+	
+	\newpage
+}

@@ -1,0 +1,36 @@
+\noindent {\Large\textbf{Streszczenie}}
+
+Niniejsza praca na celu zaprojektowanie oraz stworzenie systemu do monitorowania zużycia mediów komunalnych.
+System ma współpracować z licznikami mediów wyposażonymi w interfejs komunikacyjny M-Bus.
+System ma przedstawiać aktualne stany liczników oraz wizualizować historyczne zużycie mediów.
+Dodatkowym zadaniem systemu jest tworzenie i analiza profili zużycia mediów komunalnych.
+Analiza profilu ma na celu określenie czy aktualna wartość zużycia odbiega, w sposób znaczący, od wartości przewidywanej.
+System ma informować o zaistniałych odejściach od wartości oczekiwanej oraz innych błędach, które mogą świadczyć o uszkodzeniu liczników lub infrastruktury doprowadzającej media.
+Praca skupia się na współpracy systemu z licznikami wody.
+
+Do zadań projektu należało stworzenie oprogramowania zajmującego się odczytem liczników zgodnie z protokołem M-Bus oraz interfejsu użytkownika udostępniającego, w przystępny sposób, zebrane dane.
+
+W pierwszej części pracy został opisany protokół M-Bus z podziałem na warstwę fizyczną, łącza danych, aplikacji oraz zarządzania.
+Przedstawione zostały tryby transmisji danych, formaty ramek telekomunikacyjnych, struktury rekordów z danymi oraz sposób zwiększenia obsługiwanej liczby urządzeń w sieci, dzięki rozszerzonemu adresowaniu.
+Opis jest zgodny z normą PN-EN 13757-3:2013.
+
+Ponieważ działanie systemu miało zostać przetestowane na licznikach wody, kolejna część pracy zawiera opis najczęściej używanych wodomierzy.
+Są to wodomierze wirnikowe oraz komorowe służące często do wzorcowania tych pierwszych.
+Przedstawione zostały ich schematy oraz zasady działania.
+
+Dalej znajduje się opis dostępnego rozwiązania o podobnym zastosowaniu ZENNER Bus-System.
+Zaprezentowane zostały urządzenia komunikacyjne współpracujące z magistralą M-Bus.
+
+Kolejna część pracy przedstawia zbiór wymagań dotyczących działania systemu oraz sposób ich implementacji w wyniku, której powstały dwa podprojekty odpowiedzialne odpowiednio za odczytywanie danych z liczników oraz wyświetlanie tych danych na stronie WWW.
+Wyznaczona zostaje tu wartości interwału odczytów.
+Następnie zostaje zaprezentowany główny algorytm  programu odczytującego wraz z opisem klas występujących projekcie.
+
+Ostatnia część zawiera opis testów systemu, mających na celu sprawdzenie zgodności z postawionymi wcześniej wymaganiami.
+Testy zostały zrealizowane przy pomocy dostępnych wodomierzy oraz specjalnie do tego stworzonej aplikacji symulującej licznik.
+
+\pagebreak
+
+\noindent {\Large\textbf{Abstract}}
+
+
+\pagebreak

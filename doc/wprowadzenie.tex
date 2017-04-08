@@ -1,0 +1,29 @@
+\chapter{Wprowadzenie} % (fold)
+\label{cha:wprowadzenie}
+
+Celem pracy jest zaprojektowanie i stworzenie systemu do monitorowania zużycia mediów komunalnych takich jak woda czy gaz.
+System ten ma być przeznaczony do współpracy z licznikami mediów wyposażonymi w interfejs komunikacyjny M-Bus.
+Poza przedstawieniem aktualnych stanów liczników, system powinien pozwalać na wizualizację historycznego zużycia mediów.
+
+Projektowany system ma być przeznaczony do użytku w budynkach mieszkalnych.
+Nie można zatem zakładać, że użytkownikami systemu będą osoby znające zagadnienia techniczne związane z protokołem komunikacyjnym M-Bus.
+Należy więc stworzyć prosty i intuicyjny interfejs graficzny, na którym będą prezentowane tylko niezbędne informacje.
+
+Dane o zużyciu powinny być dostępne poprzez sieci LAN oraz WiFi, jako że obecnie są one bardzo popularne i używane w wielu domach.
+Najprostszym sposobem na osiągnięcie tego celu jest udostępnianie ich za pomocą strony WWW.
+Umożliwi to dostęp do danych zarówno z komputerów typu PC, laptopów jaki i tabletów czy smartfonów.
+
+System powinien również wykrywać błędy, mogące pojawić się w trakcie użytkowania, takie jak brak połączenia z podsystemami i urządzeniami składowymi, odłączenia lub uszkodzenia liczników.
+Informacje o wykrytych błędach powinny być dostępne z poziomu interfejsu graficznego w postaci strony WWW.
+
+Dodatkową funkcjonalnością jaką powinien zapewniać system jest analiza profilów zużycia mediów dla poszczególnych liczników należących do systemu.
+Aby stworzyć profile zużycia wymagane jest możliwie częste odczytywanie liczników i przechowywanie wszystkich historycznych danych.
+Profile powinny być ciągle uaktualniane, aby odzwierciedlić jak najlepiej charakter zmian zużycia mediów.
+Dzięki wyznaczonemu profilowi możliwe będzie sprawdzenie, czy aktualne zużycie danego medium znaczącą odbiega od przewidywanej wartości lub czy nie.
+Przypadki wyraźnej niezgodności z profilami zużycia mediów mogą oznaczać uszkodzenia infrastruktury doprowadzającej lub uszkodzenia liczników i powinny być raportowane podobnie jak błędy.
+
+Projektowany system może być stosowany do celów rozliczeniowych oraz kontrolnych, np. w mieszkaniach wynajmowanych, gdzie właściciel nie mam możliwości bezpośredniego sprawdzenia stanów liczników.
+
+Praca skupia się na badaniu współpracy systemu z licznikami wody.
+Jednak system powinien działać poprawnie z 250 licznikami dowolnych mediów komunalnych, niezależnie od ich modelu czy producenta.
+% chapter wprowadzenie (end)

@@ -1,0 +1,147 @@
+\chapter{Testy aplikacji} % (fold)
+\label{cha:testy}
+
+Aby sprawdzić czy projekt UMonit, w skład, którego wchodzą podprojekty UMonitApp oraz UmonitWeb, działa zgodnie z wyznaczonymi założeniami należało poddać go odpowiednim testom.
+
+Już na etapie implementacji podprojektów sprawdzone zostało czy dane o zużyciu medium, dla dwóch liczników wchodzących w skład stanowiska badawczego są wyświetlane poprawnie oraz czy odczyty dokonywane i zapisywane są w interwałach sześciominutowych.
+Rysunek \ref{fig:meter_vs_umonitweb} przedstawia stan liczydła jednego z wodomierzy oraz odpowiednią wartość w aplikacji UMonitWeb.
+Widać, że moduł M-bus urządzenia podaje stan wodomierza z mniejszą dokładności niż stan na liczydle oraz że wysyła osiem zamiast dziewięciu cyfr numeru fabrycznego,
+co jest zgodne z opisem numeru identyfikacyjnego przedstawionym w podrozdziale \ref{subsec:long_header_structure}.
+Rysunek \ref{fig:chart_with_intervals} przedstawia wykres zużycia wody na tym wodomierzu.
+Wykres zawiera $ 11 $ punktów od godziny 13:00 do 14:00, co oznacza, że odczyty dokonywane były co $ 6\ min$.
+Przez wodomierz nie przepływa woda zatem jej zużycie jest zerowe.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=5.8cm]{img/umonit_vs_meter.jpg}
+	\caption[Stan wodomierza i wartość odczytana przez UMonit]{Stan wodomierza i wartość odczytana przez UMonit [źródło własne]}
+	\label{fig:meter_vs_umonitweb}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{img/chart_with_intervals.png}
+	\caption[Wykres zużycia wody]{Wykres zużycia wody [źródło własne]}
+	\label{fig:chart_with_intervals}
+\end{figure}
+
+Po włączeniu aplikacji odczytowej UMonitApp na minikomputerze Odroid C1+, który odłączony jest od reszty stanowiska badawczego, na interfejsie aplikacji UMonitWeb, w momentach kiedy miały być wykonywane odczyty liczników, dostajemy informację o problemach związanych z komunikacją z konwerterem ETH2 (rysunek \ref{fig:no_eth2_notifications}).
+Po podłączeniu konwertera Ethernet -- M-Bus master, notyfikacje przestają się pojawiać.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=5.5cm]{img/no_eth2_notifications.png}
+	\caption[Notyfikacje braku konwertera ETH2]{Notyfikacje braku konwertera ETH2 [źródło własne]}
+	\label{fig:no_eth2_notifications}
+\end{figure}
+
+Po podłączeniu pierwszego wodomierza do magistrali, zaraz po udanym jego odczycie, na interfejsie UMonitWeb można zobaczyć odczytane.
+Podłączenie kolejnego licznika skutkuje pojawieniem się nowego urządzenia na panelu UMonitWeb, co przedstawia rysunek \ref{fig:first_water_meter}.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=3.5cm]{img/first_water_meter.png}
+	\includegraphics[height=3.5cm]{img/second_water_meter.png}
+	\caption[Panel UMonitWeb po wykryci licznika]{Panel UMonitWeb po wykryci licznika [źródło własne]}
+	\label{fig:first_water_meter}
+\end{figure}
+
+Po odłączeniu wodomierza o adresie $ 0Eh $ od magistrali, w zakładce ,,Notyfikacje'' w aplikacji UMonitWeb zaczynają pojawiać się informacje o braku odpowiedzi od urządzenia o tym adresie (rysunek \ref{fig:no_meter_notification}).
+Świadczy to o tym, że aplikacji UMonitApp prawidłowo wykrywa przypadek odłączenia licznika oraz prawidłowo zapisuje odpowiedni alert w bazie danych.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=6.0cm]{img/no_meter_notification.png}
+	\caption[Notyfikacje o braku licznika, który wcześniej był aktywny]{Notyfikacje licznika, który wcześniej był aktywny [źródło własne]}
+	\label{fig:no_meter_notification}
+\end{figure}
+
+Ostatnim wymogiem, którego spełnienie należało przetestować, było wykrywanie i notyfikacja przekroczeń zużycia wody.
+Z powodu braku możliwości dołączenia stanowiska badawczego do rzeczywistej instalacji wodnej w budynku lub do innego systemu pozwalającego na sterowanie przepływem wody, ten test został przeprowadzony z wykorzystaniem symulatora wodomierza.
+Okno symulatora przedstawia rysunek \ref{fig:meter_simulator}.
+Składa się ono z okienka wyświetlającego odebrane żądania danych wysyłane przez aplikację UMonitApp, wykresu dobowego zużycia, jakie ma symulować program, skali tego wykresu oraz aktualnej wartość liczydła symulowanego urządzenia.
+Symulator został stworzony tak, aby nie była wymagana ingerencja w kod aplikacji UMonitApp.
+Możliwe to było dzięki użyciu w UMonitApp komend \textit{echo} (X) oraz \textit{status} (U).
+Symulatora wodomierza odpowiada na te komendy udając konwerter ETH2.
+Symulator pozwala na stworzenie dowolnego dobowego profilu zużycia poprzez narysowanie go za pomocą myszki w obszarze wykresu oraz ustawienie aktualnej wartości i skali osi pionowej wykresu.
+Oś czasu wykresu odpowiada czasowi UTC (ang. Universal Time Coordinated).
+Wszystkie zmiany są zapamiętywane po naciśnięci przycisku ,,Save''.
+Profil sinusoidalny jest tworzony automatyczni przy starcie symulatora.
+Żeby przyspieszyć proces testowania zwiększono częstotliwość wykonywania zapytań przez aplikację UMonitApp tak, aby zapisywany czas odczytu symulował interwały 6 minutowe.
+Pozwoliło to generować dane z wodomierza z kilku dni w ciągu kilkunastu minut, zachowując opisany w rozdziale \ref{cha:implementacja} algorytm odczytów i wartości wyliczonych timeoutów.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{img/meter_simulator.png}
+	\caption[Okno symulatora wodomierza]{Okno symulatora wodomierza [źródło własne]}
+	\label{fig:meter_simulator}
+\end{figure}
+
+Po wygenerowaniu danych dla kilku dni na podstawie modelu sinusoidalnego, wprowadzono do niego ręcznie pewne modyfikacje i stworzono model z przekroczeniami zużycia wody oraz z jej chwilowymi brakami (rysunek \ref{fig:brake_model}).
+Rysunek \ref{fig:brake_model_chart} przedstawia zużycie wody odczytane przez UMonitApp i wyświetlone na interfejsie aplikacji UMonitWeb.
+Po natrafieniu na przekroczenie lub gwałtowny spadek zużycia wody w zakładce ,,Notyfikacje'' pojawiały się informacje o tych zdarzeniach (rysunek \ref{fig:brake_model_notification}).
+Aplikacja zatem wykrywa takie przypadki i potrafi o nich informować.
+Należy pamiętać, że aby stworzyć pierwszy pełny referencyjny model dobowego zużycia, aplikacja UMonitApp musi działać przez przynajmniej $ 48 $ godzin.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=6cm]{img/brake_model.png}
+	\caption[Model z przekroczeniami i brakami zużycia wody]{Model z przekroczeniami i brakami zużycia wody [źródło własne]}
+	\label{fig:brake_model}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{img/brake_model_chart.png}
+	\caption[Wykres w UMonitWeb dla modelu z przekroczeniami i brakami zużycia]{Wykres w UMonitWeb dla modelu z przekroczeniami i brakami zużycia [źródło własne]}
+	\label{fig:brake_model_chart}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{img/brake_model_notification.png}
+	\caption[Notyfikacje o znacznym odejściu od wartości oczekiwanej]{Notyfikacje o znacznym odejściu od wartości oczekiwanej [źródło własne]}
+	\label{fig:brake_model_notification}
+\end{figure}
+
+Kolejnym przedmiotem testów jest zbadanie integralności transmisji danych w formacie M-Bus.
+Test polegał na wykonaniu możliwie dużej liczby prób odczytów dwóch wodomierzy, wchodzących w skład stanowiska badawczego.
+W wyniku testu miały zostać zebrane dane o statystyce dotyczącej błędnych transmisji, czasu trwania transmisji ramek oraz o rzeczywistej prędkości przesyłu.
+
+W czasie testu wysłano $ 211504 $ ramek z żądaniem danych pomiarowych do urządzenia o adresie $ 4Bh $ oraz $ 211502 $ ramek do urządzenia z przypisanym adresem równym $ 0Eh $.
+Daje to w sumie $ 423006 $ wysłanych żądań.
+Co, przy interwale odczytów równym $ 6\ min $, odpowiada prawie $ 5 $ latom odczytów jednego licznika.
+Aby taka liczba odczytów mogła zostać wykonana, należało zmodyfikować kod aplikacja UMonitApp tak, aby wysyłał kolejne żądanie zaraz po otrzymaniu odpowiedzi na poprzednie lub po czasie określonym przez timeout.
+Dodatkowo, ze względu na oszczędność czasu, wyłączona została analiza i zapis do bazy danych SQLite.
+
+Badanie pokazało, że na stanowisku testowym wielkość udanych odczytów wynosi $ 100\% $.
+Urządzenie z adresem $ 4Bh $ odpowiada ramką o rozmiarze równym $ 66 $ bajtom.
+Średni czas między wysłaniem żądania danych a ich odbiorem wynosi $ 349,78\ ms $.
+Histogram czasów odpowiedzi przedstawia rysunek \ref{fig:histogram_75}.
+Różnica w uzyskanych czasach równa $ 1 \ ms $ odpowiada błędowi pomiarowemu dla odczytów czasu z taką właśnie dokładnością.
+Średnia prędkość transmisji odpowiadająca przesyłowi $ 66 $ bajtów w otrzymanym czasie wynosi $ 2075,57\ b/s $.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[height=6cm]{img/histogram_75.png}
+	\caption[Histogram czasów odpowiedzi od licznika $ 4Bh $]{Histogram czasów odpowiedzi od licznika $ 4Bh $ [źródło własne]}
+	\label{fig:histogram_75}
+\end{figure}
+
+Urządzenie z adresem $ 0Eh $ odpowiada ramką o rozmiarze równym $ 148 $ bajtom.
+Średni czas między wysłaniem żądania danych a ich odbiorem wynosi $ 767,03\ ms $.
+Histogram czasów odpowiedzi przedstawia rysunek \ref{fig:histogram_14}.
+Średnia prędkość transmisji odpowiadająca przesyłowi $ 148 $ bajtów w otrzymanym czasie wynosi $ 2150,50\ b/s $.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=6cm]{img/histogram_14.png}
+	\caption[Histogram czasów odpowiedzi od licznika $ 0Eh $]{Histogram czasów odpowiedzi od licznika $ 0Eh $ [źródło własne]}
+	\label{fig:histogram_14}
+\end{figure}
+
+Otrzymane wartości średniej prędkości transmisji znacznie odbiegają od zakładanej wartości $ 2400\ b/s$.
+Przyczynami mogą być między innymi: długie przetwarzanie odbieranych bajtów i składanie ich w ramki, opóźnienia wynikające z używania sygnałów i slotów z biblioteki Qt,
+wysyłanie danych w kilkubajtowych paczkach, przez liczniki, pomiędzy którymi jest wyraźna przerwa czasowa.
+
+% chapter testy (end)
