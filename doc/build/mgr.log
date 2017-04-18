@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Arch Linux) (preloaded format=pdflatex 2017.4.9)  9 APR 2017 00:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Arch Linux) (preloaded format=pdflatex 2017.4.9)  18 APR 2017 12:38
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -439,9 +439,9 @@ Package caption3 Info: TeX engine: e-TeX on input line 67.
 \caption@hangindent=\dimen116
 )
 \c@ContinuedFloat=\count90
-) (./airtitlepage.sty
+) (./air-title-page.sty
 
-LaTeX Warning: You have requested package `airtitlepage',
+LaTeX Warning: You have requested package `air-title-page',
                but the package provides `stronatytulowa'.
 
 Package: stronatytulowa 
@@ -1159,7 +1159,7 @@ Package biblatex Info: Reference segment=0 on input line 92.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(./main_order.tex
+(./main-order.tex
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: a4paper
@@ -1253,8 +1253,8 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 94.
  ) 
 Here is how much of TeX's memory you used:
  16329 strings out of 493013
- 257016 string characters out of 6139318
- 737289 words of memory out of 5000000
+ 257028 string characters out of 6139318
+ 737293 words of memory out of 5000000
  19637 multiletter control sequences out of 15000+600000
  24536 words of font info for 30 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
