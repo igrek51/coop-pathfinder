@@ -37,13 +37,11 @@ public abstract class AbstractJavaFxApplicationSupport extends Application {
 
 	@Override
 	public void stop() throws Exception {
-
 		super.stop();
 		applicationContext.close();
 	}
 
 	protected static void launchApp(Class<? extends AbstractJavaFxApplicationSupport> appClass, String[] args) {
-
 		AbstractJavaFxApplicationSupport.savedArgs = args;
 		Application.launch(appClass, args);
 	}
