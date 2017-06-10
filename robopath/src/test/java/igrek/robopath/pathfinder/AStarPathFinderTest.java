@@ -1,9 +1,10 @@
 package igrek.robopath.pathfinder;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class AStarPathFinderTest extends TestCase {
+public class AStarPathFinderTest {
 	
+	@Test
 	public void testSimplePath() {
 		
 		TileBasedMap map = new TileMap();
