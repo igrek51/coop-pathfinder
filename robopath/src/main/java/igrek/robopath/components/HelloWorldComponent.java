@@ -27,6 +27,6 @@ import org.springframework.stereotype.Component;
 public class HelloWorldComponent extends HBox {
 
 	public HelloWorldComponent() {
-		getChildren().add(new Label("Hello Dupa"));
+		getChildren().add(new Label("Hello"));
 	}
 }
