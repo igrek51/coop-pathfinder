@@ -39,8 +39,6 @@ public class HelloworldController {
 	
 	public HelloworldController() {
 		map = new TestTileMap();
-		PathFinder pathFinder = new AStarPathFinder(map, 0, true);
-		path = pathFinder.findPath(1, 1, 5, 6);
 	}
 	
 	@FXML
@@ -93,6 +91,55 @@ public class HelloworldController {
 		helloLabel.setText(textToBeShown);
 		
 		drawMap();
+	}
+	
+	@FXML
+	private void findPathPressed(final Event event) {
+		// remove previous paths
+		for (int x = 0; x < map.getWidthInTiles(); x++) {
+			for (int y = 0; y <= map.getHeightInTiles(); y++) {
+				TileCellType type = map.get(x, y);
+				if (type == TileCellType.PATH)
+					map.set(x, y, TileCellType.EMPTY);
+			}
+		}
+		
+		PathFinder pathFinder = new AStarPathFinder(map, 0, true);
+		PointCoordinates start = findStart(map);
+		PointCoordinates target = findTarget(map);
+		if (start != null && target != null) {
+			path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
+			if (path != null) {
+				
+				for (int i = 1; i < path.getLength() - 1; i++) {
+					Path.Step step = path.getStep(i);
+					map.set(step.getX(), step.getY(), TileCellType.PATH);
+				}
+				drawMap();
+			}
+		}
+	}
+	
+	private PointCoordinates findStart(TestTileMap map) {
+		for (int x = 0; x < map.getWidthInTiles(); x++) {
+			for (int y = 0; y <= map.getHeightInTiles(); y++) {
+				TileCellType type = map.get(x, y);
+				if (type == TileCellType.START)
+					return new PointCoordinates(x, y);
+			}
+		}
+		return null;
+	}
+	
+	private PointCoordinates findTarget(TestTileMap map) {
+		for (int x = 0; x < map.getWidthInTiles(); x++) {
+			for (int y = 0; y <= map.getHeightInTiles(); y++) {
+				TileCellType type = map.get(x, y);
+				if (type == TileCellType.TARGET)
+					return new PointCoordinates(x, y);
+			}
+		}
+		return null;
 	}
 	
 	private void drawMap() {
