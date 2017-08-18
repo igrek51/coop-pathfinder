@@ -1,4 +1,4 @@
-package igrek.robopath.view;
+package igrek.robopath.ui.view;
 
 import de.felixroske.jfxsupport.AbstractFxmlView;
 import de.felixroske.jfxsupport.FXMLView;
