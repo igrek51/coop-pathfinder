@@ -1,8 +1,8 @@
-package igrek.mgr.robopath.console;
+package igrek.robopath.utils.console;
 
 import java.util.Scanner;
 
-import igrek.mgr.robopath.logger.Logs;
+import igrek.robopath.utils.logger.Logs;
 
 public class CommandLine {
 	

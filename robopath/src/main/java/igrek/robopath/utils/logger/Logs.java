@@ -1,4 +1,4 @@
-package igrek.mgr.robopath.logger;
+package igrek.robopath.utils.logger;
 
 public class Logs {
 	
