@@ -3,6 +3,7 @@ package igrek.robopath;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport;
+import igrek.robopath.view.HelloworldView;
 
 @SpringBootApplication
 public class Main extends AbstractJavaFxApplicationSupport{
