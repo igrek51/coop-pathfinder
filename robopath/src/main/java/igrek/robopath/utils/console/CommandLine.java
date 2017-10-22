@@ -2,14 +2,13 @@ package igrek.robopath.utils.console;
 
 import java.util.Scanner;
 
-import igrek.robopath.utils.logger.Logs;
 
 public class CommandLine {
 	
 	private boolean exit = false;
 	
 	public CommandLine() {
-		Logs.info("Type \"help\" to list available commands.");
+		//Logs.info("Type \"help\" to list available commands.");
 	}
 	
 	public void readContinuously() {
@@ -33,13 +32,13 @@ public class CommandLine {
 		} else if (cmd.equals("help")) {
 			printHelp();
 		} else {
-			Logs.warn("unknown command: " + cmd);
+			//Logs.warn("unknown command: " + cmd);
 		}
 	}
 	
 	private void printHelp() {
-		Logs.info("Available commands:");
-		Logs.info("exit");
+		//Logs.info("Available commands:");
+		//Logs.info("exit");
 	}
 	
 }

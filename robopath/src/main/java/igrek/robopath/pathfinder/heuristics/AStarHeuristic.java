@@ -1,4 +1,6 @@
-package igrek.robopath.pathfinder;
+package igrek.robopath.pathfinder.heuristics;
+
+import igrek.robopath.pathfinder.TileBasedMap;
 
 public interface AStarHeuristic {
 	/**

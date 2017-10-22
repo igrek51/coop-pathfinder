@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.map.TestTileMap;
 import igrek.robopath.map.TileCellType;
+import igrek.robopath.model.PointCoordinates;
 import igrek.robopath.pathfinder.AStarPathFinder;
 import igrek.robopath.pathfinder.Path;
 import igrek.robopath.pathfinder.PathFinder;
@@ -44,36 +45,7 @@ public class HelloworldController {
 	@FXML
 	public void initialize() {
 		drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-			
-			if (event.getButton() == MouseButton.PRIMARY) {
-				
-				PointCoordinates point = locatePoint(event);
-				logger.info("pressed: " + point);
-				if (point != null) {
-					TileCellType type = map.get(point.x, point.y);
-					if (type == TileCellType.START) {
-						type = TileCellType.TARGET;
-					} else if (type == TileCellType.TARGET) {
-						type = TileCellType.EMPTY;
-					} else {
-						type = TileCellType.START;
-					}
-					map.set(point.x, point.y, type);
-					drawMap();
-				}
-				
-			} else if (event.getButton() == MouseButton.SECONDARY) {
-				
-				PointCoordinates point = locatePoint(event);
-				logger.info("pressed: " + point);
-				if (point != null) {
-					TileCellType type = map.get(point.x, point.y);
-					type = type != TileCellType.BLOCKED ? TileCellType.BLOCKED : TileCellType.EMPTY;
-					map.set(point.x, point.y, type);
-					drawMap();
-				}
-				
-			}
+			mousePressedMap(event);
 		});
 		
 		drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
@@ -83,6 +55,62 @@ public class HelloworldController {
 		drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
 		
 		});
+	}
+	
+	private void mousePressedMap(MouseEvent event) {
+		if (event.getButton() == MouseButton.PRIMARY) {
+			
+			PointCoordinates point = locatePoint(event);
+			if (point != null) {
+				TileCellType type = getMapCellType(point);
+				type = transformCellTypeLeftClicked(type);
+				setMapCell(point, type);
+				drawMap();
+			}
+			
+		} else if (event.getButton() == MouseButton.SECONDARY) {
+			
+			PointCoordinates point = locatePoint(event);
+			if (point != null) {
+				TileCellType type = getMapCellType(point);
+				type = transformCellTypeRightClicked(type);
+				setMapCell(point, type);
+				drawMap();
+			}
+			
+		}
+	}
+	
+	private TileCellType getMapCellType(PointCoordinates point) {
+		return map.get(point.x, point.y);
+	}
+	
+	private TileCellType getMapCellType(int x, int y) {
+		return map.get(x, y);
+	}
+	
+	private void setMapCell(PointCoordinates point, TileCellType type) {
+		map.set(point.x, point.y, type);
+	}
+	
+	private TileCellType transformCellTypeLeftClicked(TileCellType type) {
+		switch (type) {
+			case START:
+				return TileCellType.TARGET;
+			case TARGET:
+				return TileCellType.EMPTY;
+			default:
+				return TileCellType.START;
+		}
+	}
+	
+	private TileCellType transformCellTypeRightClicked(TileCellType type) {
+		switch (type) {
+			case BLOCKED:
+				return TileCellType.EMPTY;
+			default:
+				return TileCellType.BLOCKED;
+		}
 	}
 	
 	@FXML
@@ -96,17 +124,11 @@ public class HelloworldController {
 	@FXML
 	private void findPathPressed(final Event event) {
 		// remove previous paths
-		for (int x = 0; x < map.getWidthInTiles(); x++) {
-			for (int y = 0; y <= map.getHeightInTiles(); y++) {
-				TileCellType type = map.get(x, y);
-				if (type == TileCellType.PATH)
-					map.set(x, y, TileCellType.EMPTY);
-			}
-		}
+		replaceCellTypes(TileCellType.PATH, TileCellType.EMPTY);
 		
 		PathFinder pathFinder = new AStarPathFinder(map, 0, true);
-		PointCoordinates start = findStart(map);
-		PointCoordinates target = findTarget(map);
+		PointCoordinates start = findFirstCellType(map, TileCellType.START);
+		PointCoordinates target = findFirstCellType(map, TileCellType.TARGET);
 		if (start != null && target != null) {
 			path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
 			if (path != null) {
@@ -120,22 +142,21 @@ public class HelloworldController {
 		}
 	}
 	
-	private PointCoordinates findStart(TestTileMap map) {
+	private void replaceCellTypes(TileCellType replaceFrom, TileCellType replaceTo) {
 		for (int x = 0; x < map.getWidthInTiles(); x++) {
 			for (int y = 0; y <= map.getHeightInTiles(); y++) {
-				TileCellType type = map.get(x, y);
-				if (type == TileCellType.START)
-					return new PointCoordinates(x, y);
+				TileCellType type = getMapCellType(x, y);
+				if (type == replaceFrom)
+					map.set(x, y, replaceTo);
 			}
 		}
-		return null;
 	}
 	
-	private PointCoordinates findTarget(TestTileMap map) {
+	private PointCoordinates findFirstCellType(TestTileMap map, TileCellType wantedType) {
 		for (int x = 0; x < map.getWidthInTiles(); x++) {
 			for (int y = 0; y <= map.getHeightInTiles(); y++) {
 				TileCellType type = map.get(x, y);
-				if (type == TileCellType.TARGET)
+				if (type == wantedType)
 					return new PointCoordinates(x, y);
 			}
 		}
@@ -150,28 +171,39 @@ public class HelloworldController {
 	}
 	
 	private void drawCells(GraphicsContext gc) {
+		for (int x = 0; x < map.getWidthInTiles(); x++) {
+			for (int y = 0; y <= map.getHeightInTiles(); y++) {
+				TileCellType type = map.get(x, y);
+				drawCell(gc, x, y, type);
+			}
+		}
+	}
+	
+	private void drawCell(GraphicsContext gc, int x, int y, TileCellType type) {
 		double cellW = drawArea.getWidth() / map.getWidthInTiles();
 		double cellH = drawArea.getHeight() / map.getHeightInTiles();
 		double w2 = 0.8 * cellW;
 		double h2 = 0.8 * cellH;
-		for (int x = 0; x < map.getWidthInTiles(); x++) {
-			for (int y = 0; y <= map.getHeightInTiles(); y++) {
-				TileCellType type = map.get(x, y);
-				if (type == TileCellType.BLOCKED || type == TileCellType.START || type == TileCellType.TARGET || type == TileCellType.PATH) {
-					if (type == TileCellType.BLOCKED) {
-						gc.setFill(Color.rgb(0, 0, 0));
-					} else if (type == TileCellType.START) {
-						gc.setFill(Color.rgb(0, 200, 0));
-					} else if (type == TileCellType.TARGET) {
-						gc.setFill(Color.rgb(200, 0, 0));
-					} else if (type == TileCellType.PATH) {
-						gc.setFill(Color.rgb(90, 127, 200));
-					}
-					double x2 = x * cellW + (cellW - w2) / 2;
-					double y2 = y * cellH + (cellH - h2) / 2;
-					gc.fillRoundRect(x2, y2, w2, h2, 10, 10);
-				}
-			}
+		if (type == TileCellType.BLOCKED || type == TileCellType.START || type == TileCellType.TARGET || type == TileCellType.PATH) {
+			gc.setFill(getCellColor(type));
+			double x2 = x * cellW + (cellW - w2) / 2;
+			double y2 = y * cellH + (cellH - h2) / 2;
+			gc.fillRoundRect(x2, y2, w2, h2, 10, 10);
+		}
+	}
+	
+	private Color getCellColor(TileCellType type) {
+		switch (type) {
+			case BLOCKED:
+				return Color.rgb(0, 0, 0);
+			case START:
+				return Color.rgb(0, 200, 0);
+			case TARGET:
+				return Color.rgb(200, 0, 0);
+			case PATH:
+				return Color.rgb(90, 127, 200);
+			default:
+				return Color.rgb(0, 0, 0, 0);
 		}
 	}
 	
@@ -212,26 +244,4 @@ public class HelloworldController {
 		return new PointCoordinates(mapX, mapY);
 	}
 	
-	private class PointCoordinates {
-		public int x;
-		public int y;
-		
-		public PointCoordinates(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-		
-		public int getX() {
-			return x;
-		}
-		
-		public int getY() {
-			return y;
-		}
-		
-		@Override
-		public String toString() {
-			return "(" + x + ", " + y + ")";
-		}
-	}
 }

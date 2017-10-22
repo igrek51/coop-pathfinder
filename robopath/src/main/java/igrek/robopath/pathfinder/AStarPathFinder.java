@@ -3,6 +3,9 @@ package igrek.robopath.pathfinder;
 import java.util.ArrayList;
 import java.util.List;
 
+import igrek.robopath.pathfinder.heuristics.AStarHeuristic;
+import igrek.robopath.pathfinder.heuristics.ClosestHeuristic;
+
 public class AStarPathFinder implements PathFinder {
 	/** The set of nodes that have been searched through */
 	private List<Node> closed = new ArrayList<>();
