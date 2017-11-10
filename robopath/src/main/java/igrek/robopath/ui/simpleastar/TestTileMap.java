@@ -1,4 +1,4 @@
-package igrek.robopath.map;
+package igrek.robopath.ui.simpleastar;
 
 import igrek.robopath.pathfinder.TileBasedMap;
 

@@ -1,4 +1,4 @@
-package igrek.robopath.map;
+package igrek.robopath.ui.simpleastar;
 
 public enum TileCellType {
 	
@@ -7,8 +7,6 @@ public enum TileCellType {
 	BLOCKED,
 	
 	START,
-	
-	TARGET,
 	
 	PATH,
 	

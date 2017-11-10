@@ -22,4 +22,12 @@ public class PointCoordinates {
 	public String toString() {
 		return "(" + x + ", " + y + ")";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof PointCoordinates))
+			return false;
+		PointCoordinates p2 = (PointCoordinates) obj;
+		return this.x == p2.x && this.y == p2.y;
+	}
 }

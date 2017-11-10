@@ -1,11 +1,9 @@
-package igrek.robopath.ui.controller;
+package igrek.robopath.ui.helloworld;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.felixroske.jfxsupport.FXMLController;
-import igrek.robopath.map.TestTileMap;
-import igrek.robopath.map.TileCellType;
 import igrek.robopath.model.PointCoordinates;
 import igrek.robopath.pathfinder.AStarPathFinder;
 import igrek.robopath.pathfinder.Path;
