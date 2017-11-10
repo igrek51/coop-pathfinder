@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.felixroske.jfxsupport.FXMLController;
-import igrek.robopath.model.PointCoordinates;
+import igrek.robopath.model.Point;
 import igrek.robopath.pathfinder.AStarPathFinder;
 import igrek.robopath.pathfinder.Path;
 import igrek.robopath.pathfinder.PathFinder;
@@ -58,7 +58,7 @@ public class HelloworldController {
 	private void mousePressedMap(MouseEvent event) {
 		if (event.getButton() == MouseButton.PRIMARY) {
 			
-			PointCoordinates point = locatePoint(event);
+			Point point = locatePoint(event);
 			if (point != null) {
 				TileCellType type = getMapCellType(point);
 				type = transformCellTypeLeftClicked(type);
@@ -68,7 +68,7 @@ public class HelloworldController {
 			
 		} else if (event.getButton() == MouseButton.SECONDARY) {
 			
-			PointCoordinates point = locatePoint(event);
+			Point point = locatePoint(event);
 			if (point != null) {
 				TileCellType type = getMapCellType(point);
 				type = transformCellTypeRightClicked(type);
@@ -79,7 +79,7 @@ public class HelloworldController {
 		}
 	}
 	
-	private TileCellType getMapCellType(PointCoordinates point) {
+	private TileCellType getMapCellType(Point point) {
 		return map.get(point.x, point.y);
 	}
 	
@@ -87,7 +87,7 @@ public class HelloworldController {
 		return map.get(x, y);
 	}
 	
-	private void setMapCell(PointCoordinates point, TileCellType type) {
+	private void setMapCell(Point point, TileCellType type) {
 		map.set(point.x, point.y, type);
 	}
 	
@@ -125,8 +125,8 @@ public class HelloworldController {
 		replaceCellTypes(TileCellType.PATH, TileCellType.EMPTY);
 		
 		PathFinder pathFinder = new AStarPathFinder(map, 0, true);
-		PointCoordinates start = findFirstCellType(map, TileCellType.START);
-		PointCoordinates target = findFirstCellType(map, TileCellType.TARGET);
+		Point start = findFirstCellType(map, TileCellType.START);
+		Point target = findFirstCellType(map, TileCellType.TARGET);
 		if (start != null && target != null) {
 			path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
 			if (path != null) {
@@ -150,12 +150,12 @@ public class HelloworldController {
 		}
 	}
 	
-	private PointCoordinates findFirstCellType(TestTileMap map, TileCellType wantedType) {
+	private Point findFirstCellType(TestTileMap map, TileCellType wantedType) {
 		for (int x = 0; x < map.getWidthInTiles(); x++) {
 			for (int y = 0; y <= map.getHeightInTiles(); y++) {
 				TileCellType type = map.get(x, y);
 				if (type == wantedType)
-					return new PointCoordinates(x, y);
+					return new Point(x, y);
 			}
 		}
 		return null;
@@ -230,16 +230,16 @@ public class HelloworldController {
 		}
 	}
 	
-	private PointCoordinates locatePoint(MouseEvent event) {
+	private Point locatePoint(MouseEvent event) {
 		return locatePoint(event.getX(), event.getY());
 	}
 	
-	private PointCoordinates locatePoint(double screenX, double screenY) {
+	private Point locatePoint(double screenX, double screenY) {
 		int mapX = ((int) (screenX * map.getWidthInTiles() / drawArea.getWidth()));
 		int mapY = ((int) (screenY * map.getHeightInTiles() / drawArea.getHeight()));
 		if (mapX < 0 || mapY < 0 || mapX >= map.getWidthInTiles() || mapY >= map.getHeightInTiles())
 			return null;
-		return new PointCoordinates(mapX, mapY);
+		return new Point(mapX, mapY);
 	}
 	
 }
