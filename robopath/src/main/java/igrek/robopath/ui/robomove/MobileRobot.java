@@ -6,7 +6,7 @@ import igrek.robopath.model.Point;
 
 public class MobileRobot {
 	
-	public static final double SPEED = 1;
+	public static final double SPEED = 1.4;
 	
 	private Point position;
 	private double moveProgress = 0;

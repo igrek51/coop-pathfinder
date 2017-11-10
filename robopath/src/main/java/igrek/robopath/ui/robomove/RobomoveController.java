@@ -39,6 +39,8 @@ public class RobomoveController {
 	private List<MobileRobot> robots = new ArrayList<>();
 	public static final int ROBOTS_COUNT = 5;
 	
+	private Random random = new Random();
+	
 	public RobomoveController() {
 		map = new TestTileMap();
 		for (int i = 0; i < ROBOTS_COUNT; i++) {
@@ -185,9 +187,8 @@ public class RobomoveController {
 	}
 	
 	private Point randomCell(TestTileMap map) {
-		Random r = new Random();
-		int x = r.nextInt(map.getWidthInTiles());
-		int y = r.nextInt(map.getHeightInTiles());
+		int x = random.nextInt(map.getWidthInTiles());
+		int y = random.nextInt(map.getHeightInTiles());
 		return new Point(x, y);
 	}
 	
@@ -198,7 +199,7 @@ public class RobomoveController {
 			TileCellType type = getMapCellType(current);
 			if (!contains(type, excludedTypes))
 				return current; // valid cell type
-			// try next cell
+			// try next cell - that's not really random
 			current = nextPointOnMap(map, current);
 			// but check if we are not searching indefinitely
 			if (current.equals(p1))
