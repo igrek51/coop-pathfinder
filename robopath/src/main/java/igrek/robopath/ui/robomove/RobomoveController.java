@@ -38,14 +38,14 @@ public class RobomoveController {
 	private Path path;
 	
 	private List<MobileRobot> robots = new ArrayList<>();
-	public static final int ROBOTS_COUNT = 5;
+	public static final int ROBOTS_COUNT = 10;
 	
 	private Random random = new Random();
 	
 	private TileCellType pressedTransformer;
 	
 	public RobomoveController() {
-		map = new TestTileMap(50, 50);
+		map = new TestTileMap(40, 40);
 		for (int i = 0; i < ROBOTS_COUNT; i++) {
 			robots.add(new MobileRobot(randomCell(map)));
 		}
@@ -303,13 +303,13 @@ public class RobomoveController {
 	private void drawCell(GraphicsContext gc, int x, int y, TileCellType type) {
 		double cellW = drawArea.getWidth() / map.getWidthInTiles();
 		double cellH = drawArea.getHeight() / map.getHeightInTiles();
-		double w2 = 0.8 * cellW;
-		double h2 = 0.8 * cellH;
+		double w2 = 0.9 * cellW;
+		double h2 = 0.9 * cellH;
 		if (type == TileCellType.BLOCKED || type == TileCellType.START || type == TileCellType.PATH) {
 			gc.setFill(getCellColor(type));
 			double x2 = x * cellW + (cellW - w2) / 2;
 			double y2 = y * cellH + (cellH - h2) / 2;
-			gc.fillRoundRect(x2, y2, w2, h2, 10, 10);
+			gc.fillRoundRect(x2, y2, w2, h2, w2 / 3, h2 / 3);
 		}
 	}
 	
@@ -330,7 +330,7 @@ public class RobomoveController {
 		gc.clearRect(0, 0, drawArea.getWidth(), drawArea.getHeight());
 		
 		gc.setLineWidth(1);
-		gc.setStroke(Color.rgb(150, 150, 150));
+		gc.setStroke(Color.rgb(200, 200, 200));
 		// vertical lines
 		for (int x = 0; x <= map.getWidthInTiles(); x++) {
 			double x2 = x * drawArea.getWidth() / map.getWidthInTiles();
@@ -369,14 +369,14 @@ public class RobomoveController {
 		// draw target
 		Point target = robot.getTarget();
 		if (target != null) {
-			gc.setFill(Color.rgb(0, 100, 0));
+			gc.setStroke(Color.rgb(0, 100, 0));
 			double targetX = target.getX() * cellW + cellW / 2;
 			double targetY = target.getY() * cellH + cellH / 2;
 			gc.strokeLine(targetX - w / 2, targetY - h / 2, targetX + w / 2, targetY + h / 2);
 			gc.strokeLine(targetX - w / 2, targetY + h / 2, targetX + w / 2, targetY - h / 2);
 		}
 		// draw path
-		gc.setFill(Color.rgb(0, 100, 0));
+		gc.setStroke(Color.rgb(0, 182, 0));
 		LinkedList<Point> movesQue = robot.getMovesQue();
 		Point previous = robot.getPosition();
 		for (Point move : movesQue) {
