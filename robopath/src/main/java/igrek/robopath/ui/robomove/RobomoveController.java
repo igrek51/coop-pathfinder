@@ -38,7 +38,7 @@ public class RobomoveController {
 	private Path path;
 	
 	private List<MobileRobot> robots = new ArrayList<>();
-	public static final int ROBOTS_COUNT = 10;
+	public static final int ROBOTS_COUNT = 100;
 	
 	private Random random = new Random();
 	
