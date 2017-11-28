@@ -42,8 +42,10 @@ public class RobomoveController {
 	
 	private Random random = new Random();
 	
+	private TileCellType pressedTransformer;
+	
 	public RobomoveController() {
-		map = new TestTileMap();
+		map = new TestTileMap(50, 50);
 		for (int i = 0; i < ROBOTS_COUNT; i++) {
 			robots.add(new MobileRobot(randomCell(map)));
 		}
@@ -56,7 +58,7 @@ public class RobomoveController {
 		});
 		
 		drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-		
+			mouseDraggedMap(event);
 		});
 		
 		drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
@@ -97,6 +99,7 @@ public class RobomoveController {
 				TileCellType type = getMapCellType(point);
 				type = transformCellTypeLeftClicked(type);
 				setMapCell(point, type);
+				pressedTransformer = type;
 				drawMap();
 			}
 			
@@ -107,7 +110,23 @@ public class RobomoveController {
 				TileCellType type = getMapCellType(point);
 				type = transformCellTypeRightClicked(type);
 				setMapCell(point, type);
+				pressedTransformer = type;
 				drawMap();
+			}
+			
+		}
+	}
+	
+	private void mouseDraggedMap(MouseEvent event) {
+		if (event.getButton() == MouseButton.SECONDARY) {
+			
+			Point point = locatePoint(event);
+			if (point != null) {
+				TileCellType type = getMapCellType(point);
+				if (type != pressedTransformer) {
+					setMapCell(point, pressedTransformer);
+					drawMap();
+				}
 			}
 			
 		}
@@ -311,7 +330,7 @@ public class RobomoveController {
 		gc.clearRect(0, 0, drawArea.getWidth(), drawArea.getHeight());
 		
 		gc.setLineWidth(1);
-		gc.setStroke(Color.rgb(100, 100, 100));
+		gc.setStroke(Color.rgb(150, 150, 150));
 		// vertical lines
 		for (int x = 0; x <= map.getWidthInTiles(); x++) {
 			double x2 = x * drawArea.getWidth() / map.getWidthInTiles();
@@ -319,7 +338,7 @@ public class RobomoveController {
 		}
 		// horizontal lines
 		for (int y = 0; y <= map.getHeightInTiles(); y++) {
-			double y2 = y * drawArea.getHeight() / map.getWidthInTiles();
+			double y2 = y * drawArea.getHeight() / map.getHeightInTiles();
 			gc.strokeLine(0, y2, drawArea.getWidth(), y2);
 		}
 	}

@@ -4,9 +4,13 @@ import igrek.robopath.pathfinder.TileBasedMap;
 
 public class TestTileMap implements TileBasedMap {
 	
+	private int width;
+	private int height;
 	private TileCellType[][] tiles;
 	
-	public TestTileMap() {
+	public TestTileMap(int width, int height) {
+		this.width = width;
+		this.height = height;
 		tiles = new TileCellType[getWidthInTiles()][getHeightInTiles()];
 		for (int x = 0; x < tiles.length; x++) {
 			for (int y = 0; y < tiles[x].length; y++) {
@@ -29,12 +33,12 @@ public class TestTileMap implements TileBasedMap {
 	
 	@Override
 	public int getWidthInTiles() {
-		return 10;
+		return width;
 	}
 	
 	@Override
 	public int getHeightInTiles() {
-		return 10;
+		return height;
 	}
 	
 	@Override
