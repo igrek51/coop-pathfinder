@@ -57,6 +57,10 @@ public class MobileRobot {
 		return enqueueMove(new Point(x, y));
 	}
 	
+	public LinkedList<Point> getMovesQue() {
+		return movesQue;
+	}
+	
 	public void resetMovesQue() {
 		movesQue.clear();
 	}

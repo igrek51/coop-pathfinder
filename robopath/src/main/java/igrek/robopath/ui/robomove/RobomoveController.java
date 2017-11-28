@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -354,6 +355,18 @@ public class RobomoveController {
 			double targetY = target.getY() * cellH + cellH / 2;
 			gc.strokeLine(targetX - w / 2, targetY - h / 2, targetX + w / 2, targetY + h / 2);
 			gc.strokeLine(targetX - w / 2, targetY + h / 2, targetX + w / 2, targetY - h / 2);
+		}
+		// draw path
+		gc.setFill(Color.rgb(0, 100, 0));
+		LinkedList<Point> movesQue = robot.getMovesQue();
+		Point previous = robot.getPosition();
+		for (Point move : movesQue) {
+			double fromX = previous.getX() * cellW + cellW / 2;
+			double fromY = previous.getY() * cellH + cellH / 2;
+			double toX = move.getX() * cellW + cellW / 2;
+			double toY = move.getY() * cellH + cellH / 2;
+			gc.strokeLine(fromX, fromY, toX, toY);
+			previous = move;
 		}
 		// draw robot
 		gc.setFill(Color.rgb(255, 0, 0));

@@ -118,7 +118,7 @@ public class AStarPathFinder implements PathFinder {
 					int xp = x + current.getX();
 					int yp = y + current.getY();
 					
-					if (isValidLocation(sx, sy, xp, yp)) {
+					if (isValidMove(current.getX(), current.getY(), x + current.getX(), y + current.getY()) && isValidLocation(sx, sy, xp, yp)) {
 						// the cost to get to this node is cost the current plus the movement
 						
 						// cost to reach this node. Note that the heursitic value is only used
@@ -256,13 +256,47 @@ public class AStarPathFinder implements PathFinder {
 	 * @return True if the location is valid for the given mover
 	 */
 	protected boolean isValidLocation(int sx, int sy, int x, int y) {
-		boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
+		if ((x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles()))
+			return false;
 		
-		if ((!invalid) && ((sx != x) || (sy != y))) {
-			invalid = map.blocked(x, y);
+		if ((sx != x) || (sy != y)) {
+			if (map.blocked(x, y))
+				return false;
 		}
 		
-		return !invalid;
+		return true;
+	}
+	
+	/**
+	 * @param sx from x
+	 * @param sy from y
+	 * @param x  to x
+	 * @param y  to y
+	 * @return is move allowed
+	 */
+	protected boolean isValidMove(int sx, int sy, int x, int y) {
+		if ((x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles()))
+			return false;
+		
+		if ((sx != x) || (sy != y)) {
+			if (map.blocked(x, y))
+				return false;
+		}
+		// diagonal move not possible when one cell is blocked
+		int dx = abs(sx - x);
+		int dy = abs(sy - y);
+		// diagonal move
+		if (dx == 1 && dy == 1) {
+			if (map.blocked(x, y) || map.blocked(sx, sy) || map.blocked(sx, y) || map.blocked(x, sy)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	private int abs(int x) {
+		return x >= 0 ? x : -x;
 	}
 	
 	/**
