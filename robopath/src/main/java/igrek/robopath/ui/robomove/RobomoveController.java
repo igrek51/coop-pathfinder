@@ -13,6 +13,7 @@ import igrek.robopath.model.Point;
 import igrek.robopath.pathfinder.AStarPathFinder;
 import igrek.robopath.pathfinder.Path;
 import igrek.robopath.pathfinder.PathFinder;
+import igrek.robopath.ui.robomove.robot.MobileRobot;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -20,6 +21,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -39,27 +42,47 @@ public class RobomoveController {
 	
 	private TestTileMap map;
 	private Path path;
-	
 	private List<MobileRobot> robots = new ArrayList<>();
-	public static final int ROBOTS_COUNT = 100;
+	private CaseParams params = new CaseParams();
 	
 	private Random random = new Random();
-	
 	private TileCellType pressedTransformer;
 	
+	// PARAMS
+	@FXML
+	private TextField paramMapSizeW;
+	@FXML
+	private TextField paramMapSizeH;
+	@FXML
+	private TextField paramRobotsCount;
+	@FXML
+	private CheckBox paramRobotAutoTarget;
+	
 	public RobomoveController() {
-		map = new TestTileMap(40, 40);
-		for (int i = 0; i < ROBOTS_COUNT; i++) {
-			robots.add(new MobileRobot(randomCell(map)));
+		resetMap(null);
+	}
+	
+	@FXML
+	private void resetMap(final Event event) {
+		if (event != null)
+			readParams();
+		map = new TestTileMap(params.mapSizeW, params.mapSizeH);
+		robots.clear();
+		for (int i = 0; i < params.robotsCount; i++) {
+			robots.add(new MobileRobot(randomCell(map), robot -> onTargetReached(robot)));
 		}
+		if (event != null)
+			drawAreaContainerResized();
 	}
 	
 	private void drawAreaContainerResized() {
-		double w = drawAreaContainer.getWidth();
-		double h = drawAreaContainer.getHeight();
-		double min = w < h ? w : h;
-		drawArea.setWidth(min);
-		drawArea.setHeight(min);
+		double containerWidth = drawAreaContainer.getWidth();
+		double containerHeight = drawAreaContainer.getHeight();
+		double maxCellW = containerWidth / map.getWidthInTiles();
+		double maxCellH = containerHeight / map.getHeightInTiles();
+		double cellSize = maxCellW < maxCellH ? maxCellW : maxCellH; // min
+		drawArea.setWidth(cellSize * map.getWidthInTiles());
+		drawArea.setHeight(cellSize * map.getHeightInTiles());
 	}
 	
 	@FXML
@@ -80,6 +103,7 @@ public class RobomoveController {
 		
 		});
 		
+		updateParams();
 		drawMap();
 		
 		// repainting timer
@@ -408,5 +432,35 @@ public class RobomoveController {
 		double y = robot.getInterpolatedY() * cellH + cellH / 2 - h / 2;
 		gc.fillOval(x, y, w, h);
 		
+	}
+	
+	private void updateParams() {
+		paramMapSizeW.setText(Integer.toString(params.mapSizeW));
+		paramMapSizeH.setText(Integer.toString(params.mapSizeH));
+		paramRobotsCount.setText(Integer.toString(params.robotsCount));
+		paramRobotAutoTarget.setSelected(params.robotAutoTarget);
+	}
+	
+	private void readParams() {
+		try {
+			params.mapSizeW = Integer.parseInt(paramMapSizeW.getText());
+			params.mapSizeH = Integer.parseInt(paramMapSizeH.getText());
+			params.robotsCount = Integer.parseInt(paramRobotsCount.getText());
+			params.robotAutoTarget = paramRobotAutoTarget.isSelected();
+		} catch (NumberFormatException e) {
+			logger.error(e.getMessage());
+		}
+	}
+	
+	@FXML
+	private void eventReadParams(final Event event) {
+		readParams();
+	}
+	
+	
+	private void onTargetReached(MobileRobot robot) {
+		if (params.robotAutoTarget) {
+			randomRobotTarget(robot);
+		}
 	}
 }

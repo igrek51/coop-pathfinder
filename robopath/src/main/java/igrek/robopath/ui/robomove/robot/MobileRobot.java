@@ -1,4 +1,4 @@
-package igrek.robopath.ui.robomove;
+package igrek.robopath.ui.robomove.robot;
 
 import java.util.LinkedList;
 
@@ -18,9 +18,11 @@ public class MobileRobot {
 	
 	private Point target;
 	private LinkedList<Point> movesQue = new LinkedList<>();
+	private TargetReachedHandler targetReachedHandler;
 	
-	public MobileRobot(Point position) {
+	public MobileRobot(Point position, TargetReachedHandler targetReachedHandler) {
 		this.position = position;
+		this.targetReachedHandler = targetReachedHandler;
 	}
 	
 	public void timeLapse(double t) {
@@ -29,8 +31,13 @@ public class MobileRobot {
 	}
 	
 	private void move1Step(double pointsLength) {
-		if (movesQue.isEmpty())
+		if (movesQue.isEmpty()) {
+			// target reached
+			if (targetReachedHandler != null) {
+				targetReachedHandler.onTargetReached(this);
+			}
 			return;
+		}
 		Point nearest = nearestTarget();
 		double distance = position.distance(nearest);
 		double remainder = distance * (1.0 - moveProgress);
@@ -125,4 +132,5 @@ public class MobileRobot {
 	public void setTarget(Point target) {
 		this.target = target;
 	}
+	
 }
