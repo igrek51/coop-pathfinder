@@ -1,17 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
+
+<?import igrek.robopath.ui.robomove.ResizableCanvas?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Pane?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121"
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<HBox xmlns="http://javafx.com/javafx/8.0.121"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="igrek.robopath.ui.robomove.RobomoveController">
+      fx:controller="igrek.robopath.ui.robomove.RobomoveController"
+      HBox.hgrow="ALWAYS">
     <children>
-        <Button layoutX="72.0" layoutY="22.0" mnemonicParsing="false" onAction="#findPathPressed"
-                text="Find path"/>
-        <Button layoutX="235.0" layoutY="22.0" mnemonicParsing="false"
-                onAction="#randomTargetPressed" text="Random target"/>
-        <Canvas fx:id="drawArea" height="700.0" layoutX="20.0" layoutY="80.0" width="700.0"/>
+        <GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+                  HBox.hgrow="ALWAYS">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="70"/>
+                <ColumnConstraints percentWidth="30"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="ALWAYS"/>
+            </rowConstraints>
+            <children>
+                <VBox fx:id="drawAreaContainer" GridPane.columnIndex="0" minWidth="0.0"
+                      minHeight="0.0">
+                    <children>
+                        <ResizableCanvas fx:id="drawArea" width="300.0" height="300.0"/>
+                    </children>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" GridPane.columnIndex="1">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#findPathPressed"
+                                text="Find path" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#randomTargetPressed"
+                                text="Random target" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                    </children>
+                </VBox>
+            </children>
+        </GridPane>
     </children>
-</Pane>
+</HBox>

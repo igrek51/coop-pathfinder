@@ -19,10 +19,10 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
@@ -32,7 +32,10 @@ public class RobomoveController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@FXML
-	private Canvas drawArea;
+	private ResizableCanvas drawArea;
+	
+	@FXML
+	private VBox drawAreaContainer;
 	
 	private TestTileMap map;
 	private Path path;
@@ -51,8 +54,20 @@ public class RobomoveController {
 		}
 	}
 	
+	private void drawAreaContainerResized() {
+		double w = drawAreaContainer.getWidth();
+		double h = drawAreaContainer.getHeight();
+		double min = w < h ? w : h;
+		drawArea.setWidth(min);
+		drawArea.setHeight(min);
+	}
+	
 	@FXML
 	public void initialize() {
+		
+		drawAreaContainer.widthProperty().addListener(o -> drawAreaContainerResized());
+		drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
+		
 		drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
 			mousePressedMap(event);
 		});
@@ -368,7 +383,7 @@ public class RobomoveController {
 		double h = 0.6 * cellH;
 		// draw target
 		Point target = robot.getTarget();
-		if (target != null) {
+		if (target != null && !target.equals(robot.getPosition())) {
 			gc.setStroke(Color.rgb(0, 100, 0));
 			double targetX = target.getX() * cellW + cellW / 2;
 			double targetY = target.getY() * cellH + cellH / 2;

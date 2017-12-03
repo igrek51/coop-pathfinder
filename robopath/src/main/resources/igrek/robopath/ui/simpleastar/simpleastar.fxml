@@ -8,8 +8,8 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="igrek.robopath.ui.simpleastar.SimpleAstarController">
     <children>
-        <Button fx:id="findPathButton" layoutX="302.0" layoutY="35.0" mnemonicParsing="false"
+        <Canvas fx:id="drawArea" height="500.0" layoutX="20.0" layoutY="20.0" width="500.0"/>
+        <Button fx:id="findPathButton" layoutX="600.0" layoutY="20.0" mnemonicParsing="false"
                 onAction="#findPathPressed" text="Find path"/>
-        <Canvas fx:id="drawArea" height="500.0" layoutX="20.0" layoutY="80.0" width="500.0"/>
     </children>
 </Pane>
