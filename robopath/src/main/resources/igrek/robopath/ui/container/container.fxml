@@ -16,7 +16,7 @@
                                 <fx:include source="../simpleastar/simpleastar.fxml"/>
                             </content>
                         </Tab>
-                        <Tab text="A* test">
+                        <Tab text="Non-colliding A*">
                             <content>
                                 <fx:include source="../robomove/robomove.fxml"/>
                             </content>

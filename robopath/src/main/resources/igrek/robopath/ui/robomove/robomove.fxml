@@ -3,6 +3,9 @@
 
 <?import igrek.robopath.ui.robomove.ResizableCanvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -29,12 +32,23 @@
                         <ResizableCanvas fx:id="drawArea" width="300.0" height="300.0"/>
                     </children>
                 </VBox>
-                <VBox HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" GridPane.columnIndex="1">
+                <VBox fx:id="menu" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" GridPane.columnIndex="1">
                     <children>
                         <Button mnemonicParsing="false" onAction="#findPathPressed"
                                 text="Find path" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#randomTargetPressed"
                                 text="Random target" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <!--map size-->
+                        <TitledPane text="Map size">
+                            <HBox HBox.hgrow="ALWAYS">
+                                <children>
+                                    <TextField fx:id="mapSizeW" prefWidth="${menu.width*0.4}"/>
+                                    <Label text="x" prefWidth="${menu.width*0.2}"
+                                           alignment="CENTER"/>
+                                    <TextField fx:id="mapSizeH" prefWidth="${menu.width*0.4}"/>
+                                </children>
+                            </HBox>
+                        </TitledPane>
                     </children>
                 </VBox>
             </children>
