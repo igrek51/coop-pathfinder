@@ -43,7 +43,7 @@ public class RobomoveController {
 	private TestTileMap map;
 	private Path path;
 	private List<MobileRobot> robots = new ArrayList<>();
-	private CaseParams params = new CaseParams();
+	private SimulationParams params = new SimulationParams();
 	
 	private Random random = new Random();
 	private TileCellType pressedTransformer;
