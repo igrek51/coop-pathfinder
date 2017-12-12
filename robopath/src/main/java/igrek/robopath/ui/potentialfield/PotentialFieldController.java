@@ -137,10 +137,8 @@ public class PotentialFieldController {
 			robot.zeroForce();
 			// force attracting to target
 			Vector2 diff = robot.getTarget().sub(robot.getPosition());
-			double r = diff.length();
-			final double K_TO_TARGET = 250;
-			double forceValue = 30; // constant force value
-			Vector2 forceToTarget = diff.normalizeTo(forceValue);
+			final double F_TO_TARGET = 30; // constant force value
+			Vector2 forceToTarget = diff.normalizeTo(F_TO_TARGET);
 			robot.addForce(forceToTarget);
 			
 			// forces repelling from obstacles

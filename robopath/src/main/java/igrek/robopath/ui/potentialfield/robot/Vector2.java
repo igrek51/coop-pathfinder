@@ -1,9 +1,12 @@
 package igrek.robopath.ui.potentialfield.robot;
 
+/**
+ * Immutable 2D vector
+ */
 public class Vector2 {
 	
-	public double x;
-	public double y;
+	public final double x;
+	public final double y;
 	
 	public static final Vector2 ZERO = new Vector2(0, 0);
 	
