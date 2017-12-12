@@ -157,8 +157,8 @@ public class PotentialFieldController {
 			obstaclesForce = obstaclesForce.cutOff(31);
 			robot.addForce(obstaclesForce);
 			
-			logger.info("pos: " + robot.getPosition() + ", v: " + robot.getVelocity() + ", F: " + robot
-					.getForce());
+			//			logger.info("pos: " + robot.getPosition() + ", v: " + robot.getVelocity() + ", F: " + robot
+			//					.getForce());
 			
 			robot.timeLapse(t);
 		}
@@ -167,7 +167,7 @@ public class PotentialFieldController {
 	private Vector2 forceFromObstacle(MobileRobot robot, int obstacleX, int obstacleY) {
 		Vector2 diff = robot.getPosition().sub(new Vector2(obstacleX + 0.5, obstacleY + 0.5));
 		double r = diff.length();
-		final double K_FROM_OBSTACLE = 15;
+		final double K_FROM_OBSTACLE = 20;
 		double forceValue = K_FROM_OBSTACLE / r / r;
 		return diff.normalizeTo(forceValue);
 	}
