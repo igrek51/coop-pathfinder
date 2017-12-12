@@ -1,4 +1,4 @@
-package igrek.robopath.ui.robomove;
+package igrek.robopath.ui.common;
 
 import javafx.scene.canvas.Canvas;
 

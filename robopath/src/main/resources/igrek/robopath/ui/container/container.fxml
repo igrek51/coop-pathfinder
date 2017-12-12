@@ -21,6 +21,11 @@
                                 <fx:include source="../robomove/robomove.fxml"/>
                             </content>
                         </Tab>
+                        <Tab text="Potential field">
+                            <content>
+                                <fx:include source="../potentialfield/potentialfield.fxml"/>
+                            </content>
+                        </Tab>
                     </tabs>
                 </TabPane>
             </children>

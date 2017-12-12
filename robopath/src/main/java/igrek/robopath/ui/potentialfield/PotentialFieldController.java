@@ -1,10 +1,9 @@
-package igrek.robopath.ui.robomove;
+package igrek.robopath.ui.potentialfield;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,7 +13,8 @@ import igrek.robopath.pathfinder.AStarPathFinder;
 import igrek.robopath.pathfinder.Path;
 import igrek.robopath.pathfinder.PathFinder;
 import igrek.robopath.ui.common.ResizableCanvas;
-import igrek.robopath.ui.robomove.robot.MobileRobot;
+import igrek.robopath.ui.potentialfield.robot.MobileRobot;
+import igrek.robopath.ui.potentialfield.robot.Vector2;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -31,7 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 @FXMLController
-public class RobomoveController {
+public class PotentialFieldController {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -59,7 +59,7 @@ public class RobomoveController {
 	@FXML
 	private CheckBox paramRobotAutoTarget;
 	
-	public RobomoveController() {
+	public PotentialFieldController() {
 		resetMap(null);
 	}
 	
@@ -128,25 +128,64 @@ public class RobomoveController {
 	
 	private void timeLapse(double t) {
 		for (MobileRobot robot : robots) {
+			timeLapseRobot(t, robot);
+		}
+	}
+	
+	private void timeLapseRobot(double t, MobileRobot robot) {
+		if (robot.getTarget() != null) {
+			robot.zeroForce();
+			// force attracting to target
+			Vector2 diff = robot.getTarget().sub(robot.getPosition());
+			double r = diff.length();
+			final double K_TO_TARGET = 250;
+			double forceValue = 30; // constant force value
+			Vector2 forceToTarget = diff.normalizeTo(forceValue);
+			robot.addForce(forceToTarget);
+			
+			// forces repelling from obstacles
+			Vector2 obstaclesForce = Vector2.ZERO;
+			for (int x = 0; x < map.getWidthInTiles(); x++) {
+				for (int y = 0; y <= map.getHeightInTiles(); y++) {
+					TileCellType type = map.get(x, y);
+					if (type == TileCellType.BLOCKED) {
+						Vector2 forceFromObstacle = forceFromObstacle(robot, x, y);
+						obstaclesForce = obstaclesForce.add(forceFromObstacle);
+					}
+				}
+			}
+			obstaclesForce = obstaclesForce.cutOff(31);
+			robot.addForce(obstaclesForce);
+			
+			logger.info("pos: " + robot.getPosition() + ", v: " + robot.getVelocity() + ", F: " + robot
+					.getForce());
+			
 			robot.timeLapse(t);
 		}
+	}
+	
+	private Vector2 forceFromObstacle(MobileRobot robot, int obstacleX, int obstacleY) {
+		Vector2 diff = robot.getPosition().sub(new Vector2(obstacleX + 0.5, obstacleY + 0.5));
+		double r = diff.length();
+		final double K_FROM_OBSTACLE = 15;
+		double forceValue = K_FROM_OBSTACLE / r / r;
+		return diff.normalizeTo(forceValue);
 	}
 	
 	private void mousePressedMap(MouseEvent event) {
 		if (event.getButton() == MouseButton.PRIMARY) {
 			
-			Point point = locatePoint(event);
+			Vector2 point = locateRealPoint(event);
 			if (point != null) {
-				TileCellType type = getMapCellType(point);
-				type = transformCellTypeLeftClicked(type);
-				setMapCell(point, type);
-				pressedTransformer = type;
+				for (MobileRobot robot : robots) {
+					robot.setTarget(point);
+				}
 				drawMap();
 			}
 			
 		} else if (event.getButton() == MouseButton.SECONDARY) {
 			
-			Point point = locatePoint(event);
+			Point point = locateDiscretePoint(event);
 			if (point != null) {
 				TileCellType type = getMapCellType(point);
 				type = transformCellTypeRightClicked(type);
@@ -161,7 +200,7 @@ public class RobomoveController {
 	private void mouseDraggedMap(MouseEvent event) {
 		if (event.getButton() == MouseButton.SECONDARY) {
 			
-			Point point = locatePoint(event);
+			Point point = locateDiscretePoint(event);
 			if (point != null) {
 				TileCellType type = getMapCellType(point);
 				if (type != pressedTransformer) {
@@ -232,53 +271,14 @@ public class RobomoveController {
 	}
 	
 	private void randomRobotTarget(MobileRobot robot) {
-		robot.resetNextMoves();
-		Point start = robot.lastTarget();
-		Point target = randomCellButNotType(map, TileCellType.BLOCKED);
+		Vector2 target = randomCell(map);
 		robot.setTarget(target);
-		PathFinder pathFinder = new AStarPathFinder(map, 0, true);
-		path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
-		if (path != null) {
-			// enque path
-			for (int i = 1; i < path.getLength(); i++) {
-				Path.Step step = path.getStep(i);
-				robot.enqueueMove(step.getX(), step.getY());
-			}
-		}
 	}
 	
-	private Point randomCell(TestTileMap map) {
-		int x = random.nextInt(map.getWidthInTiles());
-		int y = random.nextInt(map.getHeightInTiles());
-		return new Point(x, y);
-	}
-	
-	private Point randomCellButNotType(TestTileMap map, TileCellType... excludedTypes) {
-		Point p1 = randomCell(map);
-		Point current = p1;
-		while (true) {
-			TileCellType type = getMapCellType(current);
-			if (!contains(type, excludedTypes))
-				return current; // valid cell type
-			// try next cell - that's not really random
-			current = nextPointOnMap(map, current);
-			// but check if we are not searching indefinitely
-			if (current.equals(p1))
-				return null;
-		}
-	}
-	
-	private Point nextPointOnMap(TestTileMap map, Point p1) {
-		int x = p1.x;
-		int y = p1.y;
-		x++;
-		if (x >= map.getWidthInTiles()) {
-			x = 0;
-			y++;
-			if (y >= map.getHeightInTiles())
-				y = 0;
-		}
-		return new Point(x, y);
+	private Vector2 randomCell(TestTileMap map) {
+		double x = random.nextDouble() * map.getWidthInTiles();
+		double y = random.nextDouble() * map.getHeightInTiles();
+		return new Vector2(x, y);
 	}
 	
 	private void replaceCellTypes(TileCellType replaceFrom, TileCellType replaceTo) {
@@ -384,16 +384,28 @@ public class RobomoveController {
 		}
 	}
 	
-	private Point locatePoint(MouseEvent event) {
-		return locatePoint(event.getX(), event.getY());
+	private Point locateDiscretePoint(MouseEvent event) {
+		return locateDiscretePoint(event.getX(), event.getY());
 	}
 	
-	private Point locatePoint(double screenX, double screenY) {
+	private Point locateDiscretePoint(double screenX, double screenY) {
 		int mapX = ((int) (screenX * map.getWidthInTiles() / drawArea.getWidth()));
 		int mapY = ((int) (screenY * map.getHeightInTiles() / drawArea.getHeight()));
 		if (mapX < 0 || mapY < 0 || mapX >= map.getWidthInTiles() || mapY >= map.getHeightInTiles())
 			return null;
 		return new Point(mapX, mapY);
+	}
+	
+	private Vector2 locateRealPoint(MouseEvent event) {
+		return locateRealPoint(event.getX(), event.getY());
+	}
+	
+	private Vector2 locateRealPoint(double screenX, double screenY) {
+		double mapX = screenX * map.getWidthInTiles() / drawArea.getWidth();
+		double mapY = screenY * map.getHeightInTiles() / drawArea.getHeight();
+		if (mapX < 0 || mapY < 0 || mapX > map.getWidthInTiles() || mapY > map.getHeightInTiles())
+			return null;
+		return new Vector2(mapX, mapY);
 	}
 	
 	private void drawRobots(GraphicsContext gc) {
@@ -408,30 +420,18 @@ public class RobomoveController {
 		double w = 0.6 * cellW;
 		double h = 0.6 * cellH;
 		// draw target
-		Point target = robot.getTarget();
+		Vector2 target = robot.getTarget();
 		if (target != null && !target.equals(robot.getPosition())) {
 			gc.setStroke(Color.rgb(0, 100, 0));
-			double targetX = target.getX() * cellW + cellW / 2;
-			double targetY = target.getY() * cellH + cellH / 2;
+			double targetX = target.getX() * cellW;
+			double targetY = target.getY() * cellH;
 			gc.strokeLine(targetX - w / 2, targetY - h / 2, targetX + w / 2, targetY + h / 2);
 			gc.strokeLine(targetX - w / 2, targetY + h / 2, targetX + w / 2, targetY - h / 2);
 		}
-		// draw path
-		gc.setStroke(Color.rgb(0, 182, 0));
-		LinkedList<Point> movesQue = robot.getMovesQue();
-		Point previous = robot.getPosition();
-		for (Point move : movesQue) {
-			double fromX = previous.getX() * cellW + cellW / 2;
-			double fromY = previous.getY() * cellH + cellH / 2;
-			double toX = move.getX() * cellW + cellW / 2;
-			double toY = move.getY() * cellH + cellH / 2;
-			gc.strokeLine(fromX, fromY, toX, toY);
-			previous = move;
-		}
 		// draw robot
 		gc.setFill(Color.rgb(255, 0, 0));
-		double x = robot.getInterpolatedX() * cellW + cellW / 2 - w / 2;
-		double y = robot.getInterpolatedY() * cellH + cellH / 2 - h / 2;
+		double x = robot.getPosition().getX() * cellW - w / 2;
+		double y = robot.getPosition().getY() * cellH - h / 2;
 		gc.fillOval(x, y, w, h);
 		
 	}

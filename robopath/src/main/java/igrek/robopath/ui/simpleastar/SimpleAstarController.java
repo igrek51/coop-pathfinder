@@ -34,6 +34,8 @@ public class SimpleAstarController {
 	
 	@FXML
 	public void initialize() {
+		logger.info("initializing controller " + this.getClass().getSimpleName());
+		
 		drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
 			mousePressedMap(event);
 		});

@@ -14,7 +14,7 @@ public class ContainerController {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	private static final int DEFAULT_TAB_INDEX = 1;
+	private static final int DEFAULT_TAB_INDEX = 2; // beginning from 0
 	
 	@FXML
 	private TabPane containerTabPane;
