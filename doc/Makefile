@@ -1,6 +1,5 @@
 PROJECT=mgr
 PROJECT_VIEW=${PROJECT}_view
-#OUT=.
 OUT=build
 LATEX=pdflatex -interaction nonstopmode -halt-on-error -file-line-error
 
@@ -12,9 +11,6 @@ latex1:
 	${LATEX} --output-directory=${OUT} ${PROJECT}
 
 latex2:
-	${LATEX} --output-directory=${OUT} ${PROJECT}
-
-latex3:
 	${LATEX} --output-directory=${OUT} ${PROJECT}
 	
 bibligrafia:

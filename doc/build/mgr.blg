@@ -1,9 +1,9 @@
-[1] Config.pm:354> INFO - This is Biber 2.6
-[1] Config.pm:357> INFO - Logfile is 'build/mgr.blg'
-[100] biber:302> INFO - === Tue Apr 18, 2017, 12:38:24
-[130] Biber.pm:359> INFO - Reading 'build/mgr.bcf'
-[258] Biber.pm:823> INFO - Found 0 citekeys in bib section 0
-[274] Utils.pm:164> WARN - The file 'build/mgr.bcf' does not contain any citations!
-[287] bbl.pm:597> INFO - Writing 'build/mgr.bbl' with encoding 'UTF-8'
-[287] bbl.pm:701> INFO - Output to build/mgr.bbl
-[288] Biber.pm:109> INFO - WARNINGS: 1
+[0] Config.pm:302> INFO - This is Biber 2.8
+[1] Config.pm:305> INFO - Logfile is 'build/mgr.blg'
+[84] biber:313> INFO - === Wed Dec 13, 2017, 01:38:38
+[113] Biber.pm:361> INFO - Reading 'build/mgr.bcf'
+[213] Biber.pm:847> INFO - Found 0 citekeys in bib section 0
+[224] Utils.pm:169> WARN - The file 'build/mgr.bcf' does not contain any citations!
+[234] bbl.pm:613> INFO - Writing 'build/mgr.bbl' with encoding 'UTF-8'
+[235] bbl.pm:716> INFO - Output to build/mgr.bbl
+[235] Biber.pm:110> INFO - WARNINGS: 1

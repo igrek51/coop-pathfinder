@@ -1,26 +1,28 @@
 % \nocite{*} %wyświetlenie wszystkich wpisów z bibligrafi (nawet tych nieużywanych)
 \pagenumbering{gobble}% Remove page numbers (and reset to 1)
 
-% \input{zyciorys}
+\airtitlepage %własna strona tytułowa
 
-\stronatytulowa %własna strona tytułowa
+\input{zyciorys}
 
-% \input{karta-tematu}
+\input{karta-tematu}
 
-% \input{streszczenie}
+\input{abstract}
 
 \tableofcontents
 
 \pagebreak
 \pagenumbering{arabic}% Arabic page numbers (and reset to 1)
 
-% \input{chapter-wprowadzenie}
+% Rozdział 1: Pierdolenie o Szopenie
+\input{chapter-intro}
 	
-% \input{chapter-implementacja}
+\input{chapter-implementation}
 
-% \input{chapter-testy}
+\input{chapter-tests}
 
-% \input{chapter-podsumowanie}
+\input{chapter-summary}
+
 
 \listoffigures
 
@@ -28,4 +30,4 @@
 
 \printbibliography
 
-% \input{zalaczniki}
+% \input{attachments}
