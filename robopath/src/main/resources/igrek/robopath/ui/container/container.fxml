@@ -26,6 +26,11 @@
                                 <fx:include source="../potentialfield/potentialfield.fxml"/>
                             </content>
                         </Tab>
+                        <Tab text="Collision avoid">
+                            <content>
+                                <fx:include source="../colavoid/colavoid.fxml"/>
+                            </content>
+                        </Tab>
                     </tabs>
                 </TabPane>
             </children>
