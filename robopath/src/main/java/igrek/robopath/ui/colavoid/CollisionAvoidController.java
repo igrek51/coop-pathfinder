@@ -70,13 +70,25 @@ public class CollisionAvoidController {
 		if (event != null)
 			readParams();
 		map = new TileMap(params.mapSizeW, params.mapSizeH);
-		new MazeGenerator(map).generateMaze();
+		if (event != null)
+			drawAreaContainerResized();
+	}
+	
+	@FXML
+	private void placeRobots(final Event event) {
+		if (event != null)
+			readParams();
 		robots.clear();
 		for (int i = 0; i < params.robotsCount; i++) {
 			robots.add(new MobileRobot(randomUnoccupiedCell(map), robot -> onTargetReached(robot), i));
 		}
+	}
+	
+	@FXML
+	private void generateMaze(final Event event) {
 		if (event != null)
-			drawAreaContainerResized();
+			readParams();
+		new MazeGenerator(map).generateMaze();
 	}
 	
 	private void drawAreaContainerResized() {

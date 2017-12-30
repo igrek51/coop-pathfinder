@@ -40,6 +40,10 @@
                                 text="Random target" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#resetMap"
                                 text="Reset map" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#generateMaze"
+                                text="Generate maze" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#placeRobots"
+                                text="Place robots" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <!--parameters-->
                         <TitledPane text="Map size">
                             <HBox HBox.hgrow="ALWAYS">
