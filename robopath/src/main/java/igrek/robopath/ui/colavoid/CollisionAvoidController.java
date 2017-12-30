@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.felixroske.jfxsupport.FXMLController;
+import igrek.robopath.mazegen.MazeGenerator;
 import igrek.robopath.model.Point;
 import igrek.robopath.pathfinder.mystar.MyStarPathFinder;
 import igrek.robopath.pathfinder.mystar.Path;
@@ -69,9 +70,10 @@ public class CollisionAvoidController {
 		if (event != null)
 			readParams();
 		map = new TileMap(params.mapSizeW, params.mapSizeH);
+		new MazeGenerator(map).generateMaze();
 		robots.clear();
 		for (int i = 0; i < params.robotsCount; i++) {
-			robots.add(new MobileRobot(randomCell(map), robot -> onTargetReached(robot), i));
+			robots.add(new MobileRobot(randomUnoccupiedCell(map), robot -> onTargetReached(robot), i));
 		}
 		if (event != null)
 			drawAreaContainerResized();
