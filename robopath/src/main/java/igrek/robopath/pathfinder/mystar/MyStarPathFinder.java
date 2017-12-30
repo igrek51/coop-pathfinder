@@ -1,6 +1,7 @@
 package igrek.robopath.pathfinder.mystar;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import igrek.robopath.pathfinder.heuristics.AStarHeuristic;
@@ -90,79 +91,67 @@ public class MyStarPathFinder {
 			// search through all the neighbours of the current node evaluating
 			// them as next steps
 			//Dla każdego z wybranych przyległych pól (sasiad) do pola aktualnego
-			for (int x = -1; x <= 1; x++) {
-				for (int y = -1; y <= 1; y++) {
-					// not a neighbour, its the current tile
-					if ((x == 0) && (y == 0)) {
-						continue;
+			List<Node> neighbours = availableNeighbours(current);
+			for (Node neighbour : neighbours) {
+				
+				//jeśli NIE-MOŻNA go przejść, ignorujemy je.
+				if (!isValidLocation(sx, sy, neighbour.getX(), neighbour.getY()))
+					continue;
+				
+				if (!isValidMove(current.getX(), current.getY(), neighbour.getX(), neighbour.getY()))
+					continue;
+				
+				// the cost to get to this node is cost the current plus the movement
+				// cost to reach this node. Note that the heursitic value is only used
+				// in the sorted open list
+				float nextStepCost = current.getCost() + getMovementCost(current.getX(), current.getY(), neighbour
+						.getX(), neighbour.getY());
+				
+				// if the new cost we've determined for this node is lower than
+				// it has been previously makes sure the node hasn'e've
+				// determined that there might have been a better path to get to
+				// this node so it needs to be re-evaluated
+				if (nextStepCost < neighbour.getCost()) {
+					if (open.contains(neighbour)) {
+						open.remove(neighbour);
 					}
-					
-					// determine the location of the neighbour and evaluate it
-					int xp = x + current.getX();
-					int yp = y + current.getY();
-					
-					//jeśli NIE-MOŻNA go przejść, ignorujemy je.
-					if (!isValidLocation(sx, sy, xp, yp))
-						continue;
-					
-					if (!isValidMove(current.getX(), current.getY(), x + current.getX(), y + current
-							.getY()))
-						continue;
-					
-					Node neighbour = nodes[xp][yp];
-					
-					// the cost to get to this node is cost the current plus the movement
-					// cost to reach this node. Note that the heursitic value is only used
-					// in the sorted open list
-					float nextStepCost = current.getCost() + getMovementCost(current.getX(), current
-							.getY(), xp, yp);
-					
-					// if the new cost we've determined for this node is lower than
-					// it has been previously makes sure the node hasn'e've
-					// determined that there might have been a better path to get to
-					// this node so it needs to be re-evaluated
-					if (nextStepCost < neighbour.getCost()) {
-						if (open.contains(neighbour)) {
-							open.remove(neighbour);
-						}
-						if (closed.contains(neighbour)) {
-							closed.remove(neighbour);
-						}
+					if (closed.contains(neighbour)) {
+						closed.remove(neighbour);
 					}
-					// if the node hasn't already been processed and discarded then
-					// reset it's cost to our current cost and add it as a next possible
-					// step (i.e. to the open list)
-					if (!open.contains(neighbour) && !closed.contains(neighbour)) {
-						neighbour.setCost(nextStepCost);
-						neighbour.setHeuristic(getHeuristicCost(xp, yp, tx, ty));
-						neighbour.setParent(current);
-						open.add(neighbour);
-					}
-					
-					//					//jeśli pole sąsiada jest już na Liście Zamkniętych
-					//					if (closed.contains(neighbour))
-					//						continue;
-					//					//Jeśli pole sąsiada nie jest jeszcze na Liście Otwartych.
-					//					if (!open.contains(neighbour)) {
-					//						//dodajemy je do niej
-					//						open.add(neighbour);
-					//						//Aktualne pole przypisujemy sasiadowi jako "pole rodzica"
-					//						neighbour.setParent(current);
-					//						//i zapisujemy sasiada wartości F, G i H. (F = G + H)
-					//						neighbour.setCost(nextStepCost);
-					//						neighbour.setHeuristic(getHeuristicCost(xp, yp, tx, ty));
-					//					} else {
-					//						//jeśli pole było na liście otwartych
-					//						//sprawdzamy czy aktualna ścieżka do tego pola (sasiad) (prowadząca przez aktualne) jest krótsza, poprzez porównanie sasiada wartości G dla starej i aktualnej ścieżki. Mniejsza wartość G oznacza, że ścieżka jest krótsza.
-					//						if (nextStepCost < neighbour.getCost()) {
-					//							//Jeśli tak, zmieniamy przypisanie "pole rodzica" na aktualne pole i przeliczamy wartości G i F dla pola (sasiad).
-					//							neighbour.setParent(current);
-					//							neighbour.setCost(nextStepCost);
-					//							neighbour.setHeuristic(getHeuristicCost(xp, yp, tx, ty));
-					//						}
-					//					}
-					
 				}
+				// if the node hasn't already been processed and discarded then
+				// reset it's cost to our current cost and add it as a next possible
+				// step (i.e. to the open list)
+				if (!open.contains(neighbour) && !closed.contains(neighbour)) {
+					neighbour.setCost(nextStepCost);
+					neighbour.setHeuristic(getHeuristicCost(neighbour.getX(), neighbour.getY(), tx, ty));
+					neighbour.setParent(current);
+					open.add(neighbour);
+				}
+				
+				//					//jeśli pole sąsiada jest już na Liście Zamkniętych
+				//					if (closed.contains(neighbour))
+				//						continue;
+				//					//Jeśli pole sąsiada nie jest jeszcze na Liście Otwartych.
+				//					if (!open.contains(neighbour)) {
+				//						//dodajemy je do niej
+				//						open.add(neighbour);
+				//						//Aktualne pole przypisujemy sasiadowi jako "pole rodzica"
+				//						neighbour.setParent(current);
+				//						//i zapisujemy sasiada wartości F, G i H. (F = G + H)
+				//						neighbour.setCost(nextStepCost);
+				//						neighbour.setHeuristic(getHeuristicCost(xp, yp, tx, ty));
+				//					} else {
+				//						//jeśli pole było na liście otwartych
+				//						//sprawdzamy czy aktualna ścieżka do tego pola (sasiad) (prowadząca przez aktualne) jest krótsza, poprzez porównanie sasiada wartości G dla starej i aktualnej ścieżki. Mniejsza wartość G oznacza, że ścieżka jest krótsza.
+				//						if (nextStepCost < neighbour.getCost()) {
+				//							//Jeśli tak, zmieniamy przypisanie "pole rodzica" na aktualne pole i przeliczamy wartości G i F dla pola (sasiad).
+				//							neighbour.setParent(current);
+				//							neighbour.setCost(nextStepCost);
+				//							neighbour.setHeuristic(getHeuristicCost(xp, yp, tx, ty));
+				//						}
+				//					}
+				
 			}
 		}
 		
@@ -247,6 +236,25 @@ public class MyStarPathFinder {
 	 */
 	protected float getHeuristicCost(int x, int y, int tx, int ty) {
 		return heuristic.getCost(x, y, tx, ty);
+	}
+	
+	private List<Node> availableNeighbours(Node current) {
+		List<Node> neighbours = new LinkedList<>();
+		for (int dx = -1; dx <= 1; dx++) {
+			for (int dy = -1; dy <= 1; dy++) {
+				// not a neighbour, its the current tile
+				if (dx == 0 && dy == 0)
+					continue;
+				// determine the location of the neighbour and evaluate it
+				int xp = current.getX() + dx;
+				int yp = current.getY() + dy;
+				// validate out of bounds
+				if ((xp < 0) || (yp < 0) || (xp >= map.getWidthInTiles()) || (yp >= map.getHeightInTiles()))
+					continue;
+				neighbours.add(nodes[xp][yp]);
+			}
+		}
+		return neighbours;
 	}
 	
 }
