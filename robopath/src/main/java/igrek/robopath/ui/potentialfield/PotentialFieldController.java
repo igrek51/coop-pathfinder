@@ -147,8 +147,14 @@ public class PotentialFieldController {
 				for (int y = 0; y <= map.getHeightInTiles(); y++) {
 					TileCellType type = map.get(x, y);
 					if (type == TileCellType.BLOCKED) {
-						Vector2 forceFromObstacle = forceFromObstacle(robot, x, y);
+						// force from center
+						Vector2 forceFromObstacle = forceFromObstacle(robot, x, y, 0, 0);
 						obstaclesForce = obstaclesForce.add(forceFromObstacle);
+						// force from corners
+						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, -0.5, -0.5));
+						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, -0.5, +0.5));
+						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, +0.5, -0.5));
+						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, +0.5, +0.5));
 					}
 				}
 			}
@@ -162,10 +168,10 @@ public class PotentialFieldController {
 		}
 	}
 	
-	private Vector2 forceFromObstacle(MobileRobot robot, int obstacleX, int obstacleY) {
+	private Vector2 forceFromObstacle(MobileRobot robot, int obstacleX, int obstacleY, double offsetX, double offsetY) {
 		Vector2 diff = robot.getPosition().sub(new Vector2(obstacleX + 0.5, obstacleY + 0.5));
 		double r = diff.length();
-		final double K_FROM_OBSTACLE = 20;
+		final double K_FROM_OBSTACLE = 10;
 		double forceValue = K_FROM_OBSTACLE / r / r;
 		return diff.normalizeTo(forceValue);
 	}
