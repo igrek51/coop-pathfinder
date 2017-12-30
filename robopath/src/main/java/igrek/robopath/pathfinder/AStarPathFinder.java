@@ -321,7 +321,7 @@ public class AStarPathFinder implements PathFinder {
 	 * @return The heuristic cost assigned to the tile
 	 */
 	public float getHeuristicCost(int x, int y, int tx, int ty) {
-		return heuristic.getCost(map, x, y, tx, ty);
+		return heuristic.getCost(x, y, tx, ty);
 	}
 	
 	

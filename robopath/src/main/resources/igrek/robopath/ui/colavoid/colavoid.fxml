@@ -36,8 +36,6 @@
                 <VBox fx:id="menu" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" GridPane.columnIndex="1">
                     <children>
                         <!--actions-->
-                        <Button mnemonicParsing="false" onAction="#findPathPressed"
-                                text="Find path" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#randomTargetPressed"
                                 text="Random target" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#resetMap"

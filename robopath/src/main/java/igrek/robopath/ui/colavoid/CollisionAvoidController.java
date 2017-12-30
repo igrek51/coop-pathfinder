@@ -10,9 +10,9 @@ import java.util.Random;
 
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.model.Point;
-import igrek.robopath.pathfinder.AStarPathFinder;
-import igrek.robopath.pathfinder.Path;
-import igrek.robopath.pathfinder.PathFinder;
+import igrek.robopath.pathfinder.mystar.MyStarPathFinder;
+import igrek.robopath.pathfinder.mystar.Path;
+import igrek.robopath.pathfinder.mystar.TileMap;
 import igrek.robopath.ui.colavoid.robot.MobileRobot;
 import igrek.robopath.ui.common.ResizableCanvas;
 import javafx.animation.KeyFrame;
@@ -41,13 +41,14 @@ public class CollisionAvoidController {
 	@FXML
 	private VBox drawAreaContainer;
 	
-	private TestTileMap map;
-	private Path path;
+	private TileMap map;
 	private List<MobileRobot> robots = new ArrayList<>();
 	private SimulationParams params = new SimulationParams();
 	
 	private Random random = new Random();
-	private TileCellType pressedTransformer;
+	private Boolean pressedTransformer;
+	
+	final double FPS = 30;
 	
 	// PARAMS
 	@FXML
@@ -67,7 +68,7 @@ public class CollisionAvoidController {
 	private void resetMap(final Event event) {
 		if (event != null)
 			readParams();
-		map = new TestTileMap(params.mapSizeW, params.mapSizeH);
+		map = new TileMap(params.mapSizeW, params.mapSizeH);
 		robots.clear();
 		for (int i = 0; i < params.robotsCount; i++) {
 			robots.add(new MobileRobot(randomCell(map), robot -> onTargetReached(robot), i));
@@ -102,14 +103,12 @@ public class CollisionAvoidController {
 		});
 		
 		drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-		
 		});
 		
 		updateParams();
 		repaint(map, robots);
 		
 		// animation timer
-		final double FPS = 30;
 		Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.millis(1000 / FPS), new EventHandler<ActionEvent>() {
 			
 			private long lastTime = System.currentTimeMillis();
@@ -137,10 +136,9 @@ public class CollisionAvoidController {
 			
 			Point point = locatePoint(map, event);
 			if (point != null) {
-				TileCellType type = getMapCellType(point);
-				type = transformCellTypeLeftClicked(type);
-				setMapCell(point, type);
-				pressedTransformer = type;
+				Boolean state = !map.getCell(point);
+				map.setCell(point, state);
+				pressedTransformer = state;
 				repaint(map, robots);
 			}
 			
@@ -148,10 +146,9 @@ public class CollisionAvoidController {
 			
 			Point point = locatePoint(map, event);
 			if (point != null) {
-				TileCellType type = getMapCellType(point);
-				type = transformCellTypeRightClicked(type);
-				setMapCell(point, type);
-				pressedTransformer = type;
+				Boolean state = !map.getCell(point);
+				map.setCell(point, state);
+				pressedTransformer = state;
 				repaint(map, robots);
 			}
 			
@@ -163,64 +160,13 @@ public class CollisionAvoidController {
 			
 			Point point = locatePoint(map, event);
 			if (point != null) {
-				TileCellType type = getMapCellType(point);
-				if (type != pressedTransformer) {
-					setMapCell(point, pressedTransformer);
+				Boolean state = map.getCell(point);
+				if (state != pressedTransformer) {
+					map.setCell(point, pressedTransformer);
 					repaint(map, robots);
 				}
 			}
 			
-		}
-	}
-	
-	private TileCellType getMapCellType(Point point) {
-		return map.get(point.x, point.y);
-	}
-	
-	private TileCellType getMapCellType(int x, int y) {
-		return map.get(x, y);
-	}
-	
-	private void setMapCell(Point point, TileCellType type) {
-		map.set(point.x, point.y, type);
-	}
-	
-	private TileCellType transformCellTypeLeftClicked(TileCellType type) {
-		switch (type) {
-			case START:
-				return TileCellType.EMPTY;
-			default:
-				return TileCellType.START;
-		}
-	}
-	
-	private TileCellType transformCellTypeRightClicked(TileCellType type) {
-		switch (type) {
-			case BLOCKED:
-				return TileCellType.EMPTY;
-			default:
-				return TileCellType.BLOCKED;
-		}
-	}
-	
-	@FXML
-	private void findPathPressed(final Event event) {
-		// remove previous paths
-		replaceCellTypes(TileCellType.PATH, TileCellType.EMPTY);
-		
-		PathFinder pathFinder = new AStarPathFinder(map, 0, true);
-		Point start = findFirstCellType(map, TileCellType.START);
-		Point target = findFirstCellTypeButNot(map, TileCellType.START, start);
-		if (start != null && target != null) {
-			path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
-			if (path != null) {
-				
-				for (int i = 1; i < path.getLength() - 1; i++) {
-					Path.Step step = path.getStep(i);
-					map.set(step.getX(), step.getY(), TileCellType.PATH);
-				}
-				repaint(map, robots);
-			}
 		}
 	}
 	
@@ -234,10 +180,10 @@ public class CollisionAvoidController {
 	private void randomRobotTarget(MobileRobot robot) {
 		robot.resetNextMoves();
 		Point start = robot.lastTarget();
-		Point target = randomCellButNotType(map, TileCellType.BLOCKED);
+		Point target = randomUnoccupiedCell(map);
 		robot.setTarget(target);
-		PathFinder pathFinder = new AStarPathFinder(map, 0, true);
-		path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
+		MyStarPathFinder pathFinder = new MyStarPathFinder(map);
+		Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
 		if (path != null) {
 			// enque path
 			for (int i = 1; i < path.getLength(); i++) {
@@ -247,59 +193,26 @@ public class CollisionAvoidController {
 		}
 	}
 	
-	private Point randomCell(TestTileMap map) {
+	private Point randomUnoccupiedCell(TileMap map) {
+		// get all unoccupied cells
+		List<Point> frees = new ArrayList<>();
+		for (int x = 0; x < map.getWidthInTiles(); x++) {
+			for (int y = 0; y < map.getHeightInTiles(); y++) {
+				boolean occupied = map.getCell(x, y);
+				if (!occupied)
+					frees.add(new Point(x, y));
+			}
+		}
+		if (frees.isEmpty())
+			return null;
+		// random from list
+		return frees.get(random.nextInt(frees.size()));
+	}
+	
+	private Point randomCell(TileMap map) {
 		int x = random.nextInt(map.getWidthInTiles());
 		int y = random.nextInt(map.getHeightInTiles());
 		return new Point(x, y);
-	}
-	
-	private Point randomCellButNotType(TestTileMap map, TileCellType... excludedTypes) {
-		Point p1 = randomCell(map);
-		Point current = p1;
-		while (true) {
-			TileCellType type = getMapCellType(current);
-			if (!contains(type, excludedTypes))
-				return current; // valid cell type
-			// try next cell - that's not really random
-			current = nextPointOnMap(map, current);
-			// but check if we are not searching indefinitely
-			if (current.equals(p1))
-				return null;
-		}
-	}
-	
-	private Point nextPointOnMap(TestTileMap map, Point p1) {
-		int x = p1.x;
-		int y = p1.y;
-		x++;
-		if (x >= map.getWidthInTiles()) {
-			x = 0;
-			y++;
-			if (y >= map.getHeightInTiles())
-				y = 0;
-		}
-		return new Point(x, y);
-	}
-	
-	private void replaceCellTypes(TileCellType replaceFrom, TileCellType replaceTo) {
-		for (int x = 0; x < map.getWidthInTiles(); x++) {
-			for (int y = 0; y <= map.getHeightInTiles(); y++) {
-				TileCellType type = getMapCellType(x, y);
-				if (type == replaceFrom)
-					map.set(x, y, replaceTo);
-			}
-		}
-	}
-	
-	private Point findFirstCellType(TestTileMap map, TileCellType wantedType) {
-		for (int x = 0; x < map.getWidthInTiles(); x++) {
-			for (int y = 0; y <= map.getHeightInTiles(); y++) {
-				TileCellType type = map.get(x, y);
-				if (type == wantedType)
-					return new Point(x, y);
-			}
-		}
-		return null;
 	}
 	
 	private <T> boolean contains(T seek, T... collection) {
@@ -309,21 +222,6 @@ public class CollisionAvoidController {
 		}
 		return false;
 	}
-	
-	private Point findFirstCellTypeButNot(TestTileMap map, TileCellType wantedType, Point... excludePoints) {
-		for (int x = 0; x < map.getWidthInTiles(); x++) {
-			for (int y = 0; y <= map.getHeightInTiles(); y++) {
-				TileCellType type = map.get(x, y);
-				if (type == wantedType) {
-					Point p = new Point(x, y);
-					if (!contains(p, excludePoints))
-						return p;
-				}
-			}
-		}
-		return null;
-	}
-	
 	
 	private void updateParams() {
 		paramMapSizeW.setText(Integer.toString(params.mapSizeW));
@@ -356,7 +254,7 @@ public class CollisionAvoidController {
 	}
 	
 	//	VIEW
-	public void repaint(TestTileMap map, List<MobileRobot> robots){
+	public void repaint(TileMap map, List<MobileRobot> robots) {
 		drawMap();
 	}
 	
@@ -370,36 +268,25 @@ public class CollisionAvoidController {
 	
 	private void drawCells(GraphicsContext gc) {
 		for (int x = 0; x < map.getWidthInTiles(); x++) {
-			for (int y = 0; y <= map.getHeightInTiles(); y++) {
-				TileCellType type = map.get(x, y);
-				drawCell(gc, x, y, type);
+			for (int y = 0; y < map.getHeightInTiles(); y++) {
+				Boolean occupied = map.getCell(x, y);
+				if (occupied != null) {
+					drawCell(gc, x, y, occupied);
+				}
 			}
 		}
 	}
 	
-	private void drawCell(GraphicsContext gc, int x, int y, TileCellType type) {
+	private void drawCell(GraphicsContext gc, int x, int y, boolean occupied) {
 		double cellW = drawArea.getWidth() / map.getWidthInTiles();
 		double cellH = drawArea.getHeight() / map.getHeightInTiles();
 		double w2 = 0.9 * cellW;
 		double h2 = 0.9 * cellH;
-		if (type == TileCellType.BLOCKED || type == TileCellType.START || type == TileCellType.PATH) {
-			gc.setFill(getCellColor(type));
+		if (occupied) {
+			gc.setFill(Color.rgb(0, 0, 0));
 			double x2 = x * cellW + (cellW - w2) / 2;
 			double y2 = y * cellH + (cellH - h2) / 2;
 			gc.fillRoundRect(x2, y2, w2, h2, w2 / 3, h2 / 3);
-		}
-	}
-	
-	private Color getCellColor(TileCellType type) {
-		switch (type) {
-			case BLOCKED:
-				return Color.rgb(0, 0, 0);
-			case START:
-				return Color.rgb(0, 200, 0);
-			case PATH:
-				return Color.rgb(90, 127, 200);
-			default:
-				return Color.rgb(0, 0, 0, 0);
 		}
 	}
 	
@@ -420,11 +307,11 @@ public class CollisionAvoidController {
 		}
 	}
 	
-	public Point locatePoint(TestTileMap map, MouseEvent event) {
+	public Point locatePoint(TileMap map, MouseEvent event) {
 		return locatePoint(map, event.getX(), event.getY());
 	}
 	
-	public Point locatePoint(TestTileMap map, double screenX, double screenY) {
+	public Point locatePoint(TileMap map, double screenX, double screenY) {
 		int mapX = ((int) (screenX * map.getWidthInTiles() / drawArea.getWidth()));
 		int mapY = ((int) (screenY * map.getHeightInTiles() / drawArea.getHeight()));
 		if (mapX < 0 || mapY < 0 || mapX >= map.getWidthInTiles() || mapY >= map.getHeightInTiles())
@@ -433,27 +320,29 @@ public class CollisionAvoidController {
 	}
 	
 	private void drawRobots(GraphicsContext gc) {
+		int index = 0;
 		for (MobileRobot robot : robots) {
-			drawRobot(gc, robot);
+			drawRobot(gc, robot, index++);
 		}
 	}
 	
-	private void drawRobot(GraphicsContext gc, MobileRobot robot) {
+	private void drawRobot(GraphicsContext gc, MobileRobot robot, int index) {
 		double cellW = drawArea.getWidth() / map.getWidthInTiles();
 		double cellH = drawArea.getHeight() / map.getHeightInTiles();
 		double w = 0.6 * cellW;
 		double h = 0.6 * cellH;
+		Color robotColor = robotColor(index);
 		// draw target
 		Point target = robot.getTarget();
 		if (target != null && !target.equals(robot.getPosition())) {
-			gc.setStroke(Color.rgb(0, 100, 0));
+			gc.setStroke(robotColor);
 			double targetX = target.getX() * cellW + cellW / 2;
 			double targetY = target.getY() * cellH + cellH / 2;
 			gc.strokeLine(targetX - w / 2, targetY - h / 2, targetX + w / 2, targetY + h / 2);
 			gc.strokeLine(targetX - w / 2, targetY + h / 2, targetX + w / 2, targetY - h / 2);
 		}
 		// draw path
-		gc.setStroke(Color.rgb(0, 182, 0));
+		gc.setStroke(robotColor);
 		LinkedList<Point> movesQue = robot.getMovesQue();
 		Point previous = robot.getPosition();
 		for (Point move : movesQue) {
@@ -465,9 +354,14 @@ public class CollisionAvoidController {
 			previous = move;
 		}
 		// draw robot
-		gc.setFill(Color.rgb(255, 0, 0));
+		gc.setFill(robotColor);
 		double x = robot.getInterpolatedX() * cellW + cellW / 2 - w / 2;
 		double y = robot.getInterpolatedY() * cellH + cellH / 2 - h / 2;
 		gc.fillOval(x, y, w, h);
+	}
+	
+	private Color robotColor(int index) {
+		double hue = 360.0 * index / robots.size();
+		return Color.hsb(hue, 1, 1);
 	}
 }
