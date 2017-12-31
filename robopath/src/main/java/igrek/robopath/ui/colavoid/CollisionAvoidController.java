@@ -408,7 +408,7 @@ public class CollisionAvoidController {
 		double y = robot.getInterpolatedY() * cellH + cellH / 2 - h / 2;
 		gc.fillOval(x, y, w, h);
 		// draw its priority
-		gc.setFill(robotColor(index, 0.3));
+		gc.setFill(robotColor(index, 0.5));
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFont(new Font("System", h / 2));

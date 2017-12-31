@@ -28,7 +28,7 @@ public class ReservationTable {
 	
 	protected void setTimeDimension() {
 		// TODO it could be not enough
-		timeDimension = width + height;
+		timeDimension = (width + height) * 2;
 	}
 	
 	public int getWidth() {
