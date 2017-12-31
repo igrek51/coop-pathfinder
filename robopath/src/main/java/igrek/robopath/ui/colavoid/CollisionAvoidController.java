@@ -13,6 +13,7 @@ import igrek.robopath.mazegen.MazeGenerator;
 import igrek.robopath.model.Point;
 import igrek.robopath.pathfinder.mystar.MyStarPathFinder;
 import igrek.robopath.pathfinder.mystar.Path;
+import igrek.robopath.pathfinder.mystar.ReservationTable;
 import igrek.robopath.pathfinder.mystar.TileMap;
 import igrek.robopath.ui.colavoid.robot.MobileRobot;
 import igrek.robopath.ui.common.ResizableCanvas;
@@ -22,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -29,6 +31,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 @FXMLController
@@ -70,6 +74,7 @@ public class CollisionAvoidController {
 		if (event != null)
 			readParams();
 		map = new TileMap(params.mapSizeW, params.mapSizeH);
+		robots.clear();
 		if (event != null)
 			drawAreaContainerResized();
 	}
@@ -150,9 +155,15 @@ public class CollisionAvoidController {
 			
 			Point point = locatePoint(map, event);
 			if (point != null) {
-				Boolean state = !map.getCell(point);
-				map.setCell(point, state);
-				pressedTransformer = state;
+				Boolean state = map.getCell(point);
+				if (!state) {
+					MobileRobot occupiedBy = occupiedByRobot(point);
+					if (occupiedBy != null) {
+						robots.remove(occupiedBy);
+					} else {
+						robots.add(new MobileRobot(point, robot -> onTargetReached(robot), robots.size()));
+					}
+				}
 				repaint(map, robots);
 			}
 			
@@ -167,6 +178,14 @@ public class CollisionAvoidController {
 			}
 			
 		}
+	}
+	
+	private MobileRobot occupiedByRobot(Point point) {
+		for (MobileRobot robot : robots) {
+			if (robot.getPosition().equals(point))
+				return robot;
+		}
+		return null;
 	}
 	
 	private void mouseDraggedMap(MouseEvent event) {
@@ -186,24 +205,40 @@ public class CollisionAvoidController {
 	
 	@FXML
 	private void randomTargetPressed(final Event event) {
+		ReservationTable reservationTable = new ReservationTable(map.getWidthInTiles(), map.getHeightInTiles());
+		for (int x = 0; x < map.getWidthInTiles(); x++) {
+			for (int y = 0; y < map.getHeightInTiles(); y++) {
+				boolean occupied = map.getCell(x, y);
+				if (occupied)
+					reservationTable.setBlocked(x, y);
+			}
+		}
 		for (MobileRobot robot : robots) {
-			randomRobotTarget(robot);
+			randomRobotTarget(robot, reservationTable);
 		}
 	}
 	
-	private void randomRobotTarget(MobileRobot robot) {
+	private void randomRobotTarget(MobileRobot robot, ReservationTable reservationTable) {
 		robot.resetNextMoves();
 		Point start = robot.lastTarget();
 		Point target = randomUnoccupiedCell(map);
 		robot.setTarget(target);
-		MyStarPathFinder pathFinder = new MyStarPathFinder(map);
+		MyStarPathFinder pathFinder = new MyStarPathFinder(reservationTable);
 		Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
 		if (path != null) {
 			// enque path
+			int t = 0;
+			reservationTable.setBlocked(start.x, start.y, t);
+			reservationTable.setBlocked(start.x, start.y, t + 1);
 			for (int i = 1; i < path.getLength(); i++) {
 				Path.Step step = path.getStep(i);
 				robot.enqueueMove(step.getX(), step.getY());
+				t++;
+				reservationTable.setBlocked(step.getX(), step.getY(), t);
+				reservationTable.setBlocked(step.getX(), step.getY(), t + 1);
 			}
+		} else {
+			reservationTable.setBlocked(start.x, start.y);
 		}
 	}
 	
@@ -263,7 +298,7 @@ public class CollisionAvoidController {
 	
 	private void onTargetReached(MobileRobot robot) {
 		if (params.robotAutoTarget) {
-			randomRobotTarget(robot);
+			//			randomRobotTarget(robot);
 		}
 	}
 	
@@ -372,10 +407,20 @@ public class CollisionAvoidController {
 		double x = robot.getInterpolatedX() * cellW + cellW / 2 - w / 2;
 		double y = robot.getInterpolatedY() * cellH + cellH / 2 - h / 2;
 		gc.fillOval(x, y, w, h);
+		// draw its priority
+		gc.setFill(robotColor(index, 0.3));
+		gc.setTextAlign(TextAlignment.CENTER);
+		gc.setTextBaseline(VPos.CENTER);
+		gc.setFont(new Font("System", h / 2));
+		gc.fillText(Integer.toString(robot.getPriority() + 1), x + w / 2, y + h / 2);
 	}
 	
 	private Color robotColor(int index) {
+		return robotColor(index, 1);
+	}
+	
+	private Color robotColor(int index, double b) {
 		double hue = 360.0 * index / robots.size();
-		return Color.hsb(hue, 1, 1);
+		return Color.hsb(hue, 1, b);
 	}
 }

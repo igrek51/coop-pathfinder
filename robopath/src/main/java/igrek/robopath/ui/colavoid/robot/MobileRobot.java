@@ -42,7 +42,8 @@ public class MobileRobot {
 			return;
 		}
 		Point nearest = nearestTarget();
-		double distance = position.distance(nearest);
+		//		double distance = position.distance(nearest);
+		double distance = 1; // always 1 - even if it's waiting
 		double remainder = distance * (1.0 - moveProgress);
 		if (pointsLength >= remainder) {
 			// whole move - end current, begin next
@@ -57,7 +58,7 @@ public class MobileRobot {
 	}
 	
 	public MobileRobot enqueueMove(Point target) {
-		if (!lastTarget().isAdjacent(target))
+		if (!lastTarget().isAdjacent(target) && !lastTarget().equals(target))
 			throw new IllegalArgumentException("appended move is not adjacent to last target");
 		movesQue.add(target);
 		return this;
@@ -136,4 +137,7 @@ public class MobileRobot {
 		this.target = target;
 	}
 	
+	public int getPriority() {
+		return priority;
+	}
 }

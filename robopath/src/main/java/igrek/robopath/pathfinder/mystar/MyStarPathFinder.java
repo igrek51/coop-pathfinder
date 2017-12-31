@@ -1,33 +1,31 @@
 package igrek.robopath.pathfinder.mystar;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import igrek.robopath.pathfinder.heuristics.AStarHeuristic;
-import igrek.robopath.pathfinder.heuristics.ClosestHeuristic;
-
 public class MyStarPathFinder {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	/** The set of nodes that have been searched through */
 	private List<Node> closed = new ArrayList<>();
 	/** The set of nodes that we do not yet consider fully searched */
 	private SortedList<Node> open = new SortedList<>();
 	
-	/** The map being searched */
-	private TileMap map;
+	private ReservationTable reservation;
 	
 	/** The complete set of nodes across the map */
-	private Node[][] nodes;
-	/** The heuristic we're applying to determine which nodes to search first */
-	private AStarHeuristic heuristic = new ClosestHeuristic();
+	private Node[][][] nodes;
 	
 	/**
 	 * Create a path finder with the default heuristic - closest to target.
-	 * @param map The map to be searched
 	 */
-	public MyStarPathFinder(TileMap map) {
-		this.map = map;
+	public MyStarPathFinder(ReservationTable reservation) {
+		this.reservation = reservation;
 	}
 	
 	/**
@@ -46,19 +44,24 @@ public class MyStarPathFinder {
 		closed.clear();
 		open.clear();
 		
-		nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
-		for (int x = 0; x < map.getWidthInTiles(); x++) {
-			for (int y = 0; y < map.getHeightInTiles(); y++) {
-				nodes[x][y] = new Node(x, y);
+		nodes = new Node[reservation.getWidth()][reservation.getHeight()][reservation.getTimeDimension()];
+		for (int x = 0; x < reservation.getWidth(); x++) {
+			for (int y = 0; y < reservation.getHeight(); y++) {
+				for (int t = 0; t < reservation.getTimeDimension(); t++) {
+					nodes[x][y][t] = new Node(x, y, t);
+				}
 			}
 		}
-		nodes[tx][ty].setParent(null);
-		nodes[sx][sy].setCost(0);
+		
+		for (int t = 0; t < reservation.getTimeDimension(); t++) {
+			nodes[tx][ty][t].setParent(null);
+			nodes[sx][sy][t].setCost(0);
+		}
 		//Dodajemy pole startowe (lub węzeł) do Listy Otwartych.
-		open.add(nodes[sx][sy]);
+		open.add(nodes[sx][sy][0]);
 		
 		// first check, if the destination is blocked, we can't get there
-		if (map.blocked(tx, ty))
+		if (reservation.isBlocked(tx, ty))
 			return null;
 		//jeśli punkt docelowy jest punktem startowym - brak ścieżki
 		if (sx == tx && sy == ty)
@@ -71,18 +74,21 @@ public class MyStarPathFinder {
 			//Szukamy pola o najniższej wartości F na Liście Otwartych. Czynimy je aktualnym polem
 			Node current = open.first();
 			//jeśli current jest węzłem docelowym
-			if (current == nodes[tx][ty]) {
+			if (current.getX() == tx && current.getY() == ty && current.getT() == reservation.getTimeDimension() - 1) {
 				// At this point we've definitely found a path so we can uses the parent
 				// references of the nodes to find out way from the target location back
 				// to the start recording the nodes on the way.
 				//Zapisujemy ścieżkę. Krocząc w kierunku od pola docelowego do startowego, przeskakujemy z kolejnych pól na im przypisane pola rodziców, aż do osiągnięcia pola startowego.
 				Path path = new Path();
-				Node target = nodes[tx][ty];
-				while (target != nodes[sx][sy]) {
-					path.prependStep(target.getX(), target.getY());
+				Node target = nodes[tx][ty][reservation.getTimeDimension() - 1];
+				while (target != nodes[sx][sy][0]) {
+					path.prependStep(target.getX(), target.getY(), target.getT());
 					target = target.getParent();
+					if (target == null) {
+						logger.warn("dupa");
+					}
 				}
-				path.prependStep(sx, sy);
+				path.prependStep(sx, sy, 0);
 				return path;
 			}
 			//Aktualne pole przesuwamy do Listy Zamkniętych.
@@ -95,10 +101,11 @@ public class MyStarPathFinder {
 			for (Node neighbour : neighbours) {
 				
 				//jeśli NIE-MOŻNA go przejść, ignorujemy je.
-				if (!isValidLocation(sx, sy, neighbour.getX(), neighbour.getY()))
+				if (!isValidLocation(sx, sy, neighbour.getX(), neighbour.getY(), neighbour.getT()))
 					continue;
 				
-				if (!isValidMove(current.getX(), current.getY(), neighbour.getX(), neighbour.getY()))
+				if (!isValidMove(current.getX(), current.getY(), current.getT(), neighbour.getX(), neighbour
+						.getY(), neighbour.getT()))
 					continue;
 				
 				// the cost to get to this node is cost the current plus the movement
@@ -124,33 +131,11 @@ public class MyStarPathFinder {
 				// step (i.e. to the open list)
 				if (!open.contains(neighbour) && !closed.contains(neighbour)) {
 					neighbour.setCost(nextStepCost);
-					neighbour.setHeuristic(getHeuristicCost(neighbour.getX(), neighbour.getY(), tx, ty));
+					neighbour.setHeuristic(getHeuristicCost(neighbour.getX(), neighbour.getY(), neighbour
+							.getT(), tx, ty));
 					neighbour.setParent(current);
 					open.add(neighbour);
 				}
-				
-				//					//jeśli pole sąsiada jest już na Liście Zamkniętych
-				//					if (closed.contains(neighbour))
-				//						continue;
-				//					//Jeśli pole sąsiada nie jest jeszcze na Liście Otwartych.
-				//					if (!open.contains(neighbour)) {
-				//						//dodajemy je do niej
-				//						open.add(neighbour);
-				//						//Aktualne pole przypisujemy sasiadowi jako "pole rodzica"
-				//						neighbour.setParent(current);
-				//						//i zapisujemy sasiada wartości F, G i H. (F = G + H)
-				//						neighbour.setCost(nextStepCost);
-				//						neighbour.setHeuristic(getHeuristicCost(xp, yp, tx, ty));
-				//					} else {
-				//						//jeśli pole było na liście otwartych
-				//						//sprawdzamy czy aktualna ścieżka do tego pola (sasiad) (prowadząca przez aktualne) jest krótsza, poprzez porównanie sasiada wartości G dla starej i aktualnej ścieżki. Mniejsza wartość G oznacza, że ścieżka jest krótsza.
-				//						if (nextStepCost < neighbour.getCost()) {
-				//							//Jeśli tak, zmieniamy przypisanie "pole rodzica" na aktualne pole i przeliczamy wartości G i F dla pola (sasiad).
-				//							neighbour.setParent(current);
-				//							neighbour.setCost(nextStepCost);
-				//							neighbour.setHeuristic(getHeuristicCost(xp, yp, tx, ty));
-				//						}
-				//					}
 				
 			}
 		}
@@ -167,12 +152,13 @@ public class MyStarPathFinder {
 	 * @param y  The y coordinate of the location to check
 	 * @return True if the location is valid for the given mover
 	 */
-	protected boolean isValidLocation(int sx, int sy, int x, int y) {
-		if ((x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles()))
+	protected boolean isValidLocation(int sx, int sy, int x, int y, int t) {
+		if (x < 0 || y < 0 || t < 0 || x >= reservation.getWidth() || y >= reservation.getHeight() || t >= reservation
+				.getTimeDimension())
 			return false;
 		
 		if ((sx != x) || (sy != y)) {
-			if (map.blocked(x, y))
+			if (reservation.isBlocked(x, y, t))
 				return false;
 		}
 		
@@ -186,20 +172,17 @@ public class MyStarPathFinder {
 	 * @param y  to y
 	 * @return is move allowed
 	 */
-	protected boolean isValidMove(int sx, int sy, int x, int y) {
-		if ((x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles()))
+	protected boolean isValidMove(int sx, int sy, int st, int x, int y, int t) {
+		if (!isValidLocation(sx, sy, x, y, t)) {
 			return false;
-		
-		if ((sx != x) || (sy != y)) {
-			if (map.blocked(x, y))
-				return false;
 		}
 		// diagonal move not possible when one cell is blocked
 		int dx = abs(sx - x);
 		int dy = abs(sy - y);
 		// diagonal move
 		if (dx == 1 && dy == 1) {
-			if (map.blocked(x, y) || map.blocked(sx, sy) || map.blocked(sx, y) || map.blocked(x, sy)) {
+			if (reservation.isBlocked(x, y, t) || reservation.isBlocked(sx, sy, t) || reservation.isBlocked(sx, y, t) || reservation
+					.isBlocked(x, sy, t)) {
 				return false;
 			}
 		}
@@ -220,9 +203,10 @@ public class MyStarPathFinder {
 	 * @return The cost of movement through the given tile
 	 */
 	protected float getMovementCost(int sx, int sy, int tx, int ty) {
-		float dx = tx - sx;
-		float dy = ty - sy;
-		return (float) (Math.sqrt((dx * dx) + (dy * dy)));
+		//		float dx = tx - sx;
+		//		float dy = ty - sy;
+		//		return (float) (Math.sqrt((dx * dx) + (dy * dy)));
+		return Math.max(Math.abs(tx - sx), Math.abs(ty - sy));
 	}
 	
 	/**
@@ -234,25 +218,31 @@ public class MyStarPathFinder {
 	 * @param ty The y coordinate of the target location
 	 * @return The heuristic cost assigned to the tile
 	 */
-	protected float getHeuristicCost(int x, int y, int tx, int ty) {
-		return heuristic.getCost(x, y, tx, ty);
+	protected float getHeuristicCost(int x, int y, int t, int tx, int ty) {
+		return (float) (Math.hypot(tx - x, ty - y) + ((float) t) / reservation.getTimeDimension() * Math
+				.hypot(tx - x, ty - y));
 	}
 	
 	private List<Node> availableNeighbours(Node current) {
 		List<Node> neighbours = new LinkedList<>();
-		for (int dx = -1; dx <= 1; dx++) {
-			for (int dy = -1; dy <= 1; dy++) {
-				// not a neighbour, its the current tile
-				if (dx == 0 && dy == 0)
-					continue;
-				// determine the location of the neighbour and evaluate it
-				int xp = current.getX() + dx;
-				int yp = current.getY() + dy;
-				// validate out of bounds
-				if ((xp < 0) || (yp < 0) || (xp >= map.getWidthInTiles()) || (yp >= map.getHeightInTiles()))
-					continue;
-				neighbours.add(nodes[xp][yp]);
+		int t = current.getT() + 1;
+		if (t < reservation.getTimeDimension()) {
+			for (int dx = -1; dx <= 1; dx++) {
+				for (int dy = -1; dy <= 1; dy++) {
+					if (dx == 0 && dy == 0)
+						continue;
+					// determine the location of the neighbour and evaluate it
+					int xp = current.getX() + dx;
+					int yp = current.getY() + dy;
+					// validate out of bounds
+					if ((xp < 0) || (yp < 0) || (xp >= reservation.getWidth()) || (yp >= reservation
+							.getHeight()))
+						continue;
+					neighbours.add(nodes[xp][yp][t]);
+				}
 			}
+			// możliwe czekanie w tym samym miejscu - jako ostatnia propozycja
+			neighbours.add(nodes[current.getX()][current.getY()][t]);
 		}
 		return neighbours;
 	}

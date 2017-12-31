@@ -8,6 +8,7 @@ class Node implements Comparable<Node> {
 	private int x;
 	/** The y coordinate of the node */
 	private int y;
+	private int t;
 	/** The path cost for this node (g) */
 	private float cost;
 	/** The parent of this node, how we reached it in the search */
@@ -20,9 +21,10 @@ class Node implements Comparable<Node> {
 	 * @param x The x coordinate of the node
 	 * @param y The y coordinate of the node
 	 */
-	public Node(int x, int y) {
+	public Node(int x, int y, int t) {
 		this.x = x;
 		this.y = y;
+		this.t = t;
 	}
 	
 	public int getX() {
@@ -31,6 +33,10 @@ class Node implements Comparable<Node> {
 	
 	public int getY() {
 		return y;
+	}
+	
+	public int getT() {
+		return t;
 	}
 	
 	public float getCost() {
@@ -82,5 +88,9 @@ class Node implements Comparable<Node> {
 		//		Node n = (Node) obj;
 		//		return n.x == x && n.y == y;
 		return super.equals(obj);
+	}
+	
+	public boolean sameXY(Node n2) {
+		return this.x == n2.x && this.y == n2.y;
 	}
 }
