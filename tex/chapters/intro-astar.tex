@@ -5,8 +5,6 @@ Kiedy pojedynczy agent dokonuje znalezienia drogi do wyznaczonego celu, prosty a
 
 Zagadnienie znajdowania drogi jest ważnym elementem sztucznej inteligencji zaimplementowanej w wielu grach komputerowych. Chociaż klasyczny algorytm A* potrafi doprowadzić pojedynczego agenta do celu, to jednak dla wielu agentów wymagane jest zastosowanie innego podejścia w celu unikania kolizji. Algorytm A* może zostać zaadaptowany do replanowania trasy na żądanie, w przypadku wykrycia kolizji tras (Local Repair A* lub D*). Jednak takie podejście nie jest zadowalające pod wieloma względami. Na trudnych mapach z wieloma wąskimi korytarzami i wieloma agentami może to prowadzić do zakleszczenia agentów w wąskich gardłach lub do cyklicznego zapętlenia ruchu agentów. \cite{cooppath}
 
-W systemach czasu rzeczywistego istotne jest również, aby rozwiązanie problemu planowania tras uzyskać w określonym czasie. Z tego powodu nie są wykorzystywane techniki zcentralizowanego planowania tras, ze względu na zbyt dużą złożoność obliczeniową.
-
 \section{Algorytm A*}
 $TODO$
 
@@ -18,8 +16,8 @@ Możliwe (i całkiem powszechne \cite{cooppath}) jest uzyskanie cykli (tych samy
 Algorytm ten ma jednak sporo poważnych wad, które szczególnie ujawniają się w trudnych środowiskach z dużą liczbą przeszkód. Wydostanie się z zatłoczonego wąskiego gardła może trwać bardzo długo. Prowadzi to również do ponownego przeliczania trasy w prawie każdym kroku. Wciąż możliwe jest również odwiedzanie tych samych lokalizacji w wyniku zapętleń.
 
 \section{Algorytm D*}
-D* (Dynamic A* Search) jest przyrostowym algorytmem przeszukiwania. Jest modyfikacją algorytmu A* pozwalającą na szybsze replanowanie trasy w wyniku zmiany otoczenia (np. zajmowania wolnego pola przez innego robota). Wykorzystywany jest m.in. w nawigacji robota do określonego celu w nieznanym terenie. Początkowo robot planuje drogę na podstawie pewnych założeń (np. nieznany teren nie zawiera przeszkód). Podążając wyznaczoną ścieżką, robot odkrywa rzeczywisty stan mapy i jeśli to konieczne, wykonuje ponowne planowanie trasy na podstawie nowych informacji.
-Często wykorzystywaną implementacją (z uwagi na zoptymalizowaną złożoność obliczeniową) jest algorytm D* Lite \cite{dstarlite}.
+D* ({\it Dynamic A* Search}) jest przyrostowym algorytmem przeszukiwania. Jest modyfikacją algorytmu A* pozwalającą na szybsze replanowanie trasy w wyniku zmiany otoczenia (np. zajmowania wolnego pola przez innego robota). Wykorzystywany jest m.in. w nawigacji robota do określonego celu w nieznanym terenie. Początkowo robot planuje drogę na podstawie pewnych założeń (np. nieznany teren nie zawiera przeszkód). Podążając wyznaczoną ścieżką, robot odkrywa rzeczywisty stan mapy i jeśli to konieczne, wykonuje ponowne planowanie trasy na podstawie nowych informacji.
+Często wykorzystywaną implementacją (z uwagi na zoptymalizowaną złożoność obliczeniową) jest algorytm {\it D* Lite} \cite{dstarlite}.
 
 \section{Cooperative A*}
 
