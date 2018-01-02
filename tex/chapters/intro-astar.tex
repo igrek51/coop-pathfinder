@@ -17,7 +17,9 @@ Możliwe (i całkiem powszechne \cite{cooppath}) jest uzyskanie cykli (tych samy
 
 Algorytm ten ma jednak sporo poważnych wad, które szczególnie ujawniają się w trudnych środowiskach z dużą liczbą przeszkód. Wydostanie się z zatłoczonego wąskiego gardła może trwać bardzo długo. Prowadzi to również do ponownego przeliczania trasy w prawie każdym kroku. Wciąż możliwe jest również odwiedzanie tych samych lokalizacji w wyniku zapętleń.
 
-\section{D*}
+\section{Algorytm D*}
+D* (Dynamic A* Search) jest przyrostowym algorytmem przeszukiwania. Jest modyfikacją algorytmu A* pozwalającą na szybsze replanowanie trasy w wyniku zmiany otoczenia (np. zajmowania wolnego pola przez innego robota). Wykorzystywany jest m.in. w nawigacji robota do określonego celu w nieznanym terenie. Początkowo robot planuje drogę na podstawie pewnych założeń (np. nieznany teren nie zawiera przeszkód). Podążając wyznaczoną ścieżką, robot odkrywa rzeczywisty stan mapy i jeśli to konieczne, wykonuje ponowne planowanie trasy na podstawie nowych informacji.
+Często wykorzystywaną implementacją (z uwagi na zoptymalizowaną złożoność obliczeniową) jest algorytm D* Lite \cite{dstarlite}.
 
 \section{Cooperative A*}
 
