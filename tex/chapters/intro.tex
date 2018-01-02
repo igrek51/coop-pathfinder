@@ -36,14 +36,14 @@ Spośród metod wykorzystywanych do planowania tras dla wielu robotów można wy
 Wiele metod zcentralizowanych cechuje się planowaniem w zbiorowej przestrzeni konfiguracyjnej oraz możliwością wyznaczenia optymalnego rozwiązania.
 Wadą jest natomiast duża złożoność obliczeniowa algorytmu i konieczność posiadania pełnej informacji o stanie otoczenia i robotów.
 
-W systemach czasu rzeczywistego istotne jest, aby rozwiązanie problemu planowania tras uzyskać w określonym czasie, dlatego w tego typu sytemach częściej używane są metody rozproszone.
+W systemach czasu rzeczywistego istotne jest, aby rozwiązanie problemu planowania tras uzyskać w określonym czasie, dlatego w tego typu sytemach częściej używane są techniki rozproszone.
 
 \subsection{Metoda sztucznych pól potencjałowych}
 Nie wszystkie podejścia zcentralizowane gwarantują optymalne rozwiązanie. Przykładem takiej metody, która nie daje gwarancji optymalności (ani nawet zupełności) jest metoda sztucznych pól potencjałowych.
 
 Metoda sztucznych pól potencjałowych (ang. {\it Artificial Potential Field}) polega na zastosowaniu zasad oddziaływania między ładunkami znanych z elektrostatyki. Roboty i przeszkody traktowane są jako ładunki jednoimienne, przez co "odpychają się" siłą odwrotnie proporcjonalną do kwadratu odległości (dzięki temu unikają kolizji). Natomiast punkt docelowy robota jest odwzorowany jako ładunek o przeciwnym biegunie, przez co robot jest "przyciągany" do celu.
 Główną zasadę działania metody przedstawiono na rysunku \ref{fig:image_potentialfield}.
-Metoda jest bardzo prosta i nie wymaga wykonywania złożonych obliczeń (w odróżnieniu do pozostałych metod zcentralizowanych). Niestety bardzo powszechny jest problem osiągania minimum lokalnego, w którym suma wektorów daje zerową siłę wypadkową. Robot zostaje "uwięziony" w minimum lokalnym, przez co nie jest w stanie dotrzeć do wyznaczonego celu. Do omijania tego problemu muszą być stosowane inne dodatkowe metody. \cite{potentialfield}
+Technika jest bardzo prosta i nie wymaga wykonywania złożonych obliczeń (w odróżnieniu do pozostałych metod zcentralizowanych). Niestety bardzo powszechny jest problem osiągania minimum lokalnego, w którym suma wektorów daje zerową siłę wypadkową. Robot zostaje "uwięziony" w minimum lokalnym, przez co nie jest w stanie dotrzeć do wyznaczonego celu. Do omijania tego problemu muszą być stosowane inne dodatkowe metody. \cite{potentialfield}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=12cm]{img/potential-field}
@@ -52,57 +52,43 @@ Metoda jest bardzo prosta i nie wymaga wykonywania złożonych obliczeń (w odr�
 \end{figure}
 
 \subsection{Rozproszone wyznaczanie tras}
-Popularne podejścia omijające planowanie w wysoko wymiarowej zbiorowej przestrzeni konfiguracyjnej to techniki rozproszone i priorytetowane.
-Pomimo, że te metody są bardzo efektywne, mają dwie główne wady:
+Popularne podejścia unikające planowania w wysoko wymiarowej zbiorowej przestrzeni konfiguracyjnej to techniki rozproszone i priorytetowane.
+Pomimo, że metody te są bardzo efektywne, mają dwie główne wady:
 \begin{enumerate}
 	\item Nie są zupełne - czasami nie udaje się znaleźć rozwiązania, nawet gdy istnieje.
 	\item Wynikowe rozwiązania są często nieoptymalne.
 \end{enumerate}
 
-Ponadto nie mówią, jak przypisywać priorytety do pojedynczych robotów.
-
-W artykule \cite{optpriorities} przedstawiono metodę do optymalizowania układu priorytetów dla rozproszonych i priorytetowanych technik planowania.
+W artykule \cite{optpriorities} przedstawione zostało podejście do optymalizowania układu priorytetów dla rozproszonych i priorytetowanych technik planowania.
 Proponowana metoda wykonuje randomizowane przeszukiwanie z techniką hill-climbing do znalezienia rozwiązania i do skrócenia całkowitej długości ścieżek.
-Technika została zaimplemenotwana i przetestowana na prawdziwych robotach oraz w rozległych testach symulacyjnych.
+Technika ta została zaimplemenotwana i przetestowana na prawdziwych robotach oraz w rozległych testach symulacyjnych.
 Wyniki eksperyentu pokazały, że metoda potrafi znacząco zmniejszyć liczbę niepowodzeń i znacznie zmniejszyć całkowitą długość tras dla różnych priorytetowanych i rozproszoncyh metod planowania dróg, nawet dla dużych zespołów robotów.
 
-Algorytm (niezupełny):
-\begin{enumerate}
-	\item Wyznaczenie optymalnej ścieżki dla każdego robota {\bf niezależnie}
-	\item Przydział priorytetów (opcjonalne)
-	\item Próba rozwiązania możliwych konfliktów między ścieżkami
-\end{enumerate}
-% może nie znaleźć istniejącego rozwiązania
-Podejścia:
+Najczęściej stosowanymi podejściami są metody oparte o algorytm A*. W szczególności są to:
 \begin{itemize}
+	\item A* w konfiguracji czaso-przestrzennej
 	\item Path coordination
-	\item Planning in the configuration time-space: % TODO tłumaczenie
-		\begin{itemize}
-			\item V-Graph algorithm
-			\item A*
-		\end{itemize}
 \end{itemize}
 
 \subsubsection{Path coordination}
-Idea:
-\begin{itemize}
-	\item Utrzymanie robotów na ich indywidualnych, optymalnych ścieżkach
-	\item Pozwolenie na zatrzymanie się, ruch naprzód, a nawet cofanie się, ale tylko {\bf wzdłuż trajektorii} w celu uniknięcia kolizji
-\end{itemize}
-W praktyce:
-\begin{itemize}
-	\item Wymagany wariant z ustaleniem priorytetów
-	\item Złożoność $O(n \cdot m \cdot log(m))$, m - maksymalna liczba stanów podczas planowania % n - liczba robotów, m - maksymalna liczba stanów podczas planowania w konfiguracji time-space
-\end{itemize}
+Idea metody Path coordination przedstawia się następująco \cite{optpriorities}:
+\begin{enumerate}
+	\item Wyznaczenie ścieżki dla każdego robota {\bf niezależnie}
+	\item Przydział priorytetów
+	\item Próba rozwiązania możliwych konfliktów między ścieżkami. Roboty utrzymywane są na ich indywidualnych ścieżkach (wyznaczonych na początku), wprowadzane modyfikacje pozwalają na zatrzymanie się, ruch naprzód, a nawet cofanie się, ale tylko {\bf wzdłuż trajektorii} w celu uniknięcia kolizji z robotem o wyższym priorytecie.
+\end{enumerate}
+Złożoność metody wynosi $O(n \cdot m \cdot log(m))$, $m$ - maksymalna liczba stanów podczas planowania, $n$ - liczba robotów
 
 \subsubsection{Konieczność wyboru priorytetów}
-\begin{figure}[htp]
+O istotnym aspekcie doboru priorytetów robotów świadczy prosty przykład przedstawiony na rysunku \ref{fig:image_article1_fig1}. Jeśli robot 1 (zmierzający z punktu S1 do G1) otrzyma wyższy priorytet niż robot 2 (zmierzający z S2 do G2), spowoduje to zablokowanie przejazdu dla robota 2 i w efekcie prawidłowe rozwiązanie nie zostanie znalezione.
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth,keepaspectratio]{img/article1/fig1}
-	\caption{Sytuacja, w której żadne rozwiązanie nie zostanie znalezione, jeśli robot 1 ma wyższy priorytet niż robot 2}
+	\includegraphics[width=10cm]{img/article1/fig1}
+	\caption{Sytuacja, w której żadne rozwiązanie nie zostanie znalezione, jeśli robot 1 ma wyższy priorytet niż robot 2. Źródło: \cite{optpriorities}}
+	\label{fig:image_article1_fig1}
 \end{figure}
 
-\subsubsection{Zastosowanie A* w planowaniu dróg dla wielu robotów}
+\subsubsection{A* w konfiguracji czaso-przestrzennej}
 Algorytm:
 \begin{itemize}
 	\item Przypisanie priorytetów do poszczególnych robotów
@@ -115,9 +101,9 @@ Złożoność:
 % jak działa A*, A* sprowadza się do Dijkstry
 
 \subsubsection{Wpływ układu priorytetów na długość tras}
-\begin{figure}[htp]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth,height=0.6\textheight,keepaspectratio]{img/article1/ppt6}
+	\includegraphics[width=13cm]{img/article1/ppt6}
 	\caption{Niezależne planowanie optymalnych tras dla 2 robotów; suboptymalne rozwiązanie, gdy robot 1 ma wyższy priorytet; rozwiązanie, gdy robot 2 ma wyższy priorytet}
 \end{figure}
 
