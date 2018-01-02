@@ -26,10 +26,10 @@ Jeśli zmiana przynosi lepsze rozwiązanie, jest wprowadzana do nowego rozwiąza
 Kroki algorytmu powtarzane są dotąd, aż żadne ``udoskonalenie'' nie zostaje znalezione.
 
 \section{Metody planowania tras}
-Spośród metod wykorzystywanych do planowania tras dla wielu robotów można wyróżnić dwie zasadnicze grupy:
+Spośród metod wykorzystywanych do planowania tras dla wielu robotów można wyróżnić dwie zasadnicze grupy \cite{latombe}:
 \begin{itemize}
-	\item {\bf zcentralizowane} - drogi wyznaczane są dla wszystkich agentów na raz (jednocześnie). Metody te potrafią znaleźć optymalne rozwiązanie, ale często mają bardzo dużą złożoność obliczeniową. Z tego powodu wykorzystywane są heurystyki przyspieszające proces obliczania rozwiązania.
-	\item {\bf rozproszone} (ang. decoupled) - dla każdego robota droga wyznaczana jest osobno, w określonej kolejności, następnie rozwiązywane są konflikty (kolizje dróg). W pewnych przypadkach rozwiązanie może nie zostać znalezione, mimo, iż istnieje. Metody te najczęściej wiążą się z koniecznością przydzielenia priorytetów, co stanowi istotny problem, gdyż od wyboru priorytetów może zależeć zupełność algorytmu.
+	\item {\bf zcentralizowane} - drogi wyznaczane są dla wszystkich agentów na raz (jednocześnie). Metody te potrafią znaleźć wszystkie możliwe rozwiązania (w szczególności to optymalne), ale mają bardzo dużą złożoność obliczeniową ze względu na ogromną przestrzeń przeszukiwania. Z tego powodu wykorzystywane są heurystyki przyspieszające proces obliczania rozwiązania.
+	\item {\bf rozproszone} (ang. decoupled lub distributed) - Podejście to dekomponuje zadanie na niezależne lub zależne w niewielkim stopniu problemy dla każdego agenta. Dla każdego robota droga wyznaczana jest osobno, w określonej kolejności, następnie rozwiązywane są konflikty (kolizje dróg). W pewnych przypadkach rozwiązanie może nie zostać znalezione, mimo, iż istnieje. Metody te najczęściej wiążą się z koniecznością przydzielenia priorytetów, co stanowi istotny problem, gdyż od ich wyboru może zależeć zupełność algorytmu. Nie należy mylić tej metody z zagadnieniem typu Non-Cooperative Pathfinding, w którym agenci nie mają wiedzy na temat pozostałych planów i muszą przewidywać przyszłe ruchy pozostałych robotów. W podejściu rozproszonym agenci mają pełną informację na temat stanu pozostałych robotów, lecz wyznaczanie dróg odbywa się w określonej kolejności.
 \end{itemize}
 
 \subsection{Metody zcentralizowane}
