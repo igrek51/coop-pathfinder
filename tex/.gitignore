@@ -1,4 +1,4 @@
-*.aux
-*.log
-*.out
-*.toc
+build/*.aux
+build/*.log
+build/*.out
+build/*.toc
