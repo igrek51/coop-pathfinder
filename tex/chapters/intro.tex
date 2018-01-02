@@ -13,13 +13,20 @@ Koordynacja ruchu robotów jest jednym z fundamentalnych problemów w systemach 
 
 Kooperacyjne znajdowanie tras (ang. Cooperative Pathfinding) jest problemem planowania w układzie wieloagentowym, w którym to agenci mają za zadanie znaleźć bezkolizyjne drogi do swoich, osobnych celów. Planowanie to odbywa się w oparciu o pełną informację o środowisku oraz trasach pozostałych agentów. \cite{cooppath}
 
-Problem kooperacyjnego znajdowania tras pojawia się często m.in. w grach komputerowych, gdzie należy wyznaczyć drogi dla wielu jednostek, które mogą blokować się wzajemnie. Algorytmy do wyznaczania bezkolizyjnych tras dla wielu agentów (robotów) mogą znaleźć również zastosowanie w szpitalach (np. roboty TUG i HOMER do dostarczania sprzętu na wyposażeniu szpitala \cite{tughomer}) oraz magazynach (np. roboty transportowe w magazynach firmy Amazon \cite{amazonrobots}).
+Problem kooperacyjnego znajdowania tras pojawia się często m.in. w grach komputerowych, gdzie należy wyznaczyć drogi dla wielu jednostek, które mogą blokować się wzajemnie. Algorytmy do wyznaczania bezkolizyjnych tras dla wielu agentów (robotów) mogą znaleźć również zastosowanie w szpitalach (np. roboty TUG i HOMER do dostarczania sprzętu na wyposażeniu szpitala \cite{tughomer}) oraz magazynach (np. roboty transportowe w magazynach firmy Amazon \ref{fig:image_kiva_amazon}).
 
-\section{Przestrzeń konfiguracyjna}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=14cm]{img/kiva-amazon}
+	\caption{Roboty Kiva pracujące w magazynie firmy Amazon. Źródło: \url{https://www.roboticsbusinessreview.com/supply-chain/amazon_warehouse_demand_devours_robots_and_workers}}
+	\label{fig:image_kiva_amazon}
+\end{figure}
+
+\subsubsection{Przestrzeń konfiguracyjna}
 Przestrzeń konfiguracyjna to formalna, matematyczna przestrzeń będąca zbiorem możliwych stanów danego układu fizycznego.
 W zależności od rodzaju i liczby wyróżnionych parametrów stanu przestrzenie konfiguracyjne mogą mieć wiele wymiarów.
 
-\section{Metoda hill-climbing}
+\subsubsection{Metoda hill-climbing}
 Metoda hill-climbing jest rodzajem matematycznej optymalizacji, lokalną metodą przeszukiwania.
 Jest to iteracyjny algorytm, który zaczyna w wybranym rozwiązaniu problemu, następnie próbuje znaleźć lepsze rozwiązanie poprzez przyrostowe zmiany pojedynczych elementów rozwiązania.
 Jeśli zmiana przynosi lepsze rozwiązanie, jest wprowadzana do nowego rozwiązania.
@@ -41,16 +48,16 @@ Wadą jest natomiast duża złożoność obliczeniowa algorytmu i konieczność 
 
 W systemach czasu rzeczywistego istotne jest, aby rozwiązanie problemu planowania tras uzyskać w określonym czasie, dlatego w tego typu sytemach częściej używane są techniki rozproszone.
 
-\subsection{Metoda sztucznych pól potencjałowych}
-Nie wszystkie podejścia zcentralizowane gwarantują optymalne rozwiązanie. Przykładem takiej metody, która nie daje gwarancji optymalności (ani nawet zupełności) jest metoda sztucznych pól potencjałowych.
+\subsection{Metoda pól potencjałowych}
+Nie wszystkie podejścia zcentralizowane gwarantują optymalne rozwiązanie. Przykładem takiej metody, która nie daje gwarancji optymalności (ani nawet zupełności) jest metoda pól potencjałowych.
 
-Metoda sztucznych pól potencjałowych (ang. {\it Artificial Potential Field}) polega na zastosowaniu zasad oddziaływania między ładunkami znanych z elektrostatyki. Roboty i przeszkody traktowane są jako ładunki jednoimienne, przez co "odpychają się" siłą odwrotnie proporcjonalną do kwadratu odległości (dzięki temu unikają kolizji). Natomiast punkt docelowy robota jest odwzorowany jako ładunek o przeciwnym biegunie, przez co robot jest "przyciągany" do celu.
+Metoda pól potencjałowych (ang. {\it Artificial Potential Field} lub {\it Potential Field Techniques}) polega na zastosowaniu zasad oddziaływania między ładunkami znanych z elektrostatyki. Roboty i przeszkody traktowane są jako ładunki jednoimienne, przez co "odpychają się" siłą odwrotnie proporcjonalną do kwadratu odległości (dzięki temu unikają kolizji między sobą). Natomiast punkt docelowy robota jest odwzorowany jako ładunek o przeciwnym biegunie, przez co robot jest "przyciągany" do celu.
 Główną zasadę działania metody przedstawiono na rysunku \ref{fig:image_potentialfield}.
-Technika jest bardzo prosta i nie wymaga wykonywania złożonych obliczeń (w odróżnieniu do pozostałych metod zcentralizowanych). Niestety bardzo powszechny jest problem osiągania minimum lokalnego, w którym suma wektorów daje zerową siłę wypadkową. Robot zostaje "uwięziony" w minimum lokalnym, przez co nie jest w stanie dotrzeć do wyznaczonego celu. Do omijania tego problemu muszą być stosowane inne dodatkowe metody. \cite{potentialfield}
+Technika ta jest bardzo prosta i nie wymaga wykonywania złożonych obliczeń (w odróżnieniu do pozostałych metod zcentralizowanych). Niestety bardzo powszechny jest problem osiągania minimum lokalnego, w którym suma wektorów daje zerową siłę wypadkową. Robot zostaje "uwięziony" w minimum lokalnym, przez co nie jest w stanie dotrzeć do wyznaczonego celu. Do omijania tego problemu muszą być stosowane inne dodatkowe metody. \cite{potentialfield}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=12cm]{img/potential-field}
-	\caption{Zasada działania metody sztucznych pól potencjałowych. Źródło: \cite{howie_potentialfield}}
+	\caption{Zasada działania metody pól potencjałowych. Źródło: \cite{howie_potentialfield}}
 	\label{fig:image_potentialfield}
 \end{figure}
 
