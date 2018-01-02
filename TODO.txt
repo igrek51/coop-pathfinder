@@ -1,3 +1,2 @@
 Podejmowanie decyzji przez roboty lokalnie - rozproszona struktura organizacyjna
 Podejmowanie decyzji na podstawie centralnego systemu - scentralizowana struktura organizacyjna
-porównanie wielu róźnych algorytmów nawigacji
