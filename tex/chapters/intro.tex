@@ -1,34 +1,19 @@
 \chapter{Wstęp teoretyczny}
 \label{ch:wstept}
 
-$TODO$
-Cooperative Pathfinding
-David Silver
-Cooperative Pathfinding is a multi-agent path planning problem where agents must find non-colliding routes to separate destinations, given full information about the routes of other agents. This paper presents three new algorithms for efficiently solving this problem, suitable for use in Real-Time Strategy games and other real-time environments. The algorithms are decoupled approaches that break down the problem into a series of single-agent searches. Cooperative A* (CA*) searches space-time for a non-colliding route. Hierarchical Cooperative A* (HCA*) uses an abstract heuristic to boost performance. Finally, Windowed Hierarchical Cooperative A* (WHCA*) limits the space-time search depth to a dynamic window, spreading computation over the duration of the route. The algorithms are applied to a series of challenging, maze-like environments, and compared to A* with Local Repair (the current video-games industry standard). The results show that the new algorithms, especially WHCA*, are robust and efficient solutions to the Cooperative Pathfinding problem, finding more successful routes and following better paths than Local Repair A*.
+\section{Koordynacja ruchu robotów}
+Koordynacja ruchu robotów jest jednym z fundamentalnych problemów w systemach wielu robotów. \cite{optpriorities}
 
-Kooperacyjne znajdowanie tras (ang. Cooperative Pathfinding) jest problemem planowania w układzie wieloagentowym, gdzie agenci muszą znaleźć bezkolizyjne drogi do swoich, osobnych celów. Planowanie to odbywa się mając pełną informację o środowisku oraz trasach pozostałych agentów. 
+Kooperacyjne znajdowanie tras (ang. Cooperative Pathfinding) jest problemem planowania w układzie wieloagentowym, w którym to agenci mają za zadanie znaleźć bezkolizyjne drogi do swoich, osobnych celów. Planowanie to odbywa się w oparciu o pełną informację o środowisku oraz trasach pozostałych agentów. \cite{cooppath}
 
+Problem kooperacyjnego znajdowania tras pojawia się często m.in. w grach komputerowych, gdzie należy wyznaczyć drogi dla wielu jednostek, które mogą blokować się wzajemnie. Algorytmy do wyznaczania bezkolizyjnych tras dla wielu agentów (robotów) mogą znaleźć również zastosowanie w szpitalach (np. roboty TUG i HOMER do dostarczania sprzętu na wyposażeniu szpitala \cite{tughomer}) oraz magazynach (np. roboty transportowe w magazynach firmy Amazon \cite{amazonrobots}).
 
-Przedmiotem niniejszej pracy jest przegląd metod rozwiązujacych zagadnienie planowania bezkolizyjnych tras dla wielu robotów. Stanowi to wstęp do zaprojektowania algorytmu i implementacji oprogramowania pozwalającego na symulację jego działania w praktyce (tzn. na przykładzie $TODO$).
+\section{Cel pracy}
+Przedmiotem niniejszej pracy jest przegląd metod rozwiązujacych zagadnienie planowania bezkolizyjnych tras dla wielu robotów. Stanowi to również wstęp teoretyczny do zaprojektowania algorytmu i implementacji oprogramowania pozwalającego na symulację działania systemu planowania tras.
 
-$TODO$ nie ma algorytmów do planowania tras w środowiskach ciasnych korytarzy (duża liczba przeszkód, częsty problem blokowania w wąskich korytarzach, zakleszczenie)
-$TODO$ Problem do rozwiązania: Dane: mapa otoczenia i przestrzeń konfiguracyjna, określone położenie początkowe i cel dla zespołu robotów; Zadanie: Wyznaczenie możliwie najkrótszej bezkolizyjnej trasy dla wszystkich robotów.
-$TODO$ nie otwarte środowisko, ale zamknięte, z dużą liczbą przeszkód
+Praca skupia się na przypadkach, w których mamy do czynienia ze środowiskiem z dużą liczbą przeszkód (np. zamknięty budynek z licznymi ciasnymi korytarzami), gdzie problem blokowania sią agentów prowadzi często do zakleszczenia. Należy wtedy zastosować nieco inne podejścia niż te, które sprawdzają się w przypadku otwartych środowisk, a które zostały opisane np. w pracach: \cite{roszkowska}, \cite{siemiatkowska}
 
-\begin{itemize}
-	\item Koordynacja ruchu robotów jest jednym z fundamentalnych problemów dla systemów wielu robotów.
-	\item Popularne podejścia omijające planowanie w wysoko wymiarowej zbiorowej przestrzeni konfiguracyjnej to techniki rozproszone i priorytetowane.
-	\item Pomimo, że te metody są bardzo efektywne, mają dwie główne wady:
-	\begin{enumerate}
-		\item nie są zupełne - czasami nie udaje się znaleźć rozwiązania, nawet gdy istnieje.
-		\item Wynikowe rozwiązania są często nieoptymalne.
-	\end{enumerate}
-	\item Ponadto nie mówią, jak przypisywać priorytety do pojedynczych robotów.
-	\item W tym artykule przedstawiono metodę do optymalizowania układu priorytetów dla rozproszonych i priorytetowanych technik planowania.
-	\item Proponowana metoda wykonuje randomizowane przeszukiwanie z techniką hill-climbing do znalezienia rozwiązania i do skrócenia całkowitej długości ścieżek.
-	\item Technika została zaimplemenotwana i przetestowana na prawdziwych robotach oraz w rozległych testach symulacyjnych.
-	\item Wyniki eksperyentu pokazały, że metoda potrafi znacząco zmniejszyć liczbę niepowodzeń i znacznie zmniejszyć całkowitą długość tras dla różnych priorytetowanych i rozproszoncyh metod planowania dróg, nawet dla dużych zespołów robotów.
-\end{itemize}
+W niniejszej pracy zajmować będziemy się rozwiązaniem problemu, w którym mamy pełną informację o mapie otoczenia oraz o określonym położeniu początkowym i celu dla każdego z robotów. Zadaniem algorytmu będzie wyznaczenie możliwie najkrótszej bezkolizyjnej trasy dla wszystkich robotów. Należy jednak zaznaczyć, że priorytetem jest dotarcie każdego z robotów do celu bez kolizji z innymi robotami, dopiero później chcemy, aby wyznaczone drogi były możliwie najkrótsze.
 
 \section{Przestrzeń konfiguracyjna}
 Przestrzeń konfiguracyjna to formalna, matematyczna przestrzeń będąca zbiorem możliwych stanów danego układu fizycznego.
@@ -38,30 +23,47 @@ W zależności od rodzaju i liczby wyróżnionych parametrów stanu przestrzenie
 Metoda hill-climbing jest rodzajem matematycznej optymalizacji, lokalną metodą przeszukiwania.
 Jest to iteracyjny algorytm, który zaczyna w wybranym rozwiązaniu problemu, następnie próbuje znaleźć lepsze rozwiązanie poprzez przyrostowe zmiany pojedynczych elementów rozwiązania.
 Jeśli zmiana przynosi lepsze rozwiązanie, jest wprowadzana do nowego rozwiązania.
-Kroki algorytmu powtarzane są dopóki żadne ``udoskonalenia'' nie mogą już być znalezione.
+Kroki algorytmu powtarzane są dotąd, aż żadne ``udoskonalenie'' nie zostaje znalezione.
 
 \section{Metody planowania tras}
-Spośród metod wykorzystywanych do planowania tras dla wielu robotów można wyróżnić dwie grupy:
+Spośród metod wykorzystywanych do planowania tras dla wielu robotów można wyróżnić dwie zasadnicze grupy:
 \begin{itemize}
-	\item zcentralizowane - drogi wyznaczane są dla wszystkich agentów na raz (jednocześnie). Metody te potrafią znaleźć optymalne rozwiązanie, ale często mają bardzo dużą złożoność obliczeniową, dlatego wykorzystywane są heurystyki
-	\item rozproszone (ang. decoupled) - dla każdego robota droga wyznaczana jest osobno, w określonej kolejności, następnie rozwiązywane są konflikty (kolizje dróg), może nie znaleźć istniejącego rozwiązania. Metoda najczęściej wiąże się z koniecznością przydzielenia robotowi priorytetu, co stanowi istotny problem, gdyż od wyboru priorytetów może zależeć zupełność algorytmu.
+	\item {\bf zcentralizowane} - drogi wyznaczane są dla wszystkich agentów na raz (jednocześnie). Metody te potrafią znaleźć optymalne rozwiązanie, ale często mają bardzo dużą złożoność obliczeniową. Z tego powodu wykorzystywane są heurystyki przyspieszające proces obliczania rozwiązania.
+	\item {\bf rozproszone} (ang. decoupled) - dla każdego robota droga wyznaczana jest osobno, w określonej kolejności, następnie rozwiązywane są konflikty (kolizje dróg). W pewnych przypadkach rozwiązanie może nie zostać znalezione, mimo, iż istnieje. Metody te najczęściej wiążą się z koniecznością przydzielenia priorytetów, co stanowi istotny problem, gdyż od wyboru priorytetów może zależeć zupełność algorytmu.
 \end{itemize}
 
 \subsection{Metody zcentralizowane}
-Zalety:
+Zaletami metod zcentralizowanych są:
 \begin{itemize}
 	\item Planowanie w zbiorowej przestrzeni konfiguracyjnej
 	\item Wyznaczenie {\bf optymalnego} rozwiązania
 	\item W praktyce: Heurystyka radzi sobie z ogromną złożonością przestrzeni konfiguracyjnej
 \end{itemize}
+
 Podejścia (bez gwarancji optymalności):
 \begin{itemize}
 	\item Potential field techniques - Metoda potencjałowa
-	\item Roadmap methods % przeszukiwanie grafu połączeń - Dijkstry
+	\item Roadmap methods - przeszukiwanie grafu połączeń algorytmem Dijkstry
 \end{itemize}
 
-% decoupled - rozproszony, odzielny
+\subsection{Metoda potencjałowa}
+Metoda potencjałowa (ang. Potential field techniques) $TODO$
+
 \subsection{Podejście "Decoupled"}
+Popularne podejścia omijające planowanie w wysoko wymiarowej zbiorowej przestrzeni konfiguracyjnej to techniki rozproszone i priorytetowane.
+Pomimo, że te metody są bardzo efektywne, mają dwie główne wady:
+\begin{enumerate}
+	\item Nie są zupełne - czasami nie udaje się znaleźć rozwiązania, nawet gdy istnieje.
+	\item Wynikowe rozwiązania są często nieoptymalne.
+\end{enumerate}
+
+Ponadto nie mówią, jak przypisywać priorytety do pojedynczych robotów.
+
+W artykule \cite{optpriorities} przedstawiono metodę do optymalizowania układu priorytetów dla rozproszonych i priorytetowanych technik planowania.
+Proponowana metoda wykonuje randomizowane przeszukiwanie z techniką hill-climbing do znalezienia rozwiązania i do skrócenia całkowitej długości ścieżek.
+Technika została zaimplemenotwana i przetestowana na prawdziwych robotach oraz w rozległych testach symulacyjnych.
+Wyniki eksperyentu pokazały, że metoda potrafi znacząco zmniejszyć liczbę niepowodzeń i znacznie zmniejszyć całkowitą długość tras dla różnych priorytetowanych i rozproszoncyh metod planowania dróg, nawet dla dużych zespołów robotów.
+
 Algorytm (niezupełny):
 \begin{enumerate}
 	\item Wyznaczenie optymalnej ścieżki dla każdego robota {\bf niezależnie}
@@ -95,7 +97,7 @@ W praktyce:
 \subsubsection{Konieczność wyboru priorytetów}
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=\textwidth,height=0.4\textheight,keepaspectratio]{img/article1/fig1}
+	\includegraphics[width=\textwidth,keepaspectratio]{img/article1/fig1}
 	\caption{Sytuacja, w której żadne rozwiązanie nie zostanie znalezione, jeśli robot 1 ma wyższy priorytet niż robot 2}
 \end{figure}
 
@@ -121,41 +123,11 @@ Złożoność:
 \section{Wybór priorytetów}
 \subsubsection{Elastyczny dobór priorytetów}
 Obecne techniki pozostawiają dowolny wybór priorytetów lub korzystają z ustalonego z góry stałego układu kolejności robotów. \\
-\vspace{1em}
-{\bf Cel:} \\
-Połączyć ze sobą planowanie tras i przypisanie priorytetów, wykorzystując randomizowane techniki.
-
-\subsubsection{Poszukiwanie układu priorytetów mających rozwiązanie}
-% pierwsza wersja algorytmu - nieoptymalna
-\begin{figure}[htp]
-	\centering
-	\includegraphics[width=\textwidth,height=0.6\textheight,keepaspectratio]{img/article1/algorytm}
-\end{figure}
-Prosta technika losująca układ priorytetów (kolejności robotów) daje dobre rezultaty, ale często duża liczba iteracji jest konieczna do uzyskania rozwiązania.
-
-\section{Rezultaty}
-\subsection{Ocena metody przez Eksperyment}
-Testy symulacyjne:
-\begin{itemize}
-	\item Zastosowanie naszego algorytmu wyboru priorytetów:
-		\begin{itemize}
-			\item A* in the configuration time-space
-			\item path coordination method
-		\end{itemize}
-	\item Użycie 2 różnych środowisk (acykliczne / cykliczne)
-	\item Losowe generowanie punktów startu i celu
-\end{itemize}
-
-\subsubsection{Zoptymalizowany algorytm wyznaczania priorytetów}
-\begin{figure}[htp]
-	\centering
-	\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{img/article1/ppt-alg2}
-\end{figure}
-% ZALETA: można przerwać w dowolnym momencie
 
 \section{Podusmowanie}
 \subsection{Wnioski}
 \begin{itemize}
+	\item Testy przeprowadzono w dwóch różnych środowiskach (acykliczne / cykliczne). Losowo generowano punktów startu i celu
 	\item Zaprezentowano metodę doboru priorytetów dla rozproszonych metod planowania dróg dla grupy robotów mobilnych.
 	\item Zaproponowane podejście to randomizowana metoda, która cyklicznie zamienia kolejność robotów w celu znalezienia sekwencji, dla której można wyznaczyć plan dróg oraz w celu minimalizacji całkowitej długości tras.
 	\item Jest to algorytm, który może być zatrzymany w dowolnym momencie i może zawsze zwrócić obecnie najlepsze rozwiązanie.

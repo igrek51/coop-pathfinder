@@ -5,7 +5,7 @@ LATEX=pdflatex -interaction nonstopmode -halt-on-error -file-line-error
 
 all: clean build
 
-build: latex1 bibgen latex2
+build: latex1 bibgen latex2 latex3
 
 latex1:
 	@echo "========================== pdflatex (1) =========================="
@@ -13,6 +13,10 @@ latex1:
 
 latex2:
 	@echo "========================== pdflatex (2) =========================="
+	${LATEX} --output-directory=${OUT} ${PROJECT} 1>/dev/null
+
+latex3:
+	@echo "========================== pdflatex (3) =========================="
 	${LATEX} --output-directory=${OUT} ${PROJECT} 1>/dev/null
 	
 bibgen:
