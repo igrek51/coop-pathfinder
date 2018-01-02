@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2017.11.18)  2 JAN 2018 04:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2017.11.18)  2 JAN 2018 04:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -7,10 +7,10 @@ entering extended mode
 (./trans.tex
 LaTeX2e <2017-04-15>
 Babel <3.15> and hyphenation patterns for 84 language(s) loaded.
-(/usr/share/texmf-dist/tex/latex/base/report.cls
-Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/share/texmf-dist/tex/latex/base/size12.clo
-File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+(/usr/share/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/share/texmf-dist/tex/latex/base/bk12.clo
+File: bk12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@chapter=\count80
@@ -643,58 +643,179 @@ s
 (/usr/share/texmf-dist/tex/latex/was/gensymb.sty
 Package: gensymb 2003/07/02 v1.0 (WaS)
 )
+(/usr/share/texmf-dist/tex/latex/subfig/subfig.sty
+Package: subfig 2005/06/28 ver: 1.3 subfig package
+
+(/usr/share/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
+
+(/usr/share/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
+\captionmargin=\dimen122
+\captionmargin@=\dimen123
+\captionwidth=\dimen124
+\caption@tempdima=\dimen125
+\caption@indent=\dimen126
+\caption@parindent=\dimen127
+\caption@hangindent=\dimen128
+)
+\c@ContinuedFloat=\count119
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
+)
+\c@KVtest=\count120
+\sf@farskip=\skip56
+\sf@captopadj=\dimen129
+\sf@capskip=\skip57
+\sf@nearskip=\skip58
+\c@subfigure=\count121
+\c@subfigure@save=\count122
+\c@lofdepth=\count123
+\c@subtable=\count124
+\c@subtable@save=\count125
+\c@lotdepth=\count126
+\sf@top=\skip59
+\sf@bottom=\skip60
+)
+(/usr/share/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+)
+(/usr/share/texmf-dist/tex/latex/tools/array.sty
+Package: array 2016/10/06 v2.4d Tabular extension package (FMi)
+\col@sep=\dimen130
+\extrarowheight=\dimen131
+\NC@list=\toks25
+\extratabsurround=\skip61
+\backup@length=\skip62
+)
+(/usr/share/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+Package: pdfpages 2017/10/31 v0.5l Insert pages of external PDF documents (AM)
+
+(/usr/share/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/share/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count127
+\calc@Bcount=\count128
+\calc@Adimen=\dimen132
+\calc@Bdimen=\dimen133
+\calc@Askip=\skip63
+\calc@Bskip=\skip64
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count129
+\calc@Cskip=\skip65
+)
+(/usr/share/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+Package: eso-pic 2015/07/21 v2.0g eso-pic (RN)
+
+(/usr/share/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
+
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1352.
+Package xcolor Info: Model `RGB' extended on input line 1364.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1366.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1367.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
+))
+\AM@pagewidth=\dimen134
+\AM@pageheight=\dimen135
+
+(/usr/share/texmf-dist/tex/latex/pdfpages/pppdftex.def
+File: pppdftex.def 2017/10/31 v0.5l Pdfpages driver for pdfTeX (AM)
+)
+\AM@pagebox=\box32
+\AM@global@opts=\toks26
+\AM@toc@title=\toks27
+\c@AM@survey=\count130
+\AM@templatesizebox=\box33
+)
+(/usr/share/texmf-dist/tex/latex/ms/ragged2e.sty
+Package: ragged2e 2009/05/21 v2.1 ragged2e Package (MS)
+
+(/usr/share/texmf-dist/tex/latex/ms/everysel.sty
+Package: everysel 2011/10/28 v1.2 EverySelectfont Package (MS)
+)
+\CenteringLeftskip=\skip66
+\RaggedLeftLeftskip=\skip67
+\RaggedRightLeftskip=\skip68
+\CenteringRightskip=\skip69
+\RaggedLeftRightskip=\skip70
+\RaggedRightRightskip=\skip71
+\CenteringParfillskip=\skip72
+\RaggedLeftParfillskip=\skip73
+\RaggedRightParfillskip=\skip74
+\JustifyingParfillskip=\skip75
+\CenteringParindent=\skip76
+\RaggedLeftParindent=\skip77
+\RaggedRightParindent=\skip78
+\JustifyingParindent=\skip79
+)
+\c@savepage=\count131
+
 (/usr/share/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2010/09/12 v5.6 Page Geometry
-\Gm@cnth=\count119
-\Gm@cntv=\count120
-\c@Gm@tempcnt=\count121
-\Gm@bindingoffset=\dimen122
-\Gm@wd@mp=\dimen123
-\Gm@odd@mp=\dimen124
-\Gm@even@mp=\dimen125
-\Gm@layoutwidth=\dimen126
-\Gm@layoutheight=\dimen127
-\Gm@layouthoffset=\dimen128
-\Gm@layoutvoffset=\dimen129
-\Gm@dimlist=\toks25
+\Gm@cnth=\count132
+\Gm@cntv=\count133
+\c@Gm@tempcnt=\count134
+\Gm@bindingoffset=\dimen136
+\Gm@wd@mp=\dimen137
+\Gm@odd@mp=\dimen138
+\Gm@even@mp=\dimen139
+\Gm@layoutwidth=\dimen140
+\Gm@layoutheight=\dimen141
+\Gm@layouthoffset=\dimen142
+\Gm@layoutvoffset=\dimen143
+\Gm@dimlist=\toks28
 )
 
 Package hyperref Warning: Invalid value `0 0 0 0'
 (hyperref)                for option `pdfborder'.
-(hyperref)                Option setting is ignored on input line 35.
+(hyperref)                Option setting is ignored on input line 70.
 
 (build/trans.aux)
 \openout1 = `trans.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
  (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count122
-\scratchdimen=\dimen130
-\scratchbox=\box32
-\nofMPsegments=\count123
-\nofMParguments=\count124
-\everyMPshowfont=\toks26
-\MPscratchCnt=\count125
-\MPscratchDim=\dimen131
-\MPnumerator=\count126
-\makeMPintoPDFobject=\count127
-\everyMPtoPDFconversion=\toks27
+\scratchcounter=\count135
+\scratchdimen=\dimen144
+\scratchbox=\box34
+\nofMPsegments=\count136
+\nofMParguments=\count137
+\everyMPshowfont=\toks29
+\MPscratchCnt=\count138
+\MPscratchDim=\dimen145
+\MPnumerator=\count139
+\makeMPintoPDFobject=\count140
+\everyMPtoPDFconversion=\toks30
 ) (/usr/share/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -712,9 +833,9 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\c@lstlisting=\count128
-\AtBeginShipoutBox=\box33
-Package hyperref Info: Link coloring OFF on input line 36.
+\c@lstlisting=\count141
+\AtBeginShipoutBox=\box35
+Package hyperref Info: Link coloring OFF on input line 74.
 
 (/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -722,27 +843,41 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/share/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count129
+\c@section@level=\count142
 )
-LaTeX Info: Redefining \ref on input line 36.
-LaTeX Info: Redefining \pageref on input line 36.
-LaTeX Info: Redefining \nameref on input line 36.
+LaTeX Info: Redefining \ref on input line 74.
+LaTeX Info: Redefining \pageref on input line 74.
+LaTeX Info: Redefining \nameref on input line 74.
 
 (build/trans.out) (build/trans.out)
 \@outlinefile=\write3
 \openout3 = `trans.out'.
 
-LaTeX Info: Redefining \celsius on input line 36.
-Package gensymb Info: Faking symbols for \degree and \celsius on input line 36.
+LaTeX Info: Redefining \celsius on input line 74.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 74.
 
 
 
 Package gensymb Warning: Not defining \perthousand.
 
-LaTeX Info: Redefining \ohm on input line 36.
-Package gensymb Info: Using \Omega for \ohm on input line 36.
+LaTeX Info: Redefining \ohm on input line 74.
+Package gensymb Info: Using \Omega for \ohm on input line 74.
 
 Package gensymb Warning: Not defining \micro.
+
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: subfig package v1.3 is loaded.
+Package caption Info: End \AtBeginDocument code.
+(/usr/share/texmf-dist/tex/latex/oberdiek/pdflscape.sty
+Package: pdflscape 2016/05/14 v0.11 Display of landscape pages in PDF (HO)
+
+(/usr/share/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+)
+ABD: EverySelectfont initializing macros
+LaTeX Info: Redefining \selectfont on input line 74.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -751,7 +886,7 @@ Package gensymb Warning: Not defining \micro.
 * paper: a4paper
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: 
+* modes: twoside 
 * h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
 * v-part:(T,H,B)=(105.2751pt, 668.63986pt, 71.13188pt)
 * \paperwidth=597.50787pt
@@ -765,29 +900,33 @@ Package gensymb Warning: Not defining \micro.
 * \headsep=25.6073pt
 * \topskip=12.0pt
 * \footskip=30.0pt
-* \marginparwidth=35.0pt
-* \marginparsep=10.0pt
+* \marginparwidth=88.0pt
+* \marginparsep=7.0pt
 * \columnsep=10.0pt
 * \skip\footins=10.8pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
 * \@twocolumnfalse
-* \@twosidefalse
-* \@mparswitchfalse
+* \@twosidetrue
+* \@mparswitchtrue
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (./structure-trans.tex (/usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-(./title-page-trans.tex
+(/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+) [1
+
+]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: a4paper
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: 
+* modes: twoside 
 * h-part:(L,W,R)=(56.9055pt, 483.69687pt, 56.9055pt)
 * v-part:(T,H,B)=(85.35826pt, 674.33032pt, 85.35826pt)
 * \paperwidth=597.50787pt
@@ -801,26 +940,65 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 * \headsep=25.6073pt
 * \topskip=12.0pt
 * \footskip=30.0pt
-* \marginparwidth=35.0pt
-* \marginparsep=10.0pt
+* \marginparwidth=88.0pt
+* \marginparsep=7.0pt
 * \columnsep=10.0pt
 * \skip\footins=10.8pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
 * \@twocolumnfalse
-* \@twosidefalse
-* \@mparswitchfalse
+* \@twosidetrue
+* \@mparswitchtrue
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<img/pw.pdf, id=32, pagebox=cropbox, 239.89626pt x 233.87375pt>
+
+(./title-page-trans.tex
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(56.9055pt, 483.69687pt, 56.9055pt)
+* v-part:(T,H,B)=(85.35826pt, 674.33032pt, 85.35826pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=483.69687pt
+* \textheight=674.33032pt
+* \oddsidemargin=-15.36449pt
+* \evensidemargin=-15.36449pt
+* \topmargin=-28.51903pt
+* \headheight=16.0pt
+* \headsep=25.6073pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=88.0pt
+* \marginparsep=7.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+<img/pw.pdf, id=40, pagebox=cropbox, 239.89626pt x 233.87375pt>
 File: img/pw.pdf Graphic file (type pdf)
 <use img/pw.pdf>
 Package pdftex.def Info: img/pw.pdf  used on input line 7. on input line 7.
 Package pdftex.def Info: Requested size: 95.95679pt x 93.54782pt on input line 
 7.
-) [1
+)pdfTeX warning (ext4): destination with the same identifier (name{page.}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.17 \tableofcontents
+                      [2
 
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/pw.pdf>] (build/tran
@@ -828,20 +1006,43 @@ s.toc)
 \tf@toc=\write4
 \openout4 = `trans.toc'.
 
- [2
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.21 \listoffigures
+                    [3
 
-
-
+]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.21 \listoffigures
+                    [4
 
 ] (build/trans.lof)
 \tf@lof=\write5
 \openout5 = `trans.lof'.
 
- [3
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.25 \listoftables
+                   [5]pdfTeX warning (ext4): destination with the same identifi
+er (name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.25 \listoftables
+                   [6
 
+] (build/trans.lot)
+\tf@lot=\write6
+\openout6 = `trans.lot'.
+
+ (./chapters/intro.tex [7] [8
 
 ]
-(./chapters/intro.tex
 Rozdzia\PlPrIeC {\l } 1.
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 10.
 (/usr/share/texmf-dist/tex/latex/base/omscmr.fd
@@ -849,24 +1050,40 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 10.
- [4
-
+ [9] [10
 
 ]
 Rozdzia\PlPrIeC {\l } 2.
-[5
-
-]) [6] (./chapters/summary.tex
+[11]) (./chapters/summary.tex [12]
 Rozdzia\PlPrIeC {\l } 3.
-) [7
+) (build/trans.bblpdfTeX warning (ext4): destination with the same identifier (
+name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1 \begin{thebibliography}{1}
+                               [13
+
+]pdfTeX warning (ext4): destination with the same identifier (name{page.}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1 \begin{thebibliography}{1}
+                               [14
+
+])pdfTeX warning (ext4): destination with the same identifier (name{page.}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.43 \clearpage
+                [15] (./abbreviations.texpdfTeX warning (ext4): destination wit
+h the same identifier (name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.1 \chapter
+            *{Wykaz skrótów} [16
 
 
-
-] (build/trans.bbl) [8
-
-
-
-] (./abbreviations.tex
+]
 LaTeX Font Info:    Try loading font information for OML+plm on input line 3.
 
 (/usr/share/texmf-dist/tex/latex/polski/omlplm.fd
@@ -893,32 +1110,34 @@ LaTeX Font Info:    Try loading font information for U+lasy on input line 3.
 (/usr/share/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )))
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 38.
- [9
-
-
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 38.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 76.
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.76 \end{document}
+                    [17]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 76.
  (build/trans.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 38.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 38.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 76.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 76.
 Package rerunfilecheck Info: File `trans.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
 
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 38.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 76.
  ) 
 Here is how much of TeX's memory you used:
- 8268 strings out of 492985
- 116065 string characters out of 6138637
- 230111 words of memory out of 5000000
- 11673 multiletter control sequences out of 15000+600000
+ 10789 strings out of 492985
+ 156674 string characters out of 6138637
+ 270483 words of memory out of 5000000
+ 14138 multiletter control sequences out of 15000+600000
  12235 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 28i,10n,43p,225b,396s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{section*.6} has been referenced but does not exis
+ 44i,11n,49p,222b,397s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{section*.5} has been referenced but does not exis
 t, replaced by a fixed one
 
 {/usr/share/texmf-dist/fonts/enc/dvips/pl/plit.enc}{/usr/share/texmf-dist/fonts
@@ -926,10 +1145,10 @@ t, replaced by a fixed one
 sy10.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plbx12.pfb></usr/share/te
 xmf-dist/fonts/type1/public/pl/plr12.pfb></usr/share/texmf-dist/fonts/type1/pub
 lic/pl/plr17.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plti12.pfb>
-Output written on build/trans.pdf (9 pages, 109661 bytes).
+Output written on build/trans.pdf (17 pages, 110717 bytes).
 PDF statistics:
- 122 PDF objects out of 1000 (max. 8388607)
- 103 compressed objects within 2 object streams
- 25 named destinations out of 1000 (max. 500000)
- 62 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 147 PDF objects out of 1000 (max. 8388607)
+ 120 compressed objects within 2 object streams
+ 22 named destinations out of 1000 (max. 500000)
+ 70 words of extra memory for PDF output out of 10000 (max. 10000000)
 
