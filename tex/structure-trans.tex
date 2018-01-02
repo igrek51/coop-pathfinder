@@ -1,40 +1,27 @@
 \nocite{*} %wszystkie wpisy trafią do bibliografii
-\lstset{language=C, tabsize=2,  basicstyle=\footnotesize\ttfamily, keywordstyle=\underbar}
+\lstset{language=Java, tabsize=2,  basicstyle=\footnotesize\ttfamily, keywordstyle=\underbar}
 
-\setpagenumberingtype{gobble} % Remove page numbers (and reset to 1)
-
-\mbox{}
-
+% \setpagenumberingtype{gobble} % Remove page numbers (and reset to 1)
 \setcounter{page}{1}
-
 \newgeometry{tmargin=3cm, bmargin=3cm, lmargin=2cm, rmargin=2cm}
 
 \input{title-page-trans}
-% \clearpage{\pagestyle{empty}\cleardoublepage}
-% \clearpage
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\clearpage
 
+\phantomsection
 \addcontentsline{toc}{chapter}{Spis treści}
 \tableofcontents
-% \clearpage
-
-\addcontentsline{toc}{chapter}{Spis rysunków}
-\listoffigures
-% \clearpage
-
-\addcontentsline{toc}{chapter}{Spis tabel}
-\listoftables
-% \clearpage
+\clearpage
 
 \raggedbottom
-\setpagenumberingtype{arabic} % kontynuowanie numerowania w stylu arabskim
+% \setpagenumberingtype{arabic} % kontynuowanie numerowania w stylu arabskim
 
 \input{chapters/intro}
-% \clearpage{\pagestyle{empty}\cleardoublepage}
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 \input{chapters/summary}
-% \clearpage{\pagestyle{empty}\cleardoublepage}
-
-\setpagenumberingtype{gobble} % Remove page numbers (and reset to 1)
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliografia}
@@ -45,3 +32,11 @@
 \phantomsection
 \addcontentsline{toc}{chapter}{Wykaz skrótów}
 \input{abbreviations}
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Spis rysunków}
+\listoffigures
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Spis tabel}
+\listoftables
