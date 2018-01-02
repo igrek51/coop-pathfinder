@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2017.11.18)  2 JAN 2018 03:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2017.11.18)  2 JAN 2018 03:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -781,7 +781,7 @@ Package gensymb Warning: Not defining \micro.
 (./structure-trans.tex (/usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-(./title-page.tex
+(./title-page-trans.tex
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: a4paper
@@ -814,7 +814,7 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<img/pw.pdf, id=196, pagebox=cropbox, 239.89626pt x 233.87375pt>
+<img/pw.pdf, id=28, pagebox=cropbox, 239.89626pt x 233.87375pt>
 File: img/pw.pdf Graphic file (type pdf)
 <use img/pw.pdf>
 Package pdftex.def Info: img/pw.pdf  used on input line 7. on input line 7.
@@ -824,671 +824,73 @@ Package pdftex.def Info: Requested size: 95.95679pt x 93.54782pt on input line
 
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./img/pw.pdf>] (build/tran
-s.toc
-LaTeX Font Info:    Try loading font information for OML+plm on input line 4.
- (/usr/share/texmf-dist/tex/latex/polski/omlplm.fd
+s.toc)
+\tf@toc=\write4
+\openout4 = `trans.toc'.
+
+ [2
+
+
+
+
+] (build/trans.lof)
+\tf@lof=\write5
+\openout5 = `trans.lof'.
+
+ [3
+
+
+]
+(./chapters/intro.tex
+Rozdzia\PlPrIeC {\l } 1.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 10.
+(/usr/share/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 10.
+) [4
+
+
+] (./chapters/summary.tex
+Rozdzia\PlPrIeC {\l } 2.
+) [5
+
+
+
+] (build/trans.bbl) [6
+
+
+
+] (./abbreviations.tex
+LaTeX Font Info:    Try loading font information for OML+plm on input line 3.
+
+(/usr/share/texmf-dist/tex/latex/polski/omlplm.fd
 File: omlplm.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Try loading font information for OMS+plsy on input line 4.
+LaTeX Font Info:    Try loading font information for OMS+plsy on input line 3.
 
 (/usr/share/texmf-dist/tex/latex/polski/omsplsy.fd
 File: omsplsy.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    Try loading font information for OMX+plex on input line 4.
+LaTeX Font Info:    Try loading font information for OMX+plex on input line 3.
 
 (/usr/share/texmf-dist/tex/latex/polski/omxplex.fd
 File: omxplex.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <12> on input line 4.
+(Font)              <12> on input line 3.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <8> on input line 4.
+(Font)              <8> on input line 3.
 LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <6> on input line 4.
-LaTeX Font Info:    Try loading font information for U+lasy on input line 4.
+(Font)              <6> on input line 3.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 3.
 
 (/usr/share/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
-) [2
-
-
-
-
-])
-\tf@toc=\write4
-\openout4 = `trans.toc'.
-
- [3] (build/trans.lof
-
-LaTeX Warning: Citation `daniel' on page 4 undefined on input line 14.
-
-[4
-
-
-] [5])
-\tf@lof=\write5
-\openout5 = `trans.lof'.
-
- [6] (./chapters/wstep.tex
-Rozdzia\PlPrIeC {\l } 1.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 9.
-(/usr/share/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 9.
- [7
-
-
-] [8]
-
-LaTeX Warning: Citation `preskrypt' on page 9 undefined on input line 40.
-
-<img/encoder.png, id=408, 1182.4175pt x 652.4375pt>
-File: img/encoder.png Graphic file (type png)
-<use img/encoder.png>
-Package pdftex.def Info: img/encoder.png  used on input line 44. on input line 
-44.
-Package pdftex.def Info: Requested size: 338.58632pt x 186.8227pt on input line
- 44.
-[9 <./img/encoder.png (PNG copy)>]
-
-LaTeX Warning: Citation `probabilistic_robotics' on page 10 undefined on input 
-line 52.
-
-
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 53.
-
-<img/lidar.png, id=415, 308.65312pt x 677.53125pt>
-File: img/lidar.png Graphic file (type png)
-<use img/lidar.png>
-Package pdftex.def Info: img/lidar.png  used on input line 55. on input line 55
-.
-Package pdftex.def Info: Requested size: 241.84843pt x 530.90173pt on input lin
-e 55.
-) [10] [11 <./img/lidar.png>] (./chapters/radio.tex
-Rozdzia\PlPrIeC {\l } 2.
-
-LaTeX Warning: Citation `rssi' on page 12 undefined on input line 9.
-
-[12
-
-
-
-]
-<img/propagacja-fal.png, id=433, 683.55376pt x 61.22874pt>
-File: img/propagacja-fal.png Graphic file (type png)
-<use img/propagacja-fal.png>
-Package pdftex.def Info: img/propagacja-fal.png  used on input line 39. on inpu
-t line 39.
-Package pdftex.def Info: Requested size: 338.58632pt x 30.32933pt on input line
- 39.
- [13]
-Package epstopdf Info: Source file: <img/rssi_stacjonarne.eps>
-(epstopdf)                    date: 2018-01-02 02:30:24
-(epstopdf)                    size: 35801 bytes
-(epstopdf)             Output file: <img/rssi_stacjonarne-eps-converted-to.pdf>
-
-(epstopdf)                    date: 2018-01-02 02:39:43
-(epstopdf)                    size: 19044 bytes
-(epstopdf)             Command: <repstopdf --outfile=img/rssi_stacjonarne-eps-c
-onverted-to.pdf img/rssi_stacjonarne.eps>
-(epstopdf)             \includegraphics on input line 50.
-Package epstopdf Info: Output file is already uptodate.
-<img/rssi_stacjonarne-eps-converted-to.pdf, id=445, pagebox=cropbox, 1156.32pt 
-x 518.93875pt>
-File: img/rssi_stacjonarne-eps-converted-to.pdf Graphic file (type pdf)
-<use img/rssi_stacjonarne-eps-converted-to.pdf>
-Package pdftex.def Info: img/rssi_stacjonarne-eps-converted-to.pdf  used on inp
-ut line 50. on input line 50.
-Package pdftex.def Info: Requested size: 411.14528pt x 184.51357pt on input lin
-e 50.
- [14 <./img/propagacja-fal.png> <./img/rssi_stacjonarne-eps-converted-to.pdf>]
-
-LaTeX Warning: Citation `rssi' on page 15 undefined on input line 67.
-
-
-LaTeX Warning: Citation `rssi' on page 15 undefined on input line 87.
-
-
-LaTeX Warning: Citation `rssi' on page 15 undefined on input line 90.
-
-[15]
-
-LaTeX Warning: Citation `scipy' on page 16 undefined on input line 130.
-
-[16]
-
-LaTeX Warning: Citation `fingerprinting' on page 17 undefined on input line 141
-.
-
-
-LaTeX Warning: Citation `rssi' on page 17 undefined on input line 141.
-
-
-LaTeX Warning: Citation `ble' on page 17 undefined on input line 146.
-
-
-LaTeX Warning: Citation `ble' on page 17 undefined on input line 148.
-
-[17]) [18] (./chapters/lokalizacja-bezprzewodowa.tex
-Rozdzia\PlPrIeC {\l } 3.
-
-LaTeX Warning: Citation `fingerprinting' on page 19 undefined on input line 7.
-
-<img/fingerprinting.png, id=532, 1045.9075pt x 706.64pt>
-File: img/fingerprinting.png Graphic file (type png)
-<use img/fingerprinting.png>
-Package pdftex.def Info: img/fingerprinting.png  used on input line 12. on inpu
-t line 12.
-Package pdftex.def Info: Requested size: 338.58632pt x 228.76033pt on input lin
-e 12.
-[19
-
-
-
-]
-
-LaTeX Warning: Citation `fingerprinting2' on page 20 undefined on input line 17
-.
-
-
-LaTeX Warning: Citation `fingerprinting2' on page 20 undefined on input line 25
-.
-
-
-LaTeX Warning: Citation `fingerprinting' on page 20 undefined on input line 31.
-
-
-
-LaTeX Warning: Citation `fingerprinting2' on page 20 undefined on input line 31
-.
-
-[20 <./img/fingerprinting.png>]
-
-LaTeX Warning: Citation `trilat_przeglad' on page 21 undefined on input line 40
-.
-
-
-LaTeX Warning: Citation `trilat_particle' on page 21 undefined on input line 54
-.
-
-
-LaTeX Warning: Citation `trilat_przeglad' on page 21 undefined on input line 54
-.
-
-
-LaTeX Warning: Citation `trilat_particle' on page 21 undefined on input line 54
-.
-
-<img/trilateracja-okregi1.png, id=550, 885.3075pt x 746.79pt>
-File: img/trilateracja-okregi1.png Graphic file (type png)
-<use img/trilateracja-okregi1.png>
-Package pdftex.def Info: img/trilateracja-okregi1.png  used on input line 59. o
-n input line 59.
-Package pdftex.def Info: Requested size: 290.22107pt x 244.81195pt on input lin
-e 59.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<img/trilateracja-okregi2.png, id=551, 925.4575pt x 843.15pt>
-File: img/trilateracja-okregi2.png Graphic file (type png)
-<use img/trilateracja-okregi2.png>
-Package pdftex.def Info: img/trilateracja-okregi2.png  used on input line 66. o
-n input line 66.
-Package pdftex.def Info: Requested size: 290.22107pt x 264.41003pt on input lin
-e 66.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<img/trilateracja-okregi3.png, id=552, 708.6475pt x 628.3475pt>
-File: img/trilateracja-okregi3.png Graphic file (type png)
-<use img/trilateracja-okregi3.png>
-Package pdftex.def Info: img/trilateracja-okregi3.png  used on input line 73. o
-n input line 73.
-Package pdftex.def Info: Requested size: 290.22107pt x 257.3365pt on input line
- 73.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: Citation `trilat_iter' on page 21 undefined on input line 79.
-
-[21]
-
-LaTeX Warning: Citation `trilat_przeglad' on page 22 undefined on input line 95
-.
-
-[22 <./img/trilateracja-okregi1.png>] [23 <./img/trilateracja-okregi2.png>]
-
-LaTeX Warning: Citation `preskrypt' on page 24 undefined on input line 141.
-
-
-LaTeX Warning: Citation `probabilistic_robotics' on page 24 undefined on input 
-line 141.
-
-[24 <./img/trilateracja-okregi3.png>]
-
-LaTeX Warning: Citation `preskrypt' on page 25 undefined on input line 163.
-
-
-LaTeX Warning: Citation `trilat_particle' on page 25 undefined on input line 16
-3.
-
-
-LaTeX Warning: Citation `particle_pl' on page 25 undefined on input line 163.
-
-
-LaTeX Warning: Citation `preskrypt' on page 25 undefined on input line 165.
-
-[25]
-
-LaTeX Warning: Citation `probabilistic_robotics' on page 26 undefined on input 
-line 187.
-
-
-LaTeX Warning: Citation `probabilistic_robotics' on page 26 undefined on input 
-line 209.
-
-
-LaTeX Warning: Citation `landmarks' on page 26 undefined on input line 229.
-
-[26]
-
-LaTeX Warning: Citation `landmarks' on page 27 undefined on input line 245.
-
-) [27] [28] (./chapters/projekt-systemu.tex
-Rozdzia\PlPrIeC {\l } 4.
-[29
-
-
-
-]
-
-LaTeX Warning: Citation `trilat_iter' on page 30 undefined on input line 23.
-
-
-LaTeX Warning: Citation `trilat_particle' on page 30 undefined on input line 23
-.
-
-
-LaTeX Warning: Citation `nordic' on page 30 undefined on input line 28.
-
-<img/board.jpg, id=637, 602.25pt x 602.25pt>
-File: img/board.jpg Graphic file (type jpg)
-<use img/board.jpg>
-Package pdftex.def Info: img/board.jpg  used on input line 35. on input line 35
-.
-Package pdftex.def Info: Requested size: 338.58632pt x 338.59937pt on input lin
-e 35.
-[30]
-
-LaTeX Warning: Citation `ble' on page 31 undefined on input line 51.
-
-[31 <./img/board.jpg>]
-
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 68.
-
-
-LaTeX Warning: Citation `daniel' on page 32 undefined on input line 83.
-
-[32]
-<img/robot.jpg, id=658, 838.63312pt x 559.33969pt>
-File: img/robot.jpg Graphic file (type jpg)
-<use img/robot.jpg>
-Package pdftex.def Info: img/robot.jpg  used on input line 87. on input line 87
-.
-Package pdftex.def Info: Requested size: 338.58632pt x 225.82294pt on input lin
-e 87.
-
-
-LaTeX Warning: Citation `daniel' on page 33 undefined on input line 88.
-
-
-LaTeX Warning: Citation `roswiki' on page 33 undefined on input line 95.
-
-
-LaTeX Warning: Citation `learning_ros' on page 33 undefined on input line 95.
-
-[33] [34 <./img/robot.jpg>]
-
-LaTeX Warning: Citation `pybluez' on page 35 undefined on input line 119.
-
-
-LaTeX Warning: Citation `agitr' on page 35 undefined on input line 131.
-
-[35]
-
-LaTeX Warning: Citation `trilat_iter' on page 36 undefined on input line 150.
-
-[36] [37]
-
-LaTeX Warning: Citation `jupyter' on page 38 undefined on input line 192.
-
-) [38] (./chapters/testy.tex
-Rozdzia\PlPrIeC {\l } 5.
-<img/rviz.png, id=704, 903.375pt x 636.87938pt>
-File: img/rviz.png Graphic file (type png)
-<use img/rviz.png>
-Package pdftex.def Info: img/rviz.png  used on input line 21. on input line 21.
-
-Package pdftex.def Info: Requested size: 386.95897pt x 272.81297pt on input lin
-e 21.
-[39
-
-
-
-] [40 <./img/rviz.png (PNG copy)>]
-<img/1m.png, id=724, 1734.48pt x 918.5517pt>
-File: img/1m.png Graphic file (type png)
-<use img/1m.png>
-Package pdftex.def Info: img/1m.png  used on input line 57. on input line 57.
-Package pdftex.def Info: Requested size: 483.69687pt x 256.15553pt on input lin
-e 57.
- [41]
-<img/5m.png, id=730, 1734.48pt x 918.5517pt>
-File: img/5m.png Graphic file (type png)
-<use img/5m.png>
-Package pdftex.def Info: img/5m.png  used on input line 64. on input line 64.
-Package pdftex.def Info: Requested size: 483.69687pt x 256.15553pt on input lin
-e 64.
-<img/1m-hist.png, id=731, 1734.48pt x 918.5517pt>
-File: img/1m-hist.png Graphic file (type png)
-<use img/1m-hist.png>
-Package pdftex.def Info: img/1m-hist.png  used on input line 71. on input line 
-71.
-Package pdftex.def Info: Requested size: 483.69687pt x 256.15553pt on input lin
-e 71.
- [42 <./img/1m.png> <./img/5m.png>]
-<img/5m-hist.png, id=738, 1734.48pt x 918.5517pt>
-File: img/5m-hist.png Graphic file (type png)
-<use img/5m-hist.png>
-Package pdftex.def Info: img/5m-hist.png  used on input line 78. on input line 
-78.
-Package pdftex.def Info: Requested size: 483.69687pt x 256.15553pt on input lin
-e 78.
-
-[43 <./img/1m-hist.png> <./img/5m-hist.png>]
-<img/odleglosc-rssi.png, id=756, 1470.6945pt x 918.5517pt>
-File: img/odleglosc-rssi.png Graphic file (type png)
-<use img/odleglosc-rssi.png>
-Package pdftex.def Info: img/odleglosc-rssi.png  used on input line 102. on inp
-ut line 102.
-Package pdftex.def Info: Requested size: 483.69687pt x 302.09982pt on input lin
-e 102.
-<img/rssi-odleglosc.png, id=757, 1434.5595pt x 918.5517pt>
-File: img/rssi-odleglosc.png Graphic file (type png)
-<use img/rssi-odleglosc.png>
-Package pdftex.def Info: img/rssi-odleglosc.png  used on input line 110. on inp
-ut line 110.
-Package pdftex.def Info: Requested size: 483.69687pt x 309.7105pt on input line
- 110.
- [44] [45 <./img/odleglosc-rssi.png>]
-<img/filtr-avb.png, id=770, 877.77937pt x 484.81125pt>
-File: img/filtr-avb.png Graphic file (type png)
-<use img/filtr-avb.png>
-Package pdftex.def Info: img/filtr-avb.png  used on input line 127. on input li
-ne 127.
-Package pdftex.def Info: Requested size: 435.32422pt x 240.43726pt on input lin
-e 127.
-<img/filtr-propab.png, id=772, 877.77937pt x 484.81125pt>
-File: img/filtr-propab.png Graphic file (type png)
-<use img/filtr-propab.png>
-Package pdftex.def Info: img/filtr-propab.png  used on input line 145. on input
- line 145.
-Package pdftex.def Info: Requested size: 435.32422pt x 240.43726pt on input lin
-e 145.
-<img/filtry-porownanie.png, id=774, 877.77937pt x 484.81125pt>
-File: img/filtry-porownanie.png Graphic file (type png)
-<use img/filtry-porownanie.png>
-Package pdftex.def Info: img/filtry-porownanie.png  used on input line 152. on 
-input line 152.
-Package pdftex.def Info: Requested size: 435.32422pt x 240.43726pt on input lin
-e 152.
- [46 <./img/rssi-odleglosc.png>] [47 <./img/filtr-avb.png (PNG copy)>]
-[48 <./img/filtr-propab.png (PNG copy)> <./img/filtry-porownanie.png (PNG copy)
->]
-<img/mapa2.png, id=792, 996.72375pt x 762.59906pt>
-File: img/mapa2.png Graphic file (type png)
-<use img/mapa2.png>
-Package pdftex.def Info: img/mapa2.png  used on input line 174. on input line 1
-74.
-Package pdftex.def Info: Requested size: 435.32422pt x 333.06609pt on input lin
-e 174.
- [49]
-<img/strojenie-a.png, id=803, 1734.48pt x 918.5517pt>
-File: img/strojenie-a.png Graphic file (type png)
-<use img/strojenie-a.png>
-Package pdftex.def Info: img/strojenie-a.png  used on input line 200. on input 
-line 200.
-Package pdftex.def Info: Requested size: 483.69687pt x 256.15553pt on input lin
-e 200.
- [50 <./img/mapa2.png (PNG copy)>]
-<img/strojenie-b.png, id=810, 1734.48pt x 918.5517pt>
-File: img/strojenie-b.png Graphic file (type png)
-<use img/strojenie-b.png>
-Package pdftex.def Info: img/strojenie-b.png  used on input line 207. on input 
-line 207.
-Package pdftex.def Info: Requested size: 483.69687pt x 256.15553pt on input lin
-e 207.
-<img/strojenie-c.png, id=811, 1734.48pt x 918.5517pt>
-File: img/strojenie-c.png Graphic file (type png)
-<use img/strojenie-c.png>
-Package pdftex.def Info: img/strojenie-c.png  used on input line 214. on input 
-line 214.
-Package pdftex.def Info: Requested size: 483.69687pt x 256.15553pt on input lin
-e 214.
- [51 <./img/strojenie-a.png> <./img/strojenie-b.png>]
-<img/references.png, id=829, 578.16pt x 433.62pt>
-File: img/references.png Graphic file (type png)
-<use img/references.png>
-Package pdftex.def Info: img/references.png  used on input line 232. on input l
-ine 232.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 232.
-<img/trilat-przegryw.png, id=830, 578.16pt x 433.62pt>
-File: img/trilat-przegryw.png Graphic file (type png)
-<use img/trilat-przegryw.png>
-Package pdftex.def Info: img/trilat-przegryw.png  used on input line 238. on in
-put line 238.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 238.
- [52 <./img/strojenie-c.png>]
-<img/trilat-map3-1.png, id=839, 578.16pt x 433.62pt>
-File: img/trilat-map3-1.png Graphic file (type png)
-<use img/trilat-map3-1.png>
-Package pdftex.def Info: img/trilat-map3-1.png  used on input line 244. on inpu
-t line 244.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 244.
-<img/trilat-map3-2.png, id=840, 578.16pt x 433.62pt>
-File: img/trilat-map3-2.png Graphic file (type png)
-<use img/trilat-map3-2.png>
-Package pdftex.def Info: img/trilat-map3-2.png  used on input line 250. on inpu
-t line 250.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 250.
- [53 <./img/references.png> <./img/trilat-przegryw.png>]
-<img/trilat-map3-3.png, id=847, 578.16pt x 433.62pt>
-File: img/trilat-map3-3.png Graphic file (type png)
-<use img/trilat-map3-3.png>
-Package pdftex.def Info: img/trilat-map3-3.png  used on input line 255. on inpu
-t line 255.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 255.
-<img/trilat-map3-4.png, id=848, 578.16pt x 433.62pt>
-File: img/trilat-map3-4.png Graphic file (type png)
-<use img/trilat-map3-4.png>
-Package pdftex.def Info: img/trilat-map3-4.png  used on input line 260. on inpu
-t line 260.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 260.
- [54 <./img/trilat-map3-1.png> <./img/trilat-map3-2.png>]
-<img/trilat-map3-5.png, id=855, 578.16pt x 433.62pt>
-File: img/trilat-map3-5.png Graphic file (type png)
-<use img/trilat-map3-5.png>
-Package pdftex.def Info: img/trilat-map3-5.png  used on input line 265. on inpu
-t line 265.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 265.
-<img/trilat-map3-6.png, id=856, 578.16pt x 433.62pt>
-File: img/trilat-map3-6.png Graphic file (type png)
-<use img/trilat-map3-6.png>
-Package pdftex.def Info: img/trilat-map3-6.png  used on input line 270. on inpu
-t line 270.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 270.
-
-[55 <./img/trilat-map3-3.png> <./img/trilat-map3-4.png>]
-<img/trilat-map3-7.png, id=864, 578.16pt x 433.62pt>
-File: img/trilat-map3-7.png Graphic file (type png)
-<use img/trilat-map3-7.png>
-Package pdftex.def Info: img/trilat-map3-7.png  used on input line 275. on inpu
-t line 275.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 275.
-<img/trilat-map3-8.png, id=865, 578.16pt x 433.62pt>
-File: img/trilat-map3-8.png Graphic file (type png)
-<use img/trilat-map3-8.png>
-Package pdftex.def Info: img/trilat-map3-8.png  used on input line 280. on inpu
-t line 280.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 280.
- [56 <./img/trilat-map3-5.png> <./img/trilat-map3-6.png>]
-<img/trilat-map3-9.png, id=872, 578.16pt x 433.62pt>
-File: img/trilat-map3-9.png Graphic file (type png)
-<use img/trilat-map3-9.png>
-Package pdftex.def Info: img/trilat-map3-9.png  used on input line 285. on inpu
-t line 285.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 285.
-<img/trilat-map3-10.png, id=873, 578.16pt x 433.62pt>
-File: img/trilat-map3-10.png Graphic file (type png)
-<use img/trilat-map3-10.png>
-Package pdftex.def Info: img/trilat-map3-10.png  used on input line 290. on inp
-ut line 290.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 290.
- [57 <./img/trilat-map3-7.png> <./img/trilat-map3-8.png>]
-<img/trilat-map3-11.png, id=880, 578.16pt x 433.62pt>
-File: img/trilat-map3-11.png Graphic file (type png)
-<use img/trilat-map3-11.png>
-Package pdftex.def Info: img/trilat-map3-11.png  used on input line 295. on inp
-ut line 295.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 295.
- [58 <./img/trilat-map3-9.png> <./img/trilat-map3-10.png>]
-<img/pf-map3-1.png, id=889, 578.16pt x 433.62pt>
-File: img/pf-map3-1.png Graphic file (type png)
-<use img/pf-map3-1.png>
-Package pdftex.def Info: img/pf-map3-1.png  used on input line 307. on input li
-ne 307.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 307.
-<img/pf-map3-2.png, id=890, 578.16pt x 433.62pt>
-File: img/pf-map3-2.png Graphic file (type png)
-<use img/pf-map3-2.png>
-Package pdftex.def Info: img/pf-map3-2.png  used on input line 313. on input li
-ne 313.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 313.
- [59 <./img/trilat-map3-11.png>]
-<img/pf-map3-3.png, id=897, 578.16pt x 433.62pt>
-File: img/pf-map3-3.png Graphic file (type png)
-<use img/pf-map3-3.png>
-Package pdftex.def Info: img/pf-map3-3.png  used on input line 318. on input li
-ne 318.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 318.
-<img/pf-map3-4.png, id=898, 578.16pt x 433.62pt>
-File: img/pf-map3-4.png Graphic file (type png)
-<use img/pf-map3-4.png>
-Package pdftex.def Info: img/pf-map3-4.png  used on input line 323. on input li
-ne 323.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 323.
- [60 <./img/pf-map3-1.png> <./img/pf-map3-2.png>]
-<img/pf-map3-5.png, id=905, 578.16pt x 433.62pt>
-File: img/pf-map3-5.png Graphic file (type png)
-<use img/pf-map3-5.png>
-Package pdftex.def Info: img/pf-map3-5.png  used on input line 328. on input li
-ne 328.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 328.
-<img/pf-map3-6.png, id=906, 578.16pt x 433.62pt>
-File: img/pf-map3-6.png Graphic file (type png)
-<use img/pf-map3-6.png>
-Package pdftex.def Info: img/pf-map3-6.png  used on input line 333. on input li
-ne 333.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 333.
-
-[61 <./img/pf-map3-3.png> <./img/pf-map3-4.png>]
-<img/pf-map3-7.png, id=914, 578.16pt x 433.62pt>
-File: img/pf-map3-7.png Graphic file (type png)
-<use img/pf-map3-7.png>
-Package pdftex.def Info: img/pf-map3-7.png  used on input line 338. on input li
-ne 338.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 338.
-<img/pf-map3-8.png, id=915, 578.16pt x 433.62pt>
-File: img/pf-map3-8.png Graphic file (type png)
-<use img/pf-map3-8.png>
-Package pdftex.def Info: img/pf-map3-8.png  used on input line 343. on input li
-ne 343.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 343.
- [62 <./img/pf-map3-5.png> <./img/pf-map3-6.png>]
-<img/pf-map3-9.png, id=922, 578.16pt x 433.62pt>
-File: img/pf-map3-9.png Graphic file (type png)
-<use img/pf-map3-9.png>
-Package pdftex.def Info: img/pf-map3-9.png  used on input line 348. on input li
-ne 348.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 348.
-<img/pf-map3-10.png, id=923, 578.16pt x 433.62pt>
-File: img/pf-map3-10.png Graphic file (type png)
-<use img/pf-map3-10.png>
-Package pdftex.def Info: img/pf-map3-10.png  used on input line 353. on input l
-ine 353.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 353.
- [63 <./img/pf-map3-7.png> <./img/pf-map3-8.png>]
-<img/pf-map3-11.png, id=930, 578.16pt x 433.62pt>
-File: img/pf-map3-11.png Graphic file (type png)
-<use img/pf-map3-11.png>
-Package pdftex.def Info: img/pf-map3-11.png  used on input line 358. on input l
-ine 358.
-Package pdftex.def Info: Requested size: 338.58632pt x 253.93465pt on input lin
-e 358.
- [64 <./img/pf-map3-9.png> <./img/pf-map3-10.png>]) [65 <./img/pf-map3-11.png>]
-
-(./chapters/wnioski.tex
-Rozdzia\PlPrIeC {\l } 6.
-) [66
-
-
-
-] (build/trans.bbl [67
-
-
-
-]
-LaTeX Font Info:    Try loading font information for OT4+cmtt on input line 98.
-
- (/usr/share/texmf-dist/tex/latex/polski/ot4cmtt.fd
-File: ot4cmtt.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
-)
-Underfull \hbox (badness 1616) in paragraph at lines 107--111
-[]\OT4/cmr/m/n/12 Specyfikacja stan-dar-du Blu-eto-oth.  []$\OT4/cmtt/m/n/12 ht
-tps : / / www . bluetooth . com / specifications /
- []
-
-) [68] (./abbreviations.tex))
+)))
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 38.
- [69
+ [7
 
 
 ]
@@ -1500,43 +902,30 @@ Package rerunfilecheck Info: File `trans.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
 
 
-LaTeX Warning: There were undefined references.
-
-
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 38.
  ) 
 Here is how much of TeX's memory you used:
- 8932 strings out of 492985
- 126886 string characters out of 6138637
- 243477 words of memory out of 5000000
- 12024 multiletter control sequences out of 15000+600000
- 15548 words of font info for 44 fonts, out of 8000000 for 9000
+ 8263 strings out of 492985
+ 116020 string characters out of 6138637
+ 229074 words of memory out of 5000000
+ 11671 multiletter control sequences out of 15000+600000
+ 12235 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 30i,11n,51p,1214b,428s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{section*.24} has been referenced but does not exi
-st, replaced by a fixed one
+ 28i,10n,43p,225b,330s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{section*.6} has been referenced but does not exis
+t, replaced by a fixed one
 
-{/usr/share/texmf-dist/fonts/enc/dvips/pl/pltt.enc}{/usr/share/texmf-dist/fonts
-/enc/dvips/pl/plrm.enc}{/usr/share/texmf-dist/fonts/enc/dvips/pl/plms.enc}{/usr
-/share/texmf-dist/fonts/enc/dvips/pl/plme.enc}{/usr/share/texmf-dist/fonts/enc/
-dvips/pl/plmi.enc}{/usr/share/texmf-dist/fonts/enc/dvips/pl/plit.enc}</usr/shar
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/f
-onts/type1/public/pl/plbx12.pfb></usr/share/texmf-dist/fonts/type1/public/pl/pl
-ex10.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plmi12.pfb></usr/share/te
-xmf-dist/fonts/type1/public/pl/plmi6.pfb></usr/share/texmf-dist/fonts/type1/pub
-lic/pl/plmi8.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plr12.pfb></usr/s
-hare/texmf-dist/fonts/type1/public/pl/plr17.pfb></usr/share/texmf-dist/fonts/ty
-pe1/public/pl/plr6.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plr8.pfb></
-usr/share/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/share/texmf-dist/fo
-nts/type1/public/pl/plsy6.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plsy
-8.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plti12.pfb></usr/share/texmf
--dist/fonts/type1/public/pl/pltt12.pfb>
-Output written on build/trans.pdf (69 pages, 2855727 bytes).
+{/usr/share/texmf-dist/fonts/enc/dvips/pl/plit.enc}{/usr/share/texmf-dist/fonts
+/enc/dvips/pl/plrm.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+sy10.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plbx12.pfb></usr/share/te
+xmf-dist/fonts/type1/public/pl/plr12.pfb></usr/share/texmf-dist/fonts/type1/pub
+lic/pl/plr17.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plti12.pfb>
+Output written on build/trans.pdf (7 pages, 105472 bytes).
 PDF statistics:
- 1107 PDF objects out of 1200 (max. 8388607)
- 887 compressed objects within 9 object streams
- 269 named destinations out of 1000 (max. 500000)
- 630 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 107 PDF objects out of 1000 (max. 8388607)
+ 91 compressed objects within 1 object stream
+ 22 named destinations out of 1000 (max. 500000)
+ 54 words of extra memory for PDF output out of 10000 (max. 10000000)
 

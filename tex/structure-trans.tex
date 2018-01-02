@@ -1,33 +1,24 @@
 \nocite{*} %wszystkie wpisy trafią do bibliografii
 \lstset{language=Java, tabsize=2,  basicstyle=\footnotesize\ttfamily, keywordstyle=\underbar}
-\input{title-page}
+
+\input{title-page-trans}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \clearpage
+
 \phantomsection
 \addcontentsline{toc}{chapter}{Spis treści}
 \tableofcontents
 \clearpage
+
 \phantomsection
 \addcontentsline{toc}{chapter}{Spis rysunków}
 \listoffigures
 \clearpage
 
-\input{chapters/wstep}
+\input{chapters/intro}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-\input{chapters/radio}
-\clearpage{\pagestyle{empty}\cleardoublepage}
-
-\input{chapters/lokalizacja-bezprzewodowa}
-\clearpage{\pagestyle{empty}\cleardoublepage}
-
-\input{chapters/projekt-systemu}
-\clearpage{\pagestyle{empty}\cleardoublepage}
-
-\input{chapters/testy}
-\clearpage{\pagestyle{empty}\cleardoublepage}
-
-\input{chapters/wnioski}
+\input{chapters/summary}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
 \phantomsection
@@ -35,6 +26,7 @@
 \bibliographystyle{unsrt}	
 \bibliography{bibliography}
 \clearpage
+
 \phantomsection
 \addcontentsline{toc}{chapter}{Wykaz skrótów}
 \input{abbreviations}

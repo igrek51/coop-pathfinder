@@ -3,46 +3,47 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: build/trans.aux
 The style file: unsrt.bst
 Database file #1: bibliography.bib
-Warning--empty publisher in jupyter
-You've used 21 entries,
+Warning--empty publisher in optimizingPriorities
+Warning--empty publisher in siemiatkowska
+You've used 3 entries,
             1791 wiz_defined-function locations,
-            534 strings with 6320 characters,
-and the built_in function-call counts, 3093 in all, are:
-= -- 243
-> -- 150
+            459 strings with 3972 characters,
+and the built_in function-call counts, 460 in all, are:
+= -- 34
+> -- 12
 < -- 0
-+ -- 60
-- -- 39
-* -- 105
-:= -- 512
-add.period$ -- 63
-call.type$ -- 21
-change.case$ -- 15
++ -- 6
+- -- 3
+* -- 15
+:= -- 76
+add.period$ -- 9
+call.type$ -- 3
+change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 22
-duplicate$ -- 165
-empty$ -- 345
-format.name$ -- 39
-if$ -- 705
+cite$ -- 5
+duplicate$ -- 30
+empty$ -- 58
+format.name$ -- 3
+if$ -- 104
 int.to.chr$ -- 0
-int.to.str$ -- 21
-missing$ -- 22
-newline$ -- 108
-num.names$ -- 16
-pop$ -- 113
+int.to.str$ -- 3
+missing$ -- 6
+newline$ -- 18
+num.names$ -- 3
+pop$ -- 23
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 61
+skip$ -- 6
 stack$ -- 0
 substring$ -- 0
-swap$ -- 21
+swap$ -- 3
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 1
-while$ -- 16
-width$ -- 23
-write$ -- 206
-(There was 1 warning)
+warning$ -- 2
+while$ -- 3
+width$ -- 4
+write$ -- 30
+(There were 2 warnings)

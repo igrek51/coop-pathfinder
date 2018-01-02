@@ -23,7 +23,7 @@ show:
 	okular ${OUT}/${PROJECT}.pdf &
 
 watch:
-	watchtower -i 2 -f '*.tex' -x '*/*' -e make
+	watchtower -i 2 -f '**/*.tex' bibliography.bib -e make
 
 clean:
 	rm -f ${OUT}/*
