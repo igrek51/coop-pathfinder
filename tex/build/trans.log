@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2017.11.18)  2 JAN 2018 03:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2017.11.18)  2 JAN 2018 04:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -814,7 +814,7 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<img/pw.pdf, id=28, pagebox=cropbox, 239.89626pt x 233.87375pt>
+<img/pw.pdf, id=32, pagebox=cropbox, 239.89626pt x 233.87375pt>
 File: img/pw.pdf Graphic file (type pdf)
 <use img/pw.pdf>
 Package pdftex.def Info: img/pw.pdf  used on input line 7. on input line 7.
@@ -849,16 +849,20 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 10.
-) [4
+ [4
 
 
-] (./chapters/summary.tex
+]
 Rozdzia\PlPrIeC {\l } 2.
-) [5
+[5
+
+]) [6] (./chapters/summary.tex
+Rozdzia\PlPrIeC {\l } 3.
+) [7
 
 
 
-] (build/trans.bbl) [6
+] (build/trans.bbl) [8
 
 
 
@@ -890,7 +894,7 @@ LaTeX Font Info:    Try loading font information for U+lasy on input line 3.
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )))
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 38.
- [7
+ [9
 
 
 ]
@@ -907,13 +911,13 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 38.
  ) 
 Here is how much of TeX's memory you used:
- 8263 strings out of 492985
- 116020 string characters out of 6138637
- 229074 words of memory out of 5000000
- 11671 multiletter control sequences out of 15000+600000
+ 8268 strings out of 492985
+ 116065 string characters out of 6138637
+ 230111 words of memory out of 5000000
+ 11673 multiletter control sequences out of 15000+600000
  12235 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 28i,10n,43p,225b,330s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 28i,10n,43p,225b,396s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{section*.6} has been referenced but does not exis
 t, replaced by a fixed one
 
@@ -922,10 +926,10 @@ t, replaced by a fixed one
 sy10.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plbx12.pfb></usr/share/te
 xmf-dist/fonts/type1/public/pl/plr12.pfb></usr/share/texmf-dist/fonts/type1/pub
 lic/pl/plr17.pfb></usr/share/texmf-dist/fonts/type1/public/pl/plti12.pfb>
-Output written on build/trans.pdf (7 pages, 105472 bytes).
+Output written on build/trans.pdf (9 pages, 109661 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
- 91 compressed objects within 1 object stream
- 22 named destinations out of 1000 (max. 500000)
- 54 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 122 PDF objects out of 1000 (max. 8388607)
+ 103 compressed objects within 2 object streams
+ 25 named destinations out of 1000 (max. 500000)
+ 62 words of extra memory for PDF output out of 10000 (max. 10000000)
 

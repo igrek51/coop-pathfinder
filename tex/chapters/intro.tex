@@ -19,7 +19,29 @@ Podstawowe wymagania:
 	\item Planowanie tras dotyczy robotów holonomicznych.
 \end{itemize}
 
-Konspekt pracy:
+\chapter{Konspekt pracy}
+\label{ch:konspekt}
 \begin{itemize}
-	\item Wstęp teoretyczny
+	\item Wstęp teoretyczny:
+	\begin{itemize}
+		\item Cooperative Pathfinding
+		\item algorytm A* - szczegółowo
+		\item przegląd metod planowania tras dla wielu robotów
+		\item artykuł o Cooperative Pathfinding, time-space A*
+		\item artykuł o wyznaczaniu priorytetów i metodach planowania tras (prezentacja): Path Coordination, time-space A*
+		\item metoda ładunków - problem minimów lokalnych
+		\item replanowanie po wykruciu kolizcji (algorytm D*)
+		\item algorytmy WHCA* i IADPP
+		\item Reciprocal Collision Avoidance
+		\item metody przydziału priorytetów - zwiększanie i przeliczanie
+		\item metody zcentralizowane vs rozproszone (porównanie)
+		\item time-space A*, heurystyki, Reservation Table
+	\end{itemize}
+	\item generowanie mapy - labiryntu do testów: własny algorytm, teoria grafów, własności mapy
+	\item metoda przydziału / zmiany priorytetów
+	\item obszerne testy, porównanie wyników metod przy tych samych warunkacj początkowych
+	\item zastosowanie: ciasne korytarze, częsty problem kolizji, szpitale, transport dokumentów, paczek
+	\item time-space A* - pseudokod, schemat blokowy, własne heurystyki, modyfikacje
+	\item ograniczenia - nałożone uproszczenia: ruch skośny, czas dyskretny
+	\item Implementacja aplikacji - stack technologiczny: Java 8, Java FX, Spring, Spring Boot, testy jednostkowe jUnit, git, IntelliJ, Maven, Linux
 \end{itemize}

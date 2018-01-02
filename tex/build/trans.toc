@@ -1,6 +1,7 @@
 \contentsline {chapter}{Spis tre\IeC {\'s}ci}{2}{section*.1}
 \contentsline {chapter}{Spis rysunk\IeC {\'o}w}{3}{section*.3}
 \contentsline {chapter}{\numberline {1}Wst\IeC {\k e}p}{4}{chapter.1}
-\contentsline {chapter}{\numberline {2}Wnioski}{5}{chapter.2}
-\contentsline {chapter}{Bibliografia}{6}{section*.5}
-\contentsline {chapter}{Wykaz skr\IeC {\'o}t\IeC {\'o}w}{7}{section*.7}
+\contentsline {chapter}{\numberline {2}Konspekt pracy}{5}{chapter.2}
+\contentsline {chapter}{\numberline {3}Wnioski}{7}{chapter.3}
+\contentsline {chapter}{Bibliografia}{8}{section*.5}
+\contentsline {chapter}{Wykaz skr\IeC {\'o}t\IeC {\'o}w}{9}{section*.7}
