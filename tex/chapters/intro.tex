@@ -1,5 +1,5 @@
-\chapter{Wstęp teoretyczny}
-\label{ch:wstept}
+\chapter{Wstęp}
+\label{ch:wstep}
 
 \section{Cel pracy}
 Przedmiotem niniejszej pracy jest przegląd metod rozwiązujacych zagadnienie planowania bezkolizyjnych tras dla wielu robotów. Stanowi to również wstęp teoretyczny do zaprojektowania algorytmu i implementacji oprogramowania pozwalającego na symulację działania systemu planowania tras.
@@ -24,6 +24,9 @@ Metoda hill-climbing jest rodzajem matematycznej optymalizacji, lokalną metodą
 Jest to iteracyjny algorytm, który zaczyna w wybranym rozwiązaniu problemu, następnie próbuje znaleźć lepsze rozwiązanie poprzez przyrostowe zmiany pojedynczych elementów rozwiązania.
 Jeśli zmiana przynosi lepsze rozwiązanie, jest wprowadzana do nowego rozwiązania.
 Kroki algorytmu powtarzane są dotąd, aż żadne ``udoskonalenie'' nie zostaje znalezione.
+
+\chapter{Metody planowania tras}
+\label{ch:path_planning_methods}
 
 \section{Metody planowania tras}
 Spośród metod wykorzystywanych do planowania tras dla wielu robotów można wyróżnić dwie zasadnicze grupy \cite{latombe}:
@@ -79,8 +82,9 @@ Idea metody Path coordination przedstawia się następująco \cite{optpriorities
 \end{enumerate}
 Złożoność metody wynosi $O(n \cdot m \cdot log(m))$, $m$ - maksymalna liczba stanów podczas planowania, $n$ - liczba robotów
 
-\subsubsection{Konieczność wyboru priorytetów}
-O istotnym aspekcie doboru priorytetów robotów świadczy prosty przykład przedstawiony na rysunku \ref{fig:image_article1_fig1}. Jeśli robot 1 (zmierzający z punktu S1 do G1) otrzyma wyższy priorytet niż robot 2 (zmierzający z S2 do G2), spowoduje to zablokowanie przejazdu dla robota 2 i w efekcie prawidłowe rozwiązanie nie zostanie znalezione.
+\subsection{Wybór priorytetów}
+$TODO$ nie dotyczy tylko Path coordination, ale też A* time-space
+Istotną rolę doboru priorytetów robotów w procesie planowania tras ukazuje prosty przykład przedstawiony na rysunku \ref{fig:image_article1_fig1}. Jeśli robot 1 (zmierzający z punktu S1 do G1) otrzyma wyższy priorytet niż robot 2 (zmierzający z S2 do G2), spowoduje to zablokowanie przejazdu dla robota 2 i w efekcie prawidłowe rozwiązanie nie zostanie znalezione.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=10cm]{img/article1/fig1}
@@ -88,36 +92,10 @@ O istotnym aspekcie doboru priorytetów robotów świadczy prosty przykład prze
 	\label{fig:image_article1_fig1}
 \end{figure}
 
-\subsubsection{A* w konfiguracji czaso-przestrzennej}
-Algorytm:
-\begin{itemize}
-	\item Przypisanie priorytetów do poszczególnych robotów
-	\item Wykonywanie kroków A* z rozpatrywaniem czasu i przestrzeni - podział otoczenia na siatkę pól, zapisywanie prawdopodobieństwa zajętości pola w danej chwili
-\end{itemize}
-Złożoność:
-\begin{itemize}
-	\item $O(n \cdot m \cdot log(m))$, m - maksymalna liczba stanów podczas planowania (lista otwartych) % n - liczba robotów, m - maksymalna liczba stanów podczas planowania w konfiguracji time-space = maksymalny rozmiar listy OPEN
-\end{itemize}
-% jak działa A*, A* sprowadza się do Dijkstry
-
-\subsubsection{Wpływ układu priorytetów na długość tras}
+Układ priorytetów może mieć również zasadniczy wpływ na długość uzyskanych tras. Odpowiedni przykład został przedstawiony na rysunku \ref{fig:image_article1_ppt6}. W zależności od wyboru priorytetów, wpływających na kolejność planowania tras, otrzymujemy różne rozwiązania.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=13cm]{img/article1/ppt6}
-	\caption{Niezależne planowanie optymalnych tras dla 2 robotów; suboptymalne rozwiązanie, gdy robot 1 ma wyższy priorytet; rozwiązanie, gdy robot 2 ma wyższy priorytet}
+	\caption{a) Niezależne planowanie optymalnych tras dla 2 robotów; b) suboptymalne rozwiązanie, gdy robot 1 ma wyższy priorytet; c) rozwiązanie, gdy robot 2 ma wyższy priorytet}
+	\label{fig:image_article1_ppt6}
 \end{figure}
-
-\section{Wybór priorytetów}
-\subsubsection{Elastyczny dobór priorytetów}
-Obecne techniki pozostawiają dowolny wybór priorytetów lub korzystają z ustalonego z góry stałego układu kolejności robotów. \\
-
-\section{Podusmowanie}
-\subsection{Wnioski}
-\begin{itemize}
-	\item Testy przeprowadzono w dwóch różnych środowiskach (acykliczne / cykliczne). Losowo generowano punktów startu i celu
-	\item Zaprezentowano metodę doboru priorytetów dla rozproszonych metod planowania dróg dla grupy robotów mobilnych.
-	\item Zaproponowane podejście to randomizowana metoda, która cyklicznie zamienia kolejność robotów w celu znalezienia sekwencji, dla której można wyznaczyć plan dróg oraz w celu minimalizacji całkowitej długości tras.
-	\item Jest to algorytm, który może być zatrzymany w dowolnym momencie i może zawsze zwrócić obecnie najlepsze rozwiązanie.
-	\item Metoda została zaimplementowana i przetestowana na rzeczywistych robotach i w rozległych testach symulacyjnych dla dwóch różnych metod planowania dróg oraz dla dużej liczby robotów.
-	\item Wyniki eksperyentu pokazały, że metoda potrafi znacząco zmniejszyć liczbę niepowodzeń (gdy żadne rozwiązanie nie zostaje znalezione) i znacznie zmniejszyć całkowitą długość tras.
-\end{itemize}

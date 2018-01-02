@@ -6,7 +6,8 @@ Kiedy pojedynczy agent dokonuje znalezienia drogi do wyznaczonego celu, prosty a
 Zagadnienie znajdowania drogi jest ważnym elementem sztucznej inteligencji zaimplementowanej w wielu grach komputerowych. Chociaż klasyczny algorytm A* potrafi doprowadzić pojedynczego agenta do celu, to jednak dla wielu agentów wymagane jest zastosowanie innego podejścia w celu unikania kolizji. Algorytm A* może zostać zaadaptowany do replanowania trasy na żądanie, w przypadku wykrycia kolizji tras (Local Repair A* lub D*). Jednak takie podejście nie jest zadowalające pod wieloma względami. Na trudnych mapach z wieloma wąskimi korytarzami i wieloma agentami może to prowadzić do zakleszczenia agentów w wąskich gardłach lub do cyklicznego zapętlenia ruchu agentów. \cite{cooppath}
 
 \section{Algorytm A*}
-$TODO$
+$TODO$ szczegółowo
+% jak działa A*, A* sprowadza się do Dijkstry
 
 \section{Local Repair A*}
 W algorytmie Local Repair A* (LRA*) każdy z agentów znajduje drogę do celu, używając algorytmu A*, ignorując pozostałe roboty oprócz ich obecnych sąsiadów. Roboty zaczynają podążać wyznaczonymi ścieżkami do momentu, aż kolizja z innym robotem jest nieuchronna. Wtedy następuje ponowne przeliczenie drogi pozostałej do przebycia, z uwzględnieniem nowo napotkanej przeszkody.
@@ -17,12 +18,21 @@ Algorytm ten ma jednak sporo poważnych wad, które szczególnie ujawniają się
 
 \section{Algorytm D*}
 D* ({\it Dynamic A* Search}) jest przyrostowym algorytmem przeszukiwania. Jest modyfikacją algorytmu A* pozwalającą na szybsze replanowanie trasy w wyniku zmiany otoczenia (np. zajmowania wolnego pola przez innego robota). Wykorzystywany jest m.in. w nawigacji robota do określonego celu w nieznanym terenie. Początkowo robot planuje drogę na podstawie pewnych założeń (np. nieznany teren nie zawiera przeszkód). Podążając wyznaczoną ścieżką, robot odkrywa rzeczywisty stan mapy i jeśli to konieczne, wykonuje ponowne planowanie trasy na podstawie nowych informacji.
-Często wykorzystywaną implementacją (z uwagi na zoptymalizowaną złożoność obliczeniową) jest algorytm {\it D* Lite} \cite{dstarlite}.
+Często wykorzystywaną implementacją (z uwagi na zoptymalizowaną złożoność obliczeniową) jest wariant algorytmu {\it D* Lite} \cite{dstarlite}.
 
 \section{Cooperative A*}
+$TODO$
+
+\subsubsection{A* w konfiguracji czaso-przestrzennej}
+$TODO$
+Algorytm:
+\begin{itemize}
+	\item Przypisanie priorytetów do poszczególnych robotów
+	\item Wykonywanie kroków A* z rozpatrywaniem czasu i przestrzeni - podział otoczenia na siatkę pól, zapisywanie prawdopodobieństwa zajętości pola w danej chwili
+\end{itemize}
 
 \section{Hierarchical Cooperative A*}
+$TODO$
 
 \section{Windowed Hierarchical Cooperative A*}
-
 $TODO$
