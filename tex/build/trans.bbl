@@ -1,0 +1,122 @@
+\begin{thebibliography}{10}
+
+\bibitem{localization}
+Aswin~N Raghavan, Harini Ananthapadmanaban, Manimaran~S Sivamurugan, and
+  Balaraman Ravindran.
+\newblock Accurate mobile robot localization in indoor environments using
+  bluetooth.
+\newblock {\em ANRH Ananthapadmanaban}, 2010.
+
+\bibitem{rssi}
+Bing-Fei Wu, Cheng-Lung Jen, and Kuei-Chung Chang.
+\newblock Neural fuzzy based indoor localization by kalman filtering with
+  propagation channel modeling.
+\newblock {\em IEEE International Conference on Systems, Man and Cybernetics},
+  2007.
+
+\bibitem{ble_loco}
+Adel THALJAOUI, Thierry VAL, Nejah NASRI, and Damien BRULIN.
+\newblock Ble localization using rssi measurements and iringla.
+\newblock {\em University of Toulouse}, 2007.
+
+\bibitem{fingerprinting}
+Eduardo Navarro, Benjamin Peuker, and Michael Quan.
+\newblock Wi-fi localization using rssi fingerprinting.
+\newblock {\em California Polytechnic State University}, 2009.
+
+\bibitem{fingerprinting2}
+Evennou and Marx.
+\newblock Advanced integration of wifi and inertial navigation systems for
+  indoor mobile positioning.
+\newblock {\em Division RD, TECH/IDEA, France Telecom}, 2006.
+
+\bibitem{trilat_przeglad}
+Willy Herman and William S.~Murphy Jr.
+\newblock Determination of a position in three dimensions using trilateration
+  and approximate distances.
+\newblock {\em Decision Sciences}, 1995.
+
+\bibitem{trilat_particle}
+Aswin~N Raghavan, Harini Ananthapadmanaban, Manimaran~S Sivamurugan, and
+  Balaraman Ravindran.
+\newblock Accurate mobile robot localization in indoor environments using
+  bluetooth.
+\newblock {\em Indian Institute of Technology Madras}, 2005.
+
+\bibitem{trilat_iter}
+Erin-Ee-Lin Lau, Boon-Giin Lee, Seung-Chul Lee, and Wan-Young Chung.
+\newblock Enhanced rssi-based high accurancy real-time user location tracking
+  system for indoor and outdoor environments.
+\newblock {\em International journal on smart sensing and intelligent systems,
+  vol. 1 no. 2}, 2008.
+
+\bibitem{particle_pl}
+Katarzyna Brzozowska-Rup and Antoni~Leon Dawidowicz.
+\newblock Metoda filtru cząsteczkowego.
+\newblock {\em Matematyka Stosowana 10/2009}, 2009.
+
+\bibitem{daniel}
+Łukasz Chechliński and Daniel Koguciuk.
+\newblock A comprehensive approach to teaching mobile robotics.
+\newblock {\em Journal of Automation, Mobile Robotics and Intelligent Systems},
+  2017.
+
+\bibitem{probabilistic_robotics}
+Sebastian Thrun, Wolfram Burgard, and Dieter Fox.
+\newblock {\em Probabilistic robotics}.
+\newblock Stanford University, 2000.
+
+\bibitem{jupyter}
+Roger R~Labbe Jr.
+\newblock {\em Kalman and Bayesian filters in Python}.
+\newblock 2016.
+
+\bibitem{preskrypt}
+Barbara Siemiątkowska.
+\newblock {\em Nawigacja robotów mobilnych - preskrypt}.
+\newblock Instytut Automatyki i Robotyki, Wydział Mechatroniki Politechniki
+  Warszawskiej, 2011.
+
+\bibitem{landmarks}
+Jonas Schwertfeger.
+\newblock {\em Tutorial on a Probabilistic Measurement Model based on Landmark
+  Range and Bearing Informationt}.
+\newblock Brown University Department of Computer Science, 2007.
+
+\bibitem{agitr}
+Jason~M. O'Kane.
+\newblock {\em A Gentle Introduction to ROS}.
+\newblock University of South Carolina, 2013.
+
+\bibitem{learning_ros}
+Aaron Martinez and Enrique Fernández.
+\newblock {\em Learning ROS for Robotics Programming}.
+\newblock Packt Publishing, 2013.
+
+\bibitem{roswiki}
+Dokumentacja online pakietu {ROS}.
+\newblock \url{wiki.ros.org}.
+\newblock Dostęp: 2017-07-11.
+
+\bibitem{nordic}
+Dokumentacja sdk mikrokontrolerów rodziny nrf51.
+\newblock \url{https://infocenter.nordicsemi.com/index.jsp}.
+\newblock Dostęp: 2017-07-11.
+
+\bibitem{ble}
+Specyfikacja standardu {Bluetooth}.
+\newblock
+  \url{https://www.bluetooth.com/specifications/bluetooth-core-specification}.
+\newblock Dostęp: 2017-07-11.
+
+\bibitem{pybluez}
+Dokumentacja biblioteki {PyBlueZ}.
+\newblock \url{https://github.com/karulis/pybluez/wiki}.
+\newblock Dostęp: 2017-07-11.
+
+\bibitem{scipy}
+Dokumentacja biblioteki {SciPy}.
+\newblock \url{https://docs.scipy.org/}.
+\newblock Dostęp: 2017-07-11.
+
+\end{thebibliography}

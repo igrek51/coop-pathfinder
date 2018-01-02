@@ -1,26 +1,26 @@
-PROJECT=mgr
+PROJECT=trans
 PROJECT_VIEW=${PROJECT}_view
 OUT=build
 LATEX=pdflatex -interaction nonstopmode -halt-on-error -file-line-error
 
 all: clean build
 
-build: latex1 bibligrafia latex2 cpview
+build: latex1 bibgen latex2
 
 latex1:
+	@echo "========================== pdflatex (1) =========================="
 	${LATEX} --output-directory=${OUT} ${PROJECT}
 
 latex2:
-	${LATEX} --output-directory=${OUT} ${PROJECT}
+	@echo "========================== pdflatex (2) =========================="
+	${LATEX} --output-directory=${OUT} ${PROJECT} 1>/dev/null
 	
-bibligrafia:
-	biber ${OUT}/${PROJECT}
+bibgen:
+	@echo "============================ bibtex =============================="
+	bibtex ${OUT}/${PROJECT}
 
 show:
-	okular ${OUT}/${PROJECT}.pdf
-
-cpview:
-	cp ${OUT}/${PROJECT}.pdf ${OUT}/${PROJECT_VIEW}.pdf
+	okular ${OUT}/${PROJECT}.pdf &
 
 watch:
 	watchtower -i 2 -f '*.tex' -x '*/*' -e make

@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Arch Linux)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: build/trans.aux
+The style file: unsrt.bst
+Database file #1: bibliography.bib
+Warning--empty publisher in jupyter
+You've used 21 entries,
+            1791 wiz_defined-function locations,
+            534 strings with 6320 characters,
+and the built_in function-call counts, 3093 in all, are:
+= -- 243
+> -- 150
+< -- 0
++ -- 60
+- -- 39
+* -- 105
+:= -- 512
+add.period$ -- 63
+call.type$ -- 21
+change.case$ -- 15
+chr.to.int$ -- 0
+cite$ -- 22
+duplicate$ -- 165
+empty$ -- 345
+format.name$ -- 39
+if$ -- 705
+int.to.chr$ -- 0
+int.to.str$ -- 21
+missing$ -- 22
+newline$ -- 108
+num.names$ -- 16
+pop$ -- 113
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 61
+stack$ -- 0
+substring$ -- 0
+swap$ -- 21
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 16
+width$ -- 23
+write$ -- 206
+(There was 1 warning)

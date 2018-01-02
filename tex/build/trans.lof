@@ -1,0 +1,54 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Enkoder inkrementalny wykorzystywany w odometrii}}{9}{figure.1.1}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Zasada dzia\IeC {\l }ania skanera laserowego. Od g\IeC {\'o}ry: 1. Kierowanie wi\IeC {\k a}zki \IeC {\'s}wietlnej. 2. Skanowane pomieszczenie. 3. Wynikowy zbi\IeC {\'o}r punkt\IeC {\'o}w.}}{11}{figure.1.2}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Schemat propagacji fal radiowych}}{14}{figure.2.1}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Przebieg warto\IeC {\'s}ci RSSI dla stacjonarnego odbiornika b\IeC {\k e}d\IeC {\k a}cego w odleg\IeC {\l }o\IeC {\'s}ci 70 cm od nadajnika (znacznik BLE). Pomini\IeC {\k e}to pierwsze 15 sekund pomiaru ze wzgl\IeC {\k e}du na stan nieustalony systemu ROS.}}{14}{figure.2.2}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Rozmieszczenie znacznik\IeC {\'o}w radiowych i punkt\IeC {\'o}w referencyjnych w metodzie fingerprintingu. Znaczniki radiowe oznaczono k\IeC {\'o}\IeC {\l }kami z cyfr\IeC {\k a}, punkty referencyjne }}{20}{figure.3.1}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Trilateracja - przypadek idealny}}{22}{figure.3.2}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Trilateracja - przypadek rzeczywisty - okr\IeC {\k e}gi nak\IeC {\l }adaj\IeC {\k a} si\IeC {\k e}}}{23}{figure.3.3}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Trilateracja - przypadek rzeczywisty - okr\IeC {\k e}gi wog\IeC {\'o}le si\IeC {\k e} nie przecinaj\IeC {\k a}}}{24}{figure.3.4}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Modu\IeC {\l } BLE z procesorem nRF51}}{31}{figure.4.1}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Robot Pioneer 3-AT \cite {daniel}}}{34}{figure.4.2}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Okno programu RViz}}{40}{figure.5.1}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Przebieg warto\IeC {\'s}ci si\IeC {\l }y sygna\IeC {\l }u RSSI w czasie dla odleg\IeC {\l }o\IeC {\'s}ci odbiornika od nadajnika r\IeC {\'o}wnej 1 m}}{42}{figure.5.2}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Przebieg warto\IeC {\'s}ci si\IeC {\l }y sygna\IeC {\l }u RSSI w czasie dla odleg\IeC {\l }o\IeC {\'s}ci odbiornika od nadajnika r\IeC {\'o}wnej 1 m}}{42}{figure.5.3}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Histogram si\IeC {\l }y sygna\IeC {\l }u RSSI w czasie dla odleg\IeC {\l }o\IeC {\'s}ci odbiornika od nadajnika r\IeC {\'o}wnej 1 m}}{43}{figure.5.4}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Histogram si\IeC {\l }y sygna\IeC {\l }u RSSI w czasie dla odleg\IeC {\l }o\IeC {\'s}ci odbiornika od nadajnika r\IeC {\'o}wnej 1 m}}{43}{figure.5.5}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Wykres warto\IeC {\'s}ci si\IeC {\l }y sygna\IeC {\l }u RSSI w zale\IeC {\.z}no\IeC {\'s}ci odleg\IeC {\l }o\IeC {\'s}ci}}{45}{figure.5.6}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Wykres dopasowania krzywych pot\IeC {\k e}gowych do wynik\IeC {\'o}w pomiaru}}{46}{figure.5.7}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Filtr \IeC {\'s}redniej ruchomej}}{47}{figure.5.8}
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Filtr probabilistyczny}}{48}{figure.5.9}
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Por\IeC {\'o}wnanie metod filtracji}}{48}{figure.5.10}
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Mapa \IeC {\'s}rodowiska wyznaczona metod\IeC {\k a} SLAM za pomoc\IeC {\k a} programu GMapping z zaznaczonymi znacznikami radiowymi.}}{50}{figure.5.11}
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Wyznaczanie modelu znacznika A}}{51}{figure.5.12}
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Wyznaczanie modelu znacznika B}}{51}{figure.5.13}
+\contentsline {figure}{\numberline {5.14}{\ignorespaces Wyznaczanie modelu znacznika C}}{52}{figure.5.14}
+\contentsline {figure}{\numberline {5.15}{\ignorespaces Po\IeC {\l }o\IeC {\.z}enie punkt\IeC {\'o}w pomiarowych.}}{53}{figure.5.15}
+\contentsline {figure}{\numberline {5.16}{\ignorespaces Wyniki trilateracji dla modelu obliczonego przez dopasowanie krzywej}}{53}{figure.5.16}
+\contentsline {figure}{\numberline {5.17}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 1}}{54}{figure.5.17}
+\contentsline {figure}{\numberline {5.18}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 2}}{54}{figure.5.18}
+\contentsline {figure}{\numberline {5.19}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 3}}{55}{figure.5.19}
+\contentsline {figure}{\numberline {5.20}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 4}}{55}{figure.5.20}
+\contentsline {figure}{\numberline {5.21}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 5}}{56}{figure.5.21}
+\contentsline {figure}{\numberline {5.22}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 6}}{56}{figure.5.22}
+\contentsline {figure}{\numberline {5.23}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 7}}{57}{figure.5.23}
+\contentsline {figure}{\numberline {5.24}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 8}}{57}{figure.5.24}
+\contentsline {figure}{\numberline {5.25}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 9}}{58}{figure.5.25}
+\contentsline {figure}{\numberline {5.26}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 10}}{58}{figure.5.26}
+\contentsline {figure}{\numberline {5.27}{\ignorespaces Wyniki trilateracji dla r\IeC {\k e}cznie dobranego modelu - punkt 11}}{59}{figure.5.27}
+\contentsline {figure}{\numberline {5.28}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 1}}{60}{figure.5.28}
+\contentsline {figure}{\numberline {5.29}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 2}}{60}{figure.5.29}
+\contentsline {figure}{\numberline {5.30}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 3}}{61}{figure.5.30}
+\contentsline {figure}{\numberline {5.31}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 4}}{61}{figure.5.31}
+\contentsline {figure}{\numberline {5.32}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 5}}{62}{figure.5.32}
+\contentsline {figure}{\numberline {5.33}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 6}}{62}{figure.5.33}
+\contentsline {figure}{\numberline {5.34}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 7}}{63}{figure.5.34}
+\contentsline {figure}{\numberline {5.35}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 8}}{63}{figure.5.35}
+\contentsline {figure}{\numberline {5.36}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 9}}{64}{figure.5.36}
+\contentsline {figure}{\numberline {5.37}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 10}}{64}{figure.5.37}
+\contentsline {figure}{\numberline {5.38}{\ignorespaces Wyniki lokalizacji za pomoc\IeC {\k a} filtra cz\IeC {\k a}steczkowego dla r\IeC {\k e}cznie dobranego modelu - punkt 11}}{65}{figure.5.38}
+\addvspace {10\p@ }

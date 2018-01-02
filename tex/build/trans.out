@@ -1,0 +1,48 @@
+\BOOKMARK [0][-]{section*.1}{Spis tresci}{}% 1
+\BOOKMARK [0][-]{section*.3}{Spis rysunk\363w}{}% 2
+\BOOKMARK [0][-]{chapter.1}{Wstep}{}% 3
+\BOOKMARK [1][-]{section.1.1}{Metody lokalizacji w oparciu o odometrie i skaner laserowy}{chapter.1}% 4
+\BOOKMARK [2][-]{subsection.1.1.1}{Odometria}{section.1.1}% 5
+\BOOKMARK [2][-]{subsection.1.1.2}{Skaner laserowy}{section.1.1}% 6
+\BOOKMARK [2][-]{subsection.1.1.3}{Problem porwanego robota}{section.1.1}% 7
+\BOOKMARK [0][-]{chapter.2}{Zastosowanie znacznik\363w radiowych do mierzenia odleg\233osci}{}% 8
+\BOOKMARK [1][-]{section.2.1}{Propagacja sygna\233u radiowego w pomieszczeniu zamknietym}{chapter.2}% 9
+\BOOKMARK [1][-]{section.2.2}{Wyznaczanie odleg\233osci na podstawie si\233y sygna\233u RSSI}{chapter.2}% 10
+\BOOKMARK [2][-]{subsection.2.2.1}{Aproksymacja za pomoca krzywych wielomianowych}{section.2.2}% 11
+\BOOKMARK [2][-]{subsection.2.2.2}{Interpolacja}{section.2.2}% 12
+\BOOKMARK [2][-]{subsection.2.2.3}{Dopasowanie krzywej logarytmicznej lub wyk\233adniczej}{section.2.2}% 13
+\BOOKMARK [1][-]{section.2.3}{Protok\363\233 Wi-Fi}{chapter.2}% 14
+\BOOKMARK [1][-]{section.2.4}{Protok\363\233 Bluetooth}{chapter.2}% 15
+\BOOKMARK [2][-]{subsection.2.4.1}{Bluetooth Low Energy}{section.2.4}% 16
+\BOOKMARK [0][-]{chapter.3}{Metody lokalizacji na podstawie znacznik\363w radiowych}{}% 17
+\BOOKMARK [1][-]{section.3.1}{Fingerprinting}{chapter.3}% 18
+\BOOKMARK [1][-]{section.3.2}{Trilateracja}{chapter.3}% 19
+\BOOKMARK [1][-]{section.3.3}{Filtr czasteczkowy}{chapter.3}% 20
+\BOOKMARK [2][-]{subsection.3.3.1}{Filtr czasteczkowy dla robota wyposazonego w sensor odometryczny i system pomiaru odleg\233osci od znacznik\363w}{section.3.3}% 21
+\BOOKMARK [0][-]{chapter.4}{Projekt systemu lokalizacji robota}{}% 22
+\BOOKMARK [1][-]{section.4.1}{Platforma sprzetowa}{chapter.4}% 23
+\BOOKMARK [2][-]{subsection.4.1.1}{Znacznik radiowy}{section.4.1}% 24
+\BOOKMARK [2][-]{subsection.4.1.2}{Robot}{section.4.1}% 25
+\BOOKMARK [1][-]{section.4.2}{Oprogramowanie}{chapter.4}% 26
+\BOOKMARK [2][-]{subsection.4.2.1}{Gromadzenie danych ze znacznik\363w}{section.4.2}% 27
+\BOOKMARK [2][-]{subsection.4.2.2}{Filtracja i konwersja danych RSSI na odleg\233osc}{section.4.2}% 28
+\BOOKMARK [2][-]{subsection.4.2.3}{Trilateracja}{section.4.2}% 29
+\BOOKMARK [1][-]{section.4.3}{Filtr czasteczkowy}{chapter.4}% 30
+\BOOKMARK [0][-]{chapter.5}{Badania eksperymentalne}{}% 31
+\BOOKMARK [1][-]{section.5.1}{Wykorzystane narzedzia}{chapter.5}% 32
+\BOOKMARK [1][-]{section.5.2}{Zmiennosc wartosci si\233y sygna\233u RSSI}{chapter.5}% 33
+\BOOKMARK [2][-]{subsection.5.2.1}{Metodyka badan}{section.5.2}% 34
+\BOOKMARK [2][-]{subsection.5.2.2}{Wyniki}{section.5.2}% 35
+\BOOKMARK [1][-]{section.5.3}{Zaleznosc si\233y sygna\233u RSSI od odleg\233osci}{chapter.5}% 36
+\BOOKMARK [2][-]{subsection.5.3.1}{Metodyka badan}{section.5.3}% 37
+\BOOKMARK [2][-]{subsection.5.3.2}{Wyniki}{section.5.3}% 38
+\BOOKMARK [1][-]{section.5.4}{Por\363wnanie metod filtracji si\233y sygna\233u RSSI}{chapter.5}% 39
+\BOOKMARK [2][-]{subsection.5.4.1}{Metodyka badan}{section.5.4}% 40
+\BOOKMARK [2][-]{subsection.5.4.2}{Wyniki}{section.5.4}% 41
+\BOOKMARK [1][-]{section.5.5}{Por\363wnanie metod lokalizacji}{chapter.5}% 42
+\BOOKMARK [2][-]{subsection.5.5.1}{Metodyka badan}{section.5.5}% 43
+\BOOKMARK [2][-]{subsection.5.5.2}{Wyniki}{section.5.5}% 44
+\BOOKMARK [1][-]{section.5.6}{Rozwiazanie problemu porwanego robota za pomoca lokalizacji BLE i AMCL}{chapter.5}% 45
+\BOOKMARK [0][-]{chapter.6}{Wnioski}{}% 46
+\BOOKMARK [0][-]{section*.23}{Bibliografia}{}% 47
+\BOOKMARK [0][-]{section*.25}{Wykaz skr\363t\363w}{}% 48
