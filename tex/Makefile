@@ -1,11 +1,14 @@
-PROJECT=trans
+PROJECT=praca
 PROJECT_VIEW=${PROJECT}_view
 OUT=build
 LATEX=pdflatex -interaction nonstopmode -halt-on-error -file-line-error
 
 all: clean build
 
-build: latex1 bibgen latex2 latex3
+build: latex1 bibgen latex2 success
+
+latex:
+	${LATEX} --output-directory=${OUT} ${PROJECT}
 
 latex1:
 	@echo "========================== pdflatex (1) =========================="
@@ -13,10 +16,6 @@ latex1:
 
 latex2:
 	@echo "========================== pdflatex (2) =========================="
-	${LATEX} --output-directory=${OUT} ${PROJECT} 1>/dev/null
-
-latex3:
-	@echo "========================== pdflatex (3) =========================="
 	${LATEX} --output-directory=${OUT} ${PROJECT} 1>/dev/null
 	
 bibgen:
@@ -27,7 +26,10 @@ show:
 	okular ${OUT}/${PROJECT}.pdf &
 
 watch:
-	watchtower -i 2 -f '**/*.tex' bibliography.bib -e make
+	watchtower -i 2 -f '**/*.tex' 'bibliography.bib' -e make
+
+success:
+	@echo "${OUT}/${PROJECT}.pdf has been generated successfully."
 
 clean:
 	rm -f ${OUT}/*

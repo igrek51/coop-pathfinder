@@ -1,33 +1,32 @@
 \nocite{*} %wszystkie wpisy trafią do bibliografii
 \lstset{language=Java, tabsize=2,  basicstyle=\footnotesize\ttfamily, keywordstyle=\underbar}
+
+% \setpagenumberingtype{gobble} % Remove page numbers (and reset to 1)
+\setcounter{page}{1}
+\newgeometry{tmargin=3cm, bmargin=3cm, lmargin=2cm, rmargin=2cm}
+
 \input{title-page}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \clearpage
+
 \phantomsection
 \addcontentsline{toc}{chapter}{Spis treści}
 \tableofcontents
 \clearpage
-\phantomsection
-\addcontentsline{toc}{chapter}{Spis rysunków}
-\listoffigures
-\clearpage
 
-\input{chapters/wstep}
+\raggedbottom
+% \setpagenumberingtype{arabic} % kontynuowanie numerowania w stylu arabskim
+
+\input{chapters/todo}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-\input{chapters/radio}
+\input{chapters/intro}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-\input{chapters/lokalizacja-bezprzewodowa}
+\input{chapters/intro-astar}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-\input{chapters/projekt-systemu}
-\clearpage{\pagestyle{empty}\cleardoublepage}
-
-\input{chapters/testy}
-\clearpage{\pagestyle{empty}\cleardoublepage}
-
-\input{chapters/wnioski}
+\input{chapters/summary}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
 \phantomsection
@@ -35,6 +34,18 @@
 \bibliographystyle{unsrt}	
 \bibliography{bibliography}
 \clearpage
+
 \phantomsection
 \addcontentsline{toc}{chapter}{Wykaz skrótów}
 \input{abbreviations}
+\clearpage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Spis rysunków}
+\listoffigures
+\clearpage
+
+% \phantomsection
+% \addcontentsline{toc}{chapter}{Spis tabel}
+% \listoftables
+% \clearpage
