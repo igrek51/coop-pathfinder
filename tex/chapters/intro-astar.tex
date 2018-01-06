@@ -9,6 +9,12 @@ $TODO$ Które algorytmy tylko znajdują droge, a które rozwiązują problem kol
 
 $TODO$ Większość z tych algorytmów wykorzystywana jest w grach. planowanie musi odbywać się szybko, szczególnie w grach (screen warcraft :))
 
+$TODO$ poniższe podrozdziały mają  na celu wprowadzanie kolejnych modyfikacji i dotarcie do WHCA*
+
+$TODO$ Silver jest sponsorem tego odcinka
+
+$TODO$ Clearance-based Pathfinding and Hierarchical Annotated A* Search - używane, gdy jednostki zajmują różne obszary, ale chyba tylko dla jednej jednostki (nie cooperative)
+
 \section{Algorytm A*}
 A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znalezienia najkrótszej ścieżki. Algorytm ten jest powszechnie stosowany w zagadnieniach sztucznej inteligencji oraz w grach komputerowych \cite{mit_astar}. Jest modyfikacją algorytmu Dijkstry, wprowadza pojęcie funkcji heurystycznej $h(n)$. Wartość funkcji heurystycznej powinna określać przewidywaną drogę do węzła docelowego. W każdym kroku przeszukiwany jest węzeł o najmniejszej wartości funkcji $f(n)$.
 
@@ -24,7 +30,7 @@ A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znal
 
  $f(n)$ - oszacowanie pełnego kosztu ścieżki od węzła startowego do węzła docelowego prowadzącej przez węzeł $n$
 
- $n$ - węzeł, wierzchołek przeszukiwanego grafu
+ $n$ - bieżący węzeł, wierzchołek przeszukiwanego grafu
 
 Dzięki takiemu podejściu najpierw sprawdzane są najbardziej "obiecujące" rozwiązania, co pozwala szybciej otrzymać rozwiązanie (w przeciwieństwie do algorytmu Dijkstry).
 Algorytm kończy działanie w momencie, gdy napotka węzeł będący węzłem docelowym.
@@ -60,8 +66,10 @@ Każda heurystyka spójna jest dopuszczalna.
 
 A* opiera się na heurystyce, która prowadzi przeszukiwaniem. Słaba heurystyka może prowadzić do zbędnego odwiedzania dodatkowych węzłów.
 
+Przeszukiwanie w A* kontroluje heurystyka. To od niej zależy, w kierunku których węzłów będzie podążało przeszukiwanie.
+
 \subsubsection{Heurystyka Euklidesowa}
-Dla dwuwymiarowej mapy heurystyka euklidesowa wyraża dokładną odległość między przeszukiwanym węzłem $(x_n, y_n)$ a węzłem docelowym $(x_g, y_g)$:
+Dla dwuwymiarowej mapy heurystyka wykorzystująca metrykę euklidesową wyraża dokładną odległość między przeszukiwanym węzłem $(x_n, y_n)$ a węzłem docelowym $(x_g, y_g)$:
 \begin{gather}
  	h(n) = \sqrt{(x_n - x_g)^2 + (y_n - y_g)^2}
  	\label{eq_astar_heu_euc} 
@@ -115,7 +123,7 @@ Pierwotną mapę będziemy nazywac mapą przestrzenną, natomiast nową - czasop
 
 Zagadnienie sprowadza się do przeszukiwania grafu, w którym każdy węzeł ma przypisane 3 wielkości: położenie x, położenie y oraz czas.
 Podczas gdy zakres wielkości x i y jest znany i wynika z rozmiarów mapy oraz podziału jej wymiarów na dyskretne pola, to jednak określenie wymiaru czasu może być trudnym zagadnieniem.
-Wymiar czasu możemy również zdyskretyzować i przyjać, że najmniejsza jednostka jest czasem, jaki zajmuje robotowi przejście z jednego pola na sąsiednie (poziomo lub pionowo). Natomiast górną granicą czasu powinna być maksymalna liczba ruchów potrzebna do dotarcia do celu przez ostatniego robota. Wybór za małej liczby może spowodować, że algorytm nie znajdzie drogi dla niektórych agentów, z kolei za duża granica czasu mocno wydłuża czas obliczeń. Rozwiązanie tego problemu zostało opisane w późniejszym podrozdziale \ref{ch:hier_cooperative_a}.
+Wymiar czasu możemy również zdyskretyzować i przyjać, że najmniejsza jednostka jest czasem, jaki zajmuje robotowi przejście z jednego pola na sąsiednie (poziomo lub pionowo). Natomiast górną granicą czasu powinna być maksymalna liczba ruchów potrzebna do dotarcia do celu przez ostatniego robota. Wybór za małej liczby może spowodować, że algorytm nie zdąży znaleźć drogi dla niektórych agentów, z kolei za duża granica czasu mocno wydłuża czas obliczeń. Rozwiązanie tego problemu zostało opisane w późniejszym podrozdziale \ref{ch:whca}.
 
 Wprowadzenie trzeciego wymiaru powoduje również konieczność zmian w doborze odpowiedniej heurystyki odpowiedzialnej za oszacowanie drogi pozostałej do celu.
 
@@ -152,6 +160,7 @@ Jeśli jedna jednostka zarezerwowała komórki $(x, y, t)$ i $(x + 1, y, t + 1)$
 \section{Hierarchical Cooperative A*}
 \label{ch:hier_cooperative_a}
 Metoda {\it Hierarchical Cooperative A*} (HCA*) wprowadza pewną modyfikację do algorytmu Cooperative A*. Modyfikacja ta dotyczy heurystyki opartej na abstrakcjach przestrzeni stanu. W tym podejściu abstrakcyjne odległości są obliczane na żądanie. Hierarchia w tym przypadku dotyczy serii abstrackji przestrzeni stanu, każdej bardziej ogólnej od poprzedniej. \cite{cooppath}
+HCA* jest również jednym z przykładów rozproszonego podejścia do planowania tras.
 
 Podejście (HCA*) wykorzystuje prostą hierarchię zawierającą pojedynczą abstrakcję dziedziny, która ignoruje wymiar czasu, jak również tablicę rezerwacji.
 Innymi słowy, abstrakcja jest prostą dwuwymiarową mapą z usuniętymi agentami. Abstrakcyjne odległości mogą być rozumiane jako dokładne oszacowania odległości do celu, ignorując potencjalne interakcje z innymi agentami. Jest to oczywiście dopuszczalna i spójna heurystyka. Niedokładność heurystyki wynika jedynie z trudności związanych z interakcją z innymi agentami (jak bardzo agent musi zboczyć z pierwotnie zaplanowanej ścieżki w celu ominięcia innych agentów).
@@ -162,85 +171,24 @@ Algorytm ten wykonuje zmodyfikowane przeszukiwanie A* w odwrotnym kierunku. Prze
 Algorytm HCA* jest więc taki, jak algorytm CA* z bardziej wyszukaną heurystyką, która używa RRA* do obliczania abstrakcyjnych odległości na żądanie.
 
 \section{Windowed Hierarchical Cooperative A*}
-$TODO$
-One issue with the previous algorithms is how they termi-
-nate once the agents reach their destination. If an agent sits
-on its destination, for example in a narrow corridor, then
-it may block off parts of the map to other agents. Ideally,
-agents should continue to cooperate after reaching their des-
-tinations, so that an agent can move off its destination and
-allow others to pass.
+\label{ch:whca}
+Problematyczne zagadnienie związane z wyżej wspomnianymi algorytmami jest takie, że kończą one działanie w momencie, gdy agent osiąga swój cel. Jeśli agent znajduje się już w miejscu docelowym, np. w wąskim korytarzu, to może on blokować części mapy dla innych agentów. W takiej sytuacji agenci powinni kontynuować kooperację z pozostałymi jednostkami, nawet po osiągnięciu swoich celów. Może to zostać zrealizowane np. poprzez usunięcie się z wąskiego gardła w celu przepuszczenia pozostałcyh agentów, a następnie powrót do docelowego punktu. \cite{cooppath}
 
-A second issue is the sensitivity to agent ordering. Al-
-though it is sometimes possible to prioritise agents globally
-(Latombe 1991), a more robust solution is to dynamically
-vary the agent order, so that every agent will have the high-
-est priority for a short period of time. Solutions can then
-be found which would be unsolvable with an arbitrary, fixed
-agent order.
+Kolejny problem związany jest z wrażliwością na kolejność agentów (przydzielone priorytety). Chociaż czasem możliwe jest skuteczny, globalny przydział priorytetów \cite{latombe}, to jednak dobrym rozwiązaniem może być dynamiczne modyfikowanie kolejności agentów. Wtedy rozwiązania mogą zostać znalezione w tych przypadkach, w których zawiodło przydzielanie niezmiennych priorytetów. \cite{cooppath}
 
-A simple solution to all of these issues is to window the
-search. The cooperative search is limited to a fixed depth
-specified by the current window. Each agent searches for a
-partial route to its destination, and then begins following the
-route. At regular intervals (e.g. when an agent is half-way
-through its partial route) the window is shifted forwards and
-a new partial route is computed.
+Rozwiązaniem powyższych kwestii jest zamknięcie algorytmu przeszukiwania w oknach czasowych.
+Kooperacyjne planowanie jest ograniczone do ustalonej głębokości. Każdy agent szuka częściowej ścieżki do celu i zaczyna nią podążać. W regularnych okresach (np. gdy agent jest w połowie drogi) okno jest przesuwane naprzód i wyznaczana jest nowa ścieżka.
 
-To ensure that the agent heads in the correct direction,
-only the cooperative search depth is limited to a fixed depth,
-whilst the abstract search is executed to full depth. A win-
-dow of size w can be viewed as an intermediate abstraction
-that is equivalent to the base level state space for w steps,
-and then equivalent to the abstract level state space for the
-remainder of the search. In other words, other agents are
-only considered for w steps (via the reservation table) and
-are ignored for the remainder of the search.
-\cite{cooppath}
+Aby zapewnić, że agenci podążają do prawidłowych punktów docelowych, ograniczana jest tylko głębokość przeszukiwania kooperacyjnego (związanego z wieloma agentami), podczas gdy przeszukiwanie abstrakcyjnych odległości (heurystyki opisanej w podrozdziale \ref{ch:hier_cooperative_a}) odbywa się bez ograniczeń głębokości. Okno o rozmiarze $w$ może być rozumiane jako pośrednia abstrakcja, która jest równoważna wykonaniu $w$ kroków w rzeczywistym środowisku (z uwzględnieniem pozostałych agentów) a następnie wykonaniu pozostałych kroków zgodnie z abstrakcją (bez uwzględnienia innych agentów). Innymi słowy, pozostali agenci są jedynie rozważani dla $w$ pierwszych kroków (poprzez tablicę rezerwacji) a dla pozostałych kroków są ignorowani \cite{cooppath}.
 
+Rozmiar okna jest wielkością ustalaną arbitralnie. Dobrą praktyką jest przyjęcie wartości równej liczbie agentów na mapie, gdyż to właśnie z ich powodów mogą wystąpić ewentualne zmiany w planowaniu tras.
 
-$TODO$
-One example of a decoupled approach is HCA* [Silver,
-2005]. HCA* employs a reservation table for timestep-
-location pairs. The algorithm chooses a fixed ordering of
-agents, and plans a path for each agent in turn that avoids con-
-flicts with previously computed paths by checking against the
-reservation table. Unfortunately, in over half of our bench-
-mark instances, some agents never reach their destinations
-because the paths found for previous agents in the fixed or-
-der can make finding paths for subsequent agents impossi-
-ble. Using a windowed search, Silver’s WHCA* mitigates
-this problem at the cost of solution quality and running time.
-\cite{completealgo_standley}
+\subsubsection{Porównanie HCA* i WHCA*}
+Algorytm HCA* wybiera ustaloną kolejność agentów i planuje trasy dla każdego agenta po kolei, unikając kolizji z poprzednio wyznaczonymi ścieżkami. 
+Natomiast użycie przeszukiwania z przesuwanym oknem w WHCA* poprawia skuteczność algorytmu oraz przyspiesza proces wyznaczania rozwiązania \cite{completealgo_standley}.
 
-$TODO$
-WHCA* (Windowed Hierarchical Cooperative A*) uses a temporal-spatial search, that
-is, a node in the search tree is not only defined by the position, but is also defined by the
-time the agent will be there. The search is also windowed; this means that it is performed
-a fixed number of steps into the future, and the most promising node at the edge of this
-window is selected.
-To plan all the agents' paths at the same time carries an all-to-high computational cost[9].
-Instead, a reservation table is used. The path of every agent is planned independently, and
-every position and time that a node is blocked is recorded in the reservation table. This is
-a reasonable approach to decrease the computational costs involved, which although it may
-not solve all problems, will be able to solve many of them.
-To focus the search, a spatial reverse A* search is used as heuristic for the temporal-
-spatial search. That is, it is used to calculate the exact distance from a node to the goal,
-excluding the influence other agents may have on this distance. This generally focuses the
-search a lot, as this is often a very high-quality heuristic. It gets worse with a higher level
-of congestion in the environment.
-However, this reverse A* search leads to a high initial cost when performing the first
-windowed temporal-spatial search, as it needs to perform a full A* search from the goal
-to the start (as well as to some nodes neighbouring the start), but the cost for subsequent
-searches will be lower.
-\cite{rtcooppathfinding}
+Fakt wykonywania przeszukiwania w oknie oznacza, że planowanie algorytmem WHCA* wykonywane jest zawsze z ustaloną liczbą kroków w przyszłości i wybierany jest najbardziej obiecujący węzeł na granicy tego okna \cite{rtcooppathfinding}. W metodach Hierarchical Cooperative A* oraz Cooperative A* wybór granicy wymiaru czasu (głębokości przeszukiwania w liczbie kroków) stanowi balans pomiędzy wydajnością a zupełnością algorytmu.
 
-Windowed Hierarchical Cooperative A*:
-• Cooperative A*
-• Hierarchical Heuristic
-• Windowed cooperation
+W obu podejściach HCA* i WHCA* zastosowano dodatkowy algorytm przeszukiwania wstecz (RRA*) wspomagający heurystykę. Służy on wyznaczeniu dokładnej odległości z węzła do celu, pomijając wpływ innych agentów. Jest to często heurystyka wysokiej jakości (bardzo dobre oszacowanie), gorzej sprawdza się jedynie w środowiskach z dużą ilością wąskich gardeł i zatorów. \cite{rtcooppathfinding}
 
-Use a hash table to store time-space indexed reservations
-• Reserve / Free a space/time cell
-
-$TODO$ Clearance-based Pathfinding and Hierarchical Annotated A* Search - używane, gdy jednostki zajmują różne obszary, ale chyba tylko dla jednej jednostki (nie cooperative)
+Chociaż takie przeszukiwanie wstecz prowadzi do początkowego wykonania większej ilości obliczeń (wykonanie pełnego przeszukania A* z punktu docelowego do punktu startowego, jak również do innych węzłów), to jednak koszt obliczeniowy w kolejnych krokach jest już zdecydowanie niższy. \cite{rtcooppathfinding}
