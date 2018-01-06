@@ -18,9 +18,11 @@ A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znal
 \end{gather}
  gdzie:
 
- $g(n)$ - wartość kosztu, dokładna odgległość miedzy węzłem $n$ a węzłęm startowym
+ $g(n)$ - dotychczasowy koszt dotarcia do węzła $n$ - dokładna odgległość miedzy węzłem $n$ a węzłęm początkowym
 
- $h(n)$ - heurystyka, przewidywana droga do węzła docelowego
+ $h(n)$ - heurystyka, przewidywana pozostała droga od węzła bieżącego do węzła docelowego
+
+ $f(n)$ - oszacowanie pełnego kosztu ścieżki od węzła startowego do węzła docelowego prowadzącej przez węzeł $n$
 
  $n$ - węzeł, wierzchołek przeszukiwanego grafu
 
@@ -39,14 +41,22 @@ Dla każdego odwiedzonego węzła zapamiętywane są wartości $g(n)$, $h(n)$ or
 Od wyboru sposobu obliczania heurystyki zależy czas wykonywania algorytmu oraz optymalność wyznaczonego rozwiązania.
 Poniżej przedstawiono najczęściej wykorzystywane heurystyki.
 
+Funkcja heurystyczna $h(n)$ jest dopuszczalna, jeśli dla dowolnego węzła $n$ spełniony jest warunek $h(n) <= h*(n)$
+ gdzie:
+
+ $h*(n)$ - rzeczywisty koszt ścieżki od węzła $n$ do celu
+
+Przeszukiwanie A* bez eliminacji powtarzających się stanów przy użyciu heurystyki dopuszczalnej znajduje zawsze rozwiązanie optymalne.
+
 $TODO$ Jeśli wartość heurystyki <= od rzeczywistej drogi, jaka musi zostać przebyta, to wyznaczona scieżka jest ścieżką optymalną (najkrótszą)
 = admissible heuristic
 An admissible heuristic never overestimates the distance to the goal. A* search with an
 admissible heuristic is guaranteed to find the shortest path. However, there is a stronger
 property, known as consistency [Russell03]. A consistent heuristic maintains the property
-h(A) ≤ cost(A, B) + h(B) between all locations A and B. In other words, the estimated
-distance doesn’t jump around between the locations along a path.
-\cite{cooppath}
+$h(A) <= cost(A, B) + h(B)$ between all locations A and B. In other words, the estimated
+distance doesn’t jump around between the locations along a path. \cite{cooppath}
+Heurystyka spójna (gdy dla każdego węzła A).
+Każda heurystyka spójna jest dopuszczalna.
 
 A* opiera się na heurystyce, która prowadzi przeszukiwaniem. Słaba heurystyka może prowadzić do zbędnego odwiedzania dodatkowych węzłów.
 
@@ -141,38 +151,15 @@ Jeśli jedna jednostka zarezerwowała komórki $(x, y, t)$ i $(x + 1, y, t + 1)$
 
 \section{Hierarchical Cooperative A*}
 \label{ch:hier_cooperative_a}
-$TODO$
-The second generic method for improving a heuristic based on abstractions of the state space is to use Hierarchical A*.
-With this approach the abstract distances are computed on demand. The hierarchy in this case refers to a
-series of abstractions of the state space, each more general
-than the previous, and is not restricted to spatial hierarchy.
-The choice of hierarchy is critical, and that
-large hierarchies may in fact perform worse than small, sim-
-ple hierarchies.
+Metoda {\it Hierarchical Cooperative A*} (HCA*) wprowadza pewną modyfikację do algorytmu Cooperative A*. Modyfikacja ta dotyczy heurystyki opartej na abstrakcjach przestrzeni stanu. W tym podejściu abstrakcyjne odległości są obliczane na żądanie. Hierarchia w tym przypadku dotyczy serii abstrackji przestrzeni stanu, każdej bardziej ogólnej od poprzedniej. \cite{cooppath}
 
-Hierarchical Cooperative A* (HCA*) uses a simple hier-
-archy containing a single domain abstraction, which ignores
-both the time dimension and the reservation table. In other
-words, the abstraction is a simple 2-dimensional map with
-all agents removed. Abstract distances can thus be viewed
-as perfect estimates of the distance to the destination, ig-
-noring any potential interactions with other agents. This is
-clearly an admissible and consistent heuristic. Furthermore,
-the inaccuracy of the heuristic is determined only by the dif-
-ficulty of interacting with other agents (how much the agent
-must deviate from the direct path to avoid other agents).
+Podejście (HCA*) wykorzystuje prostą hierarchię zawierającą pojedynczą abstrakcję dziedziny, która ignoruje wymiar czasu, jak również tablicę rezerwacji.
+Innymi słowy, abstrakcja jest prostą dwuwymiarową mapą z usuniętymi agentami. Abstrakcyjne odległości mogą być rozumiane jako dokładne oszacowania odległości do celu, ignorując potencjalne interakcje z innymi agentami. Jest to oczywiście dopuszczalna i spójna heurystyka. Niedokładność heurystyki wynika jedynie z trudności związanych z interakcją z innymi agentami (jak bardzo agent musi zboczyć z pierwotnie zaplanowanej ścieżki w celu ominięcia innych agentów).
 
-A fourth approach is introduced here, which is to use a Reverse
-Resumable A* (RRA*) search in the abstract domain.
-The RRA* algorithm executes a modified A* search in a
-reverse direction. The search starts at the agent’s goal G,
-and heads towards the agent’s initial position O. Instead
-of terminating at O, the search continues until a specified
-node N is expanded.
+Opisywane podejście wykorzystuje algorytm przeszukiwania Reverse Resumable A* (RRA*) dla abstrakcyjnej dziedziny.
+Algorytm ten wykonuje zmodyfikowane przeszukiwanie A* w odwrotnym kierunku. Przeszukiwanie zaczyna się w węźle docelowym agenta i kieruje się do początkowego położenia. Jednak zamiast kończyć w tym punkcie, przeszukiwanie jest kontynuowane do natrafienia na węzeł $N$, w którym znajduje się agent.
 
-HCA* is just like CA* with a more sophisticated heuris-
-tic, using RRA* to calculate the abstract distance on demand.
-\cite{cooppath}
+Algorytm HCA* jest więc taki, jak algorytm CA* z bardziej wyszukaną heurystyką, która używa RRA* do obliczania abstrakcyjnych odległości na żądanie.
 
 \section{Windowed Hierarchical Cooperative A*}
 $TODO$
