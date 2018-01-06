@@ -3,3 +3,57 @@
 
 $TODO$
 Większość algorytmów Cooperative Pathfinding opiera się o A*
+
+The cooperative pathfinding methods are more successful
+and find higher quality routes than A* with Local Repair.
+Unfortunately, the basic CA* algorithm is costly to compute,
+
+The size of the window has a significant effect on the suc-
+cess and performance of the algorithm. With a large win-
+dow, WHCA* behaves more like HCA* and the initialisa-
+tion time increases. If the window is small, WHCA* be-
+haves more like Local Repair A*. The success rate goes
+down and the path length increases. The window size pa-
+rameter thus provides a spectrum between Local Repair A*
+and HCA*. An intermediate choice appears to give the most robust overall performance.
+In general, the window size should be set to the duration
+of the longest predicted bottleneck. In Real-Time Strategy
+games groups of units are often moved together towards a
+common destination. In this case the maximum bottleneck
+time with cooperative pathfinding (ignoring units in other
+groups) is the number of units in the group. If the window
+size is lower than this threshold, bottleneck situations may
+not be resolved well. If the window size is higher, then some
+redundant search will be performed.
+
+Local Repair A* may be an adequate solution for simple en-
+vironments with few bottlenecks and few agents. With more
+difficult environments, Local Repair A* is inadequate and is
+significantly outperformed by Cooperative A* algorithms.
+
+By introducing Hierarchical A* to improve the heuristic and
+using windowing to shorten the search, a robust and efficient
+algorithm, WHCA*, was developed. WHCA* finds more
+successful routes than Local Repair A*, with shorter paths
+and fewer cycles.
+
+Although this research was restricted to grid environ-
+ments, the algorithms presented here apply equally to more
+general pathfinding domains. Any continuous environment
+or navigational mesh can be used, so long as each agent’s
+route can be planned by discrete motion elements. The grid-
+based reservation table is generally applicable, but reserving
+mesh intersections may be more appropriate in some cases.
+Finally, the cooperative algorithms may be applied in dy-
+namic environments, so long as an agent’s route is recom-
+puted whenever invalidated by a change to the map.
+
+
+Cooperative pathfinding is a general technique for coordinating the paths of many units.
+It is appropriate whenever there are many units on the same side who are able to
+communicate their paths. By planning ahead in time as well as space, units can get out of
+each other’s way and avoid any conflicting routes.
+
+Many of the usual enhancements to spatial A* can also be applied to space-time A*.
+Moreover, the time dimension gives a whole new set of opportunities for pathfinding
+algorithms to explore.

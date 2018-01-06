@@ -41,6 +41,12 @@ Poniżej przedstawiono najczęściej wykorzystywane heurystyki.
 
 $TODO$ Jeśli wartość heurystyki <= od rzeczywistej drogi, jaka musi zostać przebyta, to wyznaczona scieżka jest ścieżką optymalną (najkrótszą)
 = admissible heuristic
+An admissible heuristic never overestimates the distance to the goal. A* search with an
+admissible heuristic is guaranteed to find the shortest path. However, there is a stronger
+property, known as consistency [Russell03]. A consistent heuristic maintains the property
+h(A) ≤ cost(A, B) + h(B) between all locations A and B. In other words, the estimated
+distance doesn’t jump around between the locations along a path.
+\cite{cooppath}
 
 \subsubsection{Heurystyka Euklidesowa}
 Dla dwuwymiarowej mapy heurystyka euklidesowa wyraża dokładną odległość między przeszukiwanym węzłem $(x_n, y_n)$ a węzłem docelowym $(x_g, y_g)$:
@@ -58,6 +64,7 @@ W przypadku, gdy robot może poruszać się po mapie jedynie poziomo lub pionowo
 
 $TODO$ Przykład z Pacmanem - screen - siatka podzielona na pola
 zbliżenie do 0 sprowadza ją do ścieżki optymalnej (Dijkstry) - połowa heurystyki Manhattan daje możliwość wyznaczania trasy z uwzględnieniem zawijania mapy
+The Manhattan distance is a consistent heuristic. The true distance heuristic is also consistent. (no chyba że zawijanie mapy)
 
 \subsubsection{Heurystyka zerowa}
 Przyjęcie heurystyki równej $h(n) = 0$ powoduje, że algorytm A* sprowadza się do algorytmu Dijkstry.
@@ -128,8 +135,44 @@ A* relies on a heuristic to guide search.
 Poor heuristics cause extra node expansions.
 3-dimensional search problem: x-location, y-location, time - Still need a heuristic
 
+\subsection{Trzeci wymiar}
+$TODO$
+To tackle the cooperative pathfinding problem, the search algorithm needs to have full
+knowledge of both obstacles and units. However, when units move around there is no
+satisfactory way to represent their routes on a stationary map. To overcome this problem,
+we extend the map to include a third dimension: time. We will call the original map the
+space map and the new, extended map the space-time map.
+\cite{cooppath}
+
 \subsection{Tablica rezerwacji}
 Tablica rezerwacji (ang. {\it Reservation Table})
+
+$TODO$
+Once a unit has chosen a path, it needs to make sure that other units know to avoid the
+cells along its path. This is achieved by marking each cell into a reservation table. This is
+a straightforward data structure containing an entry for every cell of the space-time map.
+Each entry specifies whether the corresponding cell is available or reserved. Once an
+entry is reserved, it is illegal for any other unit to move into that cell. The reservation acts
+like a transient obstacle, blocking off a location for a single time-step in the future.
+
+Unfortunately, this way of using the reservation table doesn’t prevent two units crossing
+through each other, head to head. If one unit has reserved (x, y, t) and (x + 1, y, t + 1),
+there is nothing to stop a second unit from reserving (x + 1, y, t) and (x, y, t + 1). This
+problem can be avoided by making two reservations for each location involved in the
+action, one at time t and one at time t + 1.
+\cite{cooppath}
+
+trzeba przyjać, że ruchy trwają tyle samo lub podzielić dyskretnie i zaznaczać zajętość pól w wielu kratkach
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1`0cm]{img/reservation-table}
+	\caption{Two units pathfinding cooperatively. (A) The first unit searches for a path and
+marks it into the reservation table. (B) The second unit searches for a path, taking account
+of existing reservations, and also marks it into the reservation table.
+. Źródło: \cite{async_cooppath_spacetime_cp}}
+	\label{fig:img_reservation-table}
+\end{figure}
 
 \subsubsection{A* w konfiguracji czaso-przestrzennej}
 $TODO$

@@ -45,6 +45,7 @@ W zależności od rodzaju i liczby wyróżnionych parametrów stanu przestrzenie
 $TODO$ dopisać definicje i uzupełnić w celu pracy, że będzie to ich dotyczyć
 
 \subsubsection{Metoda hill-climbing}
+$TODO$ wyjebać to?
 Metoda hill-climbing jest rodzajem matematycznej optymalizacji, lokalną metodą przeszukiwania.
 Jest to iteracyjny algorytm, który zaczyna w wybranym rozwiązaniu problemu, następnie próbuje znaleźć lepsze rozwiązanie poprzez przyrostowe zmiany pojedynczych elementów rozwiązania.
 Jeśli zmiana przynosi lepsze rozwiązanie, jest wprowadzana do nowego rozwiązania.
@@ -57,8 +58,10 @@ $TODO$
 \label{ch:path_planning_methods}
 
 \section{Metody planowania tras}
+$TODO$ wyjebać to gówno lub uogólnić
 Spośród metod wykorzystywanych do planowania tras dla wielu robotów można wyróżnić dwie zasadnicze grupy \cite{latombe}:
 \begin{itemize}
+	$TODO$ zcentralizowanie nie muszą być optymalne
 	\item {\bf Zcentralizowane} - drogi wyznaczane są dla wszystkich agentów na raz (jednocześnie). Metody te potrafią znaleźć wszystkie możliwe rozwiązania (w szczególności to optymalne), ale mają bardzo dużą złożoność obliczeniową ze względu na ogromną przestrzeń przeszukiwania. Z tego powodu stosowane są heurystyki przyspieszające proces obliczania rozwiązania.
 	\item {\bf Rozproszone} (ang. {\it decoupled} lub {\it distributed}) - Podejście to dekomponuje zadanie na niezależne lub zależne w niewielkim stopniu problemy dla każdego agenta. Dla każdego robota droga wyznaczana jest osobno, w określonej kolejności, następnie rozwiązywane są konflikty (kolizje dróg). W pewnych przypadkach rozwiązanie może nie zostać znalezione, mimo, iż istnieje. Zastosowanie metod rozproszonych wiąże się najczęściej z koniecznością przydzielenia priorytetów robotom, co stanowi istotny problem, gdyż od ich wyboru może zależeć zupełność algorytmu. Nie należy mylić tej metody z zagadnieniem typu {\it Non-Cooperative Pathfinding}, w którym agenci nie mają wiedzy na temat pozostałych planów i muszą przewidywać przyszłe ruchy pozostałych robotów \cite{cooppath}. W podejściu rozproszonym agenci mają pełną informację na temat stanu pozostałych robotów, lecz wyznaczanie dróg odbywa się w określonej kolejności.
 \end{itemize}
@@ -76,6 +79,13 @@ Dyskretna siatka pól - podział w celu szybszych obliczeń i wykorzystania A* (
 $TODO$ - tutaj screen z warcraft map editora
 Obrazek: Transform terrain to large grid [screenshot taken from Warcraft III map editor]. \cite{hierpathfindinginrts}
 Use abstract maps to reduce computational costs
+$TODO$ Pacman tu albo przy heurystykach
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{img/paclan1}
+	\caption{Podział mapy na siatkę pól, zastosowanie heurystyki uwzględniającej zawijanie mapy po bokach, Źródło: własna implementacja gry}
+	\label{fig:image_paclan1}
+\end{figure}
 
 \subsection{Metody zcentralizowane}
 Wiele metod zcentralizowanych cechuje się planowaniem w zbiorowej przestrzeni konfiguracyjnej oraz możliwością wyznaczenia optymalnego rozwiązania.
@@ -86,6 +96,7 @@ W systemach czasu rzeczywistego istotne jest, aby rozwiązanie problemu planowan
 $TODO$ Podejmowanie decyzji na podstawie centralnego systemu - scentralizowana struktura organizacyjna
 
 \subsection{Metoda pól potencjałowych}
+$TODO$ nie pisać, że to zcentralizowana, czy nie
 Nie wszystkie podejścia zcentralizowane gwarantują optymalne rozwiązanie. Przykładem takiej metody, która nie daje gwarancji optymalności (ani nawet zupełności) jest metoda pól potencjałowych.
 
 Metoda pól potencjałowych (ang. {\it Artificial Potential Field} lub {\it Potential Field Techniques}) polega na zastosowaniu zasad oddziaływania między ładunkami znanych z elektrostatyki. Roboty i przeszkody traktowane są jako ładunki jednoimienne, przez co "odpychają się" siłą odwrotnie proporcjonalną do kwadratu odległości (dzięki temu unikają kolizji między sobą). Natomiast punkt docelowy robota jest odwzorowany jako ładunek o przeciwnym biegunie, przez co robot jest "przyciągany" do celu.
@@ -99,6 +110,7 @@ Technika ta jest bardzo prosta i nie wymaga wykonywania złożonych obliczeń (w
 \end{figure}
 
 \subsection{Rozproszone wyznaczanie tras}
+$TODO$ wyjebać to gówno
 Popularne podejścia unikające planowania w wysoko wymiarowej zbiorowej przestrzeni konfiguracyjnej to techniki rozproszone i priorytetowane.
 Pomimo, że metody te są bardzo efektywne, mają dwie główne wady:
 \begin{enumerate}
