@@ -111,46 +111,33 @@ Wprowadzenie trzeciego wymiaru powoduje również konieczność zmian w doborze 
 
 \subsection{Tablica rezerwacji}
 Tablica rezerwacji (ang. {\it Reservation Table}) reprezentuje wspódzieloną wiedzę o zaplanowanych ścieżkach przez wszystkich agentów.
-Jest to informacja o zajętości każdej z komórki na mapie w danym miejscu i określonym czasie.
+Jest to informacja o zajętości każdej z komórki na mapie w danym miejscu i określonym czasie. \cite{cooppath}
 
 Jak tylko agent zaplanuje trasę, każda komórka odpowiadająca ścieżce zaznaczana jest jako zajęta w tablicy rezerwacji.
 
-W ogólności poszczególni agenci mogą mieć różną prędkość lub rozmiary, zatem tablica rezerwacji musi mieć możliwość zaznaczenia dowolnego zajętego obszaru. Zostało to przedstawione na rysunku \ref{fig:img_reservation-table}.
-
-W prostej implementacji tablica rezerwacji jest trójwymiarową ksotką (dwa wymiary przestrzenne i jeden wymiar czasu).
+W prostej implementacji tablica rezerwacji jest trójwymiarową kostką (dwa wymiary przestrzenne i jeden wymiar czasu).
 Każda komórka kostki, która jest przecinana przez zaplanowaną przez agenta ścieżkę, jest zaznaczana jako nieprzejezdna przez określony czas trwania. W ten sposób zapobiega to planowania kolizyjnych tras przez pozostałych agentów.
-
-Jeśli tylko mała część z całej tablicy rezerwacji będzie markowana jako zajęta, wydajniej jest zaimplementować ją jako tablicę typu {\it hash table}. Daje to zaletę oszczędności pamięci poprzez pamiętanie jedynie współrzędnych $(x, y, t)$ zajętych pól.
-
-Niestety taki sposób wykorzystania tablicy rezerwacji w pewnych sytuacjach nie zapobiega zderzeniom czołowym jednostek zmierzających w przeciwnych kierunkach.
-
-
-Unfortunately, this way of using the reservation table doesn’t prevent two units crossing
-through each other, head to head. If one unit has reserved (x, y, t) and (x + 1, y, t + 1),
-there is nothing to stop a second unit from reserving (x + 1, y, t) and (x, y, t + 1). This
-problem can be avoided by making two reservations for each location involved in the
-action, one at time t and one at time t + 1.
-\cite{cooppath}
-
-trzeba przyjać, że ruchy trwają tyle samo lub podzielić dyskretnie i zaznaczać zajętość pól w wielu kratkach
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=10cm]{img/reservation-table}
-	\caption{Two units pathfinding cooperatively. (A) The first unit searches for a path and
-marks it into the reservation table. (B) The second unit searches for a path, taking account
-of existing reservations, and also marks it into the reservation table.
-. Źródło: \cite{async_cooppath_spacetime_cp}}
+	\caption{Dwie jednostki kooperacyjnie poszukujące tras. (A) Pierwsza jednostka znajduje ścieżkę i zaznacza ją w tablicy rezerwacji. (B) Druga jednostka znajduje ścieżkę, uwzględniając istniejące rezerwacje pól, również zaznaczając ją w tablicy rezerwacji. Źródło: \cite{cooppath}}
 	\label{fig:img_reservation-table}
 \end{figure}
 
-\subsubsection{A* w konfiguracji czaso-przestrzennej}
-$TODO$
-Algorytm:
-\begin{itemize}
-	\item Przypisanie priorytetów do poszczególnych robotów
-	\item Wykonywanie kroków A* z rozpatrywaniem czasu i przestrzeni - podział otoczenia na siatkę pól, zapisywanie prawdopodobieństwa zajętości pola w danej chwili
-\end{itemize}
+W ogólności poszczególni agenci mogą mieć różną prędkość lub rozmiary, zatem tablica rezerwacji musi mieć możliwość zaznaczenia dowolnego zajętego obszaru. Zostało to przedstawione na rysunku \ref{fig:img_reservation-table-2}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{img/reservation-table-2}
+	\caption{Czasoprzestrzenna mapa może różnić się od tablicy rezerwacji. (A) Powolna jednostka ma "głębokie" komórki na czasoprzestrzennej mapie. (B) Szybka jednostka ma "płytkie" komórki. (C) Tablica rezerwacji jest współdzielona między wszystkimi agentami, dlatego powinna być odpowiednio dopasowana do wszystkich agentów. Źródło: \cite{cooppath}}
+	\label{fig:img_reservation-table-2}
+\end{figure}
+
+Jeśli tylko mała część z całej tablicy rezerwacji będzie markowana jako zajęta, wydajniej jest zaimplementować ją jako tablicę typu {\it hash table}. Daje to zaletę oszczędności pamięci poprzez pamiętanie jedynie współrzędnych $(x, y, t)$ zajętych pól.
+
+Niestety taki sposób wykorzystania tablicy rezerwacji w pewnych sytuacjach nie zapobiega zderzeniom czołowym jednostek zmierzających w przeciwnych kierunkach.
+Jeśli jedna jednostka zarezerwowała komórki $(x, y, t)$ i $(x + 1, y, t + 1)$, nic nie stoi na przeszkodzie, aby kolejna jednostka mogła zarezerwować komórki $(x + 1, y, t)$ i $(x, y, t + 1)$. Ten problem może być rozwiązany poprzez zajmowanie (rezerwowanie) dwóch sąsiednich komórek w tym samym czasie $t$ podczas ruchu robota.
 
 \section{Hierarchical Cooperative A*}
 \label{ch:hier_cooperative_a}
