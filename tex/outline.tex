@@ -1,5 +1,5 @@
-\chapter{TODO}
-\label{ch:todo}
+\chapter{Karta tematu}
+\label{ch:topic}
 
 Karta tematu: \\
 Temat pracy: Planowanie bezkolizyjnych tras dla zespołu robotów mobilnych \\
@@ -18,6 +18,13 @@ Podstawowe wymagania:
 	\item Aplikacja powinna umożliwiać symulację ruchu robotów oraz definiowanie położenia przeszkód przez użytkownika.
 	\item Planowanie tras dotyczy robotów holonomicznych.
 \end{itemize}
+
+Założenia:
+• The environment is deterministic. However, agents may not move if they are trying to move to an obstacle or another agent.
+• For simplicity, agents only have the path finding task. Moreover, the agents won’t disappear when they reach their target. They just stay at the target block and the block cannot be used by other agents.
+• No two agents can have the same target.
+• Agents have a full view of the map and other agents.
+• Actions are: lewo, prawo, góra, dół i na ukosy w labiryncie
 
 \chapter{Konspekt pracy}
 \label{ch:konspekt}

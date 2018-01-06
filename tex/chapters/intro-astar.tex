@@ -1,9 +1,13 @@
-\chapter{Algorytmy oparte na A*}
+\chapter{Algorytmy oparte o A*}
 \label{ch:astar}
 
 Kiedy pojedynczy agent dokonuje znalezienia drogi do wyznaczonego celu, prosty algorytm A* sprawdza się bardzo dobrze. Jednak w przypadku, gdy wiele agentów porusza się w tym samym czasie, to podejście może się nie sprawdzić, powodując wzajemne blokowanie się i zakleszczenie jednostek. Rozwiązaniem tego problemu może być kooperacyjne znajdowanie tras. Roboty będą mogły skutecznie przemieszczać się przez mapę, omijając trasy wyznaczone przez inne jednostki oraz schodząc innym jednostkom z drogi, jeśli to konieczne. \cite{cooppath}
 
 Zagadnienie znajdowania drogi jest ważnym elementem sztucznej inteligencji zaimplementowanej w wielu grach komputerowych. Chociaż klasyczny algorytm A* potrafi doprowadzić pojedynczego agenta do celu, to jednak dla wielu agentów wymagane jest zastosowanie innego podejścia w celu unikania kolizji. Algorytm A* może zostać zaadaptowany do replanowania trasy na żądanie, w przypadku wykrycia kolizji tras (Local Repair A* lub D*). Jednak takie podejście nie jest zadowalające pod wieloma względami. Na trudnych mapach z wieloma wąskimi korytarzami i wieloma agentami może to prowadzić do zakleszczenia agentów w wąskich gardłach lub do cyklicznego zapętlenia ruchu agentów. \cite{cooppath}
+
+$TODO$ Które algorytmy tylko znajdują droge, a które rozwiązują problem kolizji
+
+$TODO$ Większość z tych algorytmów wykorzystywana jest w grach. planowanie musi odbywać się szybko, szczególnie w grach (screen warcraft :))
 
 \section{Algorytm A*}
 A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znalezienia najkrótszej ścieżki. Algorytm ten jest powszechnie stosowany w zagadnieniach sztucznej inteligencji oraz w grach komputerowych \cite{mit_astar}. Jest modyfikacją algorytmu Dijkstry, wprowadza pojęcie funkcji heurystycznej $h(n)$. Wartość funkcji heurystycznej powinna określać przewidywaną drogę do węzła docelowego. W każdym kroku przeszukiwany jest węzeł o najmniejszej wartości funkcji $f(n)$.
@@ -35,6 +39,9 @@ Dla każdego odwiedzonego węzła zapamiętywane są wartości $g(n)$, $h(n)$ or
 Od wyboru sposobu obliczania heurystyki zależy czas wykonywania algorytmu oraz optymalność wyznaczonego rozwiązania.
 Poniżej przedstawiono najczęściej wykorzystywane heurystyki.
 
+$TODO$ Jeśli wartość heurystyki <= od rzeczywistej drogi, jaka musi zostać przebyta, to wyznaczona scieżka jest ścieżką optymalną (najkrótszą)
+= admissible heuristic
+
 \subsubsection{Heurystyka Euklidesowa}
 Dla dwuwymiarowej mapy heurystyka euklidesowa wyraża dokładną odległość między przeszukiwanym węzłem $(x_n, y_n)$ a węzłem docelowym $(x_g, y_g)$:
 \begin{gather}
@@ -49,6 +56,9 @@ W przypadku, gdy robot może poruszać się po mapie jedynie poziomo lub pionowo
  	\label{eq_astar_heu_man} 
 \end{gather}
 
+$TODO$ Przykład z Pacmanem - screen - siatka podzielona na pola
+zbliżenie do 0 sprowadza ją do ścieżki optymalnej (Dijkstry) - połowa heurystyki Manhattan daje możliwość wyznaczania trasy z uwzględnieniem zawijania mapy
+
 \subsubsection{Heurystyka zerowa}
 Przyjęcie heurystyki równej $h(n) = 0$ powoduje, że algorytm A* sprowadza się do algorytmu Dijkstry.
 
@@ -59,12 +69,65 @@ Możliwe (i całkiem powszechne \cite{cooppath}) jest uzyskanie cykli (tych samy
 
 Algorytm ten ma jednak sporo poważnych wad, które szczególnie ujawniają się w trudnych środowiskach z dużą liczbą przeszkód. Wydostanie się z zatłoczonego wąskiego gardła może trwać bardzo długo. Prowadzi to również do ponownego przeliczania trasy w prawie każdym kroku. Wciąż możliwe jest również odwiedzanie tych samych lokalizacji w wyniku zapętleń.
 
+$TODO$ Jest to przykład rozproszonej struktury organizacyjnej - Podejmowanie decyzji przez roboty lokalnie (+ centralnie)???
+
 \section{Algorytm D*}
 D* ({\it Dynamic A* Search}) jest przyrostowym algorytmem przeszukiwania. Jest modyfikacją algorytmu A* pozwalającą na szybsze replanowanie trasy w wyniku zmiany otoczenia (np. zajmowania wolnego pola przez innego robota). Wykorzystywany jest m.in. w nawigacji robota do określonego celu w nieznanym terenie. Początkowo robot planuje drogę na podstawie pewnych założeń (np. nieznany teren nie zawiera przeszkód). Podążając wyznaczoną ścieżką, robot odkrywa rzeczywisty stan mapy i jeśli to konieczne, wykonuje ponowne planowanie trasy na podstawie nowych informacji.
 Często wykorzystywaną implementacją (z uwagi na zoptymalizowaną złożoność obliczeniową) jest wariant algorytmu {\it D* Lite} \cite{dstarlite}.
 
 \section{Cooperative A*}
 $TODO$
+Cooperative A*(CA*) is a new algorithm for solving the Co-
+operative Pathfinding problem. The task is decoupled into
+a series of single agent searches. The individual searches
+are performed in three dimensional space-time, and take ac-
+count of the planned routes of other agents. A wait move
+is included in the agent’s action set, to enable it to remain
+stationary. After each agent’s route is calculated, the states
+along the route are marked into a reservation table. Entries
+in the reservation table are considered impassable and are
+avoided during searches by subsequent agents.
+
+The reservation table represents the agents’ shared knowl-
+edge about each other’s planned routes. It is a sparse data
+structure marking off regions of space-time. The choice
+of data structure is independent from the state space of the
+agents themselves. In general, individual agents may vary in
+speed or size, and the reservation table must be capable of
+marking off any occupied region.
+
+A simple implementation, used here, is to treat the reser-
+vation table as a 3-dimensional grid (two spatial dimensions
+and one time dimension). Each cell of the grid that is inter-
+sected by the agent’s planned route is marked as impassable
+for precisely the duration of the intersection, thus prevent-
+ing any other agent from planning a colliding route. Only a
+small proportion of grid locations will be touched, and so the
+grid can be efficiently implemented as a hash table, hashing
+on a randomly distributed function of the (x, y, t) key.
+
+It is important to note that any decoupled, greedy algo-
+rithm that precalculates the optimal path will not be able to
+solve certain classes of problem. This can happen when a
+greedy solution for one agent prevents any solution for an-
+other agent, for example see Figure 1. In general, such algo-
+rithms are sensitive to the ordering of the agents, requiring
+that sensible priorities to be selected for good performance,
+for example using Latombe’s prioritized planning (1991).
+\cite{cooppath}
+
+$TODO$
+time-space A*,
+heurystyki
+
+Cooperative Pathfinding (CP): Each agent does the A* pathfinding
+considering the previous reservations (time-space A*) and adds its
+reservations.
+
+A* relies on a heuristic to guide search.
+Poor heuristics cause extra node expansions.
+3-dimensional search problem: x-location, y-location, time - Still need a heuristic
+
 \subsection{Tablica rezerwacji}
 Tablica rezerwacji (ang. {\it Reservation Table})
 
@@ -78,6 +141,118 @@ Algorytm:
 
 \section{Hierarchical Cooperative A*}
 $TODO$
+The second generic method for improving a heuristic based on abstractions of the state space is to use Hierarchical A*.
+With this approach the abstract distances are computed on demand. The hierarchy in this case refers to a
+series of abstractions of the state space, each more general
+than the previous, and is not restricted to spatial hierarchy.
+The choice of hierarchy is critical, and that
+large hierarchies may in fact perform worse than small, sim-
+ple hierarchies.
+
+Hierarchical Cooperative A* (HCA*) uses a simple hier-
+archy containing a single domain abstraction, which ignores
+both the time dimension and the reservation table. In other
+words, the abstraction is a simple 2-dimensional map with
+all agents removed. Abstract distances can thus be viewed
+as perfect estimates of the distance to the destination, ig-
+noring any potential interactions with other agents. This is
+clearly an admissible and consistent heuristic. Furthermore,
+the inaccuracy of the heuristic is determined only by the dif-
+ficulty of interacting with other agents (how much the agent
+must deviate from the direct path to avoid other agents).
+
+A fourth approach is introduced here, which is to use a Reverse
+Resumable A* (RRA*) search in the abstract domain.
+The RRA* algorithm executes a modified A* search in a
+reverse direction. The search starts at the agent’s goal G,
+and heads towards the agent’s initial position O. Instead
+of terminating at O, the search continues until a specified
+node N is expanded.
+
+HCA* is just like CA* with a more sophisticated heuris-
+tic, using RRA* to calculate the abstract distance on demand.
+\cite{cooppath}
 
 \section{Windowed Hierarchical Cooperative A*}
 $TODO$
+One issue with the previous algorithms is how they termi-
+nate once the agents reach their destination. If an agent sits
+on its destination, for example in a narrow corridor, then
+it may block off parts of the map to other agents. Ideally,
+agents should continue to cooperate after reaching their des-
+tinations, so that an agent can move off its destination and
+allow others to pass.
+
+A second issue is the sensitivity to agent ordering. Al-
+though it is sometimes possible to prioritise agents globally
+(Latombe 1991), a more robust solution is to dynamically
+vary the agent order, so that every agent will have the high-
+est priority for a short period of time. Solutions can then
+be found which would be unsolvable with an arbitrary, fixed
+agent order.
+
+A simple solution to all of these issues is to window the
+search. The cooperative search is limited to a fixed depth
+specified by the current window. Each agent searches for a
+partial route to its destination, and then begins following the
+route. At regular intervals (e.g. when an agent is half-way
+through its partial route) the window is shifted forwards and
+a new partial route is computed.
+
+To ensure that the agent heads in the correct direction,
+only the cooperative search depth is limited to a fixed depth,
+whilst the abstract search is executed to full depth. A win-
+dow of size w can be viewed as an intermediate abstraction
+that is equivalent to the base level state space for w steps,
+and then equivalent to the abstract level state space for the
+remainder of the search. In other words, other agents are
+only considered for w steps (via the reservation table) and
+are ignored for the remainder of the search.
+\cite{cooppath}
+
+
+$TODO$
+One example of a decoupled approach is HCA* [Silver,
+2005]. HCA* employs a reservation table for timestep-
+location pairs. The algorithm chooses a fixed ordering of
+agents, and plans a path for each agent in turn that avoids con-
+flicts with previously computed paths by checking against the
+reservation table. Unfortunately, in over half of our bench-
+mark instances, some agents never reach their destinations
+because the paths found for previous agents in the fixed or-
+der can make finding paths for subsequent agents impossi-
+ble. Using a windowed search, Silver’s WHCA* mitigates
+this problem at the cost of solution quality and running time.
+\cite{completealgo_standley}
+
+$TODO$
+WHCA* (Windowed Hierarchical Cooperative A*) uses a temporal-spatial search, that
+is, a node in the search tree is not only defined by the position, but is also defined by the
+time the agent will be there. The search is also windowed; this means that it is performed
+a fixed number of steps into the future, and the most promising node at the edge of this
+window is selected.
+To plan all the agents' paths at the same time carries an all-to-high computational cost[9].
+Instead, a reservation table is used. The path of every agent is planned independently, and
+every position and time that a node is blocked is recorded in the reservation table. This is
+a reasonable approach to decrease the computational costs involved, which although it may
+not solve all problems, will be able to solve many of them.
+To focus the search, a spatial reverse A* search is used as heuristic for the temporal-
+spatial search. That is, it is used to calculate the exact distance from a node to the goal,
+excluding the influence other agents may have on this distance. This generally focuses the
+search a lot, as this is often a very high-quality heuristic. It gets worse with a higher level
+of congestion in the environment.
+However, this reverse A* search leads to a high initial cost when performing the first
+windowed temporal-spatial search, as it needs to perform a full A* search from the goal
+to the start (as well as to some nodes neighbouring the start), but the cost for subsequent
+searches will be lower.
+\cite{rtcooppathfinding}
+
+Windowed Hierarchical Cooperative A*:
+• Cooperative A*
+• Hierarchical Heuristic
+• Windowed cooperation
+
+Use a hash table to store time-space indexed reservations
+• Reserve / Free a space/time cell
+
+$TODO$ Clearance-based Pathfinding and Hierarchical Annotated A* Search - używane, gdy jednostki zajmują różne obszary, ale chyba tylko dla jednej jednostki (nie cooperative)

@@ -8,29 +8,50 @@ Praca skupia się na przypadkach, w których mamy do czynienia ze środowiskiem 
 
 W niniejszej pracy zajmować będziemy się rozwiązaniem problemu, w którym mamy pełną informację o mapie otoczenia oraz o określonym położeniu początkowym i celu dla każdego z robotów. Zadaniem algorytmu będzie wyznaczenie możliwie najkrótszej bezkolizyjnej trasy dla wszystkich robotów. Należy jednak zaznaczyć, że priorytetem jest dotarcie każdego z robotów do celu bez kolizji z innymi robotami, dopiero później chcemy, aby wyznaczone drogi były możliwie najkrótsze.
 
+$TODO$ zagadnienie z robotami holonomicznymi o zajętości przestrzennej równej 1 - nie mogą się mijać w tym samym korytarzu
+Założenia pracy:
+1. Planowanie tras dotyczy robotów holonomicznych.
+2. Metody planowania powinny sprawdzać się w środowiskach z dużą liczbą przeszkód.
+Zakres pracy:
+1. Przegląd metod i algorytmów wykorzystywanych do koordynacji ruchu robotów.
+
+
 \section{Koordynacja ruchu robotów}
 Koordynacja ruchu robotów jest jednym z fundamentalnych problemów w systemach wielu robotów. \cite{optpriorities}
 
 Kooperacyjne znajdowanie tras (ang. Cooperative Pathfinding) jest problemem planowania w układzie wieloagentowym, w którym to agenci mają za zadanie znaleźć bezkolizyjne drogi do swoich, osobnych celów. Planowanie to odbywa się w oparciu o pełną informację o środowisku oraz trasach pozostałych agentów. \cite{cooppath}
+
+$TODO$ RTS - do skrótów
+The interest in Multi-Agent Systems (MAS) is getting increased as more
+complicated tasks has been introduced that can not be accomplished by a
+single agent. Several domains have been built based on MAS, such as Real
+Time Strategy (RTS) games 
 
 Problem kooperacyjnego znajdowania tras pojawia się często m.in. w grach komputerowych, gdzie należy wyznaczyć drogi dla wielu jednostek, które mogą blokować się wzajemnie. Algorytmy do wyznaczania bezkolizyjnych tras dla wielu agentów (robotów) mogą znaleźć również zastosowanie w szpitalach (np. roboty TUG i HOMER do dostarczania sprzętu na wyposażeniu szpitala \cite{tughomer}) oraz magazynach (np. roboty transportowe w magazynach firmy Amazon \ref{fig:image_kiva_amazon}).
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=14cm]{img/kiva-amazon}
-	\caption{Roboty Kiva pracujące w magazynie firmy Amazon. Źródło: \url{https://www.roboticsbusinessreview.com/supply-chain/amazon_warehouse_demand_devours_robots_and_workers}}
+	\caption{Roboty Kiva pracujące w magazynie firmy Amazon. Źródło: \cite{amazonkiva}}
 	\label{fig:image_kiva_amazon}
 \end{figure}
 
+\section{Podstawowe pojęcia}
 \subsubsection{Przestrzeń konfiguracyjna}
 Przestrzeń konfiguracyjna to formalna, matematyczna przestrzeń będąca zbiorem możliwych stanów danego układu fizycznego.
 W zależności od rodzaju i liczby wyróżnionych parametrów stanu przestrzenie konfiguracyjne mogą mieć wiele wymiarów.
+
+\subsubsection{Robot holonomiczny}
+$TODO$ dopisać definicje i uzupełnić w celu pracy, że będzie to ich dotyczyć
 
 \subsubsection{Metoda hill-climbing}
 Metoda hill-climbing jest rodzajem matematycznej optymalizacji, lokalną metodą przeszukiwania.
 Jest to iteracyjny algorytm, który zaczyna w wybranym rozwiązaniu problemu, następnie próbuje znaleźć lepsze rozwiązanie poprzez przyrostowe zmiany pojedynczych elementów rozwiązania.
 Jeśli zmiana przynosi lepsze rozwiązanie, jest wprowadzana do nowego rozwiązania.
 Kroki algorytmu powtarzane są dotąd, aż żadne ``udoskonalenie'' nie zostaje znalezione.
+
+\subsubsection{Zupełność algorytmu}
+$TODO$
 
 \chapter{Metody planowania tras}
 \label{ch:path_planning_methods}
@@ -42,11 +63,27 @@ Spośród metod wykorzystywanych do planowania tras dla wielu robotów można wy
 	\item {\bf Rozproszone} (ang. {\it decoupled} lub {\it distributed}) - Podejście to dekomponuje zadanie na niezależne lub zależne w niewielkim stopniu problemy dla każdego agenta. Dla każdego robota droga wyznaczana jest osobno, w określonej kolejności, następnie rozwiązywane są konflikty (kolizje dróg). W pewnych przypadkach rozwiązanie może nie zostać znalezione, mimo, iż istnieje. Zastosowanie metod rozproszonych wiąże się najczęściej z koniecznością przydzielenia priorytetów robotom, co stanowi istotny problem, gdyż od ich wyboru może zależeć zupełność algorytmu. Nie należy mylić tej metody z zagadnieniem typu {\it Non-Cooperative Pathfinding}, w którym agenci nie mają wiedzy na temat pozostałych planów i muszą przewidywać przyszłe ruchy pozostałych robotów \cite{cooppath}. W podejściu rozproszonym agenci mają pełną informację na temat stanu pozostałych robotów, lecz wyznaczanie dróg odbywa się w określonej kolejności.
 \end{itemize}
 
+$TODO$
+- Plan all units simultaneously
+	- Computationally intractable
+	- (units x actions)^depth
+- Plan individual units
+	- Not complete
+	- A lot of techniques needed to be practical
+
+$TODO$
+Dyskretna siatka pól - podział w celu szybszych obliczeń i wykorzystania A* (większość jest oparta na tym) - tak się stosuje w grach
+$TODO$ - tutaj screen z warcraft map editora
+Obrazek: Transform terrain to large grid [screenshot taken from Warcraft III map editor]. \cite{hierpathfindinginrts}
+Use abstract maps to reduce computational costs
+
 \subsection{Metody zcentralizowane}
 Wiele metod zcentralizowanych cechuje się planowaniem w zbiorowej przestrzeni konfiguracyjnej oraz możliwością wyznaczenia optymalnego rozwiązania.
 Wadą jest natomiast duża złożoność obliczeniowa algorytmu i konieczność posiadania pełnej informacji o stanie otoczenia i robotów.
 
 W systemach czasu rzeczywistego istotne jest, aby rozwiązanie problemu planowania tras uzyskać w określonym czasie, dlatego w tego typu sytemach częściej używane są techniki rozproszone.
+
+$TODO$ Podejmowanie decyzji na podstawie centralnego systemu - scentralizowana struktura organizacyjna
 
 \subsection{Metoda pól potencjałowych}
 Nie wszystkie podejścia zcentralizowane gwarantują optymalne rozwiązanie. Przykładem takiej metody, która nie daje gwarancji optymalności (ani nawet zupełności) jest metoda pól potencjałowych.
@@ -88,6 +125,54 @@ Idea metody Path coordination przedstawia się następująco \cite{optpriorities
 	\item Próba rozwiązania możliwych konfliktów między ścieżkami. Roboty utrzymywane są na ich indywidualnych ścieżkach (wyznaczonych na początku), wprowadzane modyfikacje pozwalają na zatrzymanie się, ruch naprzód, a nawet cofanie się, ale tylko {\bf wzdłuż trajektorii} w celu uniknięcia kolizji z robotem o wyższym priorytecie.
 \end{enumerate}
 Złożoność metody wynosi $O(n \cdot m \cdot log(m))$, $m$ - maksymalna liczba stanów podczas planowania, $n$ - liczba robotów
+
+
+\subsection{Priorytetowane planowanie}
+$TODO$
+In general, the complexity of complete approaches to multi-agent
+path planning grows exponentially with the number of agents. There-
+fore, the complete approaches often do not scale-up well and hence
+are often not applicable for nontrivial domains with many agents. To
+plan paths for a high number of agents in a complex environment,
+one has to resort to one of the incomplete, but fast approaches. A
+simple method often used in practice is prioritized planning [3, 9, 1].
+In prioritized planning the agents are assigned a unique priority. In
+its simplest form, the algorithm proceeds sequentially and agents
+plan individually from the highest priority agent to the lowest one.
+The agents consider the trajectories of higher priority agents as con-
+straints (moving obstacles), which they need to avoid. It is straight-
+forward to see that when the algorithm finishes, each agent is as-
+signed a trajectory not colliding with either higher priority agents,
+since the agent avoided a collision with those, nor with lower priority
+agents who avoided a conflict with the given trajectory themselves.
+
+The complexity of the generic algorithm grows linearly with the
+number of agents, which makes the approach applicable for problems
+involving many agents. Clearly, the algorithm is greedy and incom-
+plete in the sense that agents are satisfied with the first trajectory not
+colliding with higher priority agents and if a single agent is unable to
+find a collision-free path for itself, the overall path finding algorithm
+fails. The benefit, however, is fast runtime in relatively uncluttered
+environments, which is often the case in multi-robotic applications.
+Prioritized planner is also sensitive to the initial prioritization of the
+agents. Both phenomena are illustrated in Figure 1 that shows a sim-
+ple scenario with two agents desiring to move from s1 to d1 (s2 to d2
+resp.) in a corridor that is only slightly wider than a single agent. The
+scenario assumes that both agents have identical maximum speeds.
+\cite{async_decentralized_spacetime_cp}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{img/prioritized-planning-problem1}
+	\caption{Top: example of a problem to which a prioritized planner
+will not find a solution. The first agent plans its optimal path first,
+but such a trajectory is in conflict with all feasible trajectories of the
+second agent. Bottom: example of a problem to which a prioritized
+planner will find a solution only if agent 1 has a higher priority than
+agent 2. Źródło: \cite{async_decentralized_spacetime_cp}}
+	\label{fig:img_prioritized-planning-problem1}
+\end{figure}
 
 \subsection{Wybór priorytetów}
 $TODO$ nie dotyczy tylko Path coordination, ale też A* time-space
