@@ -48,6 +48,8 @@ h(A) ≤ cost(A, B) + h(B) between all locations A and B. In other words, the es
 distance doesn’t jump around between the locations along a path.
 \cite{cooppath}
 
+A* opiera się na heurystyce, która prowadzi przeszukiwaniem. Słaba heurystyka może prowadzić do zbędnego odwiedzania dodatkowych węzłów.
+
 \subsubsection{Heurystyka Euklidesowa}
 Dla dwuwymiarowej mapy heurystyka euklidesowa wyraża dokładną odległość między przeszukiwanym węzłem $(x_n, y_n)$ a węzłem docelowym $(x_g, y_g)$:
 \begin{gather}
@@ -84,76 +86,44 @@ Często wykorzystywaną implementacją (z uwagi na zoptymalizowaną złożonoś�
 
 \section{Cooperative A*}
 $TODO$
-Cooperative A*(CA*) is a new algorithm for solving the Co-
-operative Pathfinding problem. The task is decoupled into
-a series of single agent searches. The individual searches
-are performed in three dimensional space-time, and take ac-
-count of the planned routes of other agents. A wait move
-is included in the agent’s action set, to enable it to remain
-stationary. After each agent’s route is calculated, the states
-along the route are marked into a reservation table. Entries
-in the reservation table are considered impassable and are
-avoided during searches by subsequent agents.
+Cooperative A* jest algorytmem do rozwiązywania problemu kooperacyjnego znajdowania tras.
+Metoda może być również nazywana czasoprzestrzennym algorytmem A* ({\it time-space A* search})
+Zadanie planowania jest rozdzielone na serię pojedynczych poszukiwań dla poszczególnych agentów.
+Pojedyncze poszukiwania są wykonywane w trójwymiarowej czasoprzestrzeni i biorą pod uwagę zaplanowane ścieżki przez pozostałych agentów.
+Akcja wykonania postoju (pozostania w tym samym miejscu) jest uwzględniona w zbiorze akcji możliwych do wykonania.
+Po przeliczeniu dróg dla każdego agenta, stany zajętości pól są zaznaczane w tablicy rezerwazji (ang. Reservation table).
+Pozycje w tej tablicy są uważane jako pola nieprzejezdne i w efekcie są omijane podczas przeszukiwania przez późniejszych agentów. \cite{cooppath}
 
-The reservation table represents the agents’ shared knowl-
-edge about each other’s planned routes. It is a sparse data
-structure marking off regions of space-time. The choice
-of data structure is independent from the state space of the
-agents themselves. In general, individual agents may vary in
-speed or size, and the reservation table must be capable of
-marking off any occupied region.
-
-A simple implementation, used here, is to treat the reser-
-vation table as a 3-dimensional grid (two spatial dimensions
-and one time dimension). Each cell of the grid that is inter-
-sected by the agent’s planned route is marked as impassable
-for precisely the duration of the intersection, thus prevent-
-ing any other agent from planning a colliding route. Only a
-small proportion of grid locations will be touched, and so the
-grid can be efficiently implemented as a hash table, hashing
-on a randomly distributed function of the (x, y, t) key.
-
-It is important to note that any decoupled, greedy algo-
-rithm that precalculates the optimal path will not be able to
-solve certain classes of problem. This can happen when a
-greedy solution for one agent prevents any solution for an-
-other agent, for example see Figure 1. In general, such algo-
-rithms are sensitive to the ordering of the agents, requiring
-that sensible priorities to be selected for good performance,
-for example using Latombe’s prioritized planning (1991).
-\cite{cooppath}
-
-$TODO$
-time-space A*,
-heurystyki
-
-Cooperative Pathfinding (CP): Each agent does the A* pathfinding
-considering the previous reservations (time-space A*) and adds its
-reservations.
-
-A* relies on a heuristic to guide search.
-Poor heuristics cause extra node expansions.
-3-dimensional search problem: x-location, y-location, time - Still need a heuristic
+Należy zaznaczyć, że planowanie dla każdego agenta odbywa się sekwencyjnie według przydzielonych priorytetów.
+Algorytm ten jest podatny na zmianę kolejności agentów. Odpowiedni dobór priorytetów może wpłynąć na wydajność algorytmu oraz jakość uzyskanego wyniku.
 
 \subsection{Trzeci wymiar}
 $TODO$
-To tackle the cooperative pathfinding problem, the search algorithm needs to have full
-knowledge of both obstacles and units. However, when units move around there is no
-satisfactory way to represent their routes on a stationary map. To overcome this problem,
-we extend the map to include a third dimension: time. We will call the original map the
-space map and the new, extended map the space-time map.
-\cite{cooppath}
+Do rozwiązania problemu kooperacyjnego znajdowania dróg algorytm przeszukiwania potrzebuje mieć pełną wiedzę na temat przeszkód oraz jednostek na mapie.
+Aby zapisać tą informację potrzeba rozszerzyć mapę o trzeci wymiar - czas. 
+Pierwotną mapę będziemy nazywac mapą przestrzenną, natomiast nową - czasoprzestrzenną mapą. \cite{cooppath}
+
+Zagadnienie sprowadza się do przeszukiwania grafu, w którym każdy węzeł ma przypisane 3 wielkości: położenie x, położenie y oraz czas.
+Podczas gdy zakres wielkości x i y jest znany i wynika z rozmiarów mapy oraz podziału jej wymiarów na dyskretne pola, to jednak określenie wymiaru czasu może być trudnym zagadnieniem.
+Wymiar czasu możemy również zdyskretyzować i przyjać, że najmniejsza jednostka jest czasem, jaki zajmuje robotowi przejście z jednego pola na sąsiednie (poziomo lub pionowo). Natomiast górną granicą czasu powinna być maksymalna liczba ruchów potrzebna do dotarcia do celu przez ostatniego robota. Wybór za małej liczby może spowodować, że algorytm nie znajdzie drogi dla niektórych agentów, z kolei za duża granica czasu mocno wydłuża czas obliczeń. Rozwiązanie tego problemu zostało opisane w późniejszym podrozdziale \ref{ch:hier_cooperative_a}.
+
+Wprowadzenie trzeciego wymiaru powoduje również konieczność zmian w doborze odpowiedniej heurystyki odpowiedzialnej za oszacowanie drogi pozostałej do celu.
 
 \subsection{Tablica rezerwacji}
-Tablica rezerwacji (ang. {\it Reservation Table})
+Tablica rezerwacji (ang. {\it Reservation Table}) reprezentuje wspódzieloną wiedzę o zaplanowanych ścieżkach przez wszystkich agentów.
+Jest to informacja o zajętości każdej z komórki na mapie w danym miejscu i określonym czasie.
 
-$TODO$
-Once a unit has chosen a path, it needs to make sure that other units know to avoid the
-cells along its path. This is achieved by marking each cell into a reservation table. This is
-a straightforward data structure containing an entry for every cell of the space-time map.
-Each entry specifies whether the corresponding cell is available or reserved. Once an
-entry is reserved, it is illegal for any other unit to move into that cell. The reservation acts
-like a transient obstacle, blocking off a location for a single time-step in the future.
+Jak tylko agent zaplanuje trasę, każda komórka odpowiadająca ścieżce zaznaczana jest jako zajęta w tablicy rezerwacji.
+
+W ogólności poszczególni agenci mogą mieć różną prędkość lub rozmiary, zatem tablica rezerwacji musi mieć możliwość zaznaczenia dowolnego zajętego obszaru. Zostało to przedstawione na rysunku \ref{fig:img_reservation-table}.
+
+W prostej implementacji tablica rezerwacji jest trójwymiarową ksotką (dwa wymiary przestrzenne i jeden wymiar czasu).
+Każda komórka kostki, która jest przecinana przez zaplanowaną przez agenta ścieżkę, jest zaznaczana jako nieprzejezdna przez określony czas trwania. W ten sposób zapobiega to planowania kolizyjnych tras przez pozostałych agentów.
+
+Jeśli tylko mała część z całej tablicy rezerwacji będzie markowana jako zajęta, wydajniej jest zaimplementować ją jako tablicę typu {\it hash table}. Daje to zaletę oszczędności pamięci poprzez pamiętanie jedynie współrzędnych $(x, y, t)$ zajętych pól.
+
+Niestety taki sposób wykorzystania tablicy rezerwacji w pewnych sytuacjach nie zapobiega zderzeniom czołowym jednostek zmierzających w przeciwnych kierunkach.
+
 
 Unfortunately, this way of using the reservation table doesn’t prevent two units crossing
 through each other, head to head. If one unit has reserved (x, y, t) and (x + 1, y, t + 1),
@@ -166,7 +136,7 @@ trzeba przyjać, że ruchy trwają tyle samo lub podzielić dyskretnie i zaznacz
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1`0cm]{img/reservation-table}
+	\includegraphics[width=10cm]{img/reservation-table}
 	\caption{Two units pathfinding cooperatively. (A) The first unit searches for a path and
 marks it into the reservation table. (B) The second unit searches for a path, taking account
 of existing reservations, and also marks it into the reservation table.
@@ -183,6 +153,7 @@ Algorytm:
 \end{itemize}
 
 \section{Hierarchical Cooperative A*}
+\label{ch:hier_cooperative_a}
 $TODO$
 The second generic method for improving a heuristic based on abstractions of the state space is to use Hierarchical A*.
 With this approach the abstract distances are computed on demand. The hierarchy in this case refers to a
