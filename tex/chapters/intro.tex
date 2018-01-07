@@ -1,27 +1,48 @@
 \chapter{Wstęp}
 \label{ch:wstep}
 
-\section{Cel pracy}
-Przedmiotem niniejszej pracy jest przegląd metod rozwiązujacych zagadnienie planowania bezkolizyjnych tras dla wielu robotów. Stanowi to również wstęp teoretyczny do zaprojektowania algorytmu i implementacji oprogramowania pozwalającego na symulację działania systemu planowania tras.
+\section{Cel i zakres pracy}
+Przedmiotem niniejszej pracy jest przegląd metod wykorzystywanych do planowania bezkolizyjnych tras dla wielu robotów.
+Stanowi to również wstęp teoretyczny do zaprojektowania algorytmu i implementacji oprogramowania pozwalającego na symulację działania skutecznego planowania tras dla systemu wielorobotowego.
 
-Praca skupia się na przypadkach, w których mamy do czynienia ze środowiskiem z dużą liczbą przeszkód (np. zamknięty budynek z licznymi ciasnymi korytarzami), gdzie problem blokowania sią agentów prowadzi często do zakleszczenia. Należy wtedy zastosować nieco inne podejścia niż te, które sprawdzają się w przypadku otwartych środowisk, a które zostały opisane np. w pracach: \cite{roszkowska}, \cite{siemiatkowska}
-$TODO$ W otwartych środowiskach mogą się dobrze sprawdzić D* albo LRA*
+Praca skupia się na przypadkach, w których mamy do czynienia ze środowiskiem z dużą liczbą przeszkód (np. zamknięty budynek z licznymi ciasnymi korytarzami), aby uwypuklić  problem blokowania sią agentów często prowadzący do zakleszczenia. Często okazuje się, że należy wtedy zastosować nieco inne podejścia niż te, które sprawdzają się w przypadku otwartych środowisk, a które zostały opisane np. w pracach \cite{roszkowska}, \cite{siemiatkowska}.
+W otwartych środowiskach z małą liczbą przeszkód wystarczające może się okazać np. proste replanowanie wykorzystujące algorytm D* (por. \ref{ch:dstar}) lub LRA* (por. \ref{ch:lra}).
 
-W niniejszej pracy zajmować będziemy się rozwiązaniem problemu, w którym mamy pełną informację o mapie otoczenia oraz o określonym położeniu początkowym i celu dla każdego z robotów. Zadaniem algorytmu będzie wyznaczenie możliwie najkrótszej bezkolizyjnej trasy dla wszystkich robotów. Należy jednak zaznaczyć, że priorytetem jest dotarcie każdego z robotów do celu bez kolizji z innymi robotami, dopiero później chcemy, aby wyznaczone drogi były możliwie najkrótsze.
+W niniejszej pracy starano się znaleźć metody rozwiązujące zagadnienie, w którym znane są:
+\vspace{-1em}
+\begin{itemize}[noitemsep]
+	\item pełna informacja o mapie otoczenia (położenie statycznych przeszkód),
+	\item aktualne położenie i położenie celu dla każdego z robotów.
+\end{itemize}
 
-$TODO$ zagadnienie z robotami holonomicznymi o zajętości przestrzennej równej 1 - nie mogą się mijać w tym samym korytarzu
-Założenia pracy:
-1. Planowanie tras dotyczy robotów holonomicznych.
-2. Metody planowania powinny sprawdzać się w środowiskach z dużą liczbą przeszkód.
-Zakres pracy:
-1. Przegląd metod i algorytmów wykorzystywanych do koordynacji ruchu robotów.
+Szukany jest natomiast przebieg tras do punktów docelowych dla agentów. Zadaniem algorytmu będzie wyznaczenie możliwie najkrótszej bezkolizyjnej trasy dla wszystkich robotów. Należy jednak zaznaczyć, że priorytetem jest dotarcie każdego z robotów do celu bez kolizji z innymi robotami. Drugorzędne zaś jest, aby wyznaczone drogi były możliwie jak najkrótsze.
 
-$TODO$ bedzie to intro przez metody, aby dotrzeć wreszcie do WHCA*
+\clearpage
+\subsection{Założenia}
+Założenia do rozważanego problemu:
+\begin{enumerate}
+	\item Każdy z robotów ma wyznaczony inny punkt docelowy, do którego zmierza.
+	\item Planowanie tras dotyczy robotów holonomicznych.
+	\item Czas trwania zmiany kierunku robota jest pomijalnie mały.
+	\item Srodowisko zawiera dużą liczbę przeszkód oraz wąskie korytarze (por. rys. \ref{fig:img_robopath_sample-maze}).
+	\item Roboty "wiedzą" o sobie i mogą komunikować się ze sobą podczas planowania tras.
+	\item Każdy robot zajmuje w przestrzeni jedno pole. Na jednym polu może znajdować się maksymalnie jeden robot.
+\end{enumerate}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{img/robopath/sample-maze}
+	\caption{Przykładowe środowisko z dużą liczbą przeszkód i rozmieszczonymi robotami. Źródło: własna implementacja oprogramowania symulacyjnego}
+	\label{fig:img_robopath_sample-maze}
+\end{figure}
+
+\clearpage
 \section{Koordynacja ruchu robotów}
 Koordynacja ruchu robotów jest jednym z fundamentalnych problemów w systemach wielu robotów. \cite{optpriorities}
 
 Kooperacyjne znajdowanie tras (ang. Cooperative Pathfinding) jest problemem planowania w układzie wieloagentowym, w którym to agenci mają za zadanie znaleźć bezkolizyjne drogi do swoich, osobnych celów. Planowanie to odbywa się w oparciu o pełną informację o środowisku oraz trasach pozostałych agentów. \cite{cooppath}
+
+
 
 $TODO$ RTS - do skrótów
 The interest in Multi-Agent Systems (MAS) is getting increased as more
@@ -85,7 +106,7 @@ $TODO$ Pacman tu albo przy heurystykach
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=13cm]{img/paclan1}
-	\caption{Podział mapy na siatkę pól, zastosowanie heurystyki uwzględniającej zawijanie mapy po bokach, Źródło: własna implementacja gry}
+	\caption{Podział mapy na siatkę pól, zastosowanie heurystyki uwzględniającej zawijanie mapy po bokach, Źródło: własna implementacja gry PacMan}
 	\label{fig:image_paclan1}
 \end{figure}
 
