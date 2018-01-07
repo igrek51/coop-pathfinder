@@ -1,8 +1,8 @@
-\chapter{Metody planowania tras}
-\label{ch:path_planning_methods}
+\chapter{Kooperacyjne planowanie tras}
+\label{ch:cooperative_pathfinding}
 
 \section{Metody planowania tras}
-Spośród metod wykorzystywanych do planowania tras dla wielu robotów można wyróżnić dwie zasadnicze grupy \cite{latombe}:
+Spośród metod wykorzystywanych do kooperacyjnego planowania tras dla wielu robotów można wyróżnić dwie zasadnicze grupy \cite{latombe}:
 \begin{itemize}
 	\item {\bf Zcentralizowane} - drogi wyznaczane są dla wszystkich agentów na raz (jednocześnie). Metody tego typu są często trudne do rozwiązania oraz mają bardzo dużą złożoność obliczeniową ze względu na ogromną przestrzeń przeszukiwania. Struktura organizacyjna jest scentralizowana - decyzje podejmowane są na podstawie centralnego systemu.
 	\item {\bf Rozproszone} (ang. {\it decoupled} lub {\it distributed}) - Podejście to dekomponuje zadanie na niezależne lub zależne w niewielkim stopniu problemy dla każdego agenta. Dla każdego robota droga wyznaczana jest osobno, w określonej kolejności, następnie rozwiązywane są konflikty (kolizje dróg).
@@ -16,7 +16,7 @@ Metoda pól potencjałowych (ang. {\it Artificial Potential Field} lub {\it Pote
 Główną zasadę działania metody przedstawiono na rysunku \ref{fig:image_potentialfield}.
 Technika ta jest bardzo prosta i nie wymaga wykonywania złożonych obliczeń (w odróżnieniu do pozostałych metod zcentralizowanych). Niestety bardzo powszechny jest problem osiągania minimum lokalnego, w którym suma wektorów daje zerową siłę wypadkową. Robot zostaje "uwięziony" w minimum lokalnym, przez co nie jest w stanie dotrzeć do wyznaczonego celu. Do omijania tego problemu muszą być stosowane inne dodatkowe metody \cite{potentialfield}.
 Metoda pól potencjałowych nie daje gwarancji optymalności (ani nawet zupełności).
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\includegraphics[width=12cm]{img/potential-field}
 	\caption{Zasada działania metody pól potencjałowych. Źródło: \cite{howie_potentialfield}}
@@ -63,7 +63,7 @@ Złożoność ogólnego algorytmu rośnie liniowo wraz z liczbą agentów, dzię
 Wyraźnie widać, że algorytm ten jest zachłanny i niezupełny w takim znaczeniu, że agentów zadowala pierwsza znaleziona trajektoria niekolidująca z agentami wyższych priorytetów. 
 
 Istotną rolę doboru priorytetów robotów w procesie planowania tras ukazuje prosty przykład przedstawiony na rysunku \ref{fig:image_article1_fig1}. Jeśli robot 1 (zmierzający z punktu S1 do G1) otrzyma wyższy priorytet niż robot 2 (zmierzający z S2 do G2), spowoduje to zablokowanie przejazdu dla robota 2 i w efekcie prawidłowe rozwiązanie nie zostanie znalezione.
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\includegraphics[width=7cm]{img/article1/fig1}
 	\caption{Sytuacja, w której żadne rozwiązanie nie zostanie znalezione, jeśli robot 1 ma wyższy priorytet niż robot 2. Źródło: \cite{optpriorities}}
@@ -71,7 +71,7 @@ Istotną rolę doboru priorytetów robotów w procesie planowania tras ukazuje p
 \end{figure}
 
 Układ priorytetów może mieć także wpływ na długość uzyskanych tras. Potwierdzający przykład został przedstawiony na rysunku \ref{fig:image_article1_ppt6}. W zależności od wyboru priorytetów, wpływających na kolejność planowania tras, otrzymujemy różne rozwiązania.
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\includegraphics[width=13cm]{img/article1/ppt6}
 	\caption{a) Niezależne planowanie optymalnych tras dla 2 robotów; b) suboptymalne rozwiązanie, gdy robot 1 ma wyższy priorytet; c) rozwiązanie, gdy robot 2 ma wyższy priorytet. Źródło: \cite{optpriorities}}
