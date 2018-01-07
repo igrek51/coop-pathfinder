@@ -2,7 +2,7 @@
 \label{ch:wstep}
 
 \section{Cel i zakres pracy}
-Przedmiotem niniejszej pracy jest przegląd metod wykorzystywanych do planowania bezkolizyjnych tras dla wielu robotów.
+Przedmiotem niniejszej pracy jest przegląd metod wykorzystywanych do planowania bezkolizyjnych tras dla wielu robotów mobilnych.
 Stanowi to również wstęp teoretyczny do zaprojektowania algorytmu i implementacji oprogramowania pozwalającego na symulację działania skutecznego planowania tras dla systemu wielorobotowego.
 
 Praca skupia się na przypadkach, w których mamy do czynienia ze środowiskiem z dużą liczbą przeszkód (np. zamknięty budynek z licznymi ciasnymi korytarzami), aby uwypuklić  problem blokowania sią agentów często prowadzący do zakleszczenia. Często okazuje się, że należy wtedy zastosować nieco inne podejścia niż te, które sprawdzają się w przypadku otwartych środowisk, a które zostały opisane np. w pracach \cite{roszkowska}, \cite{siemiatkowska}.
@@ -67,22 +67,24 @@ $TODO$ zrobić screen z pożądnym zakleszczeniem jednostek
 \end{figure}
 
 \section{Podstawowe pojęcia}
-\subsubsection{Przestrzeń konfiguracyjna}
-Przestrzeń konfiguracyjna to formalna, matematyczna przestrzeń będąca zbiorem możliwych stanów danego układu fizycznego.
-W zależności od rodzaju i liczby wyróżnionych parametrów stanu przestrzenie konfiguracyjne mogą mieć wiele wymiarów.
-
 \subsubsection{Robot holonomiczny}
-$TODO$ dopisać definicje i uzupełnić w celu pracy, że będzie to ich dotyczyć
+Robot holonomiczny to taki robot mobilny, który może zmienić swoją orientację, stojąc w miejscu.
+
+\subsubsection{Przestrzeń konfiguracyjna}
+Przestrzeń konfiguracyjna to N-wymiarowa przestrzeń będąca zbiorem możliwych stanów danego układu fizycznego.
+Wymiar przestrzeni zależy od rodzaju i liczby wyróżnionych parametrów stanu.
+W odróżnieniu od przestrzeni roboczej, gdzie robot ma postać bryły, w przestrzeni konfiguracyjnej robot jest reprezentowany jako punkt.
+
+\subsubsection{Zupełność algorytmu (ang. \it Completeness)}
+W kontekście algorytmu przeszukiwania grafu algorytm zupełny to taki, który gwarantuje znalezienie rozwiązania, jeśli takie istnieje.
+Nie gwarantuje natomiast, że znalezione rozwiązanie będzie rozwiązaniem optymalnym.
 
 \subsubsection{Metoda hill-climbing}
-$TODO$ wyjebać to?
 Metoda hill-climbing jest rodzajem matematycznej optymalizacji, lokalną metodą przeszukiwania.
 Jest to iteracyjny algorytm, który zaczyna w wybranym rozwiązaniu problemu, następnie próbuje znaleźć lepsze rozwiązanie poprzez przyrostowe zmiany pojedynczych elementów rozwiązania.
-Jeśli zmiana przynosi lepsze rozwiązanie, jest wprowadzana do nowego rozwiązania.
-Kroki algorytmu powtarzane są dotąd, aż żadne ``udoskonalenie'' nie zostaje znalezione.
+Jeśli zmiana przynosi lepsze rozwiązanie, przyrostowa zmiana jest wprowadzana do nowego rozwiązania.
+Kroki algorytmu powtarzane są dotąd, aż żadna zmiana nie przynosi poprawy.
 
-\subsubsection{Zupełność algorytmu}
-$TODO$
 
 \chapter{Metody planowania tras}
 \label{ch:path_planning_methods}

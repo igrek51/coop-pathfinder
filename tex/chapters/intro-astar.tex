@@ -19,6 +19,8 @@ $TODO$ Clearance-based Pathfinding and Hierarchical Annotated A* Search - używa
 \section{Algorytm A*}
 A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znalezienia najkrótszej ścieżki. Algorytm ten jest powszechnie stosowany w zagadnieniach sztucznej inteligencji oraz w grach komputerowych \cite{mit_astar}. Jest modyfikacją algorytmu Dijkstry, wprowadza pojęcie funkcji heurystycznej $h(n)$. Wartość funkcji heurystycznej powinna określać przewidywaną drogę do węzła docelowego. W każdym kroku przeszukiwany jest węzeł o najmniejszej wartości funkcji $f(n)$.
 
+$TODO$ jest optymalny, ale w pewnych warunkach
+
 \begin{gather}
  	f(n) = g(n) + h(n)
  	\label{eq_astar} 
