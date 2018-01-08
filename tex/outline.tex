@@ -29,26 +29,30 @@ Założenia:
 \chapter{Konspekt pracy}
 \label{ch:konspekt}
 \begin{itemize}
-	\item Wstęp teoretyczny:
+	\item (P) Cel i zakres pracy, założenia, zastosowanie
+	\item (P) Podobieństwo do gier RTS
+	\item (P) Wstęp teoretyczny:
 	\begin{itemize}
-		\item Cooperative Pathfinding
-		\item algorytm A* - szczegółowo
-		\item przegląd metod planowania tras dla wielu robotów
-		\item artykuł o Cooperative Pathfinding, time-space A*
-		\item artykuł o wyznaczaniu priorytetów i metodach planowania tras (prezentacja): Path Coordination, time-space A*
-		\item metoda ładunków - problem minimów lokalnych
-		\item replanowanie po wykruciu kolizcji (algorytm D*)
-		\item algorytmy WHCA* i IADPP
-		\item Reciprocal Collision Avoidance
-		\item metody przydziału priorytetów - zwiększanie i przeliczanie
-		\item metody zcentralizowane vs rozproszone (porównanie)
-		\item time-space A*, heurystyki, Reservation Table
+		\item (P) Podstawowe pojęcia
+		\item (P) Cooperative Pathfinding, przegląd metod planowania tras, rozproszone i priorytetyzowane planowanie
+		\item (P) Metoda pól potencjałowych
+		\item (P) Metoda Path Coordination
+		\item (P) Algorytm A* - szczegółowo, algorytm, rola funkcji heurystycznej
+		\item (P) Local Repair A*, D*
+		\item (P) Cooperative A* - wprowadzenie trzeciego wymiaru, tablica rezerwacji
+		\item (P) Hierarchical Cooperative A*
+		\item (P) Windowed Hierarchical Cooperative A*
 	\end{itemize}
-	\item zastosowanie: ciasne korytarze, częsty problem kolizji, szpitale, transport dokumentów, paczek
-	\item generowanie mapy - labiryntu do testów: własny algorytm, teoria grafów, własności mapy
-	\item time-space A* - pseudokod, schemat blokowy, własne heurystyki, modyfikacje
-	\item metoda przydziału / zmiany priorytetów
-	\item ograniczenia - nałożone uproszczenia: ruch skośny, czas dyskretny, brak czasu na obrót
-	\item Implementacja aplikacji - stack technologiczny: Java 8, Java FX, Spring, Spring Boot, testy jednostkowe jUnit, git, IntelliJ, Maven, Linux / Windows; schemat klas aplikacji
-	\item obszerne testy, porównanie wyników metod przy tych samych warunkacj początkowych
+	\item Generowanie mapy - labiryntu do testów: własny algorytm, teoria grafów, własności mapy
+	\item Time-space A* - pseudokod, schemat blokowy, własne heurystyki i modyfikacje
+	\item Metoda przydziału / zmiany priorytetów - zwiększanie i rekalkulacja
+	\item Metoda pól potencjałowych - minima lokalne
+	\item Implementacja aplikacji
+	\begin{itemize}
+		\item stack technologiczny: Java 8, Java FX, Spring, Spring Boot, testy jednostkowe jUnit, git, IntelliJ, Maven, Linux / Windows
+		\item screeny
+		\item schemat struktury klas aplikacji
+	\end{itemize}
+	\item Obszerne testy - porównanie wyników metod (WHCA*, CA*, LRA*?) przy tych samych warunkacj początkowych, porównanie czasu wykonania od rozmiaru okna czasowego
+	\item Ograniczenia - nałożone uproszczenia: ruch skośny, czas dyskretny, brak czasu na obrót
 \end{itemize}

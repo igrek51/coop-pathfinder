@@ -1,15 +1,15 @@
 \chapter{Algorytmy oparte o A*}
 \label{ch:astar}
 
-Kiedy pojedynczy agent dokonuje znalezienia drogi do wyznaczonego celu, prosty algorytm A* sprawdza się bardzo dobrze. Jednak w przypadku, gdy wiele agentów porusza się w tym samym czasie, to podejście może się nie sprawdzić, powodując wzajemne blokowanie się i zakleszczenie jednostek. Rozwiązaniem tego problemu może być kooperacyjne znajdowanie tras. Roboty będą mogły skutecznie przemieszczać się przez mapę, omijając trasy wyznaczone przez inne jednostki oraz schodząc innym jednostkom z drogi, jeśli to konieczne. \cite{cooppath}
+Kiedy pojedynczy agent staje przed zadaniem znalezienia drogi do wyznaczonego celu, prosty algorytm A* sprawdza się znakomicie. Jednak w przypadku, gdy wiele agentów porusza się w tym samym czasie, podejście to może się już nie sprawdzić, powodując wzajemne blokowanie się i zakleszczenie jednostek. Rozwiązaniem tego problemu jest kooperacyjne znajdowanie tras. Dzięki tej technice roboty będą mogły skutecznie przemieszczać się przez mapę, omijając trasy wyznaczone przez inne jednostki oraz schodząc innym jednostkom z drogi, jeśli to konieczne. \cite{cooppath}
 
-Zagadnienie znajdowania drogi jest ważnym elementem sztucznej inteligencji zaimplementowanej w wielu grach komputerowych. Chociaż klasyczny algorytm A* potrafi doprowadzić pojedynczego agenta do celu, to jednak dla wielu agentów wymagane jest zastosowanie innego podejścia w celu unikania kolizji. Istniejące rozwiązania są jednak wciąż oparte o Algorytm A*, choć nieco zmodyfikowany. A* może zostać zaadaptowany do replanowania trasy na żądanie, w przypadku wykrycia kolizji tras. Jednak takie podejście nie jest zadowalające pod wieloma względami. Na trudnych mapach z wieloma wąskimi korytarzami i wieloma agentami może to prowadzić do zakleszczenia agentów w wąskich gardłach lub do cyklicznego zapętlenia ruchu agentów. \cite{cooppath}
+Zagadnienie znajdowania drogi jest również ważnym elementem sztucznej inteligencji zaimplementowanej w wielu grach komputerowych. Chociaż klasyczny algorytm A* potrafi doprowadzić pojedynczego agenta do celu, to jednak dla wielu agentów wymagane jest zastosowanie innego podejścia w celu unikania kolizji. Istniejące rozwiązania są jednak wciąż oparte o Algorytm A*, choć nieco zmodyfikowany. Chociaż A* może zostać zaadaptowany do replanowania trasy na żądanie, w przypadku wykrycia kolizji tras, to jednak takie podejście nie jest zadowalające pod wieloma względami. Na trudnych mapach z wieloma wąskimi korytarzami i wieloma agentami może to prowadzić do zakleszczenia agentów w wąskich gardłach lub do cyklicznego zapętlenia akcji agentów. \cite{cooppath}
 
-Rozdział ten zmierza do zaprezentowania zasady działania oraz cech algorytmu WHCA* \ref{ch:whca}, zaproponowanego przez Davida Silvera \cite{cooppath}. Zaczynamy jednak od przedstawienia samego algorytmu A* i wprowadzając kolejne modyfikacje (CA*, HCA*), przekształcamy go w WHCA*.
-Zaprezentowano również rozwiązania alternatywne takie, jak: D* (por. \ref{ch:dstar}) i LRA* (por. \ref{ch:lra}).
+Rozdział ten zmierza do zaprezentowania zasady działania oraz cech algorytmu WHCA* (por. \ref{ch:whca}), zaproponowanego przez Davida Silvera \cite{cooppath}. Zaczynamy jednak od przedstawienia samego algorytmu A* i wprowadzając kolejne modyfikacje (CA*, HCA*), przekształcimy go stopniowo w WHCA*.
+W rozdziale zaprezentowano także rozwiązania alternatywne takie, jak: D* (por. \ref{ch:dstar}) i LRA* (por. \ref{ch:lra}).
 
 \section{Algorytm A*}
-A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znalezienia najkrótszej ścieżki między węzłem początkowym a węzłem docelowym. Algorytm ten jest powszechnie stosowany w zagadnieniach sztucznej inteligencji oraz w grach komputerowych \cite{mit_astar}. Opiera się na zapisywaniu węzłów w dwóch listach: zamkniętych (odwiedzonych) i otwartych (do odwiedzenia). Jest modyfikacją algorytmu Dijkstry poprzez wprowadzenie pojęcia funkcji heurystycznej $h(n)$. Wartość funkcji heurystycznej powinna określać przewidywaną drogę do węzła docelowego z bieżącego punktu. 
+A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znalezienia najkrótszej ścieżki między węzłem początkowym a węzłem docelowym. Algorytm ten jest powszechnie stosowany w zagadnieniach sztucznej inteligencji oraz w grach komputerowych \cite{mit_astar}. Opiera się na zapisywaniu węzłów w dwóch listach: zamkniętych (odwiedzonych) i otwartych (do odwiedzenia). Jest modyfikacją algorytmu Dijkstry poprzez wprowadzenie pojęcia funkcji heurystycznej $h(n)$. Wartość funkcji heurystycznej powinna określać przewidywaną drogę do węzła docelowego z bieżącego punktu. Pełny koszt $f(n)$ stanowi sumę dotychczasowego kosztu $g(n)$ oraz przewidywanego pozostałego kosztu.
 
 \begin{gather}
  	f(n) = g(n) + h(n)
@@ -17,7 +17,7 @@ A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znal
 \end{gather}
  gdzie:
 
- $g(n)$ - dotychczasowy koszt dotarcia do węzła $n$ - dokładna odgległość miedzy węzłem $n$ a węzłęm początkowym
+ $g(n)$ - dotychczasowy koszt dotarcia do węzła $n$, dokładna odgległość miedzy węzłem $n$ a węzłęm początkowym
 
  $h(n)$ - heurystyka, przewidywana pozostała droga od węzła bieżącego do węzła docelowego
 
@@ -26,7 +26,7 @@ A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znal
  $n$ - bieżący węzeł, wierzchołek przeszukiwanego grafu
 
 W każdym kroku przeszukiwany jest węzeł o najmniejszej wartości funkcji $f(n)$.
-Dzięki takiemu podejściu najpierw sprawdzane są najbardziej "obiecujące" rozwiązania, co pozwala szybciej otrzymać rozwiązanie (w porównaniu do algorytmu Dijkstry).
+Dzięki takiemu podejściu najpierw sprawdzane są najbardziej "obiecujące" rozwiązania, co pozwala szybciej otrzymać wynik (w porównaniu do algorytmu Dijkstry).
 Algorytm kończy działanie w momencie, gdy napotka węzeł będący węzłem docelowym.
 Dla każdego odwiedzonego węzła zapamiętywane są wartości $g(n)$, $h(n)$ oraz węzeł będący rodzicem w celu późniejszego odnalezienia drogi powrotnej do węzła startowego po napotkaniu węzła docelowego (por. rys. \ref{fig:image_astar2}).
 
@@ -58,10 +58,10 @@ A* opiera się na heurystyce, która "kieruje" przeszukiwaniem.
 To od niej zależy, w kierunku których węzłów będzie podążało przeszukiwanie.
 Źle wybrana heurystyka może prowadzić do zbędnego odwiedzania dodatkowych węzłów.
 
-Poniżej przedstawiono najczęściej wykorzystywane heurystyki będące oszacowaniem odległości między przeszukiwanym węzłem $(x_n, y_n)$ a węzłem docelowym $(x_g, y_g)$.
+Poniżej przedstawiono najczęściej wykorzystywane heurystyki będące oszacowaniem odległości między przeszukiwanym węzłem $(x_n, y_n)$ a węzłem docelowym $(x_g, y_g)$ na dwuwymiarowej mapie.
 
 \subsubsection{Heurystyka euklidesowa}
-Dla dwuwymiarowej mapy heurystyka wykorzystująca metrykę euklidesową wyraża dokładną odległość po linii prostej. Wymaga to jednak obliczania pierwiastków.
+Heurystyka wykorzystująca metrykę euklidesową wyraża dokładną odległość po linii prostej. Wymaga to jednak częstego obliczania pierwiastków (lub stosowania {\it look-up table}).
 \begin{gather}
  	h(n) = \sqrt{(x_n - x_g)^2 + (y_n - y_g)^2}
  	\label{eq_astar_heu_euc} 
@@ -75,7 +75,7 @@ W przypadku, gdy agent może poruszać się po mapie jedynie poziomo lub pionowo
 \end{gather}
 
 \subsubsection{Heurystyka metryki maksimum}
-Zastosowanie metryki maksimum (metryki nieskończoność lub Czebyszewa) może sprawdzić się np. dla figur szachowych:
+Zastosowanie metryki maksimum (metryki Czebyszewa) może sprawdzić się np. dla niektórych figur szachowych:
 \begin{gather}
  	h(n) = max(|x_n - x_g|, |y_n - y_g|)
  	\label{eq_astar_heu_czeb} 
@@ -93,7 +93,7 @@ Przyjęcie heurystyki równej $h(n) = 0$ sprawia, że algorytm A* sprowadza się
 
 \section{Local Repair A*}
 \label{ch:lra}
-W algorytmie Local Repair A* (LRA*) każdy z agentów znajduje drogę do celu, używając algorytmu A*, ignorując pozostałe roboty oprócz ich obecnych sąsiadów. Roboty zaczynają podążać wyznaczonymi ścieżkami do momentu, aż kolizja z innym robotem jest nieuchronna. Wtedy następuje ponowne przeliczenie drogi pozostałej do przebycia, z uwzględnieniem nowo napotkanej przeszkody.
+W algorytmie Local Repair A* (LRA*) każdy z agentów znajduje drogę do celu, używając algorytmu A*, ignorując pozostałe roboty oprócz ich obecnych sąsiadów. Roboty zaczynają podążać wyznaczonymi ścieżkami do momentu, aż kolizja z innym robotem jest nieuchronna (w lokalnym otoczeniu). Wtedy następuje ponowne przeliczenie drogi pozostałej do przebycia, z uwzględnieniem nowo napotkanej przeszkody.
 
 Możliwe (i całkiem powszechne \cite{cooppath}) jest uzyskanie cykli (tych samych sekwencji ruchów powtarzających się w nieskończoność), dlatego zazwyczaj wprowadzane są pewne modyfikacje, aby rozwiązać ten problem. Jedną z możliwości jest zwiększanie wpływu losowego szumu na wartość heurystyki. Kiedy agenci zachowują się bardziej losowo, prawdopodobne jest, że wydostaną się z problematycznego położenia i spróbują podążać innymi ścieżkami.
 
@@ -116,25 +116,24 @@ Pozycje w tej tablicy są uważane jako pola nieprzejezdne i w efekcie są omija
 Należy zaznaczyć, że planowanie dla każdego agenta odbywa się sekwencyjnie według przydzielonych priorytetów.
 Algorytm ten jest podatny na zmianę kolejności agentów. Odpowiedni dobór priorytetów może wpłynąć na wydajność algorytmu oraz jakość uzyskanego wyniku.
 
-\subsection{Trzeci wymiar}
+\subsection{Trzeci wymiar - czas}
 Do rozwiązania problemu kooperacyjnego znajdowania dróg algorytm przeszukiwania potrzebuje mieć pełną wiedzę na temat przeszkód oraz jednostek na mapie.
 Aby zapisać tą informację, potrzeba rozszerzyć mapę o trzeci wymiar - czas. 
 Pierwotną mapę będziemy nazywac mapą przestrzenną, natomiast nową - czasoprzestrzenną mapą. \cite{cooppath}
 
 Zagadnienie sprowadza się do przeszukiwania grafu, w którym każdy węzeł ma przypisane 3 wielkości: położenie x, położenie y oraz czas.
-Podczas gdy zakres wielkości x i y jest znany i wynika z rozmiarów mapy oraz podziału jej wymiarów na dyskretne pola, to jednak określenie wymiaru czasu może być trudnym zagadnieniem.
-Wymiar czasu możemy również zdyskretyzować i przyjać, że najmniejsza jednostka jest czasem, jaki zajmuje robotowi przejście z jednego pola na sąsiednie (poziomo lub pionowo). Natomiast górną granicą czasu powinna być maksymalna liczba ruchów potrzebna do dotarcia do celu przez ostatniego robota. Wybór za małej liczby może spowodować, że algorytm nie zdąży znaleźć drogi dla niektórych agentów, z kolei za duża granica czasu mocno wydłuża czas obliczeń. Rozwiązanie tego problemu zostało opisane w późniejszym podrozdziale \ref{ch:whca}.
+Podczas gdy zakres wielkości x i y jest znany i wynika z rozmiarów mapy oraz podziału jej wymiarów na dyskretne pola, to jednak określenie wymiaru czasu i jego granicy nie jest trywialnym zagadnieniem.
+Wymiar czasu możemy również zdyskretyzować i przyjać, że krok czasu jest okresem, jaki zajmuje robotowi przejście z jednego pola na sąsiednie (poziomo lub pionowo). Natomiast górną granicą czasu powinna być maksymalna liczba ruchów potrzebna do dotarcia do celu przez ostatniego robota. Wybór za małej liczby może spowodować, że algorytm nie zdąży znaleźć drogi dla niektórych agentów, z kolei zbyt duża granica kroków czasu znacząco wydłuża obliczenia. Rozwiązanie tego problemu zostało opisane w późniejszym podrozdziale \ref{ch:whca}.
 
 Wprowadzenie trzeciego wymiaru powoduje również konieczność zmian w doborze odpowiedniej heurystyki odpowiedzialnej za oszacowanie drogi pozostałej do celu.
 
 \subsection{Tablica rezerwacji}
 Tablica rezerwacji (ang. {\it Reservation Table}) reprezentuje wspódzieloną wiedzę o zaplanowanych ścieżkach przez wszystkich agentów.
 Jest to informacja o zajętości każdej z komórki na mapie w danym miejscu i określonym czasie. \cite{cooppath}
-
 Jak tylko agent zaplanuje trasę, każda komórka odpowiadająca ścieżce zaznaczana jest jako zajęta w tablicy rezerwacji.
 
 W prostej implementacji tablica rezerwacji jest trójwymiarową kostką (dwa wymiary przestrzenne i jeden wymiar czasu).
-Każda komórka kostki, która jest przecinana przez zaplanowaną przez agenta ścieżkę, jest zaznaczana jako nieprzejezdna przez określony czas trwania. W ten sposób zapobiega to planowania kolizyjnych tras przez pozostałych agentów.
+Każda komórka kostki, która jest przecinana przez zaplanowaną przez agenta ścieżkę, jest zaznaczana jako nieprzejezdna przez określony czas trwania. W ten sposób zapobiega to planowania kolizyjnych tras przez pozostałych agentów. (por. rys. \ref{fig:img_reservation-table})
 
 \begin{figure}
 	\centering
@@ -143,29 +142,29 @@ Każda komórka kostki, która jest przecinana przez zaplanowaną przez agenta �
 	\label{fig:img_reservation-table}
 \end{figure}
 
+Jeśli tylko niewielka część z całej tablicy rezerwacji będzie markowana jako zajęta, wydajniej jest zaimplementować ją jako tablicę typu {\it hash table}. Daje to zaletę oszczędności pamięci poprzez pamiętanie jedynie współrzędnych $(x, y, t)$ zajętych pól.
+
 W ogólności poszczególni agenci mogą mieć różną prędkość lub rozmiary, zatem tablica rezerwacji musi mieć możliwość zaznaczenia dowolnego zajętego obszaru. Zostało to przedstawione na rysunku \ref{fig:img_reservation-table-3}.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=6cm]{img/reservation-table-3}
 	\caption{Tablica rezerwacji jest współdzielona między wszystkimi agentami, dlatego powinna być odpowiednio dopasowana do wszystkich agentów o różnych prędkościach. Źródło: \cite{cooppath}}
-	\label{fig:img_reservation-table-2}
+	\label{fig:img_reservation-table-3}
 \end{figure}
 
-Jeśli tylko mała część z całej tablicy rezerwacji będzie markowana jako zajęta, wydajniej jest zaimplementować ją jako tablicę typu {\it hash table}. Daje to zaletę oszczędności pamięci poprzez pamiętanie jedynie współrzędnych $(x, y, t)$ zajętych pól.
-
-Niestety taki sposób wykorzystania tablicy rezerwacji w pewnych sytuacjach nie zapobiega zderzeniom czołowym jednostek zmierzających w przeciwnych kierunkach.
-Jeśli jedna jednostka zarezerwowała komórki $(x, y, t)$ i $(x + 1, y, t + 1)$, nic nie stoi na przeszkodzie, aby kolejna jednostka mogła zarezerwować komórki $(x + 1, y, t)$ i $(x, y, t + 1)$. Ten problem może być rozwiązany poprzez zajmowanie (rezerwowanie) dwóch sąsiednich komórek w tym samym czasie $t$ podczas ruchu robota.
+Niestety powyższy sposób wykorzystania tablicy rezerwacji w pewnych sytuacjach nie zapobiega zderzeniom czołowym jednostek zmierzających w przeciwnych kierunkach.
+Jeśli jedna jednostka zarezerwowała komórki $(x, y, t)$ i $(x + 1, y, t + 1)$, nic nie stoi na przeszkodzie, aby kolejna jednostka mogła zarezerwować komórki $(x + 1, y, t)$ i $(x, y, t + 1)$. Ten problem może być rozwiązany poprzez zajmowanie (rezerwowanie) dwóch sąsiednich komórek w tym samym czasie $t$ podczas ruchu robota, a nie tylko jednej komórki.
 
 \section{Hierarchical Cooperative A*}
 \label{ch:hier_cooperative_a}
-Metoda {\it Hierarchical Cooperative A*} (HCA*) wprowadza pewną modyfikację do algorytmu Cooperative A*. Modyfikacja ta dotyczy heurystyki opartej na abstrakcjach przestrzeni stanu. W tym podejściu abstrakcyjne odległości są obliczane na żądanie. Hierarchia w tym przypadku dotyczy serii abstrackji przestrzeni stanu, każdej bardziej ogólnej od poprzedniej. \cite{cooppath}
+Metoda {\it Hierarchical Cooperative A*} (HCA*) wprowadza pewną modyfikację do algorytmu Cooperative A*. Modyfikacja ta dotyczy heurystyki opartej na abstrakcjach przestrzeni stanu \cite{cooppath}.
 HCA* jest również jednym z przykładów rozproszonego podejścia do planowania tras.
 
-Podejście (HCA*) wykorzystuje prostą hierarchię zawierającą pojedynczą abstrakcję dziedziny, która ignoruje wymiar czasu, jak również tablicę rezerwacji.
-Innymi słowy, abstrakcja jest prostą dwuwymiarową mapą z usuniętymi agentami. Abstrakcyjne odległości mogą być rozumiane jako dokładne oszacowania odległości do celu, ignorując potencjalne interakcje z innymi agentami. Jest to oczywiście dopuszczalna heurystyka. Niedokładność heurystyki wynika jedynie z trudności związanych z interakcją z innymi agentami (jak bardzo agent musi zboczyć z pierwotnie zaplanowanej ścieżki w celu ominięcia innych agentów).
+W tym podejściu abstrakcja przestrzeni stanu oznacza zignorowanie wymiaru czasu, jak również tablicy rezerwacji.
+Innymi słowy, abstrakcja jest prostą dwuwymiarową mapą z usuniętymi agentami. Abstrakcyjne odległości mogą być rozumiane jako dokładne oszacowania odległości do celu, ignorując potencjalne interakcje z innymi agentami. Jest to oczywiście dopuszczalna heurystyka (por. \ref{ch:astar_heurystyki}). Niedokładność heurystyki wynika jedynie z trudności związanych z interakcją z innymi agentami (jak bardzo agent musi zboczyć z pierwotnie zaplanowanej ścieżki w celu ominięcia innych agentów).
 
-Opisywane podejście wykorzystuje algorytm przeszukiwania Reverse Resumable A* (RRA*) dla abstrakcyjnej dziedziny.
+Do wyznaczenia heurystyki dla abstrakcyjnej przestrzeni stanu opisywane podejście wykorzystuje algorytm przeszukiwania {\it Reverse Resumable A*} (RRA*).
 Algorytm ten wykonuje zmodyfikowane przeszukiwanie A* w odwrotnym kierunku. Przeszukiwanie zaczyna się w węźle docelowym agenta i kieruje się do początkowego położenia. Jednak zamiast kończyć w tym punkcie, przeszukiwanie jest kontynuowane do natrafienia na węzeł $N$, w którym znajduje się agent.
 
 Algorytm HCA* jest więc taki, jak algorytm CA* z bardziej wyszukaną heurystyką, która używa RRA* do obliczania abstrakcyjnych odległości na żądanie.
