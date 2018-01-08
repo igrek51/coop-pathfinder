@@ -3,10 +3,10 @@
 
 Kiedy pojedynczy agent dokonuje znalezienia drogi do wyznaczonego celu, prosty algorytm A* sprawdza się bardzo dobrze. Jednak w przypadku, gdy wiele agentów porusza się w tym samym czasie, to podejście może się nie sprawdzić, powodując wzajemne blokowanie się i zakleszczenie jednostek. Rozwiązaniem tego problemu może być kooperacyjne znajdowanie tras. Roboty będą mogły skutecznie przemieszczać się przez mapę, omijając trasy wyznaczone przez inne jednostki oraz schodząc innym jednostkom z drogi, jeśli to konieczne. \cite{cooppath}
 
-Zagadnienie znajdowania drogi jest ważnym elementem sztucznej inteligencji zaimplementowanej w wielu grach komputerowych. Chociaż klasyczny algorytm A* potrafi doprowadzić pojedynczego agenta do celu, to jednak dla wielu agentów wymagane jest zastosowanie innego podejścia w celu unikania kolizji. Istniejące rozwiązania są jednak wciąż oparte o Algorytm A*, choć nieco zmodyfikowany. A* może zostać zaadaptowany do replanowania trasy na żądanie, w przypadku wykrycia kolizji tras (por. \ref{ch:lra}, \ref{ch:dstar}). Jednak takie podejście nie jest zadowalające pod wieloma względami. Na trudnych mapach z wieloma wąskimi korytarzami i wieloma agentami może to prowadzić do zakleszczenia agentów w wąskich gardłach lub do cyklicznego zapętlenia ruchu agentów. \cite{cooppath}
+Zagadnienie znajdowania drogi jest ważnym elementem sztucznej inteligencji zaimplementowanej w wielu grach komputerowych. Chociaż klasyczny algorytm A* potrafi doprowadzić pojedynczego agenta do celu, to jednak dla wielu agentów wymagane jest zastosowanie innego podejścia w celu unikania kolizji. Istniejące rozwiązania są jednak wciąż oparte o Algorytm A*, choć nieco zmodyfikowany. A* może zostać zaadaptowany do replanowania trasy na żądanie, w przypadku wykrycia kolizji tras. Jednak takie podejście nie jest zadowalające pod wieloma względami. Na trudnych mapach z wieloma wąskimi korytarzami i wieloma agentami może to prowadzić do zakleszczenia agentów w wąskich gardłach lub do cyklicznego zapętlenia ruchu agentów. \cite{cooppath}
 
 Rozdział ten zmierza do zaprezentowania zasady działania oraz cech algorytmu WHCA* \ref{ch:whca}, zaproponowanego przez Davida Silvera \cite{cooppath}. Zaczynamy jednak od przedstawienia samego algorytmu A* i wprowadzając kolejne modyfikacje (CA*, HCA*), przekształcamy go w WHCA*.
-Zaprezentowano również rozwiązania alternatywne takie, jak: D* i LRA*.
+Zaprezentowano również rozwiązania alternatywne takie, jak: D* (por. \ref{ch:dstar}) i LRA* (por. \ref{ch:lra}).
 
 \section{Algorytm A*}
 A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znalezienia najkrótszej ścieżki między węzłem początkowym a węzłem docelowym. Algorytm ten jest powszechnie stosowany w zagadnieniach sztucznej inteligencji oraz w grach komputerowych \cite{mit_astar}. Opiera się na zapisywaniu węzłów w dwóch listach: zamkniętych (odwiedzonych) i otwartych (do odwiedzenia). Jest modyfikacją algorytmu Dijkstry poprzez wprowadzenie pojęcia funkcji heurystycznej $h(n)$. Wartość funkcji heurystycznej powinna określać przewidywaną drogę do węzła docelowego z bieżącego punktu. 
@@ -138,17 +138,17 @@ Każda komórka kostki, która jest przecinana przez zaplanowaną przez agenta �
 
 \begin{figure}
 	\centering
-	\includegraphics[width=10cm]{img/reservation-table}
+	\includegraphics[width=13cm]{img/reservation-table}
 	\caption{Dwie jednostki kooperacyjnie poszukujące tras. (A) Pierwsza jednostka znajduje ścieżkę i zaznacza ją w tablicy rezerwacji. (B) Druga jednostka znajduje ścieżkę, uwzględniając istniejące rezerwacje pól, również zaznaczając ją w tablicy rezerwacji. Źródło: \cite{cooppath}}
 	\label{fig:img_reservation-table}
 \end{figure}
 
-W ogólności poszczególni agenci mogą mieć różną prędkość lub rozmiary, zatem tablica rezerwacji musi mieć możliwość zaznaczenia dowolnego zajętego obszaru. Zostało to przedstawione na rysunku \ref{fig:img_reservation-table-2}.
+W ogólności poszczególni agenci mogą mieć różną prędkość lub rozmiary, zatem tablica rezerwacji musi mieć możliwość zaznaczenia dowolnego zajętego obszaru. Zostało to przedstawione na rysunku \ref{fig:img_reservation-table-3}.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=10cm]{img/reservation-table-2}
-	\caption{Czasoprzestrzenna mapa może różnić się od tablicy rezerwacji. (A) Powolna jednostka ma "głębokie" komórki na czasoprzestrzennej mapie. (B) Szybka jednostka ma "płytkie" komórki. (C) Tablica rezerwacji jest współdzielona między wszystkimi agentami, dlatego powinna być odpowiednio dopasowana do wszystkich agentów. Źródło: \cite{cooppath}}
+	\includegraphics[width=6cm]{img/reservation-table-3}
+	\caption{Tablica rezerwacji jest współdzielona między wszystkimi agentami, dlatego powinna być odpowiednio dopasowana do wszystkich agentów o różnych prędkościach. Źródło: \cite{cooppath}}
 	\label{fig:img_reservation-table-2}
 \end{figure}
 
@@ -181,7 +181,8 @@ Kooperacyjne planowanie jest ograniczone do ustalonej głębokości. Każdy agen
 
 Aby zapewnić, że agenci podążają do prawidłowych punktów docelowych, ograniczana jest tylko głębokość przeszukiwania kooperacyjnego (związanego z wieloma agentami), podczas gdy przeszukiwanie abstrakcyjnych odległości (heurystyki opisanej w podrozdziale \ref{ch:hier_cooperative_a}) odbywa się bez ograniczeń głębokości. Okno o rozmiarze $w$ może być rozumiane jako pośrednia abstrakcja, która jest równoważna wykonaniu $w$ kroków w rzeczywistym środowisku (z uwzględnieniem pozostałych agentów) a następnie wykonaniu pozostałych kroków zgodnie z abstrakcją (bez uwzględnienia innych agentów). Innymi słowy, pozostali agenci są jedynie rozważani dla $w$ pierwszych kroków (poprzez tablicę rezerwacji) a dla pozostałych kroków są ignorowani \cite{cooppath}.
 
-Rozmiar okna jest wielkością ustalaną arbitralnie. Dobrą praktyką jest przyjęcie wartości równej liczbie agentów na mapie, gdyż to właśnie z ich powodów mogą wystąpić ewentualne zmiany w planowaniu tras.
+Rozmiar okna jest wielkością ustalaną arbitralnie. Rozmiar okna powinien być przyjęty jako czas trwania najdłuższego przewidywanego wąskiego gardła (zatoru).
+Dobrą praktyką jest przyjęcie wartości równej liczbie agentów na mapie, gdyż to właśnie z ich powodów mogą wystąpić ewentualne zmiany w zaplanowanej trasie.
 
 \subsubsection{Porównanie HCA* i WHCA*}
 Algorytm HCA* wybiera ustaloną kolejność agentów i planuje trasy dla każdego agenta po kolei, unikając kolizji z poprzednio wyznaczonymi ścieżkami. 
