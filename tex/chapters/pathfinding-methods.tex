@@ -36,7 +36,7 @@ W celu wykonywania wydajnych obliczeń w algorytmach przeszukujących grafy, naw
 	\label{fig:img_games_warcraft-map-editor}
 \end{figure}
 
-Popularne podejścia unikające planowania w wysoko wymiarowej zbiorowej przestrzeni konfiguracyjnej to techniki rozproszone i priorytetyzowane \cite{optpriorities}.
+Popularne podejścia unikające planowania w wysoko wymiarowej zbiorowej przestrzeni konfiguracyjnej to techniki rozproszone i uwzględniające priorytety \cite{optpriorities}.
 Pomimo, że metody te są bardzo efektywne, mają dwie główne wady:
 \vspace{-0.5em}
 \begin{itemize}[noitemsep]
@@ -45,12 +45,12 @@ Pomimo, że metody te są bardzo efektywne, mają dwie główne wady:
 \end{itemize}
 
 % TODO-MGR
-% W artykule \cite{optpriorities} przedstawione zostało podejście do optymalizowania układu priorytetów dla rozproszonych i priorytetyzowanych technik planowania.
+% W artykule \cite{optpriorities} przedstawione zostało podejście do optymalizowania układu priorytetów dla rozproszonych i uwzględniających priorytety technik planowania.
 % Proponowana metoda wykonuje randomizowane przeszukiwanie z techniką hill-climbing do znalezienia rozwiązania i do skrócenia całkowitej długości ścieżek.
 % Technika ta została zaimplemenotwana i przetestowana na prawdziwych robotach oraz w rozległych testach symulacyjnych, dając zadowalające rezultaty.
 
-\subsection{Priorytetyzowane planowanie}
-Często używaną w praktyce metodą jest planowanie priorytetyzowane. 
+\subsection{Planowanie uwzględniające priorytety}
+Często używaną w praktyce metodą jest planowanie z uwzględnianiem priorytetów. 
 W tej technice agenci otrzymują unikalne priorytety. Algorytm wykonuje indywidualne planowanie sekwencyjnie dla każdego agenta w kolejności od najwyższego priorytetu. Trajektorie agentów o wyższych priorytetach są ograniczeniami (ruchomymi przeszkodami) dla pozostałych agentów \cite{async_decentralized_spacetime_cp}.
 
 Złożoność ogólnego algorytmu rośnie liniowo wraz z liczbą agentów, dzięki temu to podejście ma zastosowanie w problemach z dużą liczbą agentów.
@@ -60,7 +60,7 @@ Istotną rolę doboru priorytetów robotów w procesie planowania tras ukazuje p
 \begin{figure}
 	\centering
 	\includegraphics[width=6cm]{img/article1/fig1}
-	\caption{Sytuacja, w której żadne rozwiązanie nie zostanie znalezione, stosując priorytetyzowane planowanie, jeśli robot 1 ma wyższy priorytet niż robot 2. Źródło: \cite{optpriorities}}
+	\caption{Sytuacja, w której żadne rozwiązanie nie zostanie znalezione, stosując planowanie uwzględniające priorytety, jeśli robot 1 ma wyższy priorytet niż robot 2. Źródło: \cite{optpriorities}}
 	\label{fig:image_article1_fig1}
 \end{figure}
 
@@ -73,7 +73,7 @@ Układ priorytetów może mieć także wpływ na długość uzyskanych tras. Pot
 \end{figure}
 
 \subsection{Metoda Path coordination}
-Jedną z metod rozproszonego i priorytetyzowanego planowania tras jest Path Coordination, której idea przedstawia się w następujących krokach \cite{optpriorities}:
+Jedną z metod rozproszonego planowania tras z uwzględnianiem priorytetów jest Path Coordination, której idea przedstawia się w następujących krokach \cite{optpriorities}:
 \begin{enumerate}
 	\item Wyznaczenie ścieżki dla każdego robota {\bf niezależnie} (np. za pomocą algorytmu A*)
 	\item Przydział priorytetów
