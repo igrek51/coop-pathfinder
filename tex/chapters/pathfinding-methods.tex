@@ -11,7 +11,7 @@ Spośród metod wykorzystywanych do kooperacyjnego planowania tras dla wielu rob
 
 W systemach czasu rzeczywistego istotne jest, aby rozwiązanie problemu planowania tras uzyskać w krótkim, deterministycznym czasie, dlatego w tego typu sytemach chętniej używane są techniki rozproszone.
 
-\subsection{Metoda pól potencjałowych}
+\section{Metoda pól potencjałowych}
 Metoda pól potencjałowych (ang. {\it Artificial Potential Field} lub {\it Potential Field Technique}) polega na zastosowaniu zasad oddziaływania między ładunkami znanych z elektrostatyki. Roboty i przeszkody traktowane są jako ładunki jednoimienne, przez co "odpychają się" siłą odwrotnie proporcjonalną do kwadratu odległości (dzięki temu unikają kolizji między sobą). Natomiast punkt docelowy robota jest odwzorowany jako ładunek o przeciwnym biegunie, przez co robot jest "przyciągany" do celu.
 Główną zasadę działania metody przedstawiono na rysunku \ref{fig:image_potentialfield}.
 
@@ -25,7 +25,7 @@ Metoda pól potencjałowych nie daje gwarancji ani optymalności, ani nawet zupe
 	\label{fig:image_potentialfield}
 \end{figure}
 
-\subsection{Rozproszone planowanie tras}
+\section{Rozproszone planowanie tras}
 Najczęściej stosowanymi podejściami są metody oparte o algorytm A* lub jego pochodne.
 W celu wykonywania wydajnych obliczeń w algorytmach przeszukujących grafy, nawet w przypadku ciągłej przestrzeni mapy, stosuje się podział na dyskretną siatkę pól (por. rys. \ref{fig:img_games_warcraft-map-editor}) \cite{hierpathfindinginrts}.
 
@@ -49,7 +49,7 @@ Pomimo, że metody te są bardzo efektywne, mają dwie główne wady:
 % Proponowana metoda wykonuje randomizowane przeszukiwanie z techniką hill-climbing do znalezienia rozwiązania i do skrócenia całkowitej długości ścieżek.
 % Technika ta została zaimplemenotwana i przetestowana na prawdziwych robotach oraz w rozległych testach symulacyjnych, dając zadowalające rezultaty.
 
-\subsection{Planowanie uwzględniające priorytety}
+\section{Planowanie uwzględniające priorytety}
 Często używaną w praktyce metodą jest planowanie z uwzględnianiem priorytetów. 
 W tej technice agenci otrzymują unikalne priorytety. Algorytm wykonuje indywidualne planowanie sekwencyjnie dla każdego agenta w kolejności od najwyższego priorytetu. Trajektorie agentów o wyższych priorytetach są ograniczeniami (ruchomymi przeszkodami) dla pozostałych agentów \cite{async_decentralized_spacetime_cp}.
 
@@ -72,7 +72,7 @@ Układ priorytetów może mieć także wpływ na długość uzyskanych tras. Pot
 	\label{fig:image_article1_ppt6}
 \end{figure}
 
-\subsection{Metoda Path coordination}
+\section{Metoda Path coordination}
 Jedną z metod rozproszonego planowania tras z uwzględnianiem priorytetów jest Path Coordination, której idea przedstawia się w następujących krokach \cite{optpriorities}:
 \begin{enumerate}
 	\item Wyznaczenie ścieżki dla każdego robota {\bf niezależnie} (np. za pomocą algorytmu A*)

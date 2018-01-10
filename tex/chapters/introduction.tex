@@ -17,7 +17,7 @@ W niniejszej pracy starano się znaleźć metody rozwiązujące zagadnienie, w k
 Szukany jest natomiast przebieg tras do punktów docelowych dla agentów. Zadaniem algorytmu będzie wyznaczenie możliwie najkrótszej bezkolizyjnej trasy dla wszystkich robotów. Należy jednak zaznaczyć, że priorytetem jest dotarcie każdego z robotów do celu bez kolizji z innymi robotami. Drugorzędne zaś jest, aby wyznaczone drogi były możliwie jak najkrótsze.
 
 \clearpage
-\subsection{Założenia}
+\section{Założenia}
 \label{ch:zalozenia}
 Założenia i ograniczenia rozważanego problemu:
 \begin{enumerate}
@@ -53,14 +53,14 @@ Algorytmy do wyznaczania bezkolizyjnych tras dla wielu agentów (robotów) mogą
 	\label{fig:image_kiva_amazon}
 \end{figure}
 
-\subsection{Podobieństwo do gier RTS}
+\section{Podobieństwo do gier RTS}
 Problem kooperacyjnego znajdowania tras pojawia się nie tylko w robotyce, ale jest również popularny m.in. w grach komputerowych (strategiach czasu rzeczywistego), gdzie konieczne jest wyznaczanie bezkolizyjnych dróg dla wielu jednostek, unikając wzajemnego blokowania się. Niestety brak wydajnych i skutecznych algorytmów planowania dróg można zauważyć w wielu grach typu RTS (ang. {\it Real-Time Strategy}), gdzie czasami obserwuje się zjawisko zakleszczenia jednostek w wąskich gardłach (np. Age of Empires II, Warcraft III lub nawet we współczesnych produkcjach) \cite{efficient_coop_pathplanning} (por. rys. \ref{fig:img_games_age-deadlock}). Ponadto, zauważalny brak ogólnie dostępnych bibliotek open-source do rozwiązania problemu typu {\it Cooperative Pathfinding} świadczy o potrzebie rozwoju tych metod.
 
 Często algorytmy wykorzystywane w grach typu RTS (ang. {\it Real-Time Strategy}) zajmują się planowaniem bezkolizyjnych dróg dla układu wielu agentów w czasie rzeczywistym (będącego przedmiotem niniejszej pracy), dlatego nic nie stoi na przeszkodzie, aby stosować je zamiennie również do koordynacji ruchu zespołu robotów mobilnych.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=13cm]{img/games/age-deadlock2}
+	\includegraphics[width=15cm]{img/games/age-deadlock2}
 	\caption{Popularny problem zakleszczania się jednostek w wąskich gardłach występujący w grach typu RTS. Źródło: gra komputerowa Age of Empires II Forgotten Empires}
 	\label{fig:img_games_age-deadlock}
 \end{figure}
