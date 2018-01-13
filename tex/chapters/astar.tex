@@ -92,18 +92,25 @@ Zastosowanie metryki maksimum (metryki Czebyszewa) może sprawdzić się np. dla
 \subsubsection{Heurystyka zerowa}
 Przyjęcie heurystyki równej $h(n) = 0$ sprawia, że algorytm A* sprowadza się do algorytmu Dijkstry.
 
-\section{Local Repair A*}
+\section{Metody ponownego planowania}
+\subsection{Local Repair A*}
 \label{ch:lra}
 W algorytmie Local Repair A* (LRA*) każdy z agentów znajduje drogę do celu, używając algorytmu A*, ignorując pozostałe roboty oprócz ich obecnych sąsiadów. Roboty zaczynają podążać wyznaczonymi ścieżkami do momentu, aż kolizja z innym robotem jest nieuchronna (w lokalnym otoczeniu). Wtedy następuje ponowne przeliczenie drogi pozostałej do przebycia, z uwzględnieniem nowo napotkanej przeszkody.
 
 Możliwe (i całkiem powszechne \cite{cooppath}) jest uzyskanie cykli (tych samych sekwencji ruchów powtarzających się w nieskończoność), dlatego zazwyczaj wprowadzane są pewne modyfikacje, aby rozwiązać ten problem. Jedną z możliwości jest zwiększanie wpływu losowego szumu na wartość heurystyki. Kiedy agenci zachowują się bardziej losowo, prawdopodobne jest, że wydostaną się z problematycznego położenia i spróbują podążać innymi ścieżkami.
 
-Algorytm ten ma jednak sporo poważnych wad, które szczególnie ujawniają się w trudnych środowiskach z dużą liczbą przeszkód. Wydostanie się z zatłoczonego wąskiego gardła może trwać bardzo długo. Prowadzi to również do ponownego przeliczania trasy w prawie każdym kroku. Wciąż możliwe jest również odwiedzanie tych samych lokalizacji w wyniku zapętleń.
+Algorytm ten ma jednak sporo poważnych wad, które szczególnie ujawniają się w trudnych środowiskach z dużą liczbą przeszkód. Wydostanie się z zatłoczonego wąskiego gardła może trwać bardzo długo. Prowadzi to także do ponownego przeliczania trasy w prawie każdym kroku. Wciąż możliwe jest również odwiedzanie tych samych lokalizacji w wyniku zapętleń.
 
-\section{Algorytm D*}
+\subsection{Algorytm D*}
 \label{ch:dstar}
 D* ({\it Dynamic A* Search}) jest przyrostowym algorytmem przeszukiwania. Jest modyfikacją algorytmu A* pozwalającą na szybsze replanowanie trasy w wyniku zmiany otoczenia (np. zajmowania wolnego pola przez innego robota). Wykorzystywany jest m.in. w nawigacji robota do określonego celu w nieznanym terenie. Początkowo robot planuje drogę na podstawie pewnych założeń (np. nieznany teren nie zawiera przeszkód). Podążając wyznaczoną ścieżką, robot odkrywa rzeczywisty stan mapy i jeśli to konieczne, wykonuje ponowne planowanie trasy na podstawie nowych informacji.
 Często wykorzystywaną implementacją (z uwagi na zoptymalizowaną złożoność obliczeniową) jest wariant algorytmu {\it D* Lite} \cite{dstarlite}.
+
+\subsection{D* Extra Lite}
+\label{ch:dstarextralite}
+Wartym uwagi jest także algorytm {\it D* Extra Lite} charakteryzujący się jeszcze korzystniejszą wydajnością niż {\it D* Lite}, co potwierdziły przeprowadzone obszerne testy w różnego rodzaju środowiskach (m.in. na mapach z gier komputerowych oraz w zawiłych labiryntach) \cite{przybylski}.\\
+{\it D* Extra Lite} służy do przyrostowego planowania najkrótszej ścieżki w dwuwymiarowej przestrzeni bez dokładnej wiedzy o środowisku. Wykorzystanie wyników z poprzednich iteracji oraz wczesne odrzucanie pewnych węzłów z drzewa przeszukiwania znacznie skraca czas potrzebny do wykonania ponownego planowania.
+{\it D* Extra Lite} jest nowatorskim algorytmem ogólnego przeznaczenia. Naturalnym jego zastosowaniem jest nawigacja robotów mobilnych \cite{przybylski}.
 
 \section{Cooperative A*}
 Cooperative A* jest algorytmem do rozwiązywania problemu kooperacyjnego znajdowania tras.
@@ -126,7 +133,7 @@ Zagadnienie sprowadza się do przeszukiwania grafu, w którym każdy węzeł ma 
 Podczas gdy zakres wielkości x i y jest znany i wynika z rozmiarów mapy oraz podziału jej wymiarów na dyskretne pola, to jednak określenie wymiaru czasu i jego granicy nie jest trywialnym zagadnieniem.
 Wymiar czasu możemy również zdyskretyzować i przyjać, że krok czasu jest okresem, jaki zajmuje robotowi przejście z jednego pola na sąsiednie (poziomo lub pionowo). Natomiast górną granicą czasu powinna być maksymalna liczba ruchów potrzebna do dotarcia do celu przez ostatniego robota. Wybór za małej liczby może spowodować, że algorytm nie zdąży znaleźć drogi dla niektórych agentów, z kolei zbyt duża granica kroków czasu znacząco wydłuża obliczenia. Rozwiązanie tego problemu zostało opisane w późniejszym podrozdziale \ref{ch:whca}.
 
-Wprowadzenie trzeciego wymiaru powoduje również konieczność zmian w doborze odpowiedniej heurystyki odpowiedzialnej za oszacowanie drogi pozostałej do celu.
+Wprowadzenie trzeciego wymiaru wprowadza także konieczność zmian w doborze odpowiedniej heurystyki odpowiedzialnej za oszacowanie drogi pozostałej do celu.
 
 \subsection{Tablica rezerwacji}
 Tablica rezerwacji (ang. {\it Reservation Table}) reprezentuje wspódzieloną wiedzę o zaplanowanych ścieżkach przez wszystkich agentów.
@@ -136,7 +143,7 @@ Jak tylko agent zaplanuje trasę, każda komórka odpowiadająca ścieżce zazna
 W prostej implementacji tablica rezerwacji jest trójwymiarową kostką (dwa wymiary przestrzenne i jeden wymiar czasu).
 Każda komórka kostki, która jest przecinana przez zaplanowaną przez agenta ścieżkę, jest zaznaczana jako nieprzejezdna przez określony czas trwania. W ten sposób zapobiega to planowania kolizyjnych tras przez pozostałych agentów. (por. rys. \ref{fig:img_reservation-table})
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=13cm]{img/reservation-table}
 	\caption{Dwie jednostki kooperacyjnie poszukujące tras. (A) Pierwsza jednostka znajduje ścieżkę i zaznacza ją w tablicy rezerwacji. (B) Druga jednostka znajduje ścieżkę, uwzględniając istniejące rezerwacje pól, również zaznaczając ją w tablicy rezerwacji. Źródło: \cite{cooppath}}
@@ -147,10 +154,10 @@ Jeśli tylko niewielka część z całej tablicy rezerwacji będzie markowana ja
 
 W ogólności poszczególni agenci mogą mieć różną prędkość lub rozmiary, zatem tablica rezerwacji musi mieć możliwość zaznaczenia dowolnego zajętego obszaru. Zostało to przedstawione na rysunku \ref{fig:img_reservation-table-3}.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=6cm]{img/reservation-table-3}
-	\caption{Tablica rezerwacji jest współdzielona między wszystkimi agentami, dlatego powinna być odpowiednio dopasowana do wszystkich agentów o różnych prędkościach. Źródło: \cite{cooppath}}
+	\caption{Tablica rezerwacji jest współdzielona między wszystkimi agentami. Jej rozmiar powinien być odpowiednio dopasowany do agentów o różnych prędkościach. Źródło: \cite{cooppath}}
 	\label{fig:img_reservation-table-3}
 \end{figure}
 
@@ -160,7 +167,7 @@ Jeśli jedna jednostka zarezerwowała komórki $(x, y, t)$ i $(x + 1, y, t + 1)$
 \section{Hierarchical Cooperative A*}
 \label{ch:hier_cooperative_a}
 Metoda {\it Hierarchical Cooperative A*} (HCA*) wprowadza pewną modyfikację do algorytmu Cooperative A*. Modyfikacja ta dotyczy heurystyki opartej na abstrakcjach przestrzeni stanu \cite{cooppath}.
-HCA* jest również jednym z przykładów rozproszonego podejścia do planowania tras.
+HCA* jest także jednym z przykładów rozproszonego podejścia do planowania tras.
 
 W tym podejściu abstrakcja przestrzeni stanu oznacza zignorowanie wymiaru czasu, jak również tablicy rezerwacji.
 Innymi słowy, abstrakcja jest prostą dwuwymiarową mapą z usuniętymi agentami. Abstrakcyjne odległości mogą być rozumiane jako dokładne oszacowania odległości do celu, ignorując potencjalne interakcje z innymi agentami. Jest to oczywiście dopuszczalna heurystyka (por. \ref{ch:astar_heurystyki}). Niedokładność heurystyki wynika jedynie z trudności związanych z interakcją z innymi agentami (jak bardzo agent musi zboczyć z pierwotnie zaplanowanej ścieżki w celu ominięcia innych agentów).
