@@ -5,8 +5,8 @@
 Przedmiotem niniejszej pracy jest przegląd metod wykorzystywanych do planowania bezkolizyjnych tras dla wielu robotów mobilnych.
 Stanowi to również wstęp teoretyczny do zaprojektowania algorytmu i implementacji oprogramowania pozwalającego na symulację działania skutecznego planowania tras dla systemu wielorobotowego.
 
-Praca skupia się na przypadkach, w których mamy do czynienia ze środowiskiem z dużą liczbą przeszkód (np. zamknięty budynek z licznymi ciasnymi korytarzami), aby uwypuklić  problem blokowania sią agentów często prowadzący do zakleszczenia. Często okazuje się, że należy wtedy zastosować nieco inne podejścia niż te, które sprawdzają się w przypadku otwartych środowisk, a które zostały opisane np. w pracach \cite{roszkowska}, \cite{siemiatkowska}.
-W otwartych środowiskach z małą liczbą przeszkód wystarczające może się okazać np. proste replanowanie wykorzystujące algorytm D* (por. \ref{ch:dstar}) lub LRA* (por. \ref{ch:lra}).
+Praca skupia się na przypadkach, w których mamy do czynienia ze środowiskiem z dużą liczbą przeszkód (np. zamknięty budynek z licznymi ciasnymi korytarzami), aby uwypuklić problem blokowania się agentów często prowadzący do zakleszczenia. Często okazuje się, że należy wtedy zastosować nieco inne podejścia niż te, które sprawdzają się w przypadku otwartych środowisk, a które zostały opisane np. w pracach \cite{roszkowska}, \cite{siemiatkowska}.
+W otwartych środowiskach z małą liczbą przeszkód wystarczające może się okazać np. proste ponowne planowanie wykorzystujące algorytm LRA* (por. \ref{ch:lra}) lub D* (por. \ref{ch:dstar}).
 
 W niniejszej pracy starano się znaleźć metody rozwiązujące zagadnienie, w którym znane są:
 \vspace{-1em}
@@ -24,7 +24,7 @@ Założenia i ograniczenia rozważanego problemu:
 	\item Każdy z robotów ma wyznaczony inny punkt docelowy, do którego zmierza.
 	\item Planowanie tras dotyczy mobilnych robotów holonomicznych.
 	\item Czas trwania zmiany kierunku robota jest pomijalnie mały.
-	\item Srodowisko, w którym poruszają się roboty, jest dwuwymiarową przestrzenią zawierającą dużą liczbę przeszkód oraz wąskie korytarze (por. rys. \ref{fig:img_robopath_sample-maze}).
+	\item Środowisko, w którym poruszają się roboty, jest dwuwymiarową przestrzenią zawierającą dużą liczbę przeszkód oraz wąskie korytarze (por. rys. \ref{fig:img_robopath_sample-maze}).
 	\item Roboty "wiedzą" o sobie i mogą komunikować się ze sobą podczas planowania tras.
 	\item Każdy robot zajmuje w przestrzeni jedno pole. Na jednym polu może znajdować się maksymalnie jeden robot (por. rys. \ref{fig:img_robopath_sample-maze}).
 	\item Planowanie tras powinno odbywać się w czasie rzeczywistym.

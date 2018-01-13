@@ -35,5 +35,10 @@ watch:
 success:
 	@echo "${OUT}/${PROJECT}.pdf has been generated successfully."
 
+spell:
+	# aspell -t --lang=pl -c praca.tex
+	# cat *.tex */*.tex | aspell list -t --lang=pl | sort | uniq
+	cat */*.tex | aspell list -t --lang=pl | sort | uniq
+
 clean:
 	rm -f ${OUT}/*
