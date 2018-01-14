@@ -44,6 +44,15 @@
                                 text="Generate maze" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#placeRobots"
                                 text="Place robots" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+
+                        <Button mnemonicParsing="false" onAction="#buttonStep"
+                                text="Step" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#buttonReset"
+                                text="Reset" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#buttonAnimate"
+                                text="Animate" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#buttonStop"
+                                text="Stop" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <!--parameters-->
                         <TitledPane text="Map size">
                             <HBox HBox.hgrow="ALWAYS">
