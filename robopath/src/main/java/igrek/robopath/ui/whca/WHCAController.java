@@ -3,14 +3,27 @@ package igrek.robopath.ui.whca;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.BasicStroke;
+import java.awt.Stroke;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+
+import javax.swing.SwingUtilities;
 
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.mazegen.MazeGenerator;
 import igrek.robopath.model.Point;
+import igrek.robopath.pathfinder.coop.Coordinater;
+import igrek.robopath.pathfinder.coop.Grid;
+import igrek.robopath.pathfinder.coop.NodePool;
+import igrek.robopath.pathfinder.coop.PathPanel;
+import igrek.robopath.pathfinder.coop.Unit;
 import igrek.robopath.pathfinder.mystar.MyStarPathFinder;
 import igrek.robopath.pathfinder.mystar.Path;
 import igrek.robopath.pathfinder.mystar.ReservationTable;
@@ -34,6 +47,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import raft.kilavuz.runtime.NoPathException;
 
 @FXMLController
 public class WHCAController {
@@ -54,6 +68,14 @@ public class WHCAController {
 	private Boolean pressedTransformer;
 	
 	final double FPS = 30;
+	final int DEPTH = 32;
+	int unitCount = 6;
+	
+	Coordinater coordinater;
+	Grid grid;
+	Map<Integer, PathPanel.Point> unitPositions = new HashMap<Integer, PathPanel.Point>();
+	Map<Integer, NodePool.Point> unitTargets = new HashMap<Integer, NodePool.Point>();
+	boolean animating = false;
 	
 	// PARAMS
 	@FXML
@@ -75,8 +97,42 @@ public class WHCAController {
 			readParams();
 		map = new TileMap(params.mapSizeW, params.mapSizeH);
 		robots.clear();
+		
+		coordinater = new Coordinater(DEPTH);
+		grid = coordinater.grid;
+		for (Unit unit : coordinater.units.values())
+			unitPositions.put(unit.id, new PathPanel.Point(unit.getLocation()));
+		reset();
+		
 		if (event != null)
 			drawAreaContainerResized();
+	}
+	
+	void reset() {
+		coordinater.reset();
+		
+		List<Grid.Node> nodes = new ArrayList<Grid.Node>(grid.nodes.values());
+		Collections.shuffle(nodes);
+		
+		for (int i = 0; i < unitCount; i++) {
+			Unit unit = new Unit();
+			coordinater.addUnit(unit);
+			
+			Grid.Node node = nodes.remove(0);
+			while (grid.unwalkables.contains(node)) {
+				node = nodes.remove(0);
+			}
+			unit.setLocation(node.x, node.y);
+			unitPositions.put(unit.id, new PathPanel.Point(unit.getLocation()));
+			
+			node = nodes.remove(0);
+			while (grid.unwalkables.contains(node)) {
+				node = nodes.remove(0);
+			}
+			unit.setDestination(node.x, node.y);
+			
+			unit.setPath(new ArrayList<Unit.PathPoint>());
+		}
 	}
 	
 	@FXML
@@ -310,10 +366,86 @@ public class WHCAController {
 	private void drawMap() {
 		GraphicsContext gc = drawArea.getGraphicsContext2D();
 		
-		drawGrid(gc);
-		drawCells(gc);
-		drawRobots(gc);
+//		drawGrid(gc);
+//		drawCells(gc);
+//		drawRobots(gc);
+		
+		gc.clearRect(0, 0, drawArea.getWidth(), drawArea.getHeight());
+		
+		gc.setLineWidth(1);
+		gc.setStroke(Color.rgb(200, 200, 200));
+		
+		paintGrid(gc);
+		paintUnits(gc);
 	}
+	
+	private Stroke thinStroke = new BasicStroke(1);
+	private Stroke thickStroke = new BasicStroke(2);
+	
+	int cellSize = 40;
+	
+	private void paintUnits(GraphicsContext gc) {
+		int unitRadius = cellSize * 2 / 3;
+		int pathRadius = cellSize / 3;
+		
+		boolean allReached = true;
+		for (Unit unit : coordinater.units.values()) {
+			if (!unit.reached())
+				allReached = false;
+			
+			gc.setFill(getUnitColor(unit));
+			//NodePool.Point point = unit.getLocation();
+			PathPanel.Point point = unitPositions.get(unit.id);
+			if (point != null) {
+				gc.fillOval((int)(point.x * cellSize + (cellSize-unitRadius)/2),
+						(int)(point.z * cellSize + (cellSize-unitRadius)/2),
+						unitRadius, unitRadius);
+			}
+			gc.setStroke(getUnitColor(unit));
+			gc.strokeRect(unit.getDestination().x * cellSize + (cellSize/8),
+					unit.getDestination().z * cellSize + (cellSize/8),
+					cellSize*3/4, cellSize*3/4);
+			
+			List<Unit.PathPoint> path = unit.getPath();
+			for (int i = unit.getPathIndex(); i < path.size(); i++) {
+				Unit.PathPoint pathPoint = path.get(i);
+				gc.strokeOval(pathPoint.x * cellSize + (cellSize-pathRadius)/2,
+						pathPoint.z * cellSize + (cellSize-pathRadius)/2,
+						pathRadius, pathRadius);
+			}
+		}
+		
+		if (allReached) {
+			gc.setStroke(Color.RED);
+			String s = "all reached";
+			gc.fillText(s, 100, 100);
+		}
+	}
+	
+	private void paintGrid(GraphicsContext gc) {
+		gc.setStroke(Color.DARKGRAY);
+		
+		for (int x = 0; x <= grid.columns; x++) {
+			gc.strokeLine(x * cellSize, 0, x * cellSize, grid.rows * cellSize);
+		}
+		
+		for (int y = 0; y <= grid.rows; y++) {
+			gc.strokeLine(0, y * cellSize, grid.columns * cellSize, y * cellSize);
+		}
+		
+		gc.setFill(Color.BLACK);
+		for (Grid.Node node : grid.unwalkables) {
+			gc.fillRect(node.x * cellSize, node.y * cellSize, cellSize, cellSize);
+		}
+	}
+	
+	private Color getUnitColor(Unit unit) {
+		int allCount = unitCount;
+		int index = unit.id % allCount;
+		double hue = 360.0 * index / allCount;
+		return Color.hsb(hue, 1, 1);
+	}
+	
 	
 	private void drawCells(GraphicsContext gc) {
 		for (int x = 0; x < map.getWidthInTiles(); x++) {
@@ -422,5 +554,81 @@ public class WHCAController {
 	private Color robotColor(int index, double b) {
 		double hue = 360.0 * index / robots.size();
 		return Color.hsb(hue, 1, b);
+	}
+	
+	void animate() {
+		if (animating)
+			return;
+		animating = true;
+		new Thread(){
+			public void run() {
+				while (animating) {
+					try {
+						coordinater.iterate();
+						for (Unit unit : coordinater.units.values()) {
+							unit.next();
+							unitTargets.put(unit.id, unit.getLocation());
+						}
+						int fps = 25;
+						for (int i = 0; i < fps; i++) {
+							for (Unit unit : coordinater.units.values()) {
+								PathPanel.Point current = unitPositions.get(unit.id);
+								NodePool.Point target = unitTargets.get(unit.id);
+								
+								if (current == null) {
+									current = new PathPanel.Point(target);
+									unitPositions.put(unit.id, current);
+								}
+								float move = 1f / fps;
+								float dX = target.x - current.x;
+								float dZ = target.z - current.z;
+								
+								current.x = (Math.abs(dX) < move) ? target.x : current.x + Math.signum(dX) * move;
+								current.z = (Math.abs(dZ) < move) ? target.z : current.z + Math.signum(dZ) * move;
+								
+							}
+							SwingUtilities.invokeAndWait(new Runnable() {
+								public void run() {
+									// repaint();
+								}
+							});
+							Thread.sleep(1000/fps);
+						}
+					} catch (Exception npe) {
+						npe.printStackTrace();
+					}
+				}
+			}
+		} .start();
+	}
+	
+	@FXML
+	private void buttonStep(final Event event) {
+		try {
+			coordinater.iterate();
+			for (Unit unit : coordinater.units.values()) {
+				unit.next();
+				unitPositions.put(unit.id, new PathPanel.Point(unit.getLocation()));
+			}
+		} catch (NoPathException npe) {
+			npe.printStackTrace();
+		}
+		
+//		repaint();
+	}
+	
+	@FXML
+	private void buttonReset(final Event event) {
+		reset();
+	}
+	
+	@FXML
+	private void buttonAnimate(final Event event) {
+		animate();
+	}
+	
+	@FXML
+	private void buttonStop(final Event event) {
+		animating = false;
 	}
 }
