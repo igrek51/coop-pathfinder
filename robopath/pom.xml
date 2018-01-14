@@ -55,6 +55,13 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>raft.kilavuz</groupId>
+            <artifactId>kilavuz-run</artifactId>
+            <version>0.9.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/kilavuz-run-0.9.1.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
