@@ -3,10 +3,7 @@ package igrek.robopath.ui.whca;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.BasicStroke;
-import java.awt.Stroke;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -378,9 +375,6 @@ public class WHCAController {
 		paintGrid(gc);
 		paintUnits(gc);
 	}
-	
-	private Stroke thinStroke = new BasicStroke(1);
-	private Stroke thickStroke = new BasicStroke(2);
 	
 	int cellSize = 40;
 	
