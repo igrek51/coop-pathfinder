@@ -1,11 +1,11 @@
 \chapter{Kooperacyjne planowanie tras}
 \label{ch:cooperative_pathfinding}
 
-\section{Metody planowania tras}
+% \section{Metody planowania tras}
 Spośród metod wykorzystywanych do kooperacyjnego planowania tras dla wielu robotów można wyróżnić dwie zasadnicze grupy \cite{latombe}:
 \begin{itemize}
-	\item {\bf Zcentralizowane} - Drogi wyznaczane są dla wszystkich agentów na raz (jednocześnie). Metody tego typu są często trudne do zrealizowania (gdyż do rozwiązania jest złożony problem optymalizacyjny) oraz mają bardzo dużą złożoność obliczeniową ze względu na ogromną przestrzeń przeszukiwania. Struktura organizacyjna jest scentralizowana - decyzje podejmowane są na podstawie centralnego systemu.
-	\item {\bf Rozproszone} (ang. {\it decoupled} lub {\it distributed}) - Podejście to dekomponuje zadanie na niezależne lub zależne w niewielkim stopniu problemy dla każdego agenta. Dla każdego robota droga wyznaczana jest osobno, w określonej kolejności, następnie rozwiązywane są konflikty (kolizje dróg).
+	\item {\bf Zcentralizowane} - drogi wyznaczane są dla wszystkich agentów na raz (jednocześnie). Metody tego typu są często trudne do zrealizowania (gdyż do rozwiązania jest złożony problem optymalizacyjny) oraz mają bardzo dużą złożoność obliczeniową ze względu na ogromną przestrzeń przeszukiwania. Struktura organizacyjna jest scentralizowana - decyzje podejmowane są na podstawie centralnego systemu.
+	\item {\bf Rozproszone} (ang. {\it decoupled} lub {\it distributed}) - podejście to dekomponuje zadanie na niezależne lub zależne w niewielkim stopniu problemy dla każdego agenta. Dla każdego robota droga wyznaczana jest osobno, w określonej kolejności, następnie rozwiązywane są konflikty (kolizje dróg).
 	Zastosowanie metod rozproszonych wiąże się najczęściej z koniecznością przydzielania priorytetów robotom, co stanowi istotny problem, gdyż od ich wyboru może zależeć zupełność algorytmu. Nie należy mylić tej metody z zagadnieniem typu {\it Non-Cooperative Pathfinding}, w którym agenci nie mają wiedzy na temat pozostałych planów i muszą przewidywać przyszłe ruchy pozostałych robotów \cite{cooppath}. W podejściu rozproszonym agenci mają pełną informację na temat stanu pozostałych robotów, lecz wyznaczanie dróg odbywa się w określonej kolejności.
 \end{itemize}
 
@@ -21,7 +21,7 @@ Metoda pól potencjałowych nie daje gwarancji ani optymalności, ani nawet zupe
 \begin{figure}
 	\centering
 	\includegraphics[width=12cm]{img/potential-field}
-	\caption{Zasada działania metody pól potencjałowych. Źródło: \cite{howie_potentialfield}}
+	\caption{Zasada działania metody pól potencjałowych. Dodatni ładunek $q_{start}$ reprezentuje robota. Przyciągany jest w stronę ujemnego ładunku celu $q_{goal}$, zaś odpychany jest od dodatnio naładowanej przeszkody. Źródło: \cite{howie_potentialfield}}
 	\label{fig:image_potentialfield}
 \end{figure}
 
@@ -32,14 +32,14 @@ W celu wykonywania wydajnych obliczeń w algorytmach przeszukujących grafy, naw
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=7cm]{img/games/warcraft-map-editor}
-	\caption{Ciągła przestrzeń mapy zdyskretyzowana do siatki pól, Źródło: edytor map z gry Warcraft III.}
+	\caption{Ciągła przestrzeń mapy zdyskretyzowana do siatki pól. \\ Źródło: edytor map z gry Warcraft III.}
 	\label{fig:img_games_warcraft-map-editor}
 \end{figure}
 
 Popularne podejścia unikające planowania w wysoko wymiarowej zbiorowej przestrzeni konfiguracyjnej to techniki rozproszone i uwzględniające priorytety \cite{optpriorities}.
 Pomimo, że metody te są bardzo efektywne, mają dwie główne wady:
 \vspace{-0.5em}
-\begin{itemize}[noitemsep]
+\begin{itemize}[itemsep=0em]
 	\item Nie są zupełne - nie dają gwarancji znalezienia rozwiązania, nawet gdy takie istnieje.
 	\item Wynikowe rozwiązania mogą być nieoptymalne.
 \end{itemize}
@@ -72,8 +72,8 @@ Układ priorytetów może mieć także wpływ na długość uzyskanych tras. Pot
 	\label{fig:image_article1_ppt6}
 \end{figure}
 
-\section{Metoda Path coordination}
-Jedną z metod rozproszonego planowania tras z uwzględnianiem priorytetów jest Path Coordination, której idea przedstawia się w następujących krokach \cite{optpriorities}:
+\section{Metoda Path Coordination}
+Jedną z metod rozproszonego planowania tras z uwzględnianiem priorytetów jest {\it Path Coordination}, której idea przedstawia się w następujących krokach \cite{optpriorities}:
 \begin{enumerate}
 	\item Wyznaczenie ścieżki dla każdego robota {\bf niezależnie} (np. za pomocą algorytmu A*)
 	\item Przydział priorytetów
