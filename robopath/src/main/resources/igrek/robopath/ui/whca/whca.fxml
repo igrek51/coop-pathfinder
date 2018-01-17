@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <HBox xmlns="http://javafx.com/javafx/8.0.121"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="igrek.robopath.ui.whca.WHCAController"
+      fx:controller="igrek.robopath.ui.whca.WHCAPresenter"
       HBox.hgrow="ALWAYS">
     <children>
         <GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
