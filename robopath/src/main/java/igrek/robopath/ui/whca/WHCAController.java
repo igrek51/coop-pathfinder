@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.swing.SwingUtilities;
+
 import igrek.robopath.mazegen.MazeGenerator;
 import igrek.robopath.model.Point;
 import igrek.robopath.pathfinder.coop.Coordinater;
@@ -22,6 +24,7 @@ import igrek.robopath.pathfinder.mystar.Path;
 import igrek.robopath.pathfinder.mystar.ReservationTable;
 import igrek.robopath.pathfinder.mystar.TileMap;
 import igrek.robopath.ui.whca.robot.MobileRobot;
+import raft.kilavuz.runtime.NoPathException;
 
 public class WHCAController {
 	
@@ -199,5 +202,54 @@ public class WHCAController {
 		int x = random.nextInt(map.getWidthInTiles());
 		int y = random.nextInt(map.getHeightInTiles());
 		return new Point(x, y);
+	}
+	
+	void stepAnimate() {
+		try {
+			coordinater.iterate();
+			for (Unit unit : coordinater.units.values()) {
+				unit.next();
+				unitTargets.put(unit.id, unit.getLocation());
+			}
+			int fps = 25;
+			for (int i = 0; i < fps; i++) {
+				for (Unit unit : coordinater.units.values()) {
+					PathPanel.Point current = unitPositions.get(unit.id);
+					NodePool.Point target = unitTargets.get(unit.id);
+					
+					if (current == null) {
+						current = new PathPanel.Point(target);
+						unitPositions.put(unit.id, current);
+					}
+					float move = 1f / fps;
+					float dX = target.x - current.x;
+					float dZ = target.z - current.z;
+					
+					current.x = (Math.abs(dX) < move) ? target.x : current.x + Math.signum(dX) * move;
+					current.z = (Math.abs(dZ) < move) ? target.z : current.z + Math.signum(dZ) * move;
+					
+				}
+				SwingUtilities.invokeAndWait(new Runnable() {
+					public void run() {
+						// repaint();
+					}
+				});
+				Thread.sleep(1000 / fps);
+			}
+		} catch (Exception npe) {
+			npe.printStackTrace();
+		}
+	}
+	
+	void stepTake() {
+		try {
+			coordinater.iterate();
+			for (Unit unit : coordinater.units.values()) {
+				unit.next();
+				unitPositions.put(unit.id, new PathPanel.Point(unit.getLocation()));
+			}
+		} catch (NoPathException npe) {
+			npe.printStackTrace();
+		}
 	}
 }

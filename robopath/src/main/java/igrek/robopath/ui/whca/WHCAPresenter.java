@@ -7,12 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.SwingUtilities;
-
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.model.Point;
 import igrek.robopath.pathfinder.coop.Coordinater;
-import igrek.robopath.pathfinder.coop.NodePool;
 import igrek.robopath.pathfinder.coop.PathPanel;
 import igrek.robopath.pathfinder.coop.Unit;
 import igrek.robopath.pathfinder.mystar.TileMap;
@@ -35,7 +32,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
-import raft.kilavuz.runtime.NoPathException;
 
 @FXMLController
 public class WHCAPresenter {
@@ -429,67 +425,16 @@ public class WHCAPresenter {
 		if (animating)
 			return;
 		animating = true;
-		new Thread() {
-			public void run() {
-				while (animating) {
-					try {
-						Coordinater coordinater = controller.getCoordinater();
-						Map<Integer, PathPanel.Point> unitPositions = controller.getUnitPositions();
-						Map<Integer, NodePool.Point> unitTargets = controller.getUnitTargets();
-						
-						coordinater.iterate();
-						for (Unit unit : coordinater.units.values()) {
-							unit.next();
-							unitTargets.put(unit.id, unit.getLocation());
-						}
-						int fps = 25;
-						for (int i = 0; i < fps; i++) {
-							for (Unit unit : coordinater.units.values()) {
-								PathPanel.Point current = unitPositions.get(unit.id);
-								NodePool.Point target = unitTargets.get(unit.id);
-								
-								if (current == null) {
-									current = new PathPanel.Point(target);
-									unitPositions.put(unit.id, current);
-								}
-								float move = 1f / fps;
-								float dX = target.x - current.x;
-								float dZ = target.z - current.z;
-								
-								current.x = (Math.abs(dX) < move) ? target.x : current.x + Math.signum(dX) * move;
-								current.z = (Math.abs(dZ) < move) ? target.z : current.z + Math.signum(dZ) * move;
-								
-							}
-							SwingUtilities.invokeAndWait(new Runnable() {
-								public void run() {
-									// repaint();
-								}
-							});
-							Thread.sleep(1000 / fps);
-						}
-					} catch (Exception npe) {
-						npe.printStackTrace();
-					}
-				}
+		new Thread(() -> {
+			while (animating) {
+				controller.stepAnimate();
 			}
-		}.start();
+		}).start();
 	}
 	
 	@FXML
 	private void buttonStep(final Event event) {
-		try {
-			Coordinater coordinater = controller.getCoordinater();
-			Map<Integer, PathPanel.Point> unitPositions = controller.getUnitPositions();
-			
-			coordinater.iterate();
-			for (Unit unit : coordinater.units.values()) {
-				unit.next();
-				unitPositions.put(unit.id, new PathPanel.Point(unit.getLocation()));
-			}
-		} catch (NoPathException npe) {
-			npe.printStackTrace();
-		}
-		
+		controller.stepTake();
 		//		repaint();
 	}
 	
