@@ -2,6 +2,7 @@ package igrek.robopath.ui.whca;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +51,8 @@ public class WHCAPresenter {
 	private VBox drawAreaContainer;
 	
 	// PARAMS
-	public SimulationParams params = new SimulationParams();
+	@Autowired
+	private SimulationParams params;
 	@FXML
 	private TextField paramMapSizeW;
 	@FXML
@@ -61,7 +63,11 @@ public class WHCAPresenter {
 	private CheckBox paramRobotAutoTarget;
 	
 	public WHCAPresenter() {
-		controller = new WHCAController(this);
+	}
+	
+	@Autowired
+	public void setController(WHCAController controller) {
+		this.controller = controller;
 	}
 	
 	TileMap getMap() {

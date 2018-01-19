@@ -1,7 +1,6 @@
 package igrek.robopath.ui.whca;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,9 +27,8 @@ import raft.kilavuz.runtime.NoPathException;
 
 public class WHCAController {
 	
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
 	private WHCAPresenter presenter;
+	private SimulationParams params;
 	
 	private TileMap map;
 	private List<MobileRobot> robots = new ArrayList<>();
@@ -45,8 +43,10 @@ public class WHCAController {
 	Map<Integer, PathPanel.Point> unitPositions = new HashMap<Integer, PathPanel.Point>();
 	Map<Integer, NodePool.Point> unitTargets = new HashMap<Integer, NodePool.Point>();
 	
-	public WHCAController(WHCAPresenter presenter) {
+	@Autowired
+	public WHCAController(WHCAPresenter presenter, SimulationParams params) {
 		this.presenter = presenter;
+		this.params = params;
 		resetMap();
 	}
 	
@@ -71,7 +71,7 @@ public class WHCAController {
 	}
 	
 	public void resetMap() {
-		map = new TileMap(presenter.params.mapSizeW, presenter.params.mapSizeH);
+		map = new TileMap(params.mapSizeW, params.mapSizeH);
 		robots.clear();
 		
 		coordinater = new Coordinater(DEPTH);
@@ -110,7 +110,7 @@ public class WHCAController {
 	
 	void placeRobots() {
 		robots.clear();
-		for (int i = 0; i < presenter.params.robotsCount; i++) {
+		for (int i = 0; i < params.robotsCount; i++) {
 			createMobileRobot(randomUnoccupiedCell(map), i);
 		}
 	}
@@ -121,7 +121,7 @@ public class WHCAController {
 	
 	
 	private void onTargetReached(MobileRobot robot) {
-		if (presenter.params.robotAutoTarget) {
+		if (params.robotAutoTarget) {
 			//			randomRobotTarget(robot);
 		}
 	}

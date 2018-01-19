@@ -1,5 +1,8 @@
 package igrek.robopath.ui.whca;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class SimulationParams {
 	
 	public int mapSizeW = 11;
