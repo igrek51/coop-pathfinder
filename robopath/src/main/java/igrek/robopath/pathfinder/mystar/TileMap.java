@@ -19,6 +19,18 @@ public class TileMap {
 		}
 	}
 	
+	public interface MapCellExecutor {
+		void execute(int x, int y, boolean occupied);
+	}
+	
+	public void foreach(MapCellExecutor executor) {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				executor.execute(x, y, tiles[x][y]);
+			}
+		}
+	}
+	
 	public void setCell(int x, int y, boolean occupied) {
 		if (x < 0 || y < 0 || x >= getWidthInTiles() || y >= getHeightInTiles())
 			return;

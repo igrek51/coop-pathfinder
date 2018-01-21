@@ -37,8 +37,6 @@ public class Presenter {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Boolean pressedTransformer;
 	final double FPS = 30;
-	boolean animating = false;
-	int cellSize = 40;
 	
 	@FXML
 	private ResizableCanvas drawArea;
@@ -220,14 +218,7 @@ public class Presenter {
 	
 	private void drawCells(GraphicsContext gc) {
 		TileMap map = getMap();
-		for (int x = 0; x < map.getWidthInTiles(); x++) {
-			for (int y = 0; y < map.getHeightInTiles(); y++) {
-				Boolean occupied = map.getCell(x, y);
-				if (occupied != null) {
-					drawCell(gc, x, y, occupied);
-				}
-			}
-		}
+		map.foreach((x, y, occupied) -> drawCell(gc, x, y, occupied));
 	}
 	
 	private void drawCell(GraphicsContext gc, int x, int y, boolean occupied) {
@@ -262,11 +253,9 @@ public class Presenter {
 		}
 	}
 	
-	public Point locatePoint(TileMap map, MouseEvent event) {
-		return locatePoint(map, event.getX(), event.getY());
-	}
-	
-	public Point locatePoint(TileMap map, double screenX, double screenY) {
+	Point locatePoint(TileMap map, MouseEvent event) {
+		double screenX = event.getX();
+		double screenY = event.getY();
 		int mapX = ((int) (screenX * map.getWidthInTiles() / drawArea.getWidth()));
 		int mapY = ((int) (screenY * map.getHeightInTiles() / drawArea.getHeight()));
 		if (mapX < 0 || mapY < 0 || mapX >= map.getWidthInTiles() || mapY >= map.getHeightInTiles())
@@ -334,18 +323,7 @@ public class Presenter {
 	}
 	
 	@FXML
-	private void buttonStep(final Event event) {
+	private void buttonStep() {
 		controller.stepTake();
-		//		repaint();
-	}
-	
-	@FXML
-	private void buttonReset(final Event event) {
-		controller.reset();
-	}
-	
-	@FXML
-	private void buttonStop(final Event event) {
-		animating = false;
 	}
 }

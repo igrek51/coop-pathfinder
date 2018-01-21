@@ -14,29 +14,23 @@ import igrek.robopath.model.Point;
 import igrek.robopath.modules.whca.robot.MobileRobot;
 import igrek.robopath.pathfinder.coop.Coordinater;
 import igrek.robopath.pathfinder.coop.Unit;
-import igrek.robopath.pathfinder.mystar.ReservationTable;
 import igrek.robopath.pathfinder.mystar.TileMap;
 import raft.kilavuz.runtime.NoPathException;
 
 public class Controller {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	private Presenter presenter;
-	private SimulationParams params;
+	private Random random = new Random();
 	
 	private TileMap map;
 	private List<MobileRobot> robots = new ArrayList<>();
-	
-	private Random random = new Random();
-	
-	final int DEPTH = 32;
+	private SimulationParams params;
 	
 	Coordinater coordinater;
 	Map<MobileRobot, Unit> unitsMap = new HashMap<>();
+	final int DEPTH = 32;
 	
 	public Controller(Presenter presenter, SimulationParams params) {
-		this.presenter = presenter;
 		this.params = params;
 		resetMap();
 	}
@@ -49,24 +43,16 @@ public class Controller {
 		return robots;
 	}
 	
-	Coordinater getCoordinater() {
-		return coordinater;
-	}
-	
 	void resetMap() {
 		map = new TileMap(params.mapSizeW, params.mapSizeH);
 		robots.clear();
-		reset();
+		coordinater = null;
 	}
 	
 	Coordinater provideCoordinater() {
 		if (coordinater == null)
 			coordinater = new CoordinaterFactory().provideCoordinater(DEPTH, params.mapSizeW, params.mapSizeH, unitsMap, robots, map);
 		return coordinater;
-	}
-	
-	void reset() {
-		coordinater = null;
 	}
 	
 	void placeRobots() {
@@ -84,7 +70,6 @@ public class Controller {
 		return robo;
 	}
 	
-	
 	private void onTargetReached(MobileRobot robot) {
 		if (params.robotAutoTarget) {
 			if (robot.getTarget() == null || robot.hasReachedTarget()) {
@@ -97,21 +82,12 @@ public class Controller {
 	}
 	
 	void randomTargetPressed() {
-		ReservationTable reservationTable = new ReservationTable(map.getWidthInTiles(), map.getHeightInTiles());
-		for (int x = 0; x < map.getWidthInTiles(); x++) {
-			for (int y = 0; y < map.getHeightInTiles(); y++) {
-				boolean occupied = map.getCell(x, y);
-				if (occupied)
-					reservationTable.setBlocked(x, y);
-			}
-		}
 		for (MobileRobot robot : robots) {
-			robot.setTarget(null); // clear targets - not to block during randoming
+			robot.setTarget(null); // clear targets - not to block each other during randoming
 		}
 		for (MobileRobot robot : robots) {
 			randomRobotTarget(robot);
 		}
-		
 	}
 	
 	void generateMaze() {
@@ -141,23 +117,6 @@ public class Controller {
 		if (unit != null) {
 			unit.setDestination(target.x, target.y);
 		}
-		//		MyStarPathFinder pathFinder = new MyStarPathFinder(reservationTable);
-		//		Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
-		//		if (path != null) {
-		//			// enque path
-		//			int t = 0;
-		//			reservationTable.setBlocked(start.x, start.y, t);
-		//			reservationTable.setBlocked(start.x, start.y, t + 1);
-		//			for (int i = 1; i < path.getLength(); i++) {
-		//				Path.Step step = path.getStep(i);
-		//				robot.enqueueMove(step.getX(), step.getY());
-		//				t++;
-		//				reservationTable.setBlocked(step.getX(), step.getY(), t);
-		//				reservationTable.setBlocked(step.getX(), step.getY(), t + 1);
-		//			}
-		//		} else {
-		//			reservationTable.setBlocked(start.x, start.y);
-		//		}
 	}
 	
 	private Point randomUnoccupiedCell(TileMap map) {
@@ -183,12 +142,6 @@ public class Controller {
 		return frees.get(random.nextInt(frees.size()));
 	}
 	
-	private Point randomCell(TileMap map) {
-		int x = random.nextInt(map.getWidthInTiles());
-		int y = random.nextInt(map.getHeightInTiles());
-		return new Point(x, y);
-	}
-	
 	void stepTake() {
 		try {
 			coordinater = null;
@@ -202,12 +155,6 @@ public class Controller {
 					for (Unit.PathPoint point : path) {
 						robot.enqueueMove(point.x, point.z);
 					}
-					
-					//					unitPositions.put(unit.id, new PathPanel.Point(unit.getLocation()));
-					//					unit.next();
-					//					unitTargets.put(unit.id, unit.getLocation());
-					
-					//					logger.info("position updated: " + unit.getLocation() + ", " + unit.getDestination());
 				}
 			}
 		} catch (NoPathException npe) {
