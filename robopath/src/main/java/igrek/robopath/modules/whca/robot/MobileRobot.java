@@ -41,6 +41,14 @@ public class MobileRobot {
 			}
 			return;
 		}
+		// moves que not empty but robot is on target
+		if (getTarget() == null || hasReachedTarget()) {
+			movesQue.clear();
+			if (targetReachedHandler != null) {
+				targetReachedHandler.onTargetReached(this);
+			}
+			return;
+		}
 		Point nearest = nearestTarget();
 		//		double distance = position.distance(nearest);
 		double distance = 1; // always 1 - even if it's waiting
@@ -139,5 +147,9 @@ public class MobileRobot {
 	
 	public int getPriority() {
 		return priority;
+	}
+	
+	public boolean hasReachedTarget() {
+		return getTarget().equals(getPosition());
 	}
 }

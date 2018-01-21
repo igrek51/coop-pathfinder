@@ -87,7 +87,12 @@ public class Controller {
 	
 	private void onTargetReached(MobileRobot robot) {
 		if (params.robotAutoTarget) {
-			//			randomRobotTarget(robot);
+			if (robot.getTarget() == null || robot.hasReachedTarget()) {
+				logger.info("assigning new target");
+				randomRobotTarget(robot);
+				coordinater = null;
+				stepTake();
+			}
 		}
 	}
 	
@@ -104,7 +109,7 @@ public class Controller {
 			robot.setTarget(null); // clear targets - not to block during randoming
 		}
 		for (MobileRobot robot : robots) {
-			randomRobotTarget(robot, reservationTable);
+			randomRobotTarget(robot);
 		}
 		
 	}
@@ -127,7 +132,7 @@ public class Controller {
 		return null;
 	}
 	
-	private void randomRobotTarget(MobileRobot robot, ReservationTable reservationTable) {
+	private void randomRobotTarget(MobileRobot robot) {
 		robot.resetNextMoves();
 		//		Point start = robot.lastTarget();
 		Point target = randomUnoccupiedCell(map);
