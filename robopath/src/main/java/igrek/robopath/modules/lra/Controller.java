@@ -136,6 +136,7 @@ public class Controller {
 	}
 	
 	private void findPath(MobileRobot robot) {
+		logger.info("planning path for robot: " + robot.getPriority());
 		robot.resetMovesQue();
 		Point start = robot.getPosition();
 		Point target = robot.getTarget();
@@ -168,7 +169,6 @@ public class Controller {
 			MobileRobot collidedRobot = collisionDetected(robot);
 			if (collidedRobot != null || (!robot.hasNextMove() && !robot.hasReachedTarget())) {
 				findPath(robot);
-				//				findPath(collidedRobot);
 			}
 		}
 	}
