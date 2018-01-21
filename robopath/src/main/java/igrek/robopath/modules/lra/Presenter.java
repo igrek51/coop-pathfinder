@@ -14,9 +14,7 @@ import igrek.robopath.modules.common.ResizableCanvas;
 import igrek.robopath.pathfinder.mystar.TileMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -140,21 +138,14 @@ public class Presenter {
 	}
 	
 	private void startSimulationTimer() {
-		// animation timer
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(MOVE_STEP_DURATION), new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
+		new Thread(() -> {
+			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(MOVE_STEP_DURATION), event -> {
 				lastSimulationTime = System.currentTimeMillis();
-				stepSimulation();
-			}
-		}));
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.play();
-	}
-	
-	private void stepSimulation() {
-		controller.stepSimulation();
+				controller.stepSimulation();
+			}));
+			timeline.setCycleCount(Timeline.INDEFINITE);
+			timeline.play();
+		}).start();
 	}
 	
 	private void mousePressedMap(MouseEvent event) {
@@ -337,6 +328,6 @@ public class Presenter {
 	
 	@FXML
 	private void buttonPathfind() {
-		controller.findPaths();
+		new Thread(() -> controller.findPaths()).start();
 	}
 }

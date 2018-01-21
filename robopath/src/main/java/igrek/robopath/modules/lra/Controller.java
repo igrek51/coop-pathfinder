@@ -42,19 +42,19 @@ public class Controller {
 		return robots;
 	}
 	
-	void resetMap() {
+	synchronized void resetMap() {
 		map = new TileMap(params.mapSizeW, params.mapSizeH);
 		robots.clear();
 		coordinater = null;
 	}
 	
-	Coordinater provideCoordinater() {
+	synchronized Coordinater provideCoordinater() {
 		if (coordinater == null)
 			coordinater = new CoordinaterFactory().provideCoordinater(DEPTH, params.mapSizeW, params.mapSizeH, unitsMap, robots, map);
 		return coordinater;
 	}
 	
-	void placeRobots() {
+	synchronized void placeRobots() {
 		robots.clear();
 		unitsMap.clear();
 		for (int i = 0; i < params.robotsCount; i++) {
@@ -63,7 +63,7 @@ public class Controller {
 		}
 	}
 	
-	MobileRobot createMobileRobot(Point point, int i) {
+	synchronized MobileRobot createMobileRobot(Point point, int i) {
 		MobileRobot robo = new MobileRobot(point, robot -> onTargetReached(robot), i);
 		robots.add(robo);
 		return robo;
@@ -89,7 +89,7 @@ public class Controller {
 		}
 	}
 	
-	void generateMaze() {
+	synchronized void generateMaze() {
 		new MazeGenerator(map).generateMaze();
 	}
 	
@@ -150,7 +150,7 @@ public class Controller {
 		return frees.get(random.nextInt(frees.size()));
 	}
 	
-	void findPaths() {
+	synchronized void findPaths() {
 		try {
 			coordinater = null;
 			coordinater = provideCoordinater();
@@ -158,7 +158,7 @@ public class Controller {
 			for (MobileRobot robot : robots) {
 				Unit unit = unitsMap.get(robot);
 				if (unit != null) {
-					robot.setPosition(new Point(unit.getLocation().x, unit.getLocation().z));
+					//					robot.setPosition(new Point(unit.getLocation().x, unit.getLocation().z));
 					List<Unit.PathPoint> path = unit.getPath();
 					// enque moves
 					robot.resetMovesQue();
@@ -172,7 +172,7 @@ public class Controller {
 		}
 	}
 	
-	void stepSimulation() {
+	synchronized void stepSimulation() {
 		for (MobileRobot robot : robots) {
 			if (robot.hasNextMove())
 				robot.setPosition(robot.pollNextMove());
