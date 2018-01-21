@@ -33,7 +33,7 @@ import javafx.util.Duration;
 public class Presenter {
 	
 	private final double FPS = 24;
-	private final double MOVE_STEP_DURATION = 1000;
+	private final double MOVE_STEP_DURATION = 800;
 	
 	private Controller controller;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -290,7 +290,7 @@ public class Presenter {
 		double h = 0.6 * cellH;
 		Color robotColor = robotColor(index);
 		// draw target
-		if (!robot.hasReachedTarget()) {
+		if (robot.getTarget() != null) {
 			Point target = robot.getTarget();
 			gc.setStroke(robotColor);
 			double targetX = target.getX() * cellW + cellW / 2;
@@ -334,7 +334,7 @@ public class Presenter {
 	}
 	
 	@FXML
-	private void buttonStep() {
+	private void buttonPathfind() {
 		controller.findPaths();
 	}
 }

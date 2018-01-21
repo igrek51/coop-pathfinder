@@ -105,9 +105,9 @@ public class Coordinater {
         
         try {
             TimeAStar.Path path = timeAStar.findPath(from, to, unit, depth);
-            System.out.println("path for " + unit + "\n\t" + path);
-            
-            List<Unit.PathPoint> unitPath = new ArrayList<Unit.PathPoint>();
+			//            System.out.println("path for " + unit + "\n\t" + path);
+	
+			List<Unit.PathPoint> unitPath = new ArrayList<Unit.PathPoint>();
             unitPath.add(new Unit.PathPoint((NodePool.Node) path.startNode));
             
             for (TimeAStar.Transition t : path.transitions) {
@@ -125,8 +125,8 @@ public class Coordinater {
             printReservations();
             unit.setPath(unitPath);
         } catch (NoPathException npe) {
-            System.out.println("couldnt found a path, setting empty for unit " + unit.id);
-            npe.printStackTrace();
+			//            System.out.println("couldnt found a path, setting empty for unit " + unit.id);
+			npe.printStackTrace();
             reserveEmptyPath(unit);
         }
     }
@@ -165,8 +165,8 @@ public class Coordinater {
                         pool.reserve(unit, point.x, point.z, point.t);
                         path.add(point);
                     } catch (Exception e) {
-                        System.out.println("skipping " + point);
-                    }
+						//                        System.out.println("skipping " + point);
+					}
                     unit.setPath(path);
                 }
     }
@@ -178,8 +178,8 @@ public class Coordinater {
     }
     
     public boolean iterate() throws NoPathException {
-        System.out.println("iterate time: " + currentTime);
-        boolean iterated = false;
+		//        System.out.println("iterate time: " + currentTime);
+		boolean iterated = false;
         
         if (! newUnits.isEmpty()) {
             distributeUnits();
@@ -228,12 +228,12 @@ public class Coordinater {
             c.addUnit(unit);
         }
         c.distributeUnits();
-        for (Map.Entry e : c.window.entrySet())
-            System.out.println(e);
-        System.out.println("");
-        c.distributeUnits();
-        for (Map.Entry e : c.window.entrySet())
-            System.out.println(e);
-    }
+		//        for (Map.Entry e : c.window.entrySet())
+		//            System.out.println(e);
+		//        System.out.println("");
+		c.distributeUnits();
+		//        for (Map.Entry e : c.window.entrySet())
+		//            System.out.println(e);
+	}
     
 }

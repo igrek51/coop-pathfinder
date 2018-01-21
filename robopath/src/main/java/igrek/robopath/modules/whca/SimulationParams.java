@@ -11,7 +11,7 @@ public class SimulationParams {
 	public int mapSizeW = 11;
 	public int mapSizeH = 11;
 	
-	public int robotsCount = 1;
+	public int robotsCount = 5;
 	
 	public boolean robotAutoTarget = false;
 	
