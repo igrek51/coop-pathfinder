@@ -1,5 +1,7 @@
 package igrek.robopath.pathfinder;
 
+import igrek.robopath.pathfinder.astar.Path;
+
 public interface PathFinder {
 	/**
 	 * Find a path from the starting location provided (sx,sy) to the target

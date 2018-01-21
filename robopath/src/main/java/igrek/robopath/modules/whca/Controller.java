@@ -11,9 +11,9 @@ import java.util.Random;
 
 import igrek.robopath.mazegenerator.MazeGenerator;
 import igrek.robopath.model.Point;
+import igrek.robopath.model.TileMap;
 import igrek.robopath.pathfinder.coop.Coordinater;
 import igrek.robopath.pathfinder.coop.Unit;
-import igrek.robopath.pathfinder.mystar.TileMap;
 import raft.kilavuz.runtime.NoPathException;
 
 public class Controller {

@@ -1,8 +1,10 @@
-package igrek.robopath.pathfinder;
+package igrek.robopath.pathfinder.astar;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import igrek.robopath.pathfinder.PathFinder;
+import igrek.robopath.pathfinder.TileBasedMap;
 import igrek.robopath.pathfinder.heuristics.AStarHeuristic;
 import igrek.robopath.pathfinder.heuristics.ClosestHeuristic;
 

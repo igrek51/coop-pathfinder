@@ -99,13 +99,23 @@ class MobileRobot {
 	}
 	
 	double getInterpolatedX(double moveProgress) {
+		moveProgress = cutOff(moveProgress, 0, 1);
 		Point nearest = nearestTarget();
 		return position.x + (nearest.x - position.x) * moveProgress;
 	}
 	
 	double getInterpolatedY(double moveProgress) {
+		moveProgress = cutOff(moveProgress, 0, 1);
 		Point nearest = nearestTarget();
 		return position.y + (nearest.y - position.y) * moveProgress;
+	}
+	
+	private double cutOff(double num, double min, double max) {
+		if (num < min)
+			num = min;
+		if (num > max)
+			num = max;
+		return num;
 	}
 	
 	boolean hasReachedTarget() {

@@ -10,8 +10,8 @@ import java.util.List;
 
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.model.Point;
+import igrek.robopath.model.TileMap;
 import igrek.robopath.modules.common.ResizableCanvas;
-import igrek.robopath.pathfinder.mystar.TileMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
@@ -140,8 +140,8 @@ public class Presenter {
 	private void startSimulationTimer() {
 		new Thread(() -> {
 			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(MOVE_STEP_DURATION), event -> {
-				lastSimulationTime = System.currentTimeMillis();
 				controller.stepSimulation();
+				lastSimulationTime = System.currentTimeMillis();
 			}));
 			timeline.setCycleCount(Timeline.INDEFINITE);
 			timeline.play();

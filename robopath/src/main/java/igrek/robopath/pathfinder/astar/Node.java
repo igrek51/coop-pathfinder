@@ -1,4 +1,4 @@
-package igrek.robopath.pathfinder;
+package igrek.robopath.pathfinder.astar;
 
 /**
  * A single node in the search graph

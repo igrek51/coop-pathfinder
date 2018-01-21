@@ -1,4 +1,4 @@
-package igrek.robopath.pathfinder;
+package igrek.robopath.pathfinder.astar;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,6 +1,6 @@
-package igrek.robopath.pathfinder.mystar;
+package igrek.robopath.model;
 
-import igrek.robopath.model.Point;
+import java.util.Arrays;
 
 public class TileMap {
 	
@@ -16,6 +16,19 @@ public class TileMap {
 			for (int y = 0; y < tiles[x].length; y++) {
 				tiles[x][y] = false;
 			}
+		}
+	}
+	
+	/**
+	 * copy constructor
+	 * @param source
+	 */
+	public TileMap(TileMap source) {
+		this.width = source.width;
+		this.height = source.height;
+		tiles = new boolean[this.width][];
+		for (int x = 0; x < tiles.length; x++) {
+			tiles[x] = Arrays.copyOf(source.tiles[x], source.tiles[x].length);
 		}
 	}
 	

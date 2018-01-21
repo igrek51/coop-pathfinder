@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import igrek.robopath.model.TileMap;
 import igrek.robopath.pathfinder.coop.Coordinater;
 import igrek.robopath.pathfinder.coop.Grid;
 import igrek.robopath.pathfinder.coop.Unit;
-import igrek.robopath.pathfinder.mystar.TileMap;
 
 public class CoordinaterFactory {
 	

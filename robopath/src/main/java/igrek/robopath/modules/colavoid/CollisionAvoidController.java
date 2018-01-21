@@ -11,12 +11,12 @@ import java.util.Random;
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.mazegenerator.MazeGenerator;
 import igrek.robopath.model.Point;
+import igrek.robopath.model.TileMap;
 import igrek.robopath.modules.colavoid.robot.MobileRobot;
 import igrek.robopath.modules.common.ResizableCanvas;
-import igrek.robopath.pathfinder.mystar.MyStarPathFinder;
+import igrek.robopath.pathfinder.mystar.My3DPathFinder;
 import igrek.robopath.pathfinder.mystar.Path;
 import igrek.robopath.pathfinder.mystar.ReservationTable;
-import igrek.robopath.pathfinder.mystar.TileMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -205,7 +205,8 @@ public class CollisionAvoidController {
 	
 	@FXML
 	private void randomTargetPressed(final Event event) {
-		ReservationTable reservationTable = new ReservationTable(map.getWidthInTiles(), map.getHeightInTiles());
+		int tDim = (map.getWidthInTiles() + map.getHeightInTiles()) * 2;
+		ReservationTable reservationTable = new ReservationTable(map.getWidthInTiles(), map.getHeightInTiles(), tDim);
 		for (int x = 0; x < map.getWidthInTiles(); x++) {
 			for (int y = 0; y < map.getHeightInTiles(); y++) {
 				boolean occupied = map.getCell(x, y);
@@ -223,7 +224,7 @@ public class CollisionAvoidController {
 		Point start = robot.lastTarget();
 		Point target = randomUnoccupiedCell(map);
 		robot.setTarget(target);
-		MyStarPathFinder pathFinder = new MyStarPathFinder(reservationTable);
+		My3DPathFinder pathFinder = new My3DPathFinder(reservationTable);
 		Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
 		if (path != null) {
 			// enque path

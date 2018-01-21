@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import igrek.robopath.model.Point;
-import igrek.robopath.pathfinder.mystar.TileMap;
+import igrek.robopath.model.TileMap;
 
 public class MazeGenerator {
 	

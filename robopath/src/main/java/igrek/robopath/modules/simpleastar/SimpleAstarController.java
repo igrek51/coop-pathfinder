@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.model.Point;
-import igrek.robopath.pathfinder.AStarPathFinder;
-import igrek.robopath.pathfinder.Path;
 import igrek.robopath.pathfinder.PathFinder;
+import igrek.robopath.pathfinder.astar.AStarPathFinder;
+import igrek.robopath.pathfinder.astar.Path;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;

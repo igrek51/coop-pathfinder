@@ -8,10 +8,10 @@ public class ReservationTable {
 	
 	private boolean availability[][][];
 	
-	public ReservationTable(int width, int height) {
+	public ReservationTable(int width, int height, int timeDimension) {
 		this.width = width;
 		this.height = height;
-		setTimeDimension();
+		this.timeDimension = timeDimension;
 		availability = new boolean[width][height][timeDimension];
 		clear();
 	}
@@ -24,11 +24,6 @@ public class ReservationTable {
 				}
 			}
 		}
-	}
-	
-	protected void setTimeDimension() {
-		// TODO it could be not enough
-		timeDimension = (width + height) * 2;
 	}
 	
 	public int getWidth() {

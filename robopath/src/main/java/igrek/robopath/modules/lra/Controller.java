@@ -4,17 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import igrek.robopath.mazegenerator.MazeGenerator;
 import igrek.robopath.model.Point;
-import igrek.robopath.pathfinder.coop.Coordinater;
-import igrek.robopath.pathfinder.coop.Unit;
-import igrek.robopath.pathfinder.mystar.TileMap;
-import raft.kilavuz.runtime.NoPathException;
+import igrek.robopath.model.TileMap;
+import igrek.robopath.pathfinder.my2dastar.My2DPathFinder;
+import igrek.robopath.pathfinder.my2dastar.Path;
 
 public class Controller {
 	
@@ -24,10 +21,6 @@ public class Controller {
 	private TileMap map;
 	private List<MobileRobot> robots = new ArrayList<>();
 	private SimulationParams params;
-	
-	Coordinater coordinater;
-	Map<MobileRobot, Unit> unitsMap = new HashMap<>();
-	final int DEPTH = 32;
 	
 	public Controller(Presenter presenter, SimulationParams params) {
 		this.params = params;
@@ -45,18 +38,10 @@ public class Controller {
 	synchronized void resetMap() {
 		map = new TileMap(params.mapSizeW, params.mapSizeH);
 		robots.clear();
-		coordinater = null;
-	}
-	
-	synchronized Coordinater provideCoordinater() {
-		if (coordinater == null)
-			coordinater = new CoordinaterFactory().provideCoordinater(DEPTH, params.mapSizeW, params.mapSizeH, unitsMap, robots, map);
-		return coordinater;
 	}
 	
 	synchronized void placeRobots() {
 		robots.clear();
-		unitsMap.clear();
 		for (int i = 0; i < params.robotsCount; i++) {
 			Point cell = randomUnoccupiedCellForRobot(map);
 			createMobileRobot(cell, i);
@@ -74,8 +59,6 @@ public class Controller {
 			if (robot.getTarget() == null || robot.hasReachedTarget()) {
 				logger.info("assigning new target");
 				randomRobotTarget(robot);
-				coordinater = null;
-				findPaths();
 			}
 		}
 	}
@@ -106,10 +89,6 @@ public class Controller {
 		//		Point start = robot.lastTarget();
 		Point target = randomUnoccupiedCellForTarget(map);
 		robot.setTarget(target);
-		Unit unit = unitsMap.get(robot);
-		if (unit != null) {
-			unit.setDestination(target.x, target.y);
-		}
 	}
 	
 	private Point randomUnoccupiedCellForTarget(TileMap map) {
@@ -151,31 +130,58 @@ public class Controller {
 	}
 	
 	synchronized void findPaths() {
-		try {
-			coordinater = null;
-			coordinater = provideCoordinater();
-			coordinater.iterate();
-			for (MobileRobot robot : robots) {
-				Unit unit = unitsMap.get(robot);
-				if (unit != null) {
-					//					robot.setPosition(new Point(unit.getLocation().x, unit.getLocation().z));
-					List<Unit.PathPoint> path = unit.getPath();
-					// enque moves
-					robot.resetMovesQue();
-					for (Unit.PathPoint point : path) {
-						robot.enqueueMove(point.x, point.z);
-					}
+		for (MobileRobot robot : robots) {
+			findPath(robot);
+		}
+	}
+	
+	private void findPath(MobileRobot robot) {
+		robot.resetMovesQue();
+		Point start = robot.getPosition();
+		Point target = robot.getTarget();
+		if (target != null && !target.equals(start)) {
+			TileMap map2 = mapWithRobots();
+			My2DPathFinder pathFinder = new My2DPathFinder(map2);
+			Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
+			if (path != null) {
+				for (int i = 1; i < path.getLength(); i++) {
+					Path.Step step = path.getStep(i);
+					robot.enqueueMove(step.getX(), step.getY());
 				}
 			}
-		} catch (NoPathException npe) {
-			npe.printStackTrace();
 		}
+	}
+	
+	private TileMap mapWithRobots() {
+		TileMap map2 = new TileMap(map);
+		for (MobileRobot robot : robots) {
+			map2.setCell(robot.getPosition(), true);
+		}
+		return map2;
 	}
 	
 	synchronized void stepSimulation() {
 		for (MobileRobot robot : robots) {
-			if (robot.hasNextMove())
+			if (robot.hasNextMove()) {
 				robot.setPosition(robot.pollNextMove());
+			}
+			MobileRobot collidedRobot = collisionDetected(robot);
+			if (collidedRobot != null || (!robot.hasNextMove() && !robot.hasReachedTarget())) {
+				findPath(robot);
+				//				findPath(collidedRobot);
+			}
 		}
+	}
+	
+	public MobileRobot collisionDetected(MobileRobot robot) {
+		for (MobileRobot otherRobot : robots) {
+			if (otherRobot == robot)
+				continue;
+			if (otherRobot.getPosition().equals(robot.nearestTarget()) || otherRobot.nearestTarget()
+					.equals(robot.nearestTarget())) {
+				return otherRobot;
+			}
+		}
+		return null;
 	}
 }

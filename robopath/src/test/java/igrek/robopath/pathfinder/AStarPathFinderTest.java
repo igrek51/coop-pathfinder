@@ -2,6 +2,9 @@ package igrek.robopath.pathfinder;
 
 import org.junit.Test;
 
+import igrek.robopath.pathfinder.astar.AStarPathFinder;
+import igrek.robopath.pathfinder.astar.Path;
+
 public class AStarPathFinderTest {
 	
 	@Test

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MyStarPathFinder {
+public class My3DPathFinder {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -24,7 +24,7 @@ public class MyStarPathFinder {
 	/**
 	 * Create a path finder with the default heuristic - closest to target.
 	 */
-	public MyStarPathFinder(ReservationTable reservation) {
+	public My3DPathFinder(ReservationTable reservation) {
 		this.reservation = reservation;
 	}
 	
