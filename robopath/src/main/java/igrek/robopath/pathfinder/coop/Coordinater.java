@@ -15,8 +15,8 @@ import raft.kilavuz.runtime.NoPathException;
  */
 public class Coordinater {
     
-    public Grid grid = new Grid();
-    NodePool pool = new NodePool(grid);
+    public Grid grid;
+    NodePool pool;
     TimeAStar timeAStar = new TimeAStar();
     
     final List<Unit> newUnits = new ArrayList<Unit>();
@@ -30,6 +30,14 @@ public class Coordinater {
     
     /** Creates a new instance of Coordinater */
     public Coordinater(int depth) {
+        grid = new Grid();
+        pool = new NodePool(grid);
+        setDepth(depth);
+    }
+    
+    public Coordinater(int depth, int w, int h) {
+        grid = new Grid(h, w);
+        pool = new NodePool(grid);
         setDepth(depth);
     }
     

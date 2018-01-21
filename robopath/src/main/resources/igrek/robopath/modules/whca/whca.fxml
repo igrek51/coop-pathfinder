@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <HBox xmlns="http://javafx.com/javafx/8.0.121"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="igrek.robopath.modules.whca.ModulePresenter"
+      fx:controller="igrek.robopath.modules.whca.Presenter"
       HBox.hgrow="ALWAYS">
     <children>
         <GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
@@ -49,8 +49,6 @@
                                 text="Step" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#buttonReset"
                                 text="Reset" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
-                        <Button mnemonicParsing="false" onAction="#buttonAnimate"
-                                text="Animate" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#buttonStop"
                                 text="Stop" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <!--parameters-->

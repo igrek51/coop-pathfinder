@@ -6,15 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.model.Point;
 import igrek.robopath.modules.common.ResizableCanvas;
 import igrek.robopath.modules.whca.robot.MobileRobot;
-import igrek.robopath.pathfinder.coop.Coordinater;
-import igrek.robopath.pathfinder.coop.PathPanel;
-import igrek.robopath.pathfinder.coop.Unit;
 import igrek.robopath.pathfinder.mystar.TileMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -35,9 +31,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 @FXMLController
-public class ModulePresenter {
+public class Presenter {
 	
-	private ModuleController controller;
+	private Controller controller;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Boolean pressedTransformer;
 	final double FPS = 30;
@@ -63,9 +59,8 @@ public class ModulePresenter {
 	public CheckBox paramRobotAutoTarget;
 	
 	
-	
 	@Autowired
-	public void setController(ModuleController controller) {
+	public void setController(Controller controller) {
 		this.controller = controller;
 	}
 	
@@ -132,17 +127,6 @@ public class ModulePresenter {
 		params.sendToUI();
 		repaint();
 		startRepaintTimer();
-	}
-	
-	void animate() {
-		if (animating)
-			return;
-		animating = true;
-		new Thread(() -> {
-			while (animating) {
-				controller.stepAnimate();
-			}
-		}).start();
 	}
 	
 	private void startRepaintTimer() {
@@ -229,80 +213,10 @@ public class ModulePresenter {
 	
 	private void drawMap() {
 		GraphicsContext gc = drawArea.getGraphicsContext2D();
-		
-		//		drawGrid(gc);
-		//		drawCells(gc);
-		//		drawRobots(gc);
-		
-		gc.clearRect(0, 0, drawArea.getWidth(), drawArea.getHeight());
-		
-		gc.setLineWidth(1);
-		gc.setStroke(Color.rgb(200, 200, 200));
-		
-		paintGrid(gc);
-		paintUnits(gc);
+		drawGrid(gc);
+		drawCells(gc);
+		drawRobots(gc);
 	}
-	
-	private void paintUnits(GraphicsContext gc) {
-		int unitRadius = cellSize * 2 / 3;
-		int pathRadius = cellSize / 3;
-		
-		boolean allReached = true;
-		Coordinater coordinater = controller.getCoordinater();
-		Map<Integer, PathPanel.Point> unitPositions = controller.getUnitPositions();
-		for (Unit unit : coordinater.units.values()) {
-			if (!unit.reached())
-				allReached = false;
-			
-			gc.setFill(getUnitColor(unit));
-			//NodePool.Point point = unit.getLocation();
-			PathPanel.Point point = unitPositions.get(unit.id);
-			if (point != null) {
-				gc.fillOval((int) (point.x * cellSize + (cellSize - unitRadius) / 2), (int) (point.z * cellSize + (cellSize - unitRadius) / 2), unitRadius, unitRadius);
-			}
-			gc.setStroke(getUnitColor(unit));
-			gc.strokeRect(unit.getDestination().x * cellSize + (cellSize / 8), unit.getDestination().z * cellSize + (cellSize / 8), cellSize * 3 / 4, cellSize * 3 / 4);
-			
-			List<Unit.PathPoint> path = unit.getPath();
-			for (int i = unit.getPathIndex(); i < path.size(); i++) {
-				Unit.PathPoint pathPoint = path.get(i);
-				gc.strokeOval(pathPoint.x * cellSize + (cellSize - pathRadius) / 2, pathPoint.z * cellSize + (cellSize - pathRadius) / 2, pathRadius, pathRadius);
-			}
-		}
-		
-		if (allReached) {
-			gc.setStroke(Color.RED);
-			String s = "all reached";
-			gc.fillText(s, 100, 100);
-		}
-	}
-	
-	private void paintGrid(GraphicsContext gc) {
-		gc.setStroke(Color.DARKGRAY);
-		
-		//		for (int x = 0; x <= grid.columns; x++) {
-		//			gc.strokeLine(x * cellSize, 0, x * cellSize, grid.rows * cellSize);
-		//		}
-		//
-		//		for (int y = 0; y <= grid.rows; y++) {
-		//			gc.strokeLine(0, y * cellSize, grid.columns * cellSize, y * cellSize);
-		//		}
-		//
-		//		gc.setFill(Color.BLACK);
-		//		for (Grid.Node node : grid.unwalkables) {
-		//			gc.fillRect(node.x * cellSize, node.y * cellSize, cellSize, cellSize);
-		//		}
-	}
-	
-	private Color getUnitColor(Unit unit) {
-		int allCount = getRobots().size();
-		if (allCount <= 0)
-			allCount = 1;
-		int index = unit.id % allCount;
-		double hue = 360.0 * index / allCount;
-		return Color.hsb(hue, 1, 1);
-	}
-	
 	
 	private void drawCells(GraphicsContext gc) {
 		TileMap map = getMap();
@@ -428,11 +342,6 @@ public class ModulePresenter {
 	@FXML
 	private void buttonReset(final Event event) {
 		controller.reset();
-	}
-	
-	@FXML
-	private void buttonAnimate(final Event event) {
-		animate();
 	}
 	
 	@FXML

@@ -20,7 +20,7 @@ public class SimulationParams {
 	private TextField paramRobotsCount;
 	private CheckBox paramRobotAutoTarget;
 	
-	public void init(ModulePresenter presenter) {
+	public void init(Presenter presenter) {
 		this.paramMapSizeW = presenter.paramMapSizeW;
 		this.paramMapSizeH = presenter.paramMapSizeH;
 		this.paramRobotsCount = presenter.paramRobotsCount;
