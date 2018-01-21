@@ -1,8 +1,5 @@
 package igrek.robopath.modules.container;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.fxml.FXML;
 import javafx.scene.control.SingleSelectionModel;
@@ -12,9 +9,7 @@ import javafx.scene.control.TabPane;
 @FXMLController
 public class ContainerController {
 	
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	private static final int DEFAULT_TAB_INDEX = 4; // beginning from 0
+	private static final int DEFAULT_TAB_INDEX = 0; // beginning from 0
 	
 	@FXML
 	private TabPane containerTabPane;
