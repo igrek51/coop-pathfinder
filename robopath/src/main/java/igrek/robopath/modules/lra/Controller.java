@@ -157,6 +157,7 @@ public class Controller {
 		TileMap map2 = new TileMap(map);
 		for (MobileRobot robot : robots) {
 			map2.setCell(robot.getPosition(), true);
+			map2.setCell(robot.nearestTarget(), true);
 		}
 		return map2;
 	}

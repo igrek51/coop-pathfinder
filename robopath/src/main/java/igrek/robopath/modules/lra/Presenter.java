@@ -33,7 +33,7 @@ import javafx.util.Duration;
 public class Presenter {
 	
 	private final double FPS = 24;
-	private final double MOVE_STEP_DURATION = 800;
+	private final double MOVE_STEP_DURATION = 900;
 	
 	private Controller controller;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
