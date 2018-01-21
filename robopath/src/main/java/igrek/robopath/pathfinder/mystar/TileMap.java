@@ -51,27 +51,16 @@ public class TileMap {
 		return getCell(p.x, p.y);
 	}
 	
-	/**
-	 * Get the width of the tile map. The slightly odd name is used
-	 * to distiguish this method from commonly used names in game maps.
-	 * @return The number of tiles across the map
-	 */
 	public int getWidthInTiles() {
 		return width;
 	}
 	
-	/**
-	 * Get the height of the tile map. The slightly odd name is used
-	 * to distiguish this method from commonly used names in game maps.
-	 * @return The number of tiles down the map
-	 */
 	public int getHeightInTiles() {
 		return height;
 	}
 	
 	/**
-	 * Check if the given location is blocked, i.e. blocks movement of
-	 * the supplied mover.
+	 * Check if the given location is blocked
 	 * @param x The x coordinate of the tile to check
 	 * @param y The y coordinate of the tile to check
 	 * @return True if the location is blocked

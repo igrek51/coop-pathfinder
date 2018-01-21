@@ -10,7 +10,6 @@ import java.util.List;
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.model.Point;
 import igrek.robopath.modules.common.ResizableCanvas;
-import igrek.robopath.modules.whca.robot.MobileRobot;
 import igrek.robopath.pathfinder.mystar.TileMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -33,10 +32,13 @@ import javafx.util.Duration;
 @FXMLController
 public class Presenter {
 	
+	private final double FPS = 24;
+	private final double MOVE_STEP_DURATION = 1000;
+	
 	private Controller controller;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Boolean pressedTransformer;
-	final double FPS = 30;
+	private long lastSimulationTime;
 	
 	@FXML
 	private ResizableCanvas drawArea;
@@ -60,6 +62,28 @@ public class Presenter {
 	@Autowired
 	public void setController(Controller controller) {
 		this.controller = controller;
+	}
+	
+	@FXML
+	public void initialize() {
+		logger.info("initializing presenter " + this.getClass().getSimpleName());
+		
+		drawAreaContainer.widthProperty().addListener(o -> drawAreaContainerResized());
+		drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
+		
+		drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+			mousePressedMap(event);
+		});
+		drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+			mouseDraggedMap(event);
+		});
+		drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+		});
+		
+		params.init(this);
+		params.sendToUI();
+		startSimulationTimer();
+		startRepaintTimer();
 	}
 	
 	TileMap getMap() {
@@ -105,44 +129,30 @@ public class Presenter {
 		drawArea.setHeight(cellSize * getMap().getHeightInTiles());
 	}
 	
-	@FXML
-	public void initialize() {
-		logger.info("initializing presenter " + this.getClass().getSimpleName());
-		
-		drawAreaContainer.widthProperty().addListener(o -> drawAreaContainerResized());
-		drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
-		
-		drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-			mousePressedMap(event);
-		});
-		drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-			mouseDraggedMap(event);
-		});
-		drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-		});
-		
-		params.init(this);
-		params.sendToUI();
-		repaint();
-		startRepaintTimer();
-	}
 	
 	private void startRepaintTimer() {
 		// animation timer
-		Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.millis(1000 / FPS), new EventHandler<ActionEvent>() {
-			
-			private long lastTime = System.currentTimeMillis();
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / FPS), event -> repaint()));
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.play();
+	}
+	
+	private void startSimulationTimer() {
+		// animation timer
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(MOVE_STEP_DURATION), new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				long current = System.currentTimeMillis();
-				controller.timeLapse(((double) (current - lastTime)) / 1000);
-				lastTime = current;
-				repaint();
+				lastSimulationTime = System.currentTimeMillis();
+				stepSimulation();
 			}
 		}));
-		fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-		fiveSecondsWonder.play();
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.play();
+	}
+	
+	private void stepSimulation() {
+		controller.stepSimulation();
 	}
 	
 	private void mousePressedMap(MouseEvent event) {
@@ -264,14 +274,15 @@ public class Presenter {
 	}
 	
 	private void drawRobots(GraphicsContext gc) {
+		double simulationStepProgress = (System.currentTimeMillis() - lastSimulationTime) / MOVE_STEP_DURATION;
 		List<MobileRobot> robots = getRobots();
 		int index = 0;
 		for (MobileRobot robot : robots) {
-			drawRobot(gc, robot, index++);
+			drawRobot(gc, robot, index++, simulationStepProgress);
 		}
 	}
 	
-	private void drawRobot(GraphicsContext gc, MobileRobot robot, int index) {
+	private void drawRobot(GraphicsContext gc, MobileRobot robot, int index, double stepProgress) {
 		TileMap map = getMap();
 		double cellW = drawArea.getWidth() / map.getWidthInTiles();
 		double cellH = drawArea.getHeight() / map.getHeightInTiles();
@@ -279,8 +290,8 @@ public class Presenter {
 		double h = 0.6 * cellH;
 		Color robotColor = robotColor(index);
 		// draw target
-		Point target = robot.getTarget();
-		if (target != null && !target.equals(robot.getPosition())) {
+		if (!robot.hasReachedTarget()) {
+			Point target = robot.getTarget();
 			gc.setStroke(robotColor);
 			double targetX = target.getX() * cellW + cellW / 2;
 			double targetY = target.getY() * cellH + cellH / 2;
@@ -301,8 +312,8 @@ public class Presenter {
 		}
 		// draw robot
 		gc.setFill(robotColor);
-		double x = robot.getInterpolatedX() * cellW + cellW / 2 - w / 2;
-		double y = robot.getInterpolatedY() * cellH + cellH / 2 - h / 2;
+		double x = robot.getInterpolatedX(stepProgress) * cellW + cellW / 2 - w / 2;
+		double y = robot.getInterpolatedY(stepProgress) * cellH + cellH / 2 - h / 2;
 		gc.fillOval(x, y, w, h);
 		// draw its priority
 		gc.setFill(robotColor(index, 0.5));
@@ -324,6 +335,6 @@ public class Presenter {
 	
 	@FXML
 	private void buttonStep() {
-		controller.stepTake();
+		controller.findPaths();
 	}
 }

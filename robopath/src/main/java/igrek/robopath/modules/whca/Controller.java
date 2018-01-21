@@ -11,7 +11,6 @@ import java.util.Random;
 
 import igrek.robopath.mazegenerator.MazeGenerator;
 import igrek.robopath.model.Point;
-import igrek.robopath.modules.whca.robot.MobileRobot;
 import igrek.robopath.pathfinder.coop.Coordinater;
 import igrek.robopath.pathfinder.coop.Unit;
 import igrek.robopath.pathfinder.mystar.TileMap;
@@ -59,7 +58,7 @@ public class Controller {
 		robots.clear();
 		unitsMap.clear();
 		for (int i = 0; i < params.robotsCount; i++) {
-			Point cell = randomUnoccupiedCell(map);
+			Point cell = randomUnoccupiedCellForRobot(map);
 			createMobileRobot(cell, i);
 		}
 	}
@@ -76,7 +75,7 @@ public class Controller {
 				logger.info("assigning new target");
 				randomRobotTarget(robot);
 				coordinater = null;
-				stepTake();
+				findPaths();
 			}
 		}
 	}
@@ -94,12 +93,6 @@ public class Controller {
 		new MazeGenerator(map).generateMaze();
 	}
 	
-	void timeLapse(double t) {
-		for (MobileRobot robot : robots) {
-			robot.timeLapse(t);
-		}
-	}
-	
 	MobileRobot occupiedByRobot(Point point) {
 		for (MobileRobot robot : robots) {
 			if (robot.getPosition().equals(point))
@@ -111,7 +104,7 @@ public class Controller {
 	private void randomRobotTarget(MobileRobot robot) {
 		robot.resetNextMoves();
 		//		Point start = robot.lastTarget();
-		Point target = randomUnoccupiedCell(map);
+		Point target = randomUnoccupiedCellForTarget(map);
 		robot.setTarget(target);
 		Unit unit = unitsMap.get(robot);
 		if (unit != null) {
@@ -119,22 +112,18 @@ public class Controller {
 		}
 	}
 	
-	private Point randomUnoccupiedCell(TileMap map) {
+	private Point randomUnoccupiedCellForTarget(TileMap map) {
 		// get all unoccupied cells
 		List<Point> frees = new ArrayList<>();
-		for (int x = 0; x < map.getWidthInTiles(); x++) {
-			for (int y = 0; y < map.getHeightInTiles(); y++) {
-				boolean occupied = map.getCell(x, y);
-				if (!occupied)
-					frees.add(new Point(x, y));
-			}
-		}
+		map.foreach((x, y, occupied) -> {
+			if (!occupied)
+				frees.add(new Point(x, y));
+		});
 		// remove occupied by other targets
 		for (MobileRobot robot : robots) {
 			Point target = robot.getTarget();
-			if (target != null) {
+			if (target != null)
 				frees.remove(target);
-			}
 		}
 		if (frees.isEmpty())
 			return null;
@@ -142,7 +131,26 @@ public class Controller {
 		return frees.get(random.nextInt(frees.size()));
 	}
 	
-	void stepTake() {
+	private Point randomUnoccupiedCellForRobot(TileMap map) {
+		// get all unoccupied cells
+		List<Point> frees = new ArrayList<>();
+		map.foreach((x, y, occupied) -> {
+			if (!occupied)
+				frees.add(new Point(x, y));
+		});
+		// remove occupied by other robots
+		for (MobileRobot robot : robots) {
+			Point p = robot.getPosition();
+			if (p != null)
+				frees.remove(p);
+		}
+		if (frees.isEmpty())
+			return null;
+		// random from list
+		return frees.get(random.nextInt(frees.size()));
+	}
+	
+	void findPaths() {
 		try {
 			coordinater = null;
 			coordinater = provideCoordinater();
@@ -152,6 +160,8 @@ public class Controller {
 				if (unit != null) {
 					robot.setPosition(new Point(unit.getLocation().x, unit.getLocation().z));
 					List<Unit.PathPoint> path = unit.getPath();
+					// enque moves
+					robot.resetMovesQue();
 					for (Unit.PathPoint point : path) {
 						robot.enqueueMove(point.x, point.z);
 					}
@@ -159,6 +169,13 @@ public class Controller {
 			}
 		} catch (NoPathException npe) {
 			npe.printStackTrace();
+		}
+	}
+	
+	void stepSimulation() {
+		for (MobileRobot robot : robots) {
+			if (robot.hasNextMove())
+				robot.setPosition(robot.pollNextMove());
 		}
 	}
 }

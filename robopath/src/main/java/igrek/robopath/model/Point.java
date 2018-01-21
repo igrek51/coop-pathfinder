@@ -54,6 +54,12 @@ public class Point {
 		return dx <= 1 && dy <= 1;
 	}
 	
+	public boolean isAdjacentOrEqual(Point p2) {
+		int dx = abs(p2.x - x);
+		int dy = abs(p2.y - y);
+		return dx <= 1 && dy <= 1;
+	}
+	
 	public double distance(Point p2) {
 		return Math.hypot(p2.x - x, p2.y - y);
 	}
