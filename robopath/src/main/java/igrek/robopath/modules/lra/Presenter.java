@@ -33,7 +33,7 @@ import javafx.util.Duration;
 public class Presenter {
 	
 	private final double FPS = 24;
-	private final double MOVE_STEP_DURATION = 900;
+	private final double MOVE_STEP_DURATION = 500;
 	
 	private Controller controller;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -45,10 +45,8 @@ public class Presenter {
 	@FXML
 	private VBox drawAreaContainer;
 	
-	// PARAMS
 	@Autowired
 	private SimulationParams params;
-	
 	@FXML
 	public TextField paramMapSizeW;
 	@FXML
@@ -283,6 +281,7 @@ public class Presenter {
 		double h = 0.6 * cellH;
 		Color robotColor = robotColor(index);
 		// draw target
+		gc.setLineWidth(cellW / 18);
 		if (robot.getTarget() != null) {
 			Point target = robot.getTarget();
 			gc.setStroke(robotColor);
