@@ -122,4 +122,10 @@ class MobileRobot {
 		return target == null || target.equals(position);
 	}
 	
+	void targetReached() {
+		if (targetReachedHandler != null) {
+			targetReachedHandler.onTargetReached(this);
+		}
+	}
+	
 }

@@ -61,7 +61,7 @@ public class Controller {
 	private void onTargetReached(MobileRobot robot) {
 		if (params.robotAutoTarget) {
 			if (robot.getTarget() == null || robot.hasReachedTarget()) {
-				logger.info("assigning new target");
+				logger.info("robot: " + robot.getPriority() + " - assigning new target");
 				randomRobotTarget(robot);
 			}
 		}
@@ -140,7 +140,7 @@ public class Controller {
 	}
 	
 	private void findPath(MobileRobot robot) {
-		logger.info("planning path for robot: " + robot.getPriority());
+		logger.info("robot: " + robot.getPriority() + " - planning path");
 		robot.resetMovesQue();
 		Point start = robot.getPosition();
 		Point target = robot.getTarget();
@@ -170,6 +170,9 @@ public class Controller {
 		for (MobileRobot robot : robots) {
 			if (robot.hasNextMove()) {
 				robot.setPosition(robot.pollNextMove());
+			}
+			if (robot.hasReachedTarget() && params.robotAutoTarget) {
+				robot.targetReached();
 			}
 			MobileRobot collidedRobot = collisionDetected(robot);
 			if (collidedRobot != null || (!robot.hasNextMove() && !robot.hasReachedTarget())) {
