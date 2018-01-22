@@ -2,6 +2,7 @@ package igrek.robopath.modules.colavoid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -50,7 +51,9 @@ public class CollisionAvoidController {
 	private List<MobileRobot> robots = new ArrayList<>();
 	private SimulationParams params = new SimulationParams();
 	
-	private Random random = new Random();
+	private Random random;
+	@Autowired
+	private MazeGenerator mazegen;
 	private Boolean pressedTransformer;
 	
 	final double FPS = 30;
@@ -65,7 +68,8 @@ public class CollisionAvoidController {
 	@FXML
 	private CheckBox paramRobotAutoTarget;
 	
-	public CollisionAvoidController() {
+	public CollisionAvoidController(@Autowired Random random) {
+		this.random = random;
 		resetMap(null);
 	}
 	
@@ -93,7 +97,7 @@ public class CollisionAvoidController {
 	private void generateMaze(final Event event) {
 		if (event != null)
 			readParams();
-		new MazeGenerator(map).generateMaze();
+		mazegen.generateMaze(map);
 	}
 	
 	private void drawAreaContainerResized() {

@@ -1,5 +1,8 @@
 package igrek.robopath.mazegenerator;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,16 +10,17 @@ import java.util.Random;
 import igrek.robopath.model.Point;
 import igrek.robopath.model.TileMap;
 
+@Component
 public class MazeGenerator {
 	
-	private TileMap map;
-	private Random random = new Random();
+	private final Random random;
 	
-	public MazeGenerator(TileMap map) {
-		this.map = map;
+	@Autowired
+	public MazeGenerator(Random random) {
+		this.random = random;
 	}
 	
-	public void generateMaze() {
+	public void generateMaze(TileMap map) {
 		// set all blocked
 		for (int x = 0; x < map.getWidthInTiles(); x++) {
 			for (int y = 0; y < map.getHeightInTiles(); y++) {

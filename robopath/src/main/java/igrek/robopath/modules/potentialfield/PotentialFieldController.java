@@ -2,6 +2,7 @@ package igrek.robopath.modules.potentialfield;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class PotentialFieldController {
 	private List<MobileRobot> robots = new ArrayList<>();
 	private SimulationParams params = new SimulationParams();
 	
-	private Random random = new Random();
+	private Random random;
 	private TileCellType pressedTransformer;
 	
 	// PARAMS
@@ -59,7 +60,8 @@ public class PotentialFieldController {
 	@FXML
 	private CheckBox paramRobotAutoTarget;
 	
-	public PotentialFieldController() {
+	public PotentialFieldController(@Autowired Random random) {
+		this.random = random;
 		resetMap(null);
 	}
 	

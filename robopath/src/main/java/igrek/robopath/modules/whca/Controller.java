@@ -2,6 +2,7 @@ package igrek.robopath.modules.whca;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,10 @@ import raft.kilavuz.runtime.NoPathException;
 public class Controller {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	private Random random = new Random();
+	@Autowired
+	private Random random;
+	@Autowired
+	private MazeGenerator mazegen;
 	
 	private TileMap map;
 	private List<MobileRobot> robots = new ArrayList<>();
@@ -90,7 +94,7 @@ public class Controller {
 	}
 	
 	void generateMaze() {
-		new MazeGenerator(map).generateMaze();
+		mazegen.generateMaze(map);
 	}
 	
 	MobileRobot occupiedByRobot(Point point) {

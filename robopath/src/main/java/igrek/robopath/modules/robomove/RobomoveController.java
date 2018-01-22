@@ -2,6 +2,7 @@ package igrek.robopath.modules.robomove;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -46,7 +47,7 @@ public class RobomoveController {
 	private List<MobileRobot> robots = new ArrayList<>();
 	private SimulationParams params = new SimulationParams();
 	
-	private Random random = new Random();
+	private Random random;
 	private TileCellType pressedTransformer;
 	
 	// PARAMS
@@ -59,7 +60,8 @@ public class RobomoveController {
 	@FXML
 	private CheckBox paramRobotAutoTarget;
 	
-	public RobomoveController() {
+	public RobomoveController(@Autowired Random random) {
+		this.random = random;
 		resetMap(null);
 	}
 	
