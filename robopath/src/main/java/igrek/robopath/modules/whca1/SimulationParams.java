@@ -1,4 +1,4 @@
-package igrek.robopath.modules.whca;
+package igrek.robopath.modules.whca1;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

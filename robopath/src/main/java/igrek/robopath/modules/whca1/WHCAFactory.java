@@ -1,11 +1,11 @@
-package igrek.robopath.modules.whca;
+package igrek.robopath.modules.whca1;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(name = "simulation.mode", havingValue = "whca")
+@ConditionalOnProperty(name = "simulation.mode", havingValue = "whca1")
 public class WHCAFactory {
 
 	@Bean
