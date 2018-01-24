@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <HBox xmlns="http://javafx.com/javafx/8.0.121"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="igrek.robopath.modules.robomove.RobomoveController"
+      fx:controller="igrek.robopath.modules.whca2.Presenter"
       HBox.hgrow="ALWAYS">
     <children>
         <GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
@@ -36,12 +36,17 @@
                 <VBox fx:id="menu" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" GridPane.columnIndex="1">
                     <children>
                         <!--actions-->
-                        <Button mnemonicParsing="false" onAction="#findPathPressed"
-                                text="Find path" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
-                        <Button mnemonicParsing="false" onAction="#randomTargetPressed"
-                                text="Random target" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#resetMap"
                                 text="Reset map" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#generateMaze"
+                                text="Generate maze" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#placeRobots"
+                                text="Place robots" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#randomTargetPressed"
+                                text="Random target" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+
+                        <Button mnemonicParsing="false" onAction="#buttonPathfind"
+                                text="Find Paths" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <!--parameters-->
                         <TitledPane text="Map size">
                             <HBox HBox.hgrow="ALWAYS">

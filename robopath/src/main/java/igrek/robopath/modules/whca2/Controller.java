@@ -1,4 +1,4 @@
-package igrek.robopath.modules.lra;
+package igrek.robopath.modules.whca2;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +11,9 @@ import java.util.Random;
 import igrek.robopath.common.Point;
 import igrek.robopath.common.TileMap;
 import igrek.robopath.mazegenerator.MazeGenerator;
-import igrek.robopath.pathfinder.my2dastar.My2DPathFinder;
-import igrek.robopath.pathfinder.my2dastar.Path;
+import igrek.robopath.pathfinder.mywhca.MyWHCAPathFinder;
+import igrek.robopath.pathfinder.mywhca.Path;
+import igrek.robopath.pathfinder.mywhca.ReservationTable;
 
 public class Controller {
 	
@@ -134,25 +135,41 @@ public class Controller {
 	}
 	
 	synchronized void findPaths() {
+		int tDim = robots.size() + 1;
+		TileMap map2 = mapWithRobots();
+		ReservationTable reservationTable = new ReservationTable(map2.getWidthInTiles(), map2.getHeightInTiles(), tDim);
+		map2.foreach((x, y, occupied) -> {
+			if (occupied)
+				reservationTable.setBlocked(x, y);
+		});
 		for (MobileRobot robot : robots) {
-			findPath(robot);
+			findPath(robot, reservationTable, map);
 		}
 	}
 	
-	private void findPath(MobileRobot robot) {
-		logger.info("robot: " + robot.getPriority() + " - planning path");
+	private void findPath(MobileRobot robot, ReservationTable reservationTable, TileMap map) {
+		logger.info("robot: " + (robot.getPriority() + 1) + " - planning path");
 		robot.resetMovesQue();
 		Point start = robot.getPosition();
 		Point target = robot.getTarget();
 		if (target != null && !target.equals(start)) {
-			TileMap map2 = mapWithRobots();
-			My2DPathFinder pathFinder = new My2DPathFinder(map2);
+			MyWHCAPathFinder pathFinder = new MyWHCAPathFinder(reservationTable, map);
 			Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
+			logger.info("path: " + path);
 			if (path != null) {
+				// enque path
+				int t = 0;
+				reservationTable.setBlocked(start.x, start.y, t);
+				reservationTable.setBlocked(start.x, start.y, t + 1);
 				for (int i = 1; i < path.getLength(); i++) {
 					Path.Step step = path.getStep(i);
 					robot.enqueueMove(step.getX(), step.getY());
+					t++;
+					reservationTable.setBlocked(step.getX(), step.getY(), t);
+					reservationTable.setBlocked(step.getX(), step.getY(), t + 1);
 				}
+			} else {
+				reservationTable.setBlocked(start.x, start.y);
 			}
 		}
 	}
@@ -160,13 +177,13 @@ public class Controller {
 	private TileMap mapWithRobots() {
 		TileMap map2 = new TileMap(map);
 		for (MobileRobot robot : robots) {
-			map2.setCell(robot.getPosition(), true);
-			map2.setCell(robot.nearestTarget(), true);
+			//			map2.setCell(robot.getPosition(), true);
 		}
 		return map2;
 	}
 	
 	synchronized void stepSimulation() {
+		boolean replan = false;
 		for (MobileRobot robot : robots) {
 			if (robot.hasNextMove()) {
 				robot.setPosition(robot.pollNextMove());
@@ -175,9 +192,16 @@ public class Controller {
 				robot.targetReached();
 			}
 			MobileRobot collidedRobot = collisionDetected(robot);
-			if (collidedRobot != null || (!robot.hasNextMove() && !robot.hasReachedTarget())) {
-				findPath(robot);
+			if (collidedRobot != null) {
+				logger.info("collision detected - replanning all paths");
+				replan = true;
+			} else if (!robot.hasNextMove() && !robot.hasReachedTarget()) {
+				logger.info("no planned moves - replanning all paths");
+				replan = true;
 			}
+		}
+		if (replan) {
+			findPaths();
 		}
 	}
 	

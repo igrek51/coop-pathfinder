@@ -2,7 +2,7 @@ package igrek.robopath.modules.whca1;
 
 import java.util.LinkedList;
 
-import igrek.robopath.model.Point;
+import igrek.robopath.common.Point;
 
 class MobileRobot {
 	

@@ -9,8 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.felixroske.jfxsupport.FXMLController;
-import igrek.robopath.model.Point;
-import igrek.robopath.model.TileMap;
+import igrek.robopath.common.Point;
+import igrek.robopath.common.TileMap;
 import igrek.robopath.modules.common.ResizableCanvas;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

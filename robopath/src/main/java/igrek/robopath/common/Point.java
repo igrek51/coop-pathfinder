@@ -1,4 +1,4 @@
-package igrek.robopath.model;
+package igrek.robopath.common;
 
 public class Point {
 	

@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import igrek.robopath.common.Point;
+import igrek.robopath.common.TileMap;
 import igrek.robopath.mazegenerator.MazeGenerator;
-import igrek.robopath.model.Point;
-import igrek.robopath.model.TileMap;
 import igrek.robopath.pathfinder.coop.Coordinater;
 import igrek.robopath.pathfinder.coop.Unit;
 import raft.kilavuz.runtime.NoPathException;

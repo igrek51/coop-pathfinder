@@ -1,4 +1,4 @@
-package igrek.robopath.pathfinder.mystar;
+package igrek.robopath.pathfinder.mywhca;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,8 +6,13 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
-public class My3DPathFinder {
+import igrek.robopath.common.BiHashMap;
+import igrek.robopath.common.TileMap;
+import igrek.robopath.pathfinder.my2dastar.My2DPathFinder;
+
+public class MyWHCAPathFinder {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -15,17 +20,18 @@ public class My3DPathFinder {
 	private List<Node> closed = new ArrayList<>();
 	/** The set of nodes that we do not yet consider fully searched */
 	private SortedList<Node> open = new SortedList<>();
+	private Node[][][] nodes;
 	
 	private ReservationTable reservation;
-	
-	/** The complete set of nodes across the map */
-	private Node[][][] nodes;
+	private TileMap map;
+	private BiHashMap<Integer, Integer, igrek.robopath.pathfinder.my2dastar.Path> heuristicCache = new BiHashMap<>();
 	
 	/**
 	 * Create a path finder with the default heuristic - closest to target.
 	 */
-	public My3DPathFinder(ReservationTable reservation) {
+	public MyWHCAPathFinder(ReservationTable reservation, TileMap map) {
 		this.reservation = reservation;
+		this.map = map;
 	}
 	
 	/**
@@ -43,6 +49,7 @@ public class My3DPathFinder {
 		// tile is in the open list and it'e're already there
 		closed.clear();
 		open.clear();
+		heuristicCache.clear();
 		
 		nodes = new Node[reservation.getWidth()][reservation.getHeight()][reservation.getTimeDimension()];
 		for (int x = 0; x < reservation.getWidth(); x++) {
@@ -84,9 +91,8 @@ public class My3DPathFinder {
 				while (target != nodes[sx][sy][0]) {
 					path.prependStep(target.getX(), target.getY(), target.getT());
 					target = target.getParent();
-					if (target == null) {
-						logger.warn("dupa");
-					}
+					if (target == null)
+						throw new AssertionError("dupa");
 				}
 				path.prependStep(sx, sy, 0);
 				return path;
@@ -131,13 +137,38 @@ public class My3DPathFinder {
 				// step (i.e. to the open list)
 				if (!open.contains(neighbour) && !closed.contains(neighbour)) {
 					neighbour.setCost(nextStepCost);
-					neighbour.setHeuristic(getHeuristicCost(neighbour.getX(), neighbour.getY(), neighbour
-							.getT(), tx, ty));
+					Float heuristicCost = getHeuristicCost(neighbour.getX(), neighbour.getY(), neighbour
+							.getT(), tx, ty);
+					if (heuristicCost == null) {
+						heuristicCost = (float) (map.getWidthInTiles() * map.getHeightInTiles()); // kind of max
+					}
+					neighbour.setHeuristic(heuristicCost);
 					neighbour.setParent(current);
 					open.add(neighbour);
 				}
 				
 			}
+		}
+		
+		// time window could be too little - find most promising path
+		//		logger.debug(closed.toString());
+		Optional<Node> mostPromising = closed.stream()
+				.filter(node -> node.getHeuristic() != 0 && node.getCost() != 0) // first node is not calculated
+				.min((o1, o2) -> Float.compare(o1.getHeuristic(), o2.getHeuristic()));
+		//			Optional<Node> mostPromising = closed.stream()
+		//					.filter(node -> node.getT() == maxT.get())
+		//					.min(Node::compareTo);
+		if (mostPromising.isPresent()) {
+			Path path = new Path();
+			Node target = mostPromising.get();
+			while (target != nodes[sx][sy][0]) {
+				path.prependStep(target.getX(), target.getY(), target.getT());
+				target = target.getParent();
+				if (target == null)
+					throw new AssertionError("dupa");
+			}
+			path.prependStep(sx, sy, 0);
+			return path;
 		}
 		
 		// since we'e've run out of search there was no path
@@ -194,14 +225,6 @@ public class My3DPathFinder {
 		return x >= 0 ? x : -x;
 	}
 	
-	/**
-	 * Get the cost to move through a given location
-	 * @param sx The x coordinate of the tile whose cost is being determined
-	 * @param sy The y coordiante of the tile whose cost is being determined
-	 * @param tx The x coordinate of the target location
-	 * @param ty The y coordinate of the target location
-	 * @return The cost of movement through the given tile
-	 */
 	protected float getMovementCost(int sx, int sy, int tx, int ty) {
 		//		float dx = tx - sx;
 		//		float dy = ty - sy;
@@ -209,18 +232,23 @@ public class My3DPathFinder {
 		return Math.max(Math.abs(tx - sx), Math.abs(ty - sy));
 	}
 	
-	/**
-	 * Get the heuristic cost for the given location. This determines in which
-	 * order the locations are processed.
-	 * @param x  The x coordinate of the tile whose cost is being determined
-	 * @param y  The y coordiante of the tile whose cost is being determined
-	 * @param tx The x coordinate of the target location
-	 * @param ty The y coordinate of the target location
-	 * @return The heuristic cost assigned to the tile
-	 */
-	protected float getHeuristicCost(int x, int y, int t, int tx, int ty) {
-		return (float) (Math.hypot(tx - x, ty - y) + ((float) t) / reservation.getTimeDimension() * Math
-				.hypot(tx - x, ty - y));
+	protected Float getHeuristicCost(int x, int y, int t, int tx, int ty) {
+		if (x == tx && y == ty)
+			return 0f;
+		igrek.robopath.pathfinder.my2dastar.Path path = heuristicCache.get(x, y);
+		if (path == null) {
+			My2DPathFinder pathFinder = new My2DPathFinder(map);
+			path = pathFinder.findPath(x, y, tx, ty);
+			if (path == null) {
+				// there is no path
+				return null;
+			}
+			heuristicCache.put(x, y, path);
+		}
+		float distance = path.getLength() - 1;
+		if (distance < 0)
+			throw new AssertionError("distance < 0");
+		return (distance) * (1 + ((float) t) / reservation.getTimeDimension());
 	}
 	
 	private List<Node> availableNeighbours(Node current) {

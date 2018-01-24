@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import igrek.robopath.model.TileMap;
+import igrek.robopath.common.TileMap;
 
 public class My2DPathFinder {
 	
@@ -193,14 +193,6 @@ public class My2DPathFinder {
 		return x >= 0 ? x : -x;
 	}
 	
-	/**
-	 * Get the cost to move through a given location
-	 * @param sx The x coordinate of the tile whose cost is being determined
-	 * @param sy The y coordiante of the tile whose cost is being determined
-	 * @param tx The x coordinate of the target location
-	 * @param ty The y coordinate of the target location
-	 * @return The cost of movement through the given tile
-	 */
 	protected float getMovementCost(int sx, int sy, int tx, int ty) {
 		//		float dx = tx - sx;
 		//		float dy = ty - sy;
@@ -208,16 +200,8 @@ public class My2DPathFinder {
 		return Math.max(Math.abs(tx - sx), Math.abs(ty - sy));
 	}
 	
-	/**
-	 * Get the heuristic cost for the given location. This determines in which
-	 * order the locations are processed.
-	 * @param x  The x coordinate of the tile whose cost is being determined
-	 * @param y  The y coordiante of the tile whose cost is being determined
-	 * @param tx The x coordinate of the target location
-	 * @param ty The y coordinate of the target location
-	 * @return The heuristic cost assigned to the tile
-	 */
 	protected float getHeuristicCost(int x, int y, int tx, int ty) {
+		//		return (float) Math.max(Math.abs(tx - x), Math.abs(ty - y));
 		return (float) Math.hypot(tx - x, ty - y);
 	}
 	

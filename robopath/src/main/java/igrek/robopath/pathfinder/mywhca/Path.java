@@ -1,4 +1,4 @@
-package igrek.robopath.pathfinder.mystar;
+package igrek.robopath.pathfinder.mywhca;
 
 import java.util.ArrayList;
 import java.util.List;

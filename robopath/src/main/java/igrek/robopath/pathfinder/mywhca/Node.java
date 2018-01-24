@@ -1,4 +1,4 @@
-package igrek.robopath.pathfinder.mystar;
+package igrek.robopath.pathfinder.mywhca;
 
 /**
  * A single node in the search graph
@@ -68,10 +68,14 @@ class Node implements Comparable<Node> {
 		this.parent = parent;
 	}
 	
+	public float getF() {
+		return heuristic + cost;
+	}
+	
 	@Override
 	public int compareTo(Node o) {
-		float f = heuristic + cost;
-		float of = o.heuristic + o.cost;
+		float f = getF();
+		float of = o.getF();
 		if (f < of) {
 			return -1;
 		} else if (f > of) {
@@ -90,7 +94,9 @@ class Node implements Comparable<Node> {
 		return super.equals(obj);
 	}
 	
-	public boolean sameXY(Node n2) {
-		return this.x == n2.x && this.y == n2.y;
+	@Override
+	public String toString() {
+		return "(" + x + ", " + y + ", " + t + "; f=" + getF() + "; h=" + getHeuristic() + ")";
 	}
+	
 }

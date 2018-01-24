@@ -1,10 +1,10 @@
-package igrek.robopath.modules.lra;
+package igrek.robopath.modules.whca2;
 
 import java.util.LinkedList;
 
 import igrek.robopath.common.Point;
 
-class MobileRobot {
+public class MobileRobot {
 	
 	private Point position;
 	private Point target;
@@ -23,7 +23,7 @@ class MobileRobot {
 	}
 	
 	
-	Point getPosition() {
+	public Point getPosition() {
 		return position;
 	}
 	
@@ -31,11 +31,11 @@ class MobileRobot {
 		this.position = position;
 	}
 	
-	Point getTarget() {
+	public Point getTarget() {
 		return target;
 	}
 	
-	void setTarget(Point target) {
+	public void setTarget(Point target) {
 		this.target = target;
 	}
 	
@@ -86,7 +86,7 @@ class MobileRobot {
 		return enqueueMove(new Point(x, y));
 	}
 	
-	void resetMovesQue() {
+	public void resetMovesQue() {
 		movesQue.clear();
 	}
 	

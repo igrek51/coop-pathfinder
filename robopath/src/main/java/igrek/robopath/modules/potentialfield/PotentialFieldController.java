@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.felixroske.jfxsupport.FXMLController;
-import igrek.robopath.model.Point;
+import igrek.robopath.common.Point;
 import igrek.robopath.modules.common.ResizableCanvas;
 import igrek.robopath.modules.potentialfield.robot.MobileRobot;
 import igrek.robopath.modules.potentialfield.robot.Vector2;

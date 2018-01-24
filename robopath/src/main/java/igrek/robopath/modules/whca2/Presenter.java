@@ -1,4 +1,4 @@
-package igrek.robopath.modules.lra;
+package igrek.robopath.modules.whca2;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 @FXMLController
-@ConditionalOnProperty(name = "simulation.mode", havingValue = "lra")
+@ConditionalOnProperty(name = "simulation.mode", havingValue = "whca2")
 public class Presenter {
 	
 	private final double FPS = 24;

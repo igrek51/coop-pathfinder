@@ -1,4 +1,4 @@
-package igrek.robopath.pathfinder.mystar;
+package igrek.robopath.pathfinder.mywhca;
 
 public class ReservationTable {
 	
