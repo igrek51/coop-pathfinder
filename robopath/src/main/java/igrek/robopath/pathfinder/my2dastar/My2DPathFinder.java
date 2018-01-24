@@ -157,10 +157,8 @@ public class My2DPathFinder {
 		if (x < 0 || y < 0 || x >= width() || y >= height())
 			return false;
 		
-		if ((sx != x) || (sy != y)) {
-			if (map.blocked(x, y))
-				return false;
-		}
+		if (map.blocked(x, y))
+			return false;
 		
 		return true;
 	}

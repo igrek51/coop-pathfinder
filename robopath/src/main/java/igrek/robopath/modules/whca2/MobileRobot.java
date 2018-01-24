@@ -43,7 +43,7 @@ public class MobileRobot {
 		return movesQue;
 	}
 	
-	int getPriority() {
+	public int getPriority() {
 		return priority;
 	}
 	
@@ -82,7 +82,7 @@ public class MobileRobot {
 		return this;
 	}
 	
-	MobileRobot enqueueMove(int x, int y) {
+	public MobileRobot enqueueMove(int x, int y) {
 		return enqueueMove(new Point(x, y));
 	}
 	

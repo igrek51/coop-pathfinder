@@ -188,10 +188,8 @@ public class MyWHCAPathFinder {
 				.getTimeDimension())
 			return false;
 		
-		if ((sx != x) || (sy != y)) {
-			if (reservation.isBlocked(x, y, t))
-				return false;
-		}
+		if (reservation.isBlocked(x, y, t))
+			return false;
 		
 		return true;
 	}
