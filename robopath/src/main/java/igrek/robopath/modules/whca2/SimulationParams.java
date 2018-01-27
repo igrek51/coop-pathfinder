@@ -9,10 +9,10 @@ import javafx.scene.control.TextField;
 
 public class SimulationParams {
 	
-	public int mapSizeW = 11;
-	public int mapSizeH = 11;
+	public int mapSizeW = 5;
+	public int mapSizeH = 5;
 	
-	public int robotsCount = 5;
+	public int robotsCount = 3;
 	
 	public boolean robotAutoTarget = false;
 	

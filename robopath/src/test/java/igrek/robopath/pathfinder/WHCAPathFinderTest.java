@@ -21,54 +21,20 @@ public class WHCAPathFinderTest {
 	
 	@Test
 	public void testSimplePath() {
-		
 		/*
 		 * TileMap:
-		 * .  .  .
+		 * S1 .  .
 		 * .  X  .
-		 * .  .  .
+		 * .  X  G1
 		 */
 		TileMap map = new TileMap(3, 3);
 		map.setCell(1, 1, true);
-		// robot
+		map.setCell(1, 2, true);
+		// robots
 		List<MobileRobot> robots = new ArrayList<>();
-		MobileRobot robot = new MobileRobot(new Point(0, 0), null, 0);
-		robot.setTarget(new Point(2, 2));
-		robots.add(robot);
+		robots.add(createRobot(0, 0, 2, 2, 0));
 		
-		int tDim = 4;
-		TileMap map2 = mapWithRobots(robots, map);
-		ReservationTable reservationTable = new ReservationTable(map2.getWidthInTiles(), map2.getHeightInTiles(), tDim);
-		map2.foreach((x, y, occupied) -> {
-			if (occupied)
-				reservationTable.setBlocked(x, y);
-		});
-		// find path
-		robot.resetMovesQue();
-		Point start = robot.getPosition();
-		Point target = robot.getTarget();
-		if (target != null && !target.equals(start)) {
-			MyWHCAPathFinder pathFinder = new MyWHCAPathFinder(reservationTable, map);
-			Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
-			
-			//			if (path != null) {
-			//				// enque path
-			//				int t = 0;
-			//				reservationTable.setBlocked(start.x, start.y, t);
-			//				reservationTable.setBlocked(start.x, start.y, t + 1);
-			//				for (int i = 1; i < path.getLength(); i++) {
-			//					Path.Step step = path.getStep(i);
-			//					robot.enqueueMove(step.getX(), step.getY());
-			//					t++;
-			//					reservationTable.setBlocked(step.getX(), step.getY(), t);
-			//					reservationTable.setBlocked(step.getX(), step.getY(), t + 1);
-			//				}
-			//			} else {
-			//				reservationTable.setBlocked(start.x, start.y);
-			//			}
-			logger.debug("Found path: " + path);
-		}
-		
+		findPaths(map, robots, 4);
 	}
 	
 	@Test
@@ -83,13 +49,12 @@ public class WHCAPathFinderTest {
 		map.setCell(0, 1, true);
 		map.setCell(0, 2, true);
 		map.setCell(1, 2, true);
-		// robot
+		// robots
 		List<MobileRobot> robots = new ArrayList<>();
 		robots.add(createRobot(0, 0, 2, 2, 1));
 		robots.add(createRobot(1, 0, 2, 1, 2));
 		
-		int tDim = 8;
-		findPaths(map, robots, tDim);
+		findPaths(map, robots, 8);
 	}
 	
 	@Test
@@ -106,14 +71,51 @@ public class WHCAPathFinderTest {
 		map.setCell(1, 2, true);
 		map.setCell(2, 2, true);
 		map.setCell(2, 1, true);
-		// robot
+		// robots
 		List<MobileRobot> robots = new ArrayList<>();
 		robots.add(createRobot(0, 0, 2, 0, 1));
 		robots.add(createRobot(1, 0, 1, 0, 2));
 		
-		int tDim = 8;
-		findPaths(map, robots, tDim);
+		findPaths(map, robots, 8);
 	}
+	
+	@Test
+	public void testBlocking() {
+		/*
+		 * TileMap:
+		 * S2 S1=G1 G2
+		 * .    X   .
+		 * .    X   .
+		 */
+		TileMap map = new TileMap(3, 3);
+		map.setCell(1, 1, true);
+		map.setCell(1, 2, true);
+		// robots
+		List<MobileRobot> robots = new ArrayList<>();
+		robots.add(createRobot(1, 0, 1, 0, 1));
+		robots.add(createRobot(0, 0, 2, 0, 2));
+		
+		findPaths(map, robots, 3);
+	}
+	
+	@Test
+	public void testDetour() {
+		/*
+		 * TileMap:
+		 * S1=G1 S2  .
+		 * G2    X   .
+		 * .     .   .
+		 */
+		TileMap map = new TileMap(3, 3);
+		map.setCell(1, 1, true);
+		// robots
+		List<MobileRobot> robots = new ArrayList<>();
+		robots.add(createRobot(0, 0, 0, 0, 1));
+		robots.add(createRobot(1, 0, 0, 1, 2));
+		
+		findPaths(map, robots, 3);
+	}
+	
 	
 	private MobileRobot createRobot(int sx, int sy, int tx, int ty, int priority) {
 		MobileRobot r = new MobileRobot(new Point(sx, sy), null, priority);
@@ -152,23 +154,9 @@ public class WHCAPathFinderTest {
 					reservationTable.setBlocked(start.x, start.y);
 				}
 				logger.debug("Found path R" + robot.getPriority() + ": " + path);
-				printReservationTable(reservationTable);
-				
-			}
-		}
-	}
-	
-	private void printReservationTable(ReservationTable reservationTable) {
-		logger.debug("Reservation table:");
-		for (int t = 0; t < reservationTable.getTimeDimension(); t++) {
-			logger.debug("t = " + t);
-			for (int y = 0; y < reservationTable.getHeight(); y++) {
-				StringBuilder line = new StringBuilder("  ");
-				for (int x = 0; x < reservationTable.getWidth(); x++) {
-					line.append(reservationTable.isBlocked(x, y, t) ? "X" : ".");
-					line.append(" ");
-				}
-				logger.debug(line.toString());
+				reservationTable.log();
+			} else {
+				reservationTable.setBlocked(start.x, start.y);
 			}
 		}
 	}
@@ -176,7 +164,7 @@ public class WHCAPathFinderTest {
 	private TileMap mapWithRobots(List<MobileRobot> robots, TileMap map) {
 		TileMap map2 = new TileMap(map);
 		for (MobileRobot robot : robots) {
-			//TODO			map2.setCell(robot.getPosition(), true);
+			//			map2.setCell(robot.getPosition(), true);
 		}
 		return map2;
 	}

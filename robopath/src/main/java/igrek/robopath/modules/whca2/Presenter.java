@@ -327,6 +327,8 @@ public class Presenter {
 	
 	@FXML
 	private void buttonPathfind() {
-		new Thread(() -> controller.findPaths()).start();
+		new Thread(() -> {
+			controller.findPaths();
+		}).start();
 	}
 }

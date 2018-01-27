@@ -135,7 +135,7 @@ public class Controller {
 	}
 	
 	synchronized void findPaths() {
-		int tDim = robots.size() + 1;
+		int tDim = (robots.size() + 1) * 2;
 		TileMap map2 = mapWithRobots();
 		ReservationTable reservationTable = new ReservationTable(map2.getWidthInTiles(), map2.getHeightInTiles(), tDim);
 		map2.foreach((x, y, occupied) -> {
@@ -152,7 +152,7 @@ public class Controller {
 		robot.resetMovesQue();
 		Point start = robot.getPosition();
 		Point target = robot.getTarget();
-		if (target != null && !target.equals(start)) {
+		if (target != null) {
 			MyWHCAPathFinder pathFinder = new MyWHCAPathFinder(reservationTable, map);
 			Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
 			logger.info("path: " + path);
@@ -185,31 +185,45 @@ public class Controller {
 	synchronized void stepSimulation() {
 		boolean replan = false;
 		for (MobileRobot robot : robots) {
+			MobileRobot collidedRobot = collisionDetected(robot);
+			if (collidedRobot != null) {
+				logger.info("collision detected (before) - replanning all paths needed");
+				robots.forEach(robo -> robo.resetMovesQue());
+				break;
+			}
+		}
+		for (MobileRobot robot : robots) {
 			if (robot.hasNextMove()) {
 				robot.setPosition(robot.pollNextMove());
 			}
-			if (robot.hasReachedTarget() && params.robotAutoTarget) {
-				robot.targetReached();
-			}
+		}
+		for (MobileRobot robot : robots) {
 			MobileRobot collidedRobot = collisionDetected(robot);
 			if (collidedRobot != null) {
-				logger.info("collision detected - replanning all paths");
-				replan = true;
-			} else if (!robot.hasNextMove() && !robot.hasReachedTarget()) {
-				logger.info("no planned moves - replanning all paths");
-				replan = true;
+				logger.info("collision detected (after) - replanning all paths needed");
+				robots.forEach(robo -> robo.resetMovesQue());
+				break;
 			}
 		}
-		if (replan) {
-			findPaths();
-		}
+		//			if (robot.hasReachedTarget() && params.robotAutoTarget) {
+		//				robot.targetReached();
+		//			}
+		//				replan = true;
+		//			} else if (!robot.hasNextMove() && !robot.hasReachedTarget()) {
+		//				logger.info("no planned moves - replanning all paths");
+		//				replan = true;
+		//			}
+		//		}
+		//		if (replan) {
+		//			findPaths();
+		//		}
 	}
 	
 	public MobileRobot collisionDetected(MobileRobot robot) {
 		for (MobileRobot otherRobot : robots) {
 			if (otherRobot == robot)
 				continue;
-			if (otherRobot.getPosition().equals(robot.nearestTarget()) || otherRobot.nearestTarget()
+			if (otherRobot.getPosition().equals(robot.getPosition()) || otherRobot.nearestTarget()
 					.equals(robot.nearestTarget())) {
 				return otherRobot;
 			}

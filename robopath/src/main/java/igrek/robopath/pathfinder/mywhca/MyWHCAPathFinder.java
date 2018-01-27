@@ -65,14 +65,21 @@ public class MyWHCAPathFinder {
 			nodes[sx][sy][t].setCost(0);
 		}
 		//Dodajemy pole startowe (lub węzeł) do Listy Otwartych.
-		open.add(nodes[sx][sy][0]);
+		Node startNode = nodes[sx][sy][0];
+		startNode.setCost(0);
+		Float heuristicCost = getHeuristicCost(sx, sy, 0, tx, ty);
+		if (heuristicCost == null) {
+			heuristicCost = (float) (map.getWidthInTiles() * map.getHeightInTiles()); // FIXME kind of max
+		}
+		startNode.setHeuristic(heuristicCost);
+		open.add(startNode);
 		
 		// first check, if the destination is blocked, we can't get there
-		if (reservation.isBlocked(tx, ty))
-			return null;
-		//jeśli punkt docelowy jest punktem startowym - brak ścieżki
-		if (sx == tx && sy == ty)
-			return null;
+		//		if (reservation.isBlocked(tx, ty))
+		//			return null;
+		//		//jeśli punkt docelowy jest punktem startowym - brak ścieżki
+		//		if (sx == tx && sy == ty)
+		//			return null;
 		
 		//dopóki lista otwartych nie jest pusta
 		while (!open.isEmpty()) {
@@ -88,7 +95,7 @@ public class MyWHCAPathFinder {
 				//Zapisujemy ścieżkę. Krocząc w kierunku od pola docelowego do startowego, przeskakujemy z kolejnych pól na im przypisane pola rodziców, aż do osiągnięcia pola startowego.
 				Path path = new Path();
 				Node target = nodes[tx][ty][reservation.getTimeDimension() - 1];
-				while (target != nodes[sx][sy][0]) {
+				while (target != startNode) {
 					path.prependStep(target.getX(), target.getY(), target.getT());
 					target = target.getParent();
 					if (target == null)
@@ -137,10 +144,10 @@ public class MyWHCAPathFinder {
 				// step (i.e. to the open list)
 				if (!open.contains(neighbour) && !closed.contains(neighbour)) {
 					neighbour.setCost(nextStepCost);
-					Float heuristicCost = getHeuristicCost(neighbour.getX(), neighbour.getY(), neighbour
+					heuristicCost = getHeuristicCost(neighbour.getX(), neighbour.getY(), neighbour
 							.getT(), tx, ty);
 					if (heuristicCost == null) {
-						heuristicCost = (float) (map.getWidthInTiles() * map.getHeightInTiles()); // kind of max
+						heuristicCost = (float) (map.getWidthInTiles() * map.getHeightInTiles()); // FIXME kind of max
 					}
 					neighbour.setHeuristic(heuristicCost);
 					neighbour.setParent(current);
@@ -151,23 +158,34 @@ public class MyWHCAPathFinder {
 		}
 		
 		// time window could be too little - find most promising path
-		//		logger.debug(closed.toString());
+		logger.debug("Closed list: " + closed.toString());
 		Optional<Node> mostPromising = closed.stream()
-				.filter(node -> node.getHeuristic() != 0 && node.getCost() != 0) // first node is not calculated
+				//				.filter(node -> node.getHeuristic() != 0 && node.getCost() != 0) // first node is not calculated
+				.filter(node -> node.getHeuristic() < map.getWidthInTiles() * map.getHeightInTiles()) // not max
 				.min((o1, o2) -> Float.compare(o1.getHeuristic(), o2.getHeuristic()));
 		//			Optional<Node> mostPromising = closed.stream()
 		//					.filter(node -> node.getT() == maxT.get())
 		//					.min(Node::compareTo);
 		if (mostPromising.isPresent()) {
+			logger.debug("Most promising: " + mostPromising.get().toString());
+			
+			reservation.log();
+			
 			Path path = new Path();
 			Node target = mostPromising.get();
-			while (target != nodes[sx][sy][0]) {
+			if (reservation.isBlocked(target.getX(), target.getY(), target.getT())) {
+				logger.error("Got blocked node!");
+			}
+			while (target != startNode) {
 				path.prependStep(target.getX(), target.getY(), target.getT());
 				target = target.getParent();
 				if (target == null)
 					throw new AssertionError("dupa");
 			}
 			path.prependStep(sx, sy, 0);
+			
+			logger.debug("Found path: " + path);
+			
 			return path;
 		}
 		
@@ -246,7 +264,8 @@ public class MyWHCAPathFinder {
 		float distance = path.getLength() - 1;
 		if (distance < 0)
 			throw new AssertionError("distance < 0");
-		return (distance) * (1 + ((float) t) / reservation.getTimeDimension());
+		return distance;
+		//		return (distance) * (1 + ((float) t) / reservation.getTimeDimension());
 	}
 	
 	private List<Node> availableNeighbours(Node current) {

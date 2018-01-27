@@ -1,5 +1,8 @@
 package igrek.robopath.pathfinder.mywhca;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ReservationTable {
 	
 	private int width;
@@ -66,4 +69,19 @@ public class ReservationTable {
 		return x >= 0 && y >= 0 && t >= 0 && x < width && y < height && t < timeDimension;
 	}
 	
+	public void log() {
+		Logger logger = LoggerFactory.getLogger(this.getClass());
+		logger.debug("Reservation table:");
+		for (int t = 0; t < getTimeDimension(); t++) {
+			logger.debug("t = " + t);
+			for (int y = 0; y < getHeight(); y++) {
+				StringBuilder line = new StringBuilder("  ");
+				for (int x = 0; x < getWidth(); x++) {
+					line.append(isBlocked(x, y, t) ? "X" : ".");
+					line.append(" ");
+				}
+				logger.debug(line.toString());
+			}
+		}
+	}
 }
