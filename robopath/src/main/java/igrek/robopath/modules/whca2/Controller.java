@@ -1,5 +1,7 @@
 package igrek.robopath.modules.whca2;
 
+import com.google.common.base.Joiner;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,12 +161,10 @@ public class Controller {
 			if (occupied)
 				reservationTable.setBlocked(x, y);
 		});
+		reorderNeeded = true; // FIXME
 		if (reorderNeeded) {
 			Collections.sort(robots, robotsPriorityComparator);
-			logger.debug("the new order: " + robots.stream()
-					.map(r -> Integer.toString(r.getId()))
-					.reduce((s1, s2) -> s1 + ", " + s2)
-					.get());
+			logger.debug("the new order: " + Joiner.on(", ").join(robots));
 			reorderNeeded = false;
 		}
 		for (MobileRobot robot : robots) {

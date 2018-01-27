@@ -75,12 +75,13 @@ public class Presenter {
 		drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
 		
 		drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-			mousePressedMap(event);
+			mousePressed(event);
 		});
 		drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-			mouseDraggedMap(event);
+			mouseDragged(event);
 		});
 		drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+			mouseReleased(event);
 		});
 		
 		params.init(this);
@@ -151,7 +152,7 @@ public class Presenter {
 		}).start();
 	}
 	
-	private void mousePressedMap(MouseEvent event) {
+	private void mousePressed(MouseEvent event) {
 		TileMap map = getMap();
 		List<MobileRobot> robots = getRobots();
 		
@@ -184,7 +185,7 @@ public class Presenter {
 		}
 	}
 	
-	private void mouseDraggedMap(MouseEvent event) {
+	private void mouseDragged(MouseEvent event) {
 		if (event.getButton() == MouseButton.SECONDARY) {
 			TileMap map = getMap();
 			Point point = locatePoint(map, event);
@@ -196,6 +197,22 @@ public class Presenter {
 				}
 			}
 			
+		}
+	}
+	
+	private void mouseReleased(MouseEvent event) {
+		TileMap map = getMap();
+		List<MobileRobot> robots = getRobots();
+		
+		if (event.getButton() == MouseButton.PRIMARY) {
+			Point point = locatePoint(map, event);
+			if (point != null) {
+				if (!robots.isEmpty()) {
+					MobileRobot lastRobot = robots.get(robots.size() - 1);
+					lastRobot.setTarget(point);
+					repaint();
+				}
+			}
 		}
 	}
 	

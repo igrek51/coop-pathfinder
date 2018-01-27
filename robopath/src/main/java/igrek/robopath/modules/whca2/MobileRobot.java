@@ -24,6 +24,13 @@ public class MobileRobot {
 		this.priority = priority;
 	}
 	
+	@Override
+	protected MobileRobot clone() {
+		MobileRobot clone = new MobileRobot(this.position, this.targetReachedHandler, this.id, this.priority);
+		clone.target = this.target;
+		clone.movesQue = this.movesQue;
+		return clone;
+	}
 	
 	public Point getPosition() {
 		return position;
@@ -138,4 +145,8 @@ public class MobileRobot {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return getId() + "." + getPriority();
+	}
 }
