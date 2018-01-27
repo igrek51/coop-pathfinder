@@ -36,6 +36,7 @@ public class Controller {
 	
 	private SimulationParams params;
 	private boolean reorderNeeded = false;
+	private volatile boolean calculatingPaths = false;
 	
 	public Controller(Presenter presenter, SimulationParams params) {
 		this.params = params;
@@ -154,6 +155,7 @@ public class Controller {
 	}
 	
 	synchronized void findPaths() {
+		calculatingPaths = true;
 		int tDim = params.timeDimension;
 		TileMap map2 = new TileMap(map);
 		ReservationTable reservationTable = new ReservationTable(map2.getWidthInTiles(), map2.getHeightInTiles(), tDim);
@@ -170,6 +172,8 @@ public class Controller {
 		for (MobileRobot robot : robots) {
 			findPath(robot, reservationTable, map);
 		}
+		resetCollidedRobots();
+		calculatingPaths = false;
 	}
 	
 	public void findPath(MobileRobot robot, ReservationTable reservationTable, TileMap map) {
@@ -213,12 +217,13 @@ public class Controller {
 	}
 	
 	synchronized void stepSimulation() {
-		resetCollidedRobots();
+		
 		for (MobileRobot robot : robots) {
 			if (robot.hasNextMove()) {
 				robot.setPosition(robot.pollNextMove());
 			}
 		}
+		resetCollidedRobots();
 		//			if (robot.hasReachedTarget() && params.robotAutoTarget) {
 		//				robot.targetReached();
 		//			}
@@ -261,5 +266,9 @@ public class Controller {
 			}
 		}
 		return null;
+	}
+	
+	public boolean isCalculatingPaths() {
+		return calculatingPaths;
 	}
 }

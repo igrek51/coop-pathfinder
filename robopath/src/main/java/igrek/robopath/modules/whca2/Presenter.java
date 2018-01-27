@@ -288,6 +288,8 @@ public class Presenter {
 	
 	private void drawRobots(GraphicsContext gc) {
 		double simulationStepProgress = (System.currentTimeMillis() - lastSimulationTime) / MOVE_STEP_DURATION;
+		if (controller.isCalculatingPaths())
+			simulationStepProgress = 0;
 		List<MobileRobot> robots = getRobots();
 		for (MobileRobot robot : robots) {
 			drawRobot(gc, robot, simulationStepProgress);

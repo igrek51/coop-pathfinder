@@ -103,7 +103,7 @@ public class MobileRobot {
 		return enqueueMove(new Point(x, y));
 	}
 	
-	public void resetMovesQue() {
+	public synchronized void resetMovesQue() {
 		movesQue.clear();
 	}
 	
