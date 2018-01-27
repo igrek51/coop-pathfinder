@@ -5,7 +5,7 @@ LATEX=pdflatex -interaction nonstopmode -halt-on-error -file-line-error
 
 all: clean build
 
-build: latex1 bibgen latex2 success
+build: latex1 bibgen latex2 latex3 success
 
 latex:
 	${LATEX} --output-directory=${OUT} ${PROJECT}

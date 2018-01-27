@@ -1,5 +1,5 @@
-\chapter{Wstęp}
-\label{ch:wstep}
+\chapter{Wprowadzanie}
+\label{ch:wprowadzenie}
 
 \section{Cel i zakres pracy}
 Przedmiotem niniejszej pracy jest przegląd metod wykorzystywanych do planowania bezkolizyjnych tras dla wielu robotów mobilnych.
@@ -17,7 +17,7 @@ W niniejszej pracy starano się znaleźć metody rozwiązujące zagadnienie, w k
 Szukany jest natomiast przebieg tras do punktów docelowych dla agentów. Zadaniem algorytmu będzie wyznaczenie możliwie najkrótszej bezkolizyjnej trasy dla wszystkich robotów. Należy jednak zaznaczyć, że priorytetem jest dotarcie każdego z robotów do celu bez kolizji z innymi robotami. Drugorzędne zaś jest, aby wyznaczone drogi były możliwie jak najkrótsze.
 
 \clearpage
-% \section{Założenia}
+\section{Założenia}
 \label{ch:zalozenia}
 Założenia i ograniczenia rozważanego problemu:
 \begin{enumerate}
@@ -38,7 +38,6 @@ Założenia i ograniczenia rozważanego problemu:
 \end{figure}
 
 
-\clearpage
 \section{Koordynacja ruchu robotów}
 Koordynacja ruchu robotów jest jednym z fundamentalnych problemów w systemach wielorobotowych \cite{optpriorities}.
 
@@ -53,7 +52,7 @@ Algorytmy do wyznaczania bezkolizyjnych tras dla wielu agentów (robotów) mogą
 	\label{fig:image_kiva_amazon}
 \end{figure}
 
-% \section{Podobieństwo do gier RTS}
+\section{Podobieństwo do gier RTS}
 Problem kooperacyjnego znajdowania tras pojawia się nie tylko w robotyce, ale jest również popularny m.in. w grach komputerowych (strategiach czasu rzeczywistego), gdzie konieczne jest wyznaczanie przez sztuczną inteligencję bezkolizyjnych dróg dla wielu jednostek, unikając wzajemnego blokowania się. Niestety brak wydajnych i skutecznych algorytmów planowania dróg można zauważyć w wielu grach typu RTS (ang. {\it Real-Time Strategy}), gdzie czasami obserwuje się zjawisko zakleszczenia jednostek w wąskich gardłach (np. w grach {\it Age of Empires II}, {\it Warcraft III} lub nawet we współczesnych produkcjach) \cite{efficient_coop_pathplanning} (por. rys. \ref{fig:img_games_age-deadlock}). Ponadto, zauważalny brak ogólnie dostępnych bibliotek open-source do rozwiązania problemu typu {\it Cooperative Pathfinding} świadczy o potrzebie rozwoju tych metod.
 
 Często algorytmy wykorzystywane w grach typu RTS (ang. {\it Real-Time Strategy}) zajmują się planowaniem bezkolizyjnych dróg dla układu wielu agentów w czasie rzeczywistym (będącego przedmiotem niniejszej pracy), dlatego nic nie stoi na przeszkodzie, aby stosować je zamiennie również do koordynacji ruchu zespołu robotów mobilnych.
@@ -64,23 +63,3 @@ Często algorytmy wykorzystywane w grach typu RTS (ang. {\it Real-Time Strategy}
 	\caption{Popularny problem zakleszczania się jednostek w wąskich gardłach występujący w grach typu RTS. Źródło: gra komputerowa Age of Empires II Forgotten Empires}
 	\label{fig:img_games_age-deadlock}
 \end{figure}
-
-\section{Podstawowe pojęcia}
-\subsubsection{Robot holonomiczny}
-Robot holonomiczny to taki robot mobilny, który może zmienić swoją orientację, stojąc w miejscu.
-
-\subsubsection{Przestrzeń konfiguracyjna}
-Przestrzeń konfiguracyjna to $N$-wymiarowa przestrzeń będąca zbiorem możliwych stanów danego układu fizycznego.
-Wymiar przestrzeni zależy od rodzaju i liczby wyróżnionych parametrów stanu.
-W odróżnieniu od przestrzeni roboczej, gdzie robot ma postać bryły, w przestrzeni konfiguracyjnej robot jest reprezentowany jako punkt.
-
-\subsubsection{Zupełność algorytmu (ang. {\it Completeness})}
-W kontekście algorytmu przeszukiwania grafu algorytm zupełny to taki, który gwarantuje znalezienie rozwiązania, jeśli takie istnieje.
-Warto zaznaczyć, że nie gwarantuje to wcale, że znalezione rozwiązanie będzie rozwiązaniem optymalnym.
-
-% TODO-MGR
-% \subsubsection{Metoda hill-climbing}
-% Metoda hill-climbing jest rodzajem matematycznej optymalizacji, lokalną metodą przeszukiwania.
-% Jest to iteracyjny algorytm, który zaczyna w wybranym rozwiązaniu problemu, następnie próbuje znaleźć lepsze rozwiązanie poprzez przyrostowe zmiany pojedynczych elementów rozwiązania.
-% Jeśli przyrostowa zmiana przynosi lepsze rozwiązanie, jest ona wprowadzana do nowego rozwiązania.
-% Kroki algorytmu powtarzane są dotąd, aż żadna zmiana nie przynosi już poprawy.
