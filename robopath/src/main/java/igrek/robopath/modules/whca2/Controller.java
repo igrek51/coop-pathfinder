@@ -172,7 +172,8 @@ public class Controller {
 		for (MobileRobot robot : robots) {
 			MobileRobot collidedRobot = collisionDetected(robot);
 			if (collidedRobot != null) {
-				logger.info("collision detected (before) - replanning all paths needed");
+				logger.info("collision detected between robots: " + robot.getId() + ", " + collidedRobot
+						.getId());
 				robot.resetMovesQue();
 				collidedRobot.resetMovesQue();
 			}

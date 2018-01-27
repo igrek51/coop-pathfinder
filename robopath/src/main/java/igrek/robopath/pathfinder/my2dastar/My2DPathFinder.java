@@ -191,16 +191,15 @@ public class My2DPathFinder {
 		return x >= 0 ? x : -x;
 	}
 	
-	protected float getMovementCost(int sx, int sy, int tx, int ty) {
-		//		float dx = tx - sx;
-		//		float dy = ty - sy;
-		//		return (float) (Math.sqrt((dx * dx) + (dy * dy)));
-		return Math.max(Math.abs(tx - sx), Math.abs(ty - sy));
+	protected float getMovementCost(int x, int y, int tx, int ty) {
+		return Math.max(Math.abs(tx - x), Math.abs(ty - y));
+		//		return (float) Math.hypot(tx - x, ty - y);
+		//		return (float) Math.abs(tx - x) + Math.abs(ty - y);
 	}
 	
 	protected float getHeuristicCost(int x, int y, int tx, int ty) {
-		//		return (float) Math.max(Math.abs(tx - x), Math.abs(ty - y));
-		return (float) Math.abs(tx - x) + Math.abs(ty - y);
+		return (float) Math.max(Math.abs(tx - x), Math.abs(ty - y));
+		//		return (float) Math.abs(tx - x) + Math.abs(ty - y);
 		//		return (float) Math.hypot(tx - x, ty - y);
 	}
 	

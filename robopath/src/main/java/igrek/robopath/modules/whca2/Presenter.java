@@ -40,6 +40,8 @@ public class Presenter {
 	private Boolean pressedTransformer;
 	private long lastSimulationTime;
 	private RobotsArrangementHistory arrangementHistory;
+	private Timeline animationTimeline;
+	private Timeline simulationTimeline;
 	
 	@FXML
 	private ResizableCanvas drawArea;
@@ -133,19 +135,19 @@ public class Presenter {
 	
 	private void startRepaintTimer() {
 		// animation timer
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / FPS), event -> repaint()));
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.play();
+		animationTimeline = new Timeline(new KeyFrame(Duration.millis(1000 / FPS), event -> repaint()));
+		animationTimeline.setCycleCount(Timeline.INDEFINITE);
+		animationTimeline.play();
 	}
 	
 	private void startSimulationTimer() {
 		new Thread(() -> {
-			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(MOVE_STEP_DURATION), event -> {
+			simulationTimeline = new Timeline(new KeyFrame(Duration.millis(MOVE_STEP_DURATION), event -> {
 				controller.stepSimulation();
 				lastSimulationTime = System.currentTimeMillis();
 			}));
-			timeline.setCycleCount(Timeline.INDEFINITE);
-			timeline.play();
+			simulationTimeline.setCycleCount(Timeline.INDEFINITE);
+			simulationTimeline.play();
 		}).start();
 	}
 	
@@ -332,10 +334,17 @@ public class Presenter {
 	@FXML
 	private void buttonPathfind() {
 		params.readFromUI();
+		restartTimelines();
 		arrangementHistory = new RobotsArrangementHistory(getRobots()); // store history
 		new Thread(() -> {
 			controller.findPaths();
 		}).start();
+	}
+	
+	private void restartTimelines() {
+		lastSimulationTime = System.currentTimeMillis();
+		animationTimeline.playFromStart();
+		simulationTimeline.playFromStart();
 	}
 	
 	@FXML
