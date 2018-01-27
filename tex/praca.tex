@@ -1,5 +1,4 @@
-% \documentclass[a4paper, twoside, 12pt]{book}
-\documentclass[a4paper, 12pt]{report}
+\documentclass[a4paper, twoside, 12pt]{book}
 \usepackage{latexsym}
 \usepackage[MeX]{polski}
 \usepackage[utf8]{inputenc}
@@ -21,28 +20,55 @@
 \usepackage{ragged2e}
 \usepackage{enumitem} % formatowanie marginesów itemize
 
+% numeracja
 \pagestyle{fancy}
 
-\fancyhead{} % clear all header fields
-\fancyhead[R]{\thepage}
-\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
-\fancyhead[L]{\leftmark}
-\fancyfoot{} % clear all footer fields
-\renewcommand{\headrulewidth}{0.4pt}
+\raggedbottom
+%zmiana stylu z kontynuacja numerowania
+\newcounter{savepage}
+\newcommand{\setpagenumberingtype}[1]{%
+	\setcounter{savepage}{\arabic{page}}%
+	\pagenumbering{#1} %
+	\setcounter{page}{\thesavepage}%
+}
 
-\fancyheadoffset[]{0pt}
+\fancyhead{} % clear all header fields
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}
+{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}} 
+
+%\fancyhead[RE]{\bfseries\nouppercase{\leftmark}\sectionmark}      % Chapter in the right on even pages
+%\fancyhead[LO]{\bfseries\nouppercase{\rightmark}\chaptermark}     % Section in the left on odd pages
+\fancyfoot{} % clear all footer fields
+%\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot[LE, RO]{\bfseries \thepage} % except the center
+\fancyheadoffset[]{0.4pt}
+
+\renewcommand{\headrulewidth}{0pt}
+
+\fancypagestyle{empty}{%
+\fancyhf{} % clear all header and footer fields
+\fancyfoot[LE, RO]{\bfseries \thepage} % except the center
+}
 
 \fancypagestyle{plain}{%
 \fancyhf{} % clear all header and footer fields
-\fancyfoot[C]{\bfseries \thepage} % except the center
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}}
+%\fancyhead[RE]{\bfseries\nouppercase{\leftmark}}      % Chapter in the right on even pages
+\fancyfoot[LE, RO]{\bfseries \thepage} % except the center
+%\renewcommand{\headrulewidth}{0pt} %
+\renewcommand{\footrulewidth}{0pt}
+}
+
+\fancyfoot[LE, RO]{\bfseries \thepage} % except the center
+
 
 \usepackage[a4paper, left=2.5cm, right=2.5cm, top=3.7cm, bottom=2.5cm, headsep=0.9cm, headheight=16pt]{geometry}
 \frenchspacing
 \linespread{1.3}
 \usepackage{hyperref} % musi być na końcu
 \hypersetup{pdfborder={0 0 0 0}}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
 \begin{document}
 	\input{structure}
