@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import igrek.robopath.common.Point;
-import igrek.robopath.common.TileMap;
+import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.mazegenerator.MazeGenerator;
 import igrek.robopath.pathfinder.mywhca.MyWHCAPathFinder;
 import igrek.robopath.pathfinder.mywhca.Path;
@@ -135,8 +135,8 @@ public class Controller {
 	}
 	
 	synchronized void findPaths() {
-		int tDim = (robots.size() + 1) * 2;
-		TileMap map2 = mapWithRobots();
+		int tDim = params.timeDimension;
+		TileMap map2 = new TileMap(map);
 		ReservationTable reservationTable = new ReservationTable(map2.getWidthInTiles(), map2.getHeightInTiles(), tDim);
 		map2.foreach((x, y, occupied) -> {
 			if (occupied)
@@ -172,14 +172,6 @@ public class Controller {
 				reservationTable.setBlocked(start.x, start.y);
 			}
 		}
-	}
-	
-	private TileMap mapWithRobots() {
-		TileMap map2 = new TileMap(map);
-		for (MobileRobot robot : robots) {
-			//			map2.setCell(robot.getPosition(), true);
-		}
-		return map2;
 	}
 	
 	synchronized void stepSimulation() {
@@ -219,7 +211,7 @@ public class Controller {
 		//		}
 	}
 	
-	public MobileRobot collisionDetected(MobileRobot robot) {
+	private MobileRobot collisionDetected(MobileRobot robot) {
 		for (MobileRobot otherRobot : robots) {
 			if (otherRobot == robot)
 				continue;

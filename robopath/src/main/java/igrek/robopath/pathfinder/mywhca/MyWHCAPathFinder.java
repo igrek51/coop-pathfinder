@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import igrek.robopath.common.BiHashMap;
-import igrek.robopath.common.TileMap;
+import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.pathfinder.my2dastar.My2DPathFinder;
 
 public class MyWHCAPathFinder {
@@ -148,6 +148,7 @@ public class MyWHCAPathFinder {
 							.getT(), tx, ty);
 					if (heuristicCost == null) {
 						heuristicCost = (float) (map.getWidthInTiles() * map.getHeightInTiles()); // FIXME kind of max
+						logger.warn("FIXME: max heuristic cost");
 					}
 					neighbour.setHeuristic(heuristicCost);
 					neighbour.setParent(current);
@@ -160,7 +161,6 @@ public class MyWHCAPathFinder {
 		// time window could be too little - find most promising path
 		logger.debug("Closed list: " + closed.toString());
 		Optional<Node> mostPromising = closed.stream()
-				//				.filter(node -> node.getHeuristic() != 0 && node.getCost() != 0) // first node is not calculated
 				.filter(node -> node.getHeuristic() < map.getWidthInTiles() * map.getHeightInTiles()) // not max
 				.min((o1, o2) -> Float.compare(o1.getHeuristic(), o2.getHeuristic()));
 		//			Optional<Node> mostPromising = closed.stream()

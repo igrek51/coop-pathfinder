@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import igrek.robopath.common.TileMap;
+import igrek.robopath.common.tilemap.TileMap;
 
 public class My2DPathFinder {
 	

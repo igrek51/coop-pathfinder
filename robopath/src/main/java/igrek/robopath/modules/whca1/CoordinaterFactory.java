@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import igrek.robopath.common.TileMap;
+import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.pathfinder.coop.Coordinater;
 import igrek.robopath.pathfinder.coop.Grid;
 import igrek.robopath.pathfinder.coop.Unit;

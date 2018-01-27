@@ -16,31 +16,37 @@ public class SimulationParams {
 	
 	public boolean robotAutoTarget = false;
 	
+	public int timeDimension = 8;
+	
 	private TextField paramMapSizeW;
 	private TextField paramMapSizeH;
 	private TextField paramRobotsCount;
 	private CheckBox paramRobotAutoTarget;
+	private TextField paramTimeDimension;
 	
 	public void init(Presenter presenter) {
 		this.paramMapSizeW = presenter.paramMapSizeW;
 		this.paramMapSizeH = presenter.paramMapSizeH;
 		this.paramRobotsCount = presenter.paramRobotsCount;
 		this.paramRobotAutoTarget = presenter.paramRobotAutoTarget;
+		this.paramTimeDimension = presenter.paramTimeDimension;
 	}
 	
-	public void sendToUI() {
+	public synchronized void sendToUI() {
 		paramMapSizeW.setText(Integer.toString(mapSizeW));
 		paramMapSizeH.setText(Integer.toString(mapSizeH));
 		paramRobotsCount.setText(Integer.toString(robotsCount));
 		paramRobotAutoTarget.setSelected(robotAutoTarget);
+		paramTimeDimension.setText(Integer.toString(timeDimension));
 	}
 	
-	public void readFromUI() {
+	public synchronized void readFromUI() {
 		try {
 			mapSizeW = Integer.parseInt(paramMapSizeW.getText());
 			mapSizeH = Integer.parseInt(paramMapSizeH.getText());
 			robotsCount = Integer.parseInt(paramRobotsCount.getText());
 			robotAutoTarget = paramRobotAutoTarget.isSelected();
+			timeDimension = Integer.parseInt(paramTimeDimension.getText());
 		} catch (NumberFormatException e) {
 			Logger logger = LoggerFactory.getLogger(this.getClass());
 			logger.error(e.getMessage());

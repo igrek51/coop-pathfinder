@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import igrek.robopath.common.Point;
-import igrek.robopath.common.TileMap;
+import igrek.robopath.common.tilemap.TileMap;
 
 @Component
 public class MazeGenerator {

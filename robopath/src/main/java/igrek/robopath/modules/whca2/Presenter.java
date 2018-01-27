@@ -10,7 +10,7 @@ import java.util.List;
 
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.common.Point;
-import igrek.robopath.common.TileMap;
+import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.modules.common.ResizableCanvas;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -55,6 +55,8 @@ public class Presenter {
 	public TextField paramRobotsCount;
 	@FXML
 	public CheckBox paramRobotAutoTarget;
+	@FXML
+	public TextField paramTimeDimension;
 	
 	
 	@Autowired
@@ -64,7 +66,7 @@ public class Presenter {
 	
 	@FXML
 	public void initialize() {
-		logger.info("initializing presenter " + this.getClass().getSimpleName());
+		logger.info("initializing " + this.getClass().getSimpleName());
 		
 		drawAreaContainer.widthProperty().addListener(o -> drawAreaContainerResized());
 		drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
@@ -327,6 +329,7 @@ public class Presenter {
 	
 	@FXML
 	private void buttonPathfind() {
+		params.readFromUI();
 		new Thread(() -> {
 			controller.findPaths();
 		}).start();

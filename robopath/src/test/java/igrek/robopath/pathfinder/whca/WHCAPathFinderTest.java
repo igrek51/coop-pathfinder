@@ -1,4 +1,4 @@
-package igrek.robopath.pathfinder;
+package igrek.robopath.pathfinder.whca;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -8,11 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import igrek.robopath.common.Point;
-import igrek.robopath.common.TileMap;
+import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.modules.whca2.MobileRobot;
 import igrek.robopath.pathfinder.mywhca.MyWHCAPathFinder;
 import igrek.robopath.pathfinder.mywhca.Path;
 import igrek.robopath.pathfinder.mywhca.ReservationTable;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class WHCAPathFinderTest {
@@ -34,7 +38,15 @@ public class WHCAPathFinderTest {
 		List<MobileRobot> robots = new ArrayList<>();
 		robots.add(createRobot(0, 0, 2, 2, 0));
 		
-		findPaths(map, robots, 4);
+		List<Path> paths = findPaths(map, robots, 4);
+		assertEquals(1, paths.size());
+		Path path = paths.get(0);
+		assertNotNull(path);
+		assertEquals("[(0, 0, 0), (1, 0, 1), (2, 0, 2), (2, 1, 3)]", path.toString());
+		
+		paths = findPaths(map, robots, 6);
+		assertEquals("[(0, 0, 0), (1, 0, 1), (2, 0, 2), (2, 1, 3), (2, 2, 4), (2, 2, 5)]", paths.get(0)
+				.toString());
 	}
 	
 	@Test
@@ -54,7 +66,9 @@ public class WHCAPathFinderTest {
 		robots.add(createRobot(0, 0, 2, 2, 1));
 		robots.add(createRobot(1, 0, 2, 1, 2));
 		
-		findPaths(map, robots, 8);
+		List<Path> paths = findPaths(map, robots, 8);
+		assertNotNull(paths.get(0));
+		assertNotNull(paths.get(1));
 	}
 	
 	@Test
@@ -76,7 +90,27 @@ public class WHCAPathFinderTest {
 		robots.add(createRobot(0, 0, 2, 0, 1));
 		robots.add(createRobot(1, 0, 1, 0, 2));
 		
-		findPaths(map, robots, 8);
+		List<Path> paths = findPaths(map, robots, 5);
+		assertEquals("[(0, 0, 0), (1, 0, 1), (2, 0, 2), (2, 0, 3), (2, 0, 4)]", paths.get(0)
+				.toString());
+		assertEquals("[(1, 0, 0), (1, 1, 1), (1, 1, 2), (1, 0, 3), (1, 0, 4)]", paths.get(1)
+				.toString());
+		
+		paths = findPaths(map, robots, 4);
+		assertEquals("[(0, 0, 0), (1, 0, 1), (2, 0, 2), (2, 0, 3)]", paths.get(0).toString());
+		assertEquals("[(1, 0, 0), (1, 1, 1), (1, 1, 2), (1, 0, 3)]", paths.get(1).toString());
+		
+		paths = findPaths(map, robots, 3);
+		assertEquals("[(0, 0, 0), (1, 0, 1), (2, 0, 2)]", paths.get(0).toString());
+		assertStaticPosition(paths.get(1), 1, 0);
+		
+		paths = findPaths(map, robots, 2);
+		assertEquals("[(0, 0, 0), (1, 0, 1)]", paths.get(0).toString());
+		assertStaticPosition(paths.get(1), 1, 0);
+		
+		paths = findPaths(map, robots, 1);
+		assertEquals("[(0, 0, 0)]", paths.get(0).toString());
+		assertStaticPosition(paths.get(1), 1, 0);
 	}
 	
 	@Test
@@ -95,7 +129,9 @@ public class WHCAPathFinderTest {
 		robots.add(createRobot(1, 0, 1, 0, 1));
 		robots.add(createRobot(0, 0, 2, 0, 2));
 		
-		findPaths(map, robots, 3);
+		List<Path> paths = findPaths(map, robots, 3);
+		assertEquals("[(1, 0, 0), (1, 0, 1), (1, 0, 2)]", paths.get(0).toString());
+		assertStaticPosition(paths.get(1), 0, 0);
 	}
 	
 	@Test
@@ -112,10 +148,41 @@ public class WHCAPathFinderTest {
 		List<MobileRobot> robots = new ArrayList<>();
 		robots.add(createRobot(0, 0, 0, 0, 1));
 		robots.add(createRobot(1, 0, 0, 1, 2));
-		
-		findPaths(map, robots, 3);
+		{
+			List<Path> paths = findPaths(map, robots, 5);
+			assertStaticPosition(paths.get(0), 0, 0);
+			assertStaticPosition(paths.get(1), 1, 0);
+		}
+		{
+			List<Path> paths = findPaths(map, robots, 6);
+			assertStaticPosition(paths.get(0), 0, 0);
+			assertEquals("[(1, 0, 0), (2, 0, 1), (2, 1, 2), (2, 2, 3), (1, 2, 4), (0, 2, 5)]", paths
+					.get(1)
+					.toString());
+		}
+		{
+			List<Path> paths = findPaths(map, robots, 7);
+			assertStaticPosition(paths.get(0), 0, 0);
+			assertEquals("[(1, 0, 0), (2, 0, 1), (2, 1, 2), (2, 2, 3), (1, 2, 4), (0, 2, 5), (0, 1, 6)]", paths
+					.get(1)
+					.toString());
+		}
 	}
 	
+	private void assertStaticPosition(Path path, int expectedX, int expectedY) {
+		assertTrue(path.getLength() > 0);
+		try {
+			for (int i = 0; i < path.getLength(); i++) {
+				Path.Step step = path.getStep(i);
+				assertEquals(expectedX, step.getX());
+				assertEquals(expectedY, step.getY());
+			}
+		} catch (AssertionError e) {
+			String message = "Expected static position: (" + expectedX + ", " + expectedY + ")\n";
+			message += "Actual path: " + path;
+			throw new AssertionError(message, e);
+		}
+	}
 	
 	private MobileRobot createRobot(int sx, int sy, int tx, int ty, int priority) {
 		MobileRobot r = new MobileRobot(new Point(sx, sy), null, priority);
@@ -123,8 +190,9 @@ public class WHCAPathFinderTest {
 		return r;
 	}
 	
-	private void findPaths(TileMap map, List<MobileRobot> robots, int tDim) {
-		TileMap map2 = mapWithRobots(robots, map);
+	private List<Path> findPaths(TileMap map, List<MobileRobot> robots, int tDim) {
+		List<Path> paths = new ArrayList<>();
+		TileMap map2 = new TileMap(map);
 		ReservationTable reservationTable = new ReservationTable(map2.getWidthInTiles(), map2.getHeightInTiles(), tDim);
 		map2.foreach((x, y, occupied) -> {
 			if (occupied)
@@ -138,6 +206,7 @@ public class WHCAPathFinderTest {
 			if (target != null) {
 				MyWHCAPathFinder pathFinder = new MyWHCAPathFinder(reservationTable, map);
 				Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
+				paths.add(path);
 				if (path != null) {
 					// enque path
 					int t = 0;
@@ -153,21 +222,12 @@ public class WHCAPathFinderTest {
 				} else {
 					reservationTable.setBlocked(start.x, start.y);
 				}
-				logger.debug("Found path R" + robot.getPriority() + ": " + path);
 				reservationTable.log();
 			} else {
 				reservationTable.setBlocked(start.x, start.y);
 			}
 		}
+		return paths;
 	}
-	
-	private TileMap mapWithRobots(List<MobileRobot> robots, TileMap map) {
-		TileMap map2 = new TileMap(map);
-		for (MobileRobot robot : robots) {
-			//			map2.setCell(robot.getPosition(), true);
-		}
-		return map2;
-	}
-	
 	
 }

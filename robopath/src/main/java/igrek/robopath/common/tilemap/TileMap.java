@@ -1,6 +1,8 @@
-package igrek.robopath.common;
+package igrek.robopath.common.tilemap;
 
 import java.util.Arrays;
+
+import igrek.robopath.common.Point;
 
 public class TileMap {
 	
