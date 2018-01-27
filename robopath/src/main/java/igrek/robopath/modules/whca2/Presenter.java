@@ -39,6 +39,7 @@ public class Presenter {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Boolean pressedTransformer;
 	private long lastSimulationTime;
+	private RobotsArrangementHistory arrangementHistory;
 	
 	@FXML
 	private ResizableCanvas drawArea;
@@ -331,8 +332,15 @@ public class Presenter {
 	@FXML
 	private void buttonPathfind() {
 		params.readFromUI();
+		arrangementHistory = new RobotsArrangementHistory(getRobots()); // store history
 		new Thread(() -> {
 			controller.findPaths();
 		}).start();
+	}
+	
+	@FXML
+	private void buttonRestoreArrangement() {
+		arrangementHistory.restore(controller.getRobots());
+		
 	}
 }

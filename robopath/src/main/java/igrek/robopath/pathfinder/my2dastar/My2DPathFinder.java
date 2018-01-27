@@ -200,7 +200,8 @@ public class My2DPathFinder {
 	
 	protected float getHeuristicCost(int x, int y, int tx, int ty) {
 		//		return (float) Math.max(Math.abs(tx - x), Math.abs(ty - y));
-		return (float) Math.hypot(tx - x, ty - y);
+		return (float) Math.abs(tx - x) + Math.abs(ty - y);
+		//		return (float) Math.hypot(tx - x, ty - y);
 	}
 	
 	private List<Node> availableNeighbours(Node current) {

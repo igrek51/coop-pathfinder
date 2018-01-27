@@ -152,26 +152,10 @@ public class Controller {
 	}
 	
 	synchronized void stepSimulation() {
-		boolean replan = false;
-		for (MobileRobot robot : robots) {
-			MobileRobot collidedRobot = collisionDetected(robot);
-			if (collidedRobot != null) {
-				logger.info("collision detected (before) - replanning all paths needed");
-				robots.forEach(robo -> robo.resetMovesQue());
-				break;
-			}
-		}
+		resetCollidedRobots();
 		for (MobileRobot robot : robots) {
 			if (robot.hasNextMove()) {
 				robot.setPosition(robot.pollNextMove());
-			}
-		}
-		for (MobileRobot robot : robots) {
-			MobileRobot collidedRobot = collisionDetected(robot);
-			if (collidedRobot != null) {
-				logger.info("collision detected (after) - replanning all paths needed");
-				robots.forEach(robo -> robo.resetMovesQue());
-				break;
 			}
 		}
 		//			if (robot.hasReachedTarget() && params.robotAutoTarget) {
@@ -182,10 +166,17 @@ public class Controller {
 		//				logger.info("no planned moves - replanning all paths");
 		//				replan = true;
 		//			}
-		//		}
-		//		if (replan) {
-		//			findPaths();
-		//		}
+	}
+	
+	private void resetCollidedRobots() {
+		for (MobileRobot robot : robots) {
+			MobileRobot collidedRobot = collisionDetected(robot);
+			if (collidedRobot != null) {
+				logger.info("collision detected (before) - replanning all paths needed");
+				robot.resetMovesQue();
+				collidedRobot.resetMovesQue();
+			}
+		}
 	}
 	
 	private MobileRobot collisionDetected(MobileRobot robot) {

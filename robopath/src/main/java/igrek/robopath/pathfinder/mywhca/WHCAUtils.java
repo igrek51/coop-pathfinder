@@ -34,8 +34,10 @@ public class WHCAUtils {
 					reservationTable.setBlocked(step.getX(), step.getY(), t + 1);
 				}
 				// fill the rest with last position
-				for (int i = t + 1; i < reservationTable.getTimeDimension(); i++) {
-					reservationTable.setBlocked(step.getX(), step.getY(), i);
+				if (step != null) {
+					for (int i = t + 1; i < reservationTable.getTimeDimension(); i++) {
+						reservationTable.setBlocked(step.getX(), step.getY(), i);
+					}
 				}
 			} else {
 				logger.warn("path is null");

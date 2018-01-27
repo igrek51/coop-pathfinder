@@ -47,6 +47,8 @@
 
                         <Button mnemonicParsing="false" onAction="#buttonPathfind"
                                 text="Find Paths" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#buttonRestoreArrangement"
+                                text="Restore positions" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <!--parameters-->
                         <TitledPane text="Map">
                             <HBox HBox.hgrow="ALWAYS">
