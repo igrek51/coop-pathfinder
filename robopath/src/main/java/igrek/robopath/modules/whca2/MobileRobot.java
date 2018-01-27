@@ -10,15 +10,17 @@ public class MobileRobot {
 	private Point target;
 	private LinkedList<Point> movesQue = new LinkedList<>();
 	private TargetReachedHandler targetReachedHandler;
+	private int id;
 	private int priority;
 	
 	public interface TargetReachedHandler {
 		void onTargetReached(MobileRobot robot);
 	}
 	
-	public MobileRobot(Point position, TargetReachedHandler targetReachedHandler, int priority) {
+	public MobileRobot(Point position, TargetReachedHandler targetReachedHandler, int id, int priority) {
 		this.position = position;
 		this.targetReachedHandler = targetReachedHandler;
+		this.id = id;
 		this.priority = priority;
 	}
 	
@@ -45,6 +47,14 @@ public class MobileRobot {
 	
 	public int getPriority() {
 		return priority;
+	}
+	
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	Point getNextMove() {

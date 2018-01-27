@@ -22,8 +22,10 @@ public class RandomFactory {
 		if (randomSeed != null) {
 			try {
 				long num = Long.parseLong(randomSeed);
-				if (num > 0)
+				if (num > 0) {
 					seed = num;
+					logger.info("custom random seed set");
+				}
 			} catch (NumberFormatException ignored) {
 			}
 		}

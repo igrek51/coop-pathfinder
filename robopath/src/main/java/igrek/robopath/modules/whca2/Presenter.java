@@ -162,7 +162,7 @@ public class Presenter {
 					if (occupiedBy != null) {
 						robots.remove(occupiedBy);
 					} else {
-						controller.createMobileRobot(point, robots.size());
+						controller.createMobileRobot(point);
 					}
 				}
 				repaint();
@@ -314,7 +314,8 @@ public class Presenter {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFont(new Font("System", h / 2));
-		gc.fillText(Integer.toString(robot.getPriority() + 1), x + w / 2, y + h / 2);
+		String identifier = robot.getId() + "." + robot.getPriority();
+		gc.fillText(identifier, x + w / 2, y + h / 2);
 	}
 	
 	private Color robotColor(int index) {

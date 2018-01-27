@@ -159,7 +159,7 @@ public class MyWHCAPathFinder {
 		}
 		
 		// time window could be too little - find most promising path
-		logger.debug("Closed list: " + closed.toString());
+		//		logger.debug("Closed list: " + closed.toString());
 		Optional<Node> mostPromising = closed.stream()
 				.filter(node -> node.getHeuristic() < map.getWidthInTiles() * map.getHeightInTiles()) // not max
 				.min((o1, o2) -> Float.compare(o1.getHeuristic(), o2.getHeuristic()));
@@ -167,24 +167,21 @@ public class MyWHCAPathFinder {
 		//					.filter(node -> node.getT() == maxT.get())
 		//					.min(Node::compareTo);
 		if (mostPromising.isPresent()) {
-			logger.debug("Most promising: " + mostPromising.get().toString());
+			//			logger.debug("Most promising: " + mostPromising.get().toString());
 			
-			reservation.log();
+			//			reservation.log();
 			
 			Path path = new Path();
 			Node target = mostPromising.get();
-			if (reservation.isBlocked(target.getX(), target.getY(), target.getT())) {
-				logger.error("Got blocked node!");
-			}
 			while (target != startNode) {
 				path.prependStep(target.getX(), target.getY(), target.getT());
 				target = target.getParent();
 				if (target == null)
-					throw new AssertionError("dupa");
+					throw new AssertionError("target = null - this should not happen");
 			}
 			path.prependStep(sx, sy, 0);
 			
-			logger.debug("Found path: " + path);
+			//			logger.debug("Found path: " + path);
 			
 			return path;
 		}

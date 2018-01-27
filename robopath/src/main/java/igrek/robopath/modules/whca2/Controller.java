@@ -11,9 +11,8 @@ import java.util.Random;
 import igrek.robopath.common.Point;
 import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.mazegenerator.MazeGenerator;
-import igrek.robopath.pathfinder.mywhca.MyWHCAPathFinder;
-import igrek.robopath.pathfinder.mywhca.Path;
 import igrek.robopath.pathfinder.mywhca.ReservationTable;
+import igrek.robopath.pathfinder.mywhca.WHCAUtils;
 
 public class Controller {
 	
@@ -49,14 +48,19 @@ public class Controller {
 		robots.clear();
 		for (int i = 0; i < params.robotsCount; i++) {
 			Point cell = randomUnoccupiedCellForRobot(map);
-			createMobileRobot(cell, i);
+			createMobileRobot(cell);
 		}
 	}
 	
-	synchronized MobileRobot createMobileRobot(Point point, int i) {
-		MobileRobot robo = new MobileRobot(point, robot -> onTargetReached(robot), i);
+	synchronized MobileRobot createMobileRobot(Point point) {
+		int id = nextRobotId(robots);
+		MobileRobot robo = new MobileRobot(point, robot -> onTargetReached(robot), id, id);
 		robots.add(robo);
 		return robo;
+	}
+	
+	private int nextRobotId(List<MobileRobot> robots) {
+		return robots.stream().mapToInt(robot -> robot.getId()).max().orElse(0) + 1;
 	}
 	
 	private void onTargetReached(MobileRobot robot) {
@@ -143,34 +147,7 @@ public class Controller {
 				reservationTable.setBlocked(x, y);
 		});
 		for (MobileRobot robot : robots) {
-			findPath(robot, reservationTable, map);
-		}
-	}
-	
-	private void findPath(MobileRobot robot, ReservationTable reservationTable, TileMap map) {
-		logger.info("robot: " + (robot.getPriority() + 1) + " - planning path");
-		robot.resetMovesQue();
-		Point start = robot.getPosition();
-		Point target = robot.getTarget();
-		if (target != null) {
-			MyWHCAPathFinder pathFinder = new MyWHCAPathFinder(reservationTable, map);
-			Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
-			logger.info("path: " + path);
-			if (path != null) {
-				// enque path
-				int t = 0;
-				reservationTable.setBlocked(start.x, start.y, t);
-				reservationTable.setBlocked(start.x, start.y, t + 1);
-				for (int i = 1; i < path.getLength(); i++) {
-					Path.Step step = path.getStep(i);
-					robot.enqueueMove(step.getX(), step.getY());
-					t++;
-					reservationTable.setBlocked(step.getX(), step.getY(), t);
-					reservationTable.setBlocked(step.getX(), step.getY(), t + 1);
-				}
-			} else {
-				reservationTable.setBlocked(start.x, start.y);
-			}
+			WHCAUtils.findPath(robot, reservationTable, map);
 		}
 	}
 	

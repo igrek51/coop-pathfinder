@@ -185,7 +185,7 @@ public class WHCAPathFinderTest {
 	}
 	
 	private MobileRobot createRobot(int sx, int sy, int tx, int ty, int priority) {
-		MobileRobot r = new MobileRobot(new Point(sx, sy), null, priority);
+		MobileRobot r = new MobileRobot(new Point(sx, sy), null, priority, priority);
 		r.setTarget(new Point(tx, ty));
 		return r;
 	}
