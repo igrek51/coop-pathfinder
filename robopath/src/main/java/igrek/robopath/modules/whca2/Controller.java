@@ -5,14 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 import igrek.robopath.common.Point;
 import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.mazegenerator.MazeGenerator;
+import igrek.robopath.pathfinder.mywhca.MyWHCAPathFinder;
+import igrek.robopath.pathfinder.mywhca.Path;
 import igrek.robopath.pathfinder.mywhca.ReservationTable;
-import igrek.robopath.pathfinder.mywhca.WHCAUtils;
 
 public class Controller {
 	
@@ -23,8 +26,14 @@ public class Controller {
 	private MazeGenerator mazegen;
 	
 	private TileMap map;
+	private Comparator<MobileRobot> robotsPriorityComparator = (o1, o2) -> {
+		// reversed order
+		return Integer.compare(o2.getPriority(), o1.getPriority());
+	};
 	private List<MobileRobot> robots = new ArrayList<>();
+	
 	private SimulationParams params;
+	private boolean reorderNeeded = false;
 	
 	public Controller(Presenter presenter, SimulationParams params) {
 		this.params = params;
@@ -63,22 +72,24 @@ public class Controller {
 		return robots.stream().mapToInt(robot -> robot.getId()).max().orElse(0) + 1;
 	}
 	
-	private void onTargetReached(MobileRobot robot) {
+	private synchronized void onTargetReached(MobileRobot robot) {
 		if (params.robotAutoTarget) {
 			if (robot.getTarget() == null || robot.hasReachedTarget()) {
-				logger.info("robot: " + robot.getPriority() + " - assigning new target");
+				logger.info("robot: " + robot.getId() + " - assigning new target");
 				randomRobotTarget(robot);
+				Collections.sort(robots, robotsPriorityComparator);
 			}
 		}
 	}
 	
-	void randomTargetPressed() {
+	synchronized void randomTargetPressed() {
 		for (MobileRobot robot : robots) {
 			robot.setTarget(null); // clear targets - not to block each other during randoming
 		}
 		for (MobileRobot robot : robots) {
 			randomRobotTarget(robot);
 		}
+		Collections.sort(robots, robotsPriorityComparator);
 	}
 	
 	synchronized void generateMaze() {
@@ -97,6 +108,8 @@ public class Controller {
 		robot.resetNextMoves();
 		//		Point start = robot.lastTarget();
 		Point target = randomUnoccupiedCellForTarget(map);
+		// reset its initial priority
+		robot.setPriority(robot.getId());
 		robot.setTarget(target);
 	}
 	
@@ -146,8 +159,56 @@ public class Controller {
 			if (occupied)
 				reservationTable.setBlocked(x, y);
 		});
+		if (reorderNeeded) {
+			Collections.sort(robots, robotsPriorityComparator);
+			logger.debug("the new order: " + robots.stream()
+					.map(r -> Integer.toString(r.getId()))
+					.reduce((s1, s2) -> s1 + ", " + s2)
+					.get());
+			reorderNeeded = false;
+		}
 		for (MobileRobot robot : robots) {
-			WHCAUtils.findPath(robot, reservationTable, map);
+			findPath(robot, reservationTable, map);
+		}
+	}
+	
+	public void findPath(MobileRobot robot, ReservationTable reservationTable, TileMap map) {
+		logger.info("robot: " + robot.getId() + " - planning path");
+		robot.resetMovesQue();
+		Point start = robot.getPosition();
+		Point target = robot.getTarget();
+		if (target != null) {
+			MyWHCAPathFinder pathFinder = new MyWHCAPathFinder(reservationTable, map);
+			Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
+			logger.info("path: " + path);
+			if (path != null) {
+				// enque path
+				int t = 0;
+				reservationTable.setBlocked(start.x, start.y, t);
+				reservationTable.setBlocked(start.x, start.y, t + 1);
+				Path.Step step = null;
+				for (int i = 1; i < path.getLength(); i++) {
+					step = path.getStep(i);
+					robot.enqueueMove(step.getX(), step.getY());
+					t++;
+					reservationTable.setBlocked(step.getX(), step.getY(), t);
+					reservationTable.setBlocked(step.getX(), step.getY(), t + 1);
+				}
+				// fill the rest with last position
+				if (step != null) {
+					for (int i = t + 1; i < reservationTable.getTimeDimension(); i++) {
+						reservationTable.setBlocked(step.getX(), step.getY(), i);
+					}
+				}
+				// cant find a way - it's waiting, then promote its priority
+				if (path.getLength() <= 1) {
+					logger.debug("priority promotion due to path not found");
+					promotePriority(robot);
+				}
+			} else {
+				logger.warn("path is null");
+				reservationTable.setBlocked(start.x, start.y);
+			}
 		}
 	}
 	
@@ -176,8 +237,18 @@ public class Controller {
 						.getId());
 				robot.resetMovesQue();
 				collidedRobot.resetMovesQue();
+				MobileRobot minorPriority = robot.getPriority() < collidedRobot.getPriority() ? collidedRobot : robot;
+				// priority promotion for robot with minor priority
+				logger.debug("priority promotion due to collision");
+				promotePriority(minorPriority);
 			}
 		}
+	}
+	
+	private void promotePriority(MobileRobot robot) {
+		robot.setPriority(robot.getPriority() + 1);
+		reorderNeeded = true;
+		logger.info("robot " + robot.getId() + " has been promoted to priority " + robot.getPriority());
 	}
 	
 	private MobileRobot collisionDetected(MobileRobot robot) {

@@ -272,19 +272,18 @@ public class Presenter {
 	private void drawRobots(GraphicsContext gc) {
 		double simulationStepProgress = (System.currentTimeMillis() - lastSimulationTime) / MOVE_STEP_DURATION;
 		List<MobileRobot> robots = getRobots();
-		int index = 0;
 		for (MobileRobot robot : robots) {
-			drawRobot(gc, robot, index++, simulationStepProgress);
+			drawRobot(gc, robot, simulationStepProgress);
 		}
 	}
 	
-	private void drawRobot(GraphicsContext gc, MobileRobot robot, int index, double stepProgress) {
+	private void drawRobot(GraphicsContext gc, MobileRobot robot, double stepProgress) {
 		TileMap map = getMap();
 		double cellW = drawArea.getWidth() / map.getWidthInTiles();
 		double cellH = drawArea.getHeight() / map.getHeightInTiles();
 		double w = 0.6 * cellW;
 		double h = 0.6 * cellH;
-		Color robotColor = robotColor(index);
+		Color robotColor = robotColor(robot.getId());
 		// draw target
 		gc.setLineWidth(cellW / 18);
 		if (robot.getTarget() != null) {
@@ -313,7 +312,7 @@ public class Presenter {
 		double y = robot.getInterpolatedY(stepProgress) * cellH + cellH / 2 - h / 2;
 		gc.fillOval(x, y, w, h);
 		// draw its priority
-		gc.setFill(robotColor(index, 0.5));
+		gc.setFill(robotColor(robot.getId(), 0.5));
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFont(new Font("System", h / 2));
@@ -327,7 +326,7 @@ public class Presenter {
 	
 	private Color robotColor(int index, double b) {
 		List<MobileRobot> robots = getRobots();
-		double hue = 360.0 * index / robots.size();
+		double hue = 360.0 * ((index - 1) % robots.size()) / robots.size();
 		return Color.hsb(hue, 1, b);
 	}
 	
@@ -336,9 +335,7 @@ public class Presenter {
 		params.readFromUI();
 		restartTimelines();
 		arrangementHistory = new RobotsArrangementHistory(getRobots()); // store history
-		new Thread(() -> {
-			controller.findPaths();
-		}).start();
+		new Thread(() -> controller.findPaths()).start();
 	}
 	
 	private void restartTimelines() {
