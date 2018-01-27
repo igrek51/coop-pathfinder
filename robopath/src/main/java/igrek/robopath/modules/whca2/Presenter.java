@@ -219,6 +219,7 @@ public class Presenter {
 	@FXML
 	private void randomTargetPressed(final Event event) {
 		controller.randomTargetPressed();
+		arrangementHistory = new RobotsArrangementHistory(getRobots()); // store history
 	}
 	
 	@FXML
@@ -353,7 +354,6 @@ public class Presenter {
 	private void buttonPathfind() {
 		params.readFromUI();
 		restartTimelines();
-		arrangementHistory = new RobotsArrangementHistory(getRobots()); // store history
 		new Thread(() -> controller.findPaths()).start();
 	}
 	
@@ -365,7 +365,8 @@ public class Presenter {
 	
 	@FXML
 	private void buttonRestoreArrangement() {
-		arrangementHistory.restore(controller.getRobots());
-		
+		if (arrangementHistory != null) {
+			arrangementHistory.restore(controller.getRobots());
+		}
 	}
 }

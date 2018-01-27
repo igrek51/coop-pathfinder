@@ -78,7 +78,7 @@ public class Controller {
 	private synchronized void onTargetReached(MobileRobot robot) {
 		if (params.robotAutoTarget) {
 			if (robot.getTarget() == null || robot.hasReachedTarget()) {
-				logger.info("robot: " + robot.getId() + " - assigning new target");
+				logger.info("robot: " + robot + " - assigning new target");
 				randomRobotTarget(robot);
 				Collections.sort(robots, robotsPriorityComparator);
 			}
@@ -177,14 +177,14 @@ public class Controller {
 	}
 	
 	public void findPath(MobileRobot robot, ReservationTable reservationTable, TileMap map) {
-		logger.info("robot: " + robot.getId() + " - planning path");
+		//		logger.info("robot: " + robot.getId() + " - planning path");
 		robot.resetMovesQue();
 		Point start = robot.getPosition();
 		Point target = robot.getTarget();
 		if (target != null) {
 			MyWHCAPathFinder pathFinder = new MyWHCAPathFinder(reservationTable, map);
 			Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
-			logger.info("path: " + path);
+			//			logger.info("path: " + path);
 			if (path != null) {
 				// enque path
 				int t = 0;
@@ -206,8 +206,7 @@ public class Controller {
 				}
 				// cant find a way - it's waiting, then promote its priority
 				if (path.getLength() <= 1) {
-					logger.debug("priority promotion due to path not found");
-					promotePriority(robot);
+					promotePriority(robot, " - due to path not found");
 				}
 			} else {
 				logger.warn("path is null");
@@ -238,22 +237,21 @@ public class Controller {
 		for (MobileRobot robot : robots) {
 			MobileRobot collidedRobot = collisionDetected(robot);
 			if (collidedRobot != null) {
-				logger.info("collision detected between robots: " + robot.getId() + ", " + collidedRobot
+				logger.info("Collision detected between robots: " + robot.getId() + ", " + collidedRobot
 						.getId());
 				robot.resetMovesQue();
 				collidedRobot.resetMovesQue();
 				MobileRobot minorPriority = robot.getPriority() < collidedRobot.getPriority() ? collidedRobot : robot;
 				// priority promotion for robot with minor priority
-				logger.debug("priority promotion due to collision");
-				promotePriority(minorPriority);
+				promotePriority(minorPriority, " - due to collision");
 			}
 		}
 	}
 	
-	private void promotePriority(MobileRobot robot) {
+	private void promotePriority(MobileRobot robot, String reason) {
 		robot.setPriority(robot.getPriority() + 1);
 		reorderNeeded = true;
-		logger.info("robot " + robot.getId() + " has been promoted to priority " + robot.getPriority());
+		logger.info("robot " + robot.getId() + " promoted to priority " + robot.getPriority() + reason);
 	}
 	
 	private MobileRobot collisionDetected(MobileRobot robot) {
