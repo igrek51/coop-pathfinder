@@ -1,7 +1,7 @@
 \section{Generator map}
 
 W rozdziale \ref{ch:tests} opisano wyniki testów przeprowadzonych na losowo wygenerowanych środowiskach.
-Do ich automatycznego wygenerowania wykorzystano własny generator map, który zapewnia im pewne pożądane własności opisane poniżej.
+Do ich automatycznego utworzenia wykorzystano własny generator map, który zapewnia im pewne pożądane własności opisane poniżej.
 
 Zastosowanie zwykłego losowania położenia przeszkód na mapie mogłoby spowodować, że do niektórych obszarów na mapie nie udałoby się znaleźć drogi, nawet mimo braku istnienia pozostałych agentów. Takie środowisko nie miałoby sensownego zastosowania w praktyce, w kooperacyjnym znajdowaniu tras.
 
@@ -19,20 +19,20 @@ Aby zapewnić, że powstały graf będzie spójny, na początku losujemy jedno p
 W tym celu wykorzystamy dwie pomocnicze listy wierzchołków:
 \begin{itemize}
 	\item lista wierzchołków {\it odwiedzonych} - zawiera wierzchołki (pola) należące już do labiryntu. Między wszystkimi wierzchołkami z listy {\it odwiedzonych} istnieje łącząca je droga, tworzą one graf spójny.
-	\item lista wierzchołków {\it nieodwiedzonych} - zawiera nieodwiedzone wierzchołki (pola), które nie zostały jeszcze dołaczone do labiryntu.
+	\item lista wierzchołków {\it nieodwiedzonych} - zawiera nieodwiedzone wierzchołki (pola), które nie zostały jeszcze dołączone do labiryntu.
 \end{itemize}
 
 Kolejne kroki algorytmu przedstawiają się następująco:
 \begin{enumerate}
 	\item Inicjalizacja pustych list wierzchołków: {\it odwiedzonych} i {\it nieodwiedzonych}.
 	\item Zapełnienie całej mapy przeszkodami.
-	\item Zaznaczenie co drugiego pola (wzdłuż każdego z wymiarów) jako wolne i dodanie ich do listy {\it nieodwiedzonych}.
+	\item Zaznaczenie co drugiego pola (wzdłuż każdego z wymiarów) jako wolne (por. rys. \ref{fig:etapy-generowania}a) i dodanie ich do listy {\it nieodwiedzonych}.
 	\item Wylosowanie ziarna rozrostu labiryntu z listy {\it nieodwiedzonych}, przeniesienie go na listę {\it odwiedzonych}.
 	\item Łączenie kolejnych wierzchołków nieodwiedzonych z wierzchołkami odwiedzonymi. Dopóki lista {\it nieodwiedzonych} nie jest pusta:
 	\begin{enumerate}
 		\item Wylosowanie wierzchołka z listy {\it nieodwiedzonych}.
 		\item Znalezienie najbliższego dla niego (w sensie metryki miejskiej) sąsiada z listy {\it odwiedzonych}.
-		\item Połączenie wierzchołków drogą poprzez "wyburzanie" przeszkód (zaznaczania pola jako wolne) przy przesuwaniu się w kierunku wierzchołka docelowego, najpierw wzdłuż osi poziomej, następnie wzdłuż osi pionowej.
+		\item Połączenie wierzchołków drogą poprzez "wyburzanie" przeszkód (zaznaczania pola jako wolne) przy przesuwaniu się w kierunku wierzchołka docelowego, najpierw wzdłuż osi poziomej, następnie wzdłuż osi pionowej (por. rys. \ref{fig:etapy-generowania}b).
 	\end{enumerate}
 \end{enumerate}
 
@@ -62,7 +62,7 @@ Poniżej przedstawiono pseudokod, obrazujący zaproponowaną metodę działania 
 
 \WHILE{lista $nieodwiedzone$ nie jest pusta}
 	\STATE $nowy$ $\gets$ losowe pole z $nieodwiedzone$
-	\STATE $sasiad$ $\gets$ znajdźNajblższegoSąsiada($odwiedzone$, $nowy$)
+	\STATE $sasiad$ $\gets$ znajdźNajbliższegoSąsiada($odwiedzone$, $nowy$)
 	\STATE wyburzDrogę($mapa$, $nowy$, $sasiad$)
 	\STATE dodaj $nowy$ do $odwiedzone$
 	\STATE usuń $nowy$ z $nieodwiedzone$
@@ -92,10 +92,10 @@ Poniżej przedstawiono pseudokod, obrazujący zaproponowaną metodę działania 
 	\end{algorithmic}
 \end{algorithm}
 
-Oznaczenie $x\verb-++-$ oraz $x\verb+--+$ oznacza odpowiednio postinkrementację i postdekrementację (dokonanie zwiększenia lub zmniejszenia o wartość 1 {\bf po} wykorzystaniu wartości zmiennej w wyrażeniu).
-Funkcja {\it znajdźNajblższegoSąsiada} wyszukuje sąsiada pola $nowy$ z listy $odwiedzone$. Wynik wyszukiwania jest najbliższy w sensie metryki miejskiej (metryki Manhattan).
+Oznaczenie $x\verb-++-$ oraz $x\verb+--+$ oznacza odpowiednio postinkrementację i postdekrementację (dokonanie zwiększenia lub zmniejszenia o 1 {\bf po} wykorzystaniu wartości zmiennej w wyrażeniu).
+Funkcja {\it znajdźNajbliższegoSąsiada} wyszukuje sąsiada dla pola $nowy$ z listy $odwiedzone$. Wynik wyszukiwania jest najbliższy w sensie metryki miejskiej (metryki Manhattan).
 
-Kolejne etapy generowania labiryntu zaprezentowano na rysunku \ref{fig:etapy-generowania}.
+Kolejne etapy generowania labiryntu zobrazowano na rysunku \ref{fig:etapy-generowania}.
 
 \begin{figure}
     \centering
@@ -104,12 +104,17 @@ Kolejne etapy generowania labiryntu zaprezentowano na rysunku \ref{fig:etapy-gen
         \subfloat[]{\includegraphics[width=0.3\columnwidth]{img/mazegen/maze-1cycle-marks}}
         \qquad
         \subfloat[]{\includegraphics[width=0.3\columnwidth]{img/mazegen/maze-result}}
-    \label{fig:etapy-generowania}
     \caption{Kolejne etapy generowania labiryntu.
     (a) Zaznaczenie co drugiego pola jako wolne i wybór ziarna rozrostu labiryntu.
     (b) Wylosowanie i łączenie kolejnego wierzchołka poprzez "wyburzanie" przeszkód na drodze
     (c) Wynikowa mapa}
+    \label{fig:etapy-generowania}
 \end{figure}
 
-
-screen 75x75
+Na rysunku \ref{fig:maze75-75} przedstawiono przykładowy labirynt wygenerowany opisanym algorytmem.
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\columnwidth]{img/mazegen/maze-75-75}
+	\caption{Przykładowy labirynt rozmiaru $75 \times 75$ pochodzący z generatora map}
+	\label{fig:maze75-75}
+\end{figure}
