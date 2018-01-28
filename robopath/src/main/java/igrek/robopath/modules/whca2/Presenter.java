@@ -366,7 +366,7 @@ public class Presenter {
 	@FXML
 	private void buttonRestoreArrangement() {
 		if (arrangementHistory != null) {
-			arrangementHistory.restore(controller.getRobots());
+			controller.setRobots(arrangementHistory.restore(controller.getRobots()));
 		}
 	}
 }

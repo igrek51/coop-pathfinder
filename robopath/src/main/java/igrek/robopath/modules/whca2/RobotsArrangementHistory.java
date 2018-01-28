@@ -18,13 +18,14 @@ class RobotsArrangementHistory {
 		}
 	}
 	
-	void restore(List<MobileRobot> robots) {
+	List<MobileRobot> restore(List<MobileRobot> robots) {
 		robots.clear();
 		for (MobileRobot robot : deepCopy) {
-			robot.resetMovesQue();
-			robots.add(robot);
+			// clone once again to keep original
+			robots.add(robot.clone());
 		}
 		logger.info("robots arrangement has been restored from history");
+		return robots;
 	}
 	
 }

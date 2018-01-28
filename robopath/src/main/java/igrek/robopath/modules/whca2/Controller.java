@@ -47,7 +47,7 @@ public class Controller {
 		return map;
 	}
 	
-	public List<MobileRobot> getRobots() {
+	public synchronized List<MobileRobot> getRobots() {
 		return robots;
 	}
 	
@@ -80,7 +80,7 @@ public class Controller {
 			if (robot.getTarget() == null || robot.hasReachedTarget()) {
 				logger.info("robot: " + robot + " - assigning new target");
 				randomRobotTarget(robot);
-				Collections.sort(robots, robotsPriorityComparator);
+				reorderNeeded = true;
 			}
 		}
 	}
@@ -92,7 +92,7 @@ public class Controller {
 		for (MobileRobot robot : robots) {
 			randomRobotTarget(robot);
 		}
-		Collections.sort(robots, robotsPriorityComparator);
+		reorderNeeded = true;
 	}
 	
 	synchronized void generateMaze() {
@@ -156,7 +156,9 @@ public class Controller {
 	
 	synchronized void findPaths() {
 		calculatingPaths = true;
-		int tDim = params.timeDimension;
+		int tDim = robots.size() + 1;
+		params.timeDimension = tDim;
+		params.sendToUI();
 		TileMap map2 = new TileMap(map);
 		ReservationTable reservationTable = new ReservationTable(map2.getWidthInTiles(), map2.getHeightInTiles(), tDim);
 		map2.foreach((x, y, occupied) -> {
@@ -209,28 +211,30 @@ public class Controller {
 					promotePriority(robot, " - due to path not found");
 				}
 			} else {
-				logger.warn("path is null");
+				logger.warn("path not found due to static obstacles");
 				reservationTable.setBlocked(start.x, start.y);
 			}
 		}
 	}
 	
 	synchronized void stepSimulation() {
-		
+		boolean replan = false;
+		resetCollidedRobots();
 		for (MobileRobot robot : robots) {
 			if (robot.hasNextMove()) {
 				robot.setPosition(robot.pollNextMove());
 			}
+			if (robot.hasReachedTarget() && params.robotAutoTarget) {
+				robot.targetReached();
+				replan = true;
+			} else if (!robot.hasNextMove() && !robot.hasReachedTarget()) {
+				logger.info("no planned moves - replanning all paths");
+				replan = true;
+			}
 		}
 		resetCollidedRobots();
-		//			if (robot.hasReachedTarget() && params.robotAutoTarget) {
-		//				robot.targetReached();
-		//			}
-		//				replan = true;
-		//			} else if (!robot.hasNextMove() && !robot.hasReachedTarget()) {
-		//				logger.info("no planned moves - replanning all paths");
-		//				replan = true;
-		//			}
+		if (replan)
+			findPaths();
 	}
 	
 	private void resetCollidedRobots() {
@@ -252,6 +256,11 @@ public class Controller {
 		robot.setPriority(robot.getPriority() + 1);
 		reorderNeeded = true;
 		logger.info("robot " + robot.getId() + " promoted to priority " + robot.getPriority() + reason);
+		if (robot.getPriority() > params.timeDimension) {
+			params.timeDimension = robot.getPriority();
+			params.sendToUI();
+			logger.info("Time dimension increased to " + params.timeDimension);
+		}
 	}
 	
 	private MobileRobot collisionDetected(MobileRobot robot) {
@@ -268,5 +277,9 @@ public class Controller {
 	
 	public boolean isCalculatingPaths() {
 		return calculatingPaths;
+	}
+	
+	public void setRobots(List<MobileRobot> robots) {
+		this.robots = robots;
 	}
 }

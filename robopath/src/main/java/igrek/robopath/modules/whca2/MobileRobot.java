@@ -86,7 +86,7 @@ public class MobileRobot {
 		return movesQue.getLast();
 	}
 	
-	Point nearestTarget() {
+	synchronized Point nearestTarget() {
 		if (movesQue.isEmpty())
 			return position;
 		return movesQue.getFirst();

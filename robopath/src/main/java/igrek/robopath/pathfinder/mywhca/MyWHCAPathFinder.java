@@ -69,7 +69,7 @@ public class MyWHCAPathFinder {
 		startNode.setCost(0);
 		Float heuristicCost = getHeuristicCost(sx, sy, 0, tx, ty);
 		if (heuristicCost == null) {
-			heuristicCost = (float) (map.getWidthInTiles() * map.getHeightInTiles()); // FIXME kind of max
+			heuristicCost = maxHeuristic(); // FIXME kind of max
 		}
 		startNode.setHeuristic(heuristicCost);
 		open.add(startNode);
@@ -147,8 +147,7 @@ public class MyWHCAPathFinder {
 					heuristicCost = getHeuristicCost(neighbour.getX(), neighbour.getY(), neighbour
 							.getT(), tx, ty);
 					if (heuristicCost == null) {
-						heuristicCost = (float) (map.getWidthInTiles() * map.getHeightInTiles()); // FIXME kind of max
-						logger.warn("FIXME: max heuristic cost");
+						heuristicCost = maxHeuristic();
 					}
 					neighbour.setHeuristic(heuristicCost);
 					neighbour.setParent(current);
@@ -188,6 +187,10 @@ public class MyWHCAPathFinder {
 		
 		// since we'e've run out of search there was no path
 		return null;
+	}
+	
+	private float maxHeuristic() {
+		return (float) (map.getWidthInTiles() * map.getHeightInTiles()); // FIXME kind of max
 	}
 	
 	/**

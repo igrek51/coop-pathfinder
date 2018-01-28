@@ -83,7 +83,7 @@
                                 <children>
                                     <HBox HBox.hgrow="ALWAYS">
                                         <children>
-                                            <Label text="Time dimension:"
+                                            <Label text="Time window:"
                                                    prefWidth="${menu.width*0.5}"
                                                    alignment="CENTER"/>
                                             <TextField fx:id="paramTimeDimension"
