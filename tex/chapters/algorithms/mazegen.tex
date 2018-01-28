@@ -1,5 +1,22 @@
 \section{Generator map}
 
+W rozdziale \ref{ch:tests} opisano wyniki testów przeprowadzonych na losowo wygenerowanych środowiskach.
+Do ich wygenerowania wykorzystano własny generator map, który zapewnia im pewne pożądane własności opisane poniżej.
+
+Zastosowanie zwykłego losowania położenia przeszkód na mapie mogłoby spowodować, że do niektórych obszarów na mapie nie udałoby się znaleźć drogi, nawet mimo braku istnienia pozostałych agentów. Takie środowisko nie ma sensownego zastosowania w praktyce, w kooperacyjnym znajdowaniu tras.
+
+Zależy nam, aby uzyskać środowisko cechujące się dużą liczbą przeszkód i wąskimi korytarzami, aby uwypuklić problem występowania wąskich gardeł. Jednocześnie chcemy, aby istniała możliwość przejścia między dwoma dowolnymi punktami na mapie.
+Do rozwiązania tego problemu posłużymy się teorią grafów i pojęciem grafu spójnego.
+
+\begin{definition}{\bf Graf spójny\\}
+	Graf spójny spełnia warunek, że dla każdej pary wierzchołków istnieje łącząca je ścieżka.
+\end{definition}
+
+Układ pól na mapie będziemy reprezentować jako graf.
+W naszym przypadku zbiór wszystkich przejezdnych pól na mapie jest wierzchołkami grafu. Natomiast połączenia między sąsiednimi przejezdnymi polami (między którymi istnieje możliwość bezpośredniego przejścia) są krawędziami w grafie.
+
+
+
 Do przeprowadzenia obszernych testów symulacyjnych wykorzystano generator map. 
 Testy przeprowadzone zostały na różnego rodzaju mapach:
  - ciasne labirynty z dużą liczbą przeszkód i wąskich korytarzy - wygenerowane automatycznie

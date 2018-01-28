@@ -61,7 +61,6 @@
 
 \fancyfoot[LE, RO]{\bfseries \thepage} % except the center
 
-
 \usepackage[a4paper, left=2.5cm, right=2.5cm, top=3.7cm, bottom=2.5cm, headsep=0.9cm, headheight=16pt]{geometry}
 \frenchspacing
 \linespread{1.3}
@@ -69,6 +68,11 @@
 \hypersetup{pdfborder={0 0 0 0}}
 
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+% definitions
+\usepackage{amsthm} 
+\theoremstyle{definition}
+\newtheorem{definition}{Definicja}[section]
 
 \begin{document}
 	\input{structure}
