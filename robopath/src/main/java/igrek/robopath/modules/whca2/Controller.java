@@ -165,7 +165,7 @@ public class Controller {
 			if (occupied)
 				reservationTable.setBlocked(x, y);
 		});
-		reorderNeeded = true; // FIXME
+		reorderNeeded = true; // FIXME reorder only when needed
 		if (reorderNeeded) {
 			Collections.sort(robots, robotsPriorityComparator);
 			logger.debug("the new order: " + Joiner.on(", ").join(robots));
@@ -232,7 +232,7 @@ public class Controller {
 				replan = true;
 			}
 		}
-		resetCollidedRobots();
+		//		resetCollidedRobots();
 		if (replan)
 			findPaths();
 	}
@@ -246,8 +246,10 @@ public class Controller {
 				robot.resetMovesQue();
 				collidedRobot.resetMovesQue();
 				MobileRobot minorPriority = robot.getPriority() < collidedRobot.getPriority() ? collidedRobot : robot;
+				MobileRobot majorPriority = robot.getPriority() < collidedRobot.getPriority() ? robot : collidedRobot;
 				// priority promotion for robot with minor priority
-				promotePriority(minorPriority, " - due to collision");
+				//				promotePriority(minorPriority, " - due to collision");
+				//				majorPriority.setPriority(majorPriority.getPriority() - 1);
 			}
 		}
 	}
@@ -267,8 +269,7 @@ public class Controller {
 		for (MobileRobot otherRobot : robots) {
 			if (otherRobot == robot)
 				continue;
-			if (otherRobot.getPosition().equals(robot.getPosition()) || otherRobot.nearestTarget()
-					.equals(robot.nearestTarget())) {
+			if (otherRobot.nearestTarget().equals(robot.nearestTarget())) {
 				return otherRobot;
 			}
 		}
