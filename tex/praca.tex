@@ -74,6 +74,17 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definicja}[section]
 
+% alogirthm pseudocode embedded
+\usepackage[section]{algorithm}
+\usepackage{algorithmic}
+\makeatletter
+\renewcommand{\ALG@name}{Algorytm}
+\makeatother
+
+
 \begin{document}
+	\nocite{*} %wszystkie wpisy trafią do bibliografii
+	\lstset{language=Java, tabsize=2,  basicstyle=\footnotesize\ttfamily, keywordstyle=\underbar}
+
 	\input{structure}
 \end{document}

@@ -1,98 +1,115 @@
 \section{Generator map}
 
 W rozdziale \ref{ch:tests} opisano wyniki testów przeprowadzonych na losowo wygenerowanych środowiskach.
-Do ich wygenerowania wykorzystano własny generator map, który zapewnia im pewne pożądane własności opisane poniżej.
+Do ich automatycznego wygenerowania wykorzystano własny generator map, który zapewnia im pewne pożądane własności opisane poniżej.
 
-Zastosowanie zwykłego losowania położenia przeszkód na mapie mogłoby spowodować, że do niektórych obszarów na mapie nie udałoby się znaleźć drogi, nawet mimo braku istnienia pozostałych agentów. Takie środowisko nie ma sensownego zastosowania w praktyce, w kooperacyjnym znajdowaniu tras.
+Zastosowanie zwykłego losowania położenia przeszkód na mapie mogłoby spowodować, że do niektórych obszarów na mapie nie udałoby się znaleźć drogi, nawet mimo braku istnienia pozostałych agentów. Takie środowisko nie miałoby sensownego zastosowania w praktyce, w kooperacyjnym znajdowaniu tras.
 
-Zależy nam, aby uzyskać środowisko cechujące się dużą liczbą przeszkód i wąskimi korytarzami, aby uwypuklić problem występowania wąskich gardeł. Jednocześnie chcemy, aby istniała możliwość przejścia między dwoma dowolnymi punktami na mapie.
-Do rozwiązania tego problemu posłużymy się teorią grafów i pojęciem grafu spójnego.
+Zależy nam, aby uzyskać środowisko cechujące się dużą liczbą przeszkód i wąskimi korytarzami, aby uwypuklić problem występowania wąskich gardeł. Jednocześnie chcemy jednak, aby istniała możliwość przejścia między dwoma dowolnymi punktami na mapie.
+Do rozwiązania problemu wygenerowania takich labiryntów posłużymy się teorią grafów i pojęciem grafu spójnego.
 
 \begin{definition}{\bf Graf spójny\\}
 	Graf spójny spełnia warunek, że dla każdej pary wierzchołków istnieje łącząca je ścieżka.
 \end{definition}
 
 Układ pól na mapie będziemy reprezentować jako graf.
-W naszym przypadku zbiór wszystkich przejezdnych pól na mapie jest wierzchołkami grafu. Natomiast połączenia między sąsiednimi przejezdnymi polami (między którymi istnieje możliwość bezpośredniego przejścia) są krawędziami w grafie.
+W naszym przypadku wszystkie przejezdne pola na mapie są wierzchołkami grafu. Natomiast połączenia między sąsiednimi przejezdnymi polami (między którymi istnieje możliwość bezpośredniego przejścia) są krawędziami w grafie.
+
+Aby zapewnić, że powstały graf będzie spójny, na początku losujemy jedno pole będące ziarnem rozrostu labiryntu, a następnie do takiego podgrafu dołączamy kolejne wierzchołki, łącząc je drogą na mapie. Krok ten powtarzamy do momentu, aż wszystkie wierzchołki zostaną dołączone.
+W tym celu wykorzystamy dwie pomocnicze listy wierzchołków:
+\begin{itemize}
+	\item lista wierzchołków {\it odwiedzonych} - zawiera wierzchołki (pola) należące już do labiryntu. Między wszystkimi wierzchołkami z listy {\it odwiedzonych} istnieje łącząca je droga, tworzą one graf spójny.
+	\item lista wierzchołków {\it nieodwiedzonych} - zawiera nieodwiedzone wierzchołki (pola), które nie zostały jeszcze dołaczone do labiryntu.
+\end{itemize}
+
+Kolejne kroki algorytmu przedstawiają się następująco:
+\begin{enumerate}
+	\item Inicjalizacja pustych list wierzchołków: {\it odwiedzonych} i {\it nieodwiedzonych}.
+	\item Zapełnienie całej mapy przeszkodami.
+	\item Zaznaczenie co drugiego pola (wzdłuż każdego z wymiarów) jako wolne i dodanie ich do listy {\it nieodwiedzonych}.
+	\item Wylosowanie ziarna rozrostu labiryntu z listy {\it nieodwiedzonych}, przeniesienie go na listę {\it odwiedzonych}.
+	\item Łączenie kolejnych wierzchołków nieodwiedzonych z wierzchołkami odwiedzonymi. Dopóki lista {\it nieodwiedzonych} nie jest pusta:
+	\begin{enumerate}
+		\item Wylosowanie wierzchołka z listy {\it nieodwiedzonych}.
+		\item Znalezienie najbliższego dla niego (w sensie metryki miejskiej) sąsiada z listy {\it odwiedzonych}.
+		\item Połączenie wierzchołków drogą poprzez "wyburzanie" przeszkód (zaznaczania pola jako wolne) przy przesuwaniu się w kierunku wierzchołka docelowego, najpierw wzdłuż osi poziomej, następnie wzdłuż osi pionowej.
+	\end{enumerate}
+\end{enumerate}
+
+Pojedyncze dołączanie kolejnych wierzchołków do rozrastającego się grafu labiryntu zapewnia, że wynikowy graf również będzie grafem spójnym.
+
+Poniżej przedstawiono pseudokod, obrazujący zaproponowaną metodę działania algorytmu.
+
+\begin{algorithm}[H]
+  \caption{Generowanie labiryntu}\label{alg:mazegen}
+  \begin{algorithmic}[1]
+\REQUIRE {$w$ - szerokość mapy, $h$ - wysokość mapy}
+
+\STATE $mapa[][] \gets$ nowa tablica $w \times h$ wypełniona wartościami $PRZESZKODA$
+
+\STATE $nieodwiedzone \gets$ pusta lista
+\STATE $odwiedzone \gets$ pusta lista
+\FOR{$x \gets$ co drugi indeks do wartości $w$}
+	\FOR{$y \gets$ co drugi indeks do wartości $h$}
+		\STATE $mapa[x][y] \gets WOLNE$
+		\STATE dodaj $mapa[x][y]$ do $nieodwiedzone$
+	\ENDFOR
+\ENDFOR
+
+\STATE $ziarno$ $\gets$ losowe pole z $nieodwiedzone$
+\STATE dodaj $ziarno$ do $odwiedzone$
+\STATE usuń $ziarno$ z $nieodwiedzone$
+
+\WHILE{lista $nieodwiedzone$ nie jest pusta}
+	\STATE $nowy$ $\gets$ losowe pole z $nieodwiedzone$
+	\STATE $sasiad$ $\gets$ znajdźNajblższegoSąsiada($odwiedzone$, $nowy$)
+	\STATE wyburzDrogę($mapa$, $nowy$, $sasiad$)
+	\STATE dodaj $nowy$ do $odwiedzone$
+	\STATE usuń $nowy$ z $nieodwiedzone$
+\ENDWHILE
+
+\RETURN $mapa[][]$
+
+\STATE 
+\STATE {\bf function} wyburzDrogę($mapa$, $poleZ$, $poleDo$)
+	\begin{ALC@g}
+	\STATE $x \gets poleZ.x$
+	\STATE $y \gets poleZ.y$
+	\WHILE{$x < poleDo.x$}
+		\STATE $mapa[x\verb-++-][y] \gets WOLNE$ 
+	\ENDWHILE
+	\WHILE{$x > poleDo.x$}
+		\STATE $mapa[x\verb+--+][y] \gets WOLNE$
+	\ENDWHILE
+	\WHILE{$y < poleDo.y$}
+		\STATE $mapa[x][y\verb-++-] \gets WOLNE$
+	\ENDWHILE
+	\WHILE{$y > poleDo.y$}
+		\STATE $mapa[x][y\verb+--+] \gets WOLNE$
+	\ENDWHILE
+	\end{ALC@g}
+\STATE {\bf end function}
+	\end{algorithmic}
+\end{algorithm}
+
+Oznaczenie $x\verb-++-$ oraz $x\verb+--+$ oznacza odpowiednio postinkrementację i postdekrementację (dokonanie zwiększenia lub zmniejszenia o wartość 1 {\bf po} wykorzystaniu wartości zmiennej w wyrażeniu).
+Funkcja {\it znajdźNajblższegoSąsiada} wyszukuje sąsiada pola $nowy$ z listy $odwiedzone$. Wynik wyszukiwania jest najbliższy w sensie metryki miejskiej (metryki Manhattan).
+
+Kolejne etapy generowania labiryntu zaprezentowano na rysunku \ref{fig:etapy-generowania}.
+
+\begin{figure}
+    \centering
+        \subfloat[]{\includegraphics[width=0.3\columnwidth]{img/mazegen/maze-0initial-marks}}
+        \qquad
+        \subfloat[]{\includegraphics[width=0.3\columnwidth]{img/mazegen/maze-1cycle-marks}}
+        \qquad
+        \subfloat[]{\includegraphics[width=0.3\columnwidth]{img/mazegen/maze-result}}
+    \label{fig:etapy-generowania}
+    \caption{Kolejne etapy generowania labiryntu.
+    (a) Zaznaczenie co drugiego pola jako wolne i wybór ziarna rozrostu labiryntu.
+    (b) Wylosowanie i łączenie kolejnego wierzchołka poprzez "wyburzanie" przeszkód na drodze
+    (c) Wynikowa mapa}
+\end{figure}
 
 
-
-Do przeprowadzenia obszernych testów symulacyjnych wykorzystano generator map. 
-Testy przeprowadzone zostały na różnego rodzaju mapach:
- - ciasne labirynty z dużą liczbą przeszkód i wąskich korytarzy - wygenerowane automatycznie
- - otwarta przestrzeń z małą liczbą przeszkód
-
-generator labiryntów
-$TODO$ generowanie mapy - labiryntu do testów : własny algorytm , teoria grafów (graf spójny), wlasności mapy - możliwość dotarcia do każdego punktu, pseudokod / schemat blokowy
-rozrost labiryntu, dołaczanie kolejnych punktów
-
-
-public void generateMaze(TileMap map) {
-	// set all blocked
-	for (int x = 0; x < map.getWidthInTiles(); x++) {
-		for (int y = 0; y < map.getHeightInTiles(); y++) {
-			map.setCell(x, y, true);
-		}
-	}
-	//dwie pomocnicze listy do wygenerowania labiryntu
-	List<Point> unvisited = new ArrayList<>(); //lista nieodwiedzonych punktów w labiryncie do połączenia z odwiedzonymi punktami
-	List<Point> visited = new ArrayList<>(); //lista odwiedzonych i należących już do labiryntu
-	//dodaj co drugi punkt do listy odwiedzonych
-	for (int x = 0; x < map.getWidthInTiles(); x += 2) {
-		for (int y = 0; y < map.getHeightInTiles(); y += 2) {
-			unvisited.add(new Point(x, y));
-			map.setCell(x, y, false); //wypełnij pustym polem
-		}
-	}
-	//wylosuj jeden punkt z listy odwiedzonych - początek rozrostu labiryntu
-	int index = random.nextInt(unvisited.size()); //losuj numer od 0 do (liczba elementów na liście nieodwiedzonych)
-	Point current = unvisited.get(index); //wyciągnij element o tym numerze z listy
-	//i przepisz go z listy nieodwiedzonych do listy odwiedzonych
-	visited.add(current);
-	unvisited.remove(current);
-	//połączenie punktów nieodwiedzonych z punktami odwiedzonymi
-	while (!unvisited.isEmpty()) { //dopóki są jeszcze nieodwiedzone punkty do połączenia
-		//wybierz pierwszy punkt: wylosuj dowolny punkt z listy nieodwiedzonych
-		index = random.nextInt(unvisited.size());
-		Point p1 = unvisited.get(index);
-		//połącz z najbliższym punktem na liście odwiedzonych
-		//wybierz drugi punkt jako wyznaczonego najbliższego sąsiada z listy odwiedzonych
-		Point p2 = getClosestFromVisited(p1, visited);
-		//połącz ze sobą wybrane 2 punkty: p1, p2
-		int p1x = p1.x; //aktualna pozycja w drodze między punktami
-		int p1y = p1.y;
-		while (p1x < p2.x) { //idź w prawo
-			map.setCell(p1y, p1x, false); //wyburzenie ściany
-			p1x++;
-		}
-		while (p1x > p2.x) { //idź w lewo
-			map.setCell(p1y, p1x, false); //wyburzenie ściany
-			p1x--;
-		}
-		while (p1y < p2.y) { //idź w dół
-			map.setCell(p1y, p1x, false); //wyburzenie ściany
-			p1y++;
-		}
-		while (p1y > p2.y) { //idź w górę
-			map.setCell(p1y, p1x, false); //wyburzenie ściany
-			p1y--;
-		}
-		//przepisz punkt z listy nieodwiedzonych do odwiedzonych
-		visited.add(p1);
-		unvisited.remove(p1);
-	}
-}
-
-private Point getClosestFromVisited(Point p1, List<Point> visited) {
-	Point minP = visited.get(0);
-	for (Point p2 : visited) {
-		if (distance(p1, p2) < distance(p1, minP)) // new minimum
-			minP = p2;
-	}
-	return minP;
-}
-
-private int distance(Point p1, Point p2) {
-	// Manhattan metrics
-	return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
-}
+screen 75x75
