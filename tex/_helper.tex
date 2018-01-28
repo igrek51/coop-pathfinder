@@ -1,0 +1,93 @@
+% Latex syntax helper
+
+% rozdziały, podrozdziały
+\chapter{Rozdział}
+\label{ch:rozdzial}
+
+\section{Sekcja}
+\subsection{Podsekcja}
+\subsubsection{Podpodsekcja}
+
+% wymuszenie podziału strony
+\clearpage
+
+% text formatting
+cytat z bib \cite{siemiatkowska}.
+link do rys / rozdziału (por. \ref{ch:dstar}).
+{\it italic}
+{\bf bold}
+
+% wypunktowanie
+\begin{itemize}
+	\item poz1
+\end{itemize}
+
+\vspace{-1em}
+\begin{itemize}[noitemsep]
+	\item poz1 bez odstepów
+\end{itemize}
+
+\begin{enumerate}
+	\item pierwszy
+\end{enumerate}
+
+% obrazki
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\columnwidth]{img/}
+	\caption{Opis-wstaw gdziekolwiek. Źródło: gra}
+	\label{fig:img_}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\columnwidth]{img/}
+	\caption{Opis-wstaw TUTAJ. Źródło: gra}
+	\label{fig:img_}
+\end{figure}
+
+% wiele obrazków w kolumnach
+\begin{figure}
+	\centering
+		\subfloat[]{\includegraphics[width=0.4\columnwidth]{img/}}
+		\qquad
+		\subfloat[]{\includegraphics[width=0.4\columnwidth]{img/}}
+	\label{fig:img_}
+	\caption{Opis.
+	(a) 
+	(b) }
+\end{figure}
+
+% Równania
+$equation$
+
+\begin{gather}
+ 	f(n) = h(n) = \sqrt{(x_n - x_g)^2 + (y_n - y_g)^2} h^*(n) (x_g, y_g)
+ 	\label{eq_astar} 
+\end{gather}
+ gdzie:
+
+ $g(n)$ - zmienna12
+
+ $h(n)$ - zmienna3
+
+% Definicja
+\begin{definition}{\bf Pojęcie\\}
+	Definicja
+\end{definition}
+
+% Algorytm - pseudokod
+\begin{algorithm}[H]
+  \caption{Opis}\label{alg:ddd}
+  \begin{algorithmic}[1]
+\REQUIRE {$w$ - szerokość}
+\STATE $x \gets poleZ.x$
+\STATE {\bf function} wyburzDrogę($mapa$, $poleZ$, $poleDo$)
+	\begin{ALC@g}
+	\WHILE{$x < poleDo.x$}
+		\STATE $mapa[x\verb-++-][y] \gets WOLNE$ 
+	\ENDWHILE
+	\end{ALC@g}
+\STATE {\bf end function}
+	\end{algorithmic}
+\end{algorithm}
