@@ -14,11 +14,8 @@ public class My2DPathFinder {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	/** The set of nodes that have been searched through */
 	private List<Node> closed = new ArrayList<>();
-	/** The set of nodes that we do not yet consider fully searched */
 	private PriorityQueue<Node> open = new PriorityQueue<>();
-	/** The complete set of nodes across the map */
 	private Node[][] nodes;
 	
 	private TileMap map;
@@ -35,16 +32,6 @@ public class My2DPathFinder {
 		return map.getHeightInTiles();
 	}
 	
-	/**
-	 * Find a path from the starting location provided (sx,sy) to the target
-	 * location (tx,ty) avoiding blockages and attempting to honour costs
-	 * provided by the tile map.
-	 * @param sx The x coordinate of the start location
-	 * @param sy The y coordinate of the start location
-	 * @param tx The x coordinate of the target location
-	 * @param ty Teh y coordinate of the target location
-	 * @return The path found from start to end, or null if no path can be found.
-	 */
 	public Path findPath(int sx, int sy, int tx, int ty) {
 		// initial state for A*. The closed group is empty. Only the starting
 		// tile is in the open list and it'e're already there
@@ -88,7 +75,7 @@ public class My2DPathFinder {
 					path.prependStep(target.getX(), target.getY());
 					target = target.getParent();
 					if (target == null) {
-						logger.warn("dupa");
+						logger.error("target = null");
 					}
 				}
 				path.prependStep(sx, sy);
@@ -145,14 +132,6 @@ public class My2DPathFinder {
 		return null;
 	}
 	
-	/**
-	 * Check if a given location is valid for the supplied mover
-	 * @param sx The starting x coordinate
-	 * @param sy The starting y coordinate
-	 * @param x  The x coordinate of the location to check
-	 * @param y  The y coordinate of the location to check
-	 * @return True if the location is valid for the given mover
-	 */
 	protected boolean isValidLocation(int sx, int sy, int x, int y) {
 		if (x < 0 || y < 0 || x >= width() || y >= height())
 			return false;
@@ -163,13 +142,6 @@ public class My2DPathFinder {
 		return true;
 	}
 	
-	/**
-	 * @param sx from x
-	 * @param sy from y
-	 * @param x  to x
-	 * @param y  to y
-	 * @return is move allowed
-	 */
 	protected boolean isValidMove(int sx, int sy, int x, int y) {
 		if (!isValidLocation(sx, sy, x, y)) {
 			return false;
