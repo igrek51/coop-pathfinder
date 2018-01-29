@@ -19,6 +19,7 @@
 \usepackage{pdfpages}
 \usepackage{ragged2e}
 \usepackage{enumitem} % formatowanie marginesów itemize
+\usepackage{amssymb} % sybmol varnothing
 
 % numeracja
 \pagestyle{fancy}
@@ -75,11 +76,15 @@
 \newtheorem{definition}{Definicja}[section]
 
 % alogirthm pseudocode embedded
-\usepackage[section]{algorithm}
-\usepackage{algorithmic}
-\makeatletter
-\renewcommand{\ALG@name}{Algorytm}
-\makeatother
+\usepackage[Algorytm,section]{algorithm}
+\usepackage{algpseudocode} %algorithmicx
+\algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
+\algtext*{Indent}
+\algtext*{EndIndent}
+% \algblock[]{StartBlock}{EndBlock}
+\renewcommand{\algorithmiccomment}[1]{\hfill{\it // #1 }}
+
+
 
 
 \begin{document}

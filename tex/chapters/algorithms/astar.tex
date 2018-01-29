@@ -3,14 +3,242 @@
 
 Wiele technik planowania tras, mimo iż może posłużyć do koordynacji ruchu wielu robotów, wykonuje indywidualne planowanie dla każdego robota z osobna. Przykładem takiego algorytmu jest {\it Local-Repair A*}. Trajektorie wyznaczane są w oparciu o stan agenta, nie biorąc pod uwagę decyzji podjętych przez pozostałych agentów. Jako główny algorytm przeszukujący wykorzystywany jest najczęściej A*.
 
-$TODO$
-Zanim przejdziemy do koordynacji ruchu wielu robotów, konieczne jest zaimplementowanie metody wyznaczania trajektorii dla pojedynczego robota. 
+$TODO$ przeredagować
+Zanim przejdziemy do koordynacji ruchu wielu robotów, konieczne jest zaimplementowanie metody wyznaczania trajektorii dla pojedynczego robota.
 
 Ogólna zasada działania algorytmu A* została opisana w rozdziale \ref{ch:astar-theory}
 
+Przestrzenny A*
+
+Heurystyka Manhattan
+
+$TODO$ przeredagować
+Wprowadzono modyfikacje
+Umożliwiono ruch ukośny agenta z punktu $(x_1, y_1)$ do $(x_2, y_2)$, ale tylko w przypadku, gdy na żadnym z czterech pól: $(x_1, y_1)$, $(x_2, y_1)$, $(x_1, y_2)$, $(x_2, y_2)$ nie znajduje się przeszkoda. Tak, aby w rzeczywistym środkowisku robot nie uderzał o wystający róg ściany.
+
+$TODO$
+\begin{algorithm}[H]
+	\caption{Algorytm A*}\label{alg:astar}
+  \begin{algorithmic}[1]
+\Function{znajdzDrogę}{$mapa$, $start$, $cel$}
+	\State $closed \gets \varnothing$  \Comment{Lista zamkniętych}
+	\State $open \gets {start}$ \Comment{Lista otwartych}
+	\State $start.g \gets 0$ \Comment{Zerowy koszt przejścia do węzła startowego}
+
+	\If{$mapa[cel.x][cel.y] == ZABLOKOWANE$}
+		\State \Return $\varnothing$ \Comment{Brak rozwiązania}
+	\EndIf
+
+	\While{$open \ne \varnothing$} \Comment{dopóki lista otwartych nie jest pusta}
+		\State $current \gets $ \Call{znajdzMinF}{$open$} \Comment{Szukamy pola o najniższej wartości f}
+
+		\If{$current == cel$}
+			\State \Return \Call{zbudujŚcieżkę}{$cel$} \Comment{Znaleziono ścieżkę}
+		\EndIf
+
+		\State dodaj $current$ do $closed$ \Comment{Przesunięcie z $open$ do $closed$}
+		\State usuń $current$ z $open$
+		
+		\For{$sasiad \in$ \Call{sąsiedzi}{$current$}} \Comment{Dla każdego z wybranych przyległych pól (sasiad) do pola aktualnego}
+			
+			\If{$mapa[sasiad.x][sasiad.y] == ZABLOKOWANE$}
+				\State {\bf continue}
+			\EndIf
+			\If{{\bf not} \Call{przejściePoprawne}{$current$, $sasiad$}}
+				\State {\bf continue}
+			\EndIf
+			
+			\State $nowyKoszt \gets current.g +$ \Call{kosztPrzejścia}{$current$, $sasiad$}
+
+			\If{$nowyKoszt < sasiad.g$}
+				\If{$sasiad \in open$}
+					\State usun $sasiad$ z $open$
+				\EndIf
+				\If{$sasiad \in closed$}
+					\State usun $sasiad$ z $closed$
+				\EndIf
+			\EndIf
+
+			\If{$sasiad \not\in open \land sasiad \not\in closed$}
+				\State $sasiad.g \gets nowyKoszt$
+				\State $sasiad.h \gets$ \Call{heurystyka}{$sasiad$, $cel$}
+				\State $sasiad.parent \gets current$
+				\State dodaj $sasiad$ do $open$
+			\EndIf
+
+		\EndFor
+	\EndWhile
+
+	\State \Return $\varnothing$ \Comment{Brak istniejącej ścieżki}
+\EndFunction
 
 
+\State 
+\Function{heurystyka}{$mapa$, $poleZ$, $poleDo$}
+	\State \Return dupa
+\EndFunction
+  \end{algorithmic}
+\end{algorithm}
 
-$TODO$ własne heurystyki i modyfikacje, ruch na ukos, ale w przypadku braku przeszkody na krawędziach
+% public Path findPath(int sx, int sy, int tx, int ty) {
+% 	// initial state for A*. The closed group is empty. Only the starting
+% 	// tile is in the open list and it'e're already there
+% 	closed.clear();
+% 	open.clear();
+	
+% 	nodes = new Node[width()][height()];
+% 	for (int x = 0; x < width(); x++) {
+% 		for (int y = 0; y < height(); y++) {
+% 			nodes[x][y] = new Node(x, y);
+% 		}
+% 	}
+	
+% 	nodes[tx][ty].setParent(null);
+% 	nodes[sx][sy].setCost(0);
+% 	//Dodajemy pole startowe (lub węzeł) do Listy Otwartych.
+% 	open.add(nodes[sx][sy]);
+	
+% 	// first check, if the destination is blocked, we can't get there
+% 	if (map.blocked(tx, ty))
+% 		return null;
+% 	//jeśli punkt docelowy jest punktem startowym - brak ścieżki
+% 	if (sx == tx && sy == ty)
+% 		return null;
+	
+% 	//dopóki lista otwartych nie jest pusta
+% 	while (!open.isEmpty()) {
+% 		// pull out the first node in our open list, this is determined to
+% 		// be the most likely to be the next step based on our heuristic
+% 		//Szukamy pola o najniższej wartości F na Liście Otwartych. Czynimy je aktualnym polem
+% 		Node current = open.peek();
+% 		//jeśli current jest węzłem docelowym
+% 		if (current.getX() == tx && current.getY() == ty) {
+% 			// At this point we've definitely found a path so we can uses the parent
+% 			// references of the nodes to find out way from the target location back
+% 			// to the start recording the nodes on the way.
+% 			//Zapisujemy ścieżkę. Krocząc w kierunku od pola docelowego do startowego, przeskakujemy z kolejnych pól na im przypisane pola rodziców, aż do osiągnięcia pola startowego.
+% 			Path path = new Path();
+% 			Node target = nodes[tx][ty];
+% 			while (target != nodes[sx][sy]) {
+% 				path.prependStep(target.getX(), target.getY());
+% 				target = target.getParent();
+% 				if (target == null) {
+% 					logger.error("target = null");
+% 				}
+% 			}
+% 			path.prependStep(sx, sy);
+% 			return path;
+% 		}
+% 		//Aktualne pole przesuwamy do Listy Zamkniętych.
+% 		open.remove(current);
+% 		closed.add(current);
+% 		// search through all the neighbours of the current node evaluating
+% 		// them as next steps
+% 		//Dla każdego z wybranych przyległych pól (sasiad) do pola aktualnego
+% 		List<Node> neighbours = availableNeighbours(current);
+% 		for (Node neighbour : neighbours) {
+			
+% 			//jeśli NIE-MOŻNA go przejść, ignorujemy je.
+% 			if (!isValidLocation(sx, sy, neighbour.getX(), neighbour.getY()))
+% 				continue;
+			
+% 			if (!isValidMove(current.getX(), current.getY(), neighbour.getX(), neighbour.getY()))
+% 				continue;
+			
+% 			// the cost to get to this node is cost the current plus the movement
+% 			// cost to reach this node. Note that the heursitic value is only used
+% 			// in the sorted open list
+% 			float nextStepCost = current.getCost() + getMovementCost(current.getX(), current.getY(), neighbour
+% 					.getX(), neighbour.getY());
+			
+% 			// if the new cost we've determined for this node is lower than
+% 			// it has been previously makes sure the node hasn'e've
+% 			// determined that there might have been a better path to get to
+% 			// this node so it needs to be re-evaluated
+% 			if (nextStepCost < neighbour.getCost()) {
+% 				if (open.contains(neighbour)) {
+% 					open.remove(neighbour);
+% 				}
+% 				if (closed.contains(neighbour)) {
+% 					closed.remove(neighbour);
+% 				}
+% 			}
+% 			// if the node hasn't already been processed and discarded then
+% 			// reset it's cost to our current cost and add it as a next possible
+% 			// step (i.e. to the open list)
+% 			if (!open.contains(neighbour) && !closed.contains(neighbour)) {
+% 				neighbour.setCost(nextStepCost);
+% 				neighbour.setHeuristic(getHeuristicCost(neighbour.getX(), neighbour.getY(), tx, ty));
+% 				neighbour.setParent(current);
+% 				open.add(neighbour);
+% 			}
+			
+% 		}
+% 	}
+	
+% 	// since we'e've run out of search there was no path
+% 	return null;
+% }
 
-pseudokod, schemat blokowy
+% protected boolean isValidLocation(int sx, int sy, int x, int y) {
+% 	if (x < 0 || y < 0 || x >= width() || y >= height())
+% 		return false;
+	
+% 	if (map.blocked(x, y))
+% 		return false;
+	
+% 	return true;
+% }
+
+% protected boolean isValidMove(int sx, int sy, int x, int y) {
+% 	if (!isValidLocation(sx, sy, x, y)) {
+% 		return false;
+% 	}
+% 	// diagonal move not possible when one cell is blocked
+% 	int dx = abs(sx - x);
+% 	int dy = abs(sy - y);
+% 	// diagonal move
+% 	if (dx == 1 && dy == 1) {
+% 		if (map.blocked(x, y) || map.blocked(sx, sy) || map.blocked(sx, y) || map.blocked(x, sy)) {
+% 			return false;
+% 		}
+% 	}
+	
+% 	return true;
+% }
+
+% private int abs(int x) {
+% 	return x >= 0 ? x : -x;
+% }
+
+% protected float getMovementCost(int x, int y, int tx, int ty) {
+% 	return Math.max(Math.abs(tx - x), Math.abs(ty - y));
+% 	//		return (float) Math.hypot(tx - x, ty - y);
+% 	//		return (float) Math.abs(tx - x) + Math.abs(ty - y);
+% }
+
+% protected float getHeuristicCost(int x, int y, int tx, int ty) {
+% 	return (float) Math.max(Math.abs(tx - x), Math.abs(ty - y));
+% 	//		return (float) Math.abs(tx - x) + Math.abs(ty - y);
+% 	//		return (float) Math.hypot(tx - x, ty - y);
+% }
+
+% private List<Node> availableNeighbours(Node current) {
+% 	List<Node> neighbours = new LinkedList<>();
+% 	for (int dx = -1; dx <= 1; dx++) {
+% 		for (int dy = -1; dy <= 1; dy++) {
+% 			if (dx == 0 && dy == 0)
+% 				continue;
+% 			// determine the location of the neighbour and evaluate it
+% 			int xp = current.getX() + dx;
+% 			int yp = current.getY() + dy;
+% 			// validate out of bounds
+% 			if ((xp < 0) || (yp < 0) || (xp >= width()) || (yp >= height()))
+% 				continue;
+% 			neighbours.add(nodes[xp][yp]);
+% 		}
+% 	}
+% 	// możliwe czekanie w tym samym miejscu - jako ostatnia propozycja
+% 	neighbours.add(nodes[current.getX()][current.getY()]);
+% 	return neighbours;
+% }

@@ -39,62 +39,60 @@ Kolejne kroki algorytmu przedstawiają się następująco:
 
 Pojedyncze dołączanie kolejnych wierzchołków do rozrastającego się grafu labiryntu zapewnia, że wynikowy graf również będzie grafem spójnym.
 
-Poniżej przedstawiono pseudokod, obrazujący zaproponowaną metodę działania algorytmu.
+Poniżej przedstawiono pseudokod, obrazujący szczegóły działania zaproponowanej metody.
 
 \begin{algorithm}[H]
-  \caption{Generowanie labiryntu}\label{alg:mazegen}
+	\caption{Generowanie labiryntu}\label{alg:mazegen}
   \begin{algorithmic}[1]
-\REQUIRE {$w$ - szerokość mapy, $h$ - wysokość mapy}
+\Require {$w$ - szerokość mapy, $h$ - wysokość mapy}
 
-\STATE $mapa[][] \gets$ nowa tablica $w \times h$ wypełniona wartościami $PRZESZKODA$
+\State $mapa[][] \gets$ nowa tablica $w \times h$ wypełniona wartościami $ZABLOKOWANE$
 
-\STATE $nieodwiedzone \gets$ pusta lista
-\STATE $odwiedzone \gets$ pusta lista
-\FOR{$x \gets$ co drugi indeks do wartości $w$}
-	\FOR{$y \gets$ co drugi indeks do wartości $h$}
-		\STATE $mapa[x][y] \gets WOLNE$
-		\STATE dodaj $mapa[x][y]$ do $nieodwiedzone$
-	\ENDFOR
-\ENDFOR
+\State $nieodwiedzone \gets \varnothing$ \Comment{Inicjalizacja pustych list}
+\State $odwiedzone \gets \varnothing$
+\For{$x \gets 0$; $x < w$; $x \gets x + 2$} \Comment{co drugi indeks szerokości}
+	\For{$y \gets 0$; $y < h$; $y \gets y + 2$} \Comment{co drugi indeks wysokości}
+		\State $mapa[x][y] \gets WOLNE$
+		\State dodaj $mapa[x][y]$ do $nieodwiedzone$
+	\EndFor
+\EndFor
 
-\STATE $ziarno$ $\gets$ losowe pole z $nieodwiedzone$
-\STATE dodaj $ziarno$ do $odwiedzone$
-\STATE usuń $ziarno$ z $nieodwiedzone$
+\State $ziarno$ $\gets$ losowe pole z $nieodwiedzone$
+\State dodaj $ziarno$ do $odwiedzone$
+\State usuń $ziarno$ z $nieodwiedzone$
 
-\WHILE{lista $nieodwiedzone$ nie jest pusta}
-	\STATE $nowy$ $\gets$ losowe pole z $nieodwiedzone$
-	\STATE $sasiad$ $\gets$ znajdźNajbliższegoSąsiada($odwiedzone$, $nowy$)
-	\STATE wyburzDrogę($mapa$, $nowy$, $sasiad$)
-	\STATE dodaj $nowy$ do $odwiedzone$
-	\STATE usuń $nowy$ z $nieodwiedzone$
-\ENDWHILE
+\While{$nieodwiedzone \ne \varnothing$} \Comment{dopóki $nieodwiedzone$ nie jest pusta}
+	\State $nowePole$ $\gets$ losowe pole z $nieodwiedzone$
+	\State $sasiad$ $\gets$ \Call{znajdźNajbliższegoSąsiada}{$odwiedzone$, $nowePole$}
+	\State \Call{wyburzDrogę}{$mapa$, $nowePole$, $sasiad$}
+	\State dodaj $nowePole$ do $odwiedzone$
+	\State usuń $nowePole$ z $nieodwiedzone$
+\EndWhile
 
-\RETURN $mapa[][]$
+\State {\bf return} $mapa[][]$
 
-\STATE 
-\STATE {\bf function} wyburzDrogę($mapa$, $poleZ$, $poleDo$)
-	\begin{ALC@g}
-	\STATE $x \gets poleZ.x$
-	\STATE $y \gets poleZ.y$
-	\WHILE{$x < poleDo.x$}
-		\STATE $mapa[x\verb-++-][y] \gets WOLNE$ 
-	\ENDWHILE
-	\WHILE{$x > poleDo.x$}
-		\STATE $mapa[x\verb+--+][y] \gets WOLNE$
-	\ENDWHILE
-	\WHILE{$y < poleDo.y$}
-		\STATE $mapa[x][y\verb-++-] \gets WOLNE$
-	\ENDWHILE
-	\WHILE{$y > poleDo.y$}
-		\STATE $mapa[x][y\verb+--+] \gets WOLNE$
-	\ENDWHILE
-	\end{ALC@g}
-\STATE {\bf end function}
-	\end{algorithmic}
+\State 
+\Function{wyburzDrogę}{$mapa$, $poleZ$, $poleDo$}
+	\State $x \gets poleZ.x$
+	\State $y \gets poleZ.y$
+	\While{$x < poleDo.x$} \Comment{Przesuwanie w prawo}
+		\State $mapa[x\verb-++-][y] \gets WOLNE$ 
+	\EndWhile
+	\While{$x > poleDo.x$} \Comment{Przesuwanie w lewo}
+		\State $mapa[x\verb+--+][y] \gets WOLNE$
+	\EndWhile
+	\While{$y < poleDo.y$} \Comment{Przesuwanie w dół}
+		\State $mapa[x][y\verb-++-] \gets WOLNE$
+	\EndWhile
+	\While{$y > poleDo.y$} \Comment{Przesuwanie w górę}
+		\State $mapa[x][y\verb+--+] \gets WOLNE$
+	\EndWhile
+\EndFunction
+  \end{algorithmic}
 \end{algorithm}
 
 Oznaczenie $x\verb-++-$ oraz $x\verb+--+$ oznacza odpowiednio postinkrementację i postdekrementację (dokonanie zwiększenia lub zmniejszenia o 1 {\bf po} wykorzystaniu wartości zmiennej w wyrażeniu).
-Funkcja {\it znajdźNajbliższegoSąsiada} wyszukuje sąsiada dla pola $nowy$ z listy $odwiedzone$. Wynik wyszukiwania jest najbliższy w sensie metryki miejskiej (metryki Manhattan).
+Funkcja {\it znajdźNajbliższegoSąsiada} wyszukuje sąsiada dla pola $nowePole$ z listy $odwiedzone$. Wynik wyszukiwania jest najbliższy w sensie metryki miejskiej (metryki Manhattan).
 
 Kolejne etapy generowania labiryntu zobrazowano na rysunku \ref{fig:etapy-generowania}.
 
@@ -119,3 +117,5 @@ Na rysunku \ref{fig:maze75-75} przedstawiono przykładowy labirynt wygenerowany 
 	\caption{Przykładowy labirynt rozmiaru $75 \times 75$ pochodzący z generatora map}
 	\label{fig:maze75-75}
 \end{figure}
+
+Wygenerowane w ten sposób mapy mają jeszcze jedną właściwość - w takim środowisku robot nie ma nigdy możliwości wykonania ruchu ukośnego (innego niż w poziomie lub pionie). Pozwala to wprowadzić pewne ograniczenia do niektórych algorytmów planowania (por. \ref{ch:theory-coop-astar}), które przyspieszają wykonywanie obliczeń ze względu na możliwość założenia jednakowego czasu trwania wszystkich ruchów robotów. Nie będziemy jednak tego zakładać na tym etapie, gdyż chcemy, aby opracowana metoda planowania tras mogła także działać w środowiskach innego typu.
