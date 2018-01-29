@@ -1,7 +1,15 @@
 \section{Wyznaczanie trajektorii dla pojedynczego robota}
 \label{ch:alg-single-astar}
 
-Wiele technik planowania tras wykonuje indywidualne planowanie dla każdego agenta w oparciu jedynie o stan agenta, nie biorąc pod uwagę położenia innych robotów  wykorzystuje A* jako główny algorytm przeszukujący, mimo możliwości zastosowania technik 
+Wiele technik planowania tras, mimo iż może posłużyć do koordynacji ruchu wielu robotów, wykonuje indywidualne planowanie dla każdego robota z osobna. Przykładem takiego algorytmu jest {\it Local-Repair A*}. Trajektorie wyznaczane są w oparciu o stan agenta, nie biorąc pod uwagę decyzji podjętych przez pozostałych agentów. Jako główny algorytm przeszukujący wykorzystywany jest najczęściej A*.
+
+$TODO$
+Zanim przejdziemy do koordynacji ruchu wielu robotów, konieczne jest zaimplementowanie metody wyznaczania trajektorii dla pojedynczego robota. 
+
+Ogólna zasada działania algorytmu A* została opisana w rozdziale \ref{ch:astar-theory}
+
+
+
 
 $TODO$ własne heurystyki i modyfikacje, ruch na ukos, ale w przypadku braku przeszkody na krawędziach
 

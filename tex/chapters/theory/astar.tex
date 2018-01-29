@@ -9,6 +9,7 @@ Rozdział ten zmierza do zaprezentowania zasady działania oraz cech algorytmu W
 W rozdziale zaprezentowano także rozwiązania alternatywne takie, jak: D* (por. \ref{ch:dstar}) i LRA* (por. \ref{ch:lra}).
 
 \section{Algorytm A*}
+\label{ch:astar-theory}
 \subsection{Zasada działania}
 A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znalezienia najkrótszej ścieżki między węzłem początkowym a węzłem docelowym. Algorytm ten jest powszechnie stosowany w zagadnieniach sztucznej inteligencji oraz w grach komputerowych \cite{mit_astar}. Opiera się na zapisywaniu węzłów w dwóch listach: zamkniętych (odwiedzonych) i otwartych (do odwiedzenia). Jest modyfikacją algorytmu Dijkstry poprzez wprowadzenie pojęcia funkcji heurystycznej $h(n)$. Wartość funkcji heurystycznej powinna określać przewidywaną drogę do węzła docelowego z bieżącego punktu. Pełny koszt $f(n)$ stanowi sumę dotychczasowego kosztu $g(n)$ oraz przewidywanego pozostałego kosztu.
 

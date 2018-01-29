@@ -9,6 +9,7 @@ build: latex1 bibgen latex2 latex3 success
 
 latex:
 	${LATEX} --output-directory=${OUT} ${PROJECT}
+	cp "${OUT}/${PROJECT}.pdf" "${OUT}/${PROJECT_VIEW}.pdf"
 
 latex1:
 	@echo "========================== pdflatex (1) =========================="
@@ -27,13 +28,15 @@ bibgen:
 	bibtex ${OUT}/${PROJECT}
 
 show:
-	okular ${OUT}/${PROJECT}.pdf &
+	okular ${OUT}/${PROJECT_VIEW}.pdf &
 
 watch:
 	watchtower -i 2 -f '**/*.tex' 'bibliography.bib' -e make
 
 success:
-	@echo "${OUT}/${PROJECT}.pdf has been generated successfully."
+	# replace file when it's actually ready to prevent spurious reloadings by okular
+	cp "${OUT}/${PROJECT}.pdf" "${OUT}/${PROJECT_VIEW}.pdf"
+	@echo "${OUT}/${PROJECT_VIEW}.pdf has been generated successfully."
 
 spell:
 	# aspell -t --lang=pl -c praca.tex
