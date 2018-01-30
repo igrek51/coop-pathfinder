@@ -43,20 +43,17 @@ public class MyWHCAPathFinder {
 			for (int y = 0; y < reservation.getHeight(); y++) {
 				for (int t = 0; t < reservation.getTimeDimension(); t++) {
 					nodes[x][y][t] = new Node(x, y, t);
+					nodes[x][y][t].setCost(maxF());
 				}
 			}
 		}
 		
-		for (int t = 0; t < reservation.getTimeDimension(); t++) {
-			nodes[tx][ty][t].setParent(null);
-			nodes[sx][sy][t].setCost(0);
-		}
 		//Dodajemy pole startowe (lub węzeł) do Listy Otwartych.
 		Node startNode = nodes[sx][sy][0];
 		startNode.setCost(0);
 		Float heuristicCost = getHeuristicCost(sx, sy, 0, tx, ty);
 		if (heuristicCost == null) {
-			heuristicCost = maxHeuristic(); // FIXME kind of max
+			heuristicCost = maxF(); // FIXME kind of max
 		}
 		startNode.setHeuristic(heuristicCost);
 		open.add(startNode);
@@ -134,7 +131,7 @@ public class MyWHCAPathFinder {
 					heuristicCost = getHeuristicCost(neighbour.getX(), neighbour.getY(), neighbour
 							.getT(), tx, ty);
 					if (heuristicCost == null) {
-						heuristicCost = maxHeuristic();
+						heuristicCost = maxF();
 					}
 					neighbour.setHeuristic(heuristicCost);
 					neighbour.setParent(current);
@@ -166,8 +163,8 @@ public class MyWHCAPathFinder {
 		return null;
 	}
 	
-	private float maxHeuristic() {
-		return (float) (map.getWidthInTiles() * map.getHeightInTiles()); // FIXME kind of max
+	private float maxF() {
+		return (float) (map.getWidthInTiles() * map.getHeightInTiles() * 2); // FIXME kind of max
 	}
 	
 	protected boolean isValidLocation(int sx, int sy, int x, int y, int t) {
@@ -203,11 +200,12 @@ public class MyWHCAPathFinder {
 		return x >= 0 ? x : -x;
 	}
 	
-	protected float getMovementCost(int sx, int sy, int tx, int ty) {
+	protected float getMovementCost(int x, int y, int tx, int ty) {
 		//		float dx = tx - sx;
 		//		float dy = ty - sy;
 		//		return (float) (Math.sqrt((dx * dx) + (dy * dy)));
-		return Math.max(Math.abs(tx - sx), Math.abs(ty - sy));
+		//		return Math.max(Math.abs(tx - x), Math.abs(ty - y));
+		return (float) Math.hypot(tx - x, ty - y);
 	}
 	
 	protected Float getHeuristicCost(int x, int y, int t, int tx, int ty) {
