@@ -42,11 +42,12 @@ public class Astar2DPathFinder {
 		for (int x = 0; x < width(); x++) {
 			for (int y = 0; y < height(); y++) {
 				nodes[x][y] = new Node(x, y);
+				nodes[x][y].setCost(Float.MAX_VALUE);
 			}
 		}
 		
-		nodes[tx][ty].setParent(null);
 		nodes[sx][sy].setCost(0);
+		nodes[sx][sy].setHeuristic(getHeuristicCost(sx, sy, tx, ty));
 		//Dodajemy pole startowe (lub węzeł) do Listy Otwartych.
 		open.add(nodes[sx][sy]);
 		
@@ -70,12 +71,12 @@ public class Astar2DPathFinder {
 				// to the start recording the nodes on the way.
 				//Zapisujemy ścieżkę. Krocząc w kierunku od pola docelowego do startowego, przeskakujemy z kolejnych pól na im przypisane pola rodziców, aż do osiągnięcia pola startowego.
 				Path path = new Path();
-				Node target = nodes[tx][ty];
-				while (target != nodes[sx][sy]) {
-					path.prependStep(target.getX(), target.getY());
-					target = target.getParent();
-					if (target == null) {
-						logger.error("target = null");
+				Node node = nodes[tx][ty];
+				while (node != nodes[sx][sy]) {
+					path.prependStep(node.getX(), node.getY());
+					node = node.getParent();
+					if (node == null) {
+						logger.error("node (parent) = null");
 					}
 				}
 				path.prependStep(sx, sy);
@@ -100,26 +101,24 @@ public class Astar2DPathFinder {
 				// the cost to get to this node is cost the current plus the movement
 				// cost to reach this node. Note that the heursitic value is only used
 				// in the sorted open list
-				float nextStepCost = current.getCost() + getMovementCost(current.getX(), current.getY(), neighbour
+				float newCost = current.getCost() + getMovementCost(current.getX(), current.getY(), neighbour
 						.getX(), neighbour.getY());
 				
 				// if the new cost we've determined for this node is lower than
 				// it has been previously makes sure the node hasn'e've
 				// determined that there might have been a better path to get to
 				// this node so it needs to be re-evaluated
-				if (nextStepCost < neighbour.getCost()) {
-					if (open.contains(neighbour)) {
+				if (newCost < neighbour.getCost()) {
+					if (open.contains(neighbour))
 						open.remove(neighbour);
-					}
-					if (closed.contains(neighbour)) {
+					if (closed.contains(neighbour))
 						closed.remove(neighbour);
-					}
 				}
 				// if the node hasn't already been processed and discarded then
 				// reset it's cost to our current cost and add it as a next possible
 				// step (i.e. to the open list)
 				if (!open.contains(neighbour) && !closed.contains(neighbour)) {
-					neighbour.setCost(nextStepCost);
+					neighbour.setCost(newCost);
 					neighbour.setHeuristic(getHeuristicCost(neighbour.getX(), neighbour.getY(), tx, ty));
 					neighbour.setParent(current);
 					open.add(neighbour);
@@ -164,15 +163,15 @@ public class Astar2DPathFinder {
 	}
 	
 	protected float getMovementCost(int x, int y, int tx, int ty) {
-		return Math.max(Math.abs(tx - x), Math.abs(ty - y));
-		//		return (float) Math.hypot(tx - x, ty - y);
+		//		return Math.max(Math.abs(tx - x), Math.abs(ty - y));
 		//		return (float) Math.abs(tx - x) + Math.abs(ty - y);
+		return (float) Math.hypot(tx - x, ty - y);
 	}
 	
 	protected float getHeuristicCost(int x, int y, int tx, int ty) {
-		return (float) Math.max(Math.abs(tx - x), Math.abs(ty - y));
+		//		return (float) Math.max(Math.abs(tx - x), Math.abs(ty - y));
 		//		return (float) Math.abs(tx - x) + Math.abs(ty - y);
-		//		return (float) Math.hypot(tx - x, ty - y);
+		return (float) Math.hypot(tx - x, ty - y);
 	}
 	
 	private List<Node> availableNeighbours(Node current) {

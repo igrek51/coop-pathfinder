@@ -45,8 +45,8 @@
                         <Button mnemonicParsing="false" onAction="#randomTargetPressed"
                                 text="Random target" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
 
-                        <Button mnemonicParsing="false" onAction="#buttonPathfind"
-                                text="Find Paths" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <!--<Button mnemonicParsing="false" onAction="#buttonPathfind"-->
+                        <!--text="Find Paths" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>-->
                         <!--parameters-->
                         <TitledPane text="Map size">
                             <HBox HBox.hgrow="ALWAYS">

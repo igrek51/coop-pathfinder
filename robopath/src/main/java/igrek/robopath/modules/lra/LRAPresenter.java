@@ -77,6 +77,7 @@ public class LRAPresenter {
 			mouseDraggedMap(event);
 		});
 		drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+			mouseReleased(event);
 		});
 		
 		params.init(this);
@@ -192,6 +193,24 @@ public class LRAPresenter {
 				}
 			}
 			
+		}
+	}
+	
+	private void mouseReleased(MouseEvent event) {
+		TileMap map = getMap();
+		
+		if (event.getButton() == MouseButton.PRIMARY) {
+			Point point = locatePoint(map, event);
+			if (point != null) {
+				synchronized (controller) {
+					List<MobileRobot> robots = getRobots();
+					if (!robots.isEmpty()) {
+						MobileRobot lastRobot = robots.get(robots.size() - 1);
+						lastRobot.setTarget(point);
+						repaint();
+					}
+				}
+			}
 		}
 	}
 	

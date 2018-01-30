@@ -11,7 +11,7 @@
             <children>
                 <TabPane fx:id="containerTabPane" HBox.hgrow="ALWAYS">
                     <tabs>
-                        <Tab text="Potential field">
+                        <Tab text="Potential fields">
                             <content>
                                 <fx:include source="../potentialfield/potentialfield.fxml"/>
                             </content>
@@ -22,7 +22,7 @@
                                 <fx:include source="../lra/lra.fxml"/>
                             </content>
                         </Tab>
-                        <Tab text="WHCA2*">
+                        <Tab text="WHCA*">
                             <content>
                                 <fx:include source="../whca/whca.fxml"/>
                             </content>
