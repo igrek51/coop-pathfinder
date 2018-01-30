@@ -21,8 +21,13 @@ $TODO$
 	\caption{Algorytm A*}\label{alg:astar}
   \begin{algorithmic}[1]
 \Function{znajdzDrogę}{$mapa$, $start$, $cel$}
-	\State $closed \gets \varnothing$  \Comment{Lista zamkniętych}
-	\State $open \gets {start}$ \Comment{Lista otwartych}
+	\State $closed \gets \varnothing$  \Comment{pusta lista zamkniętych}
+	\State $open \gets \{start\}$ \Comment{lista otwartych zawiera punkt startowy}
+
+	\For{$wezel \in mapa$}
+		\State $wezel.g = \infty$ \Comment{domyślnie nieskończony koszt - odległość od startu}
+	\EndFor
+
 	\State $start.g \gets 0$ \Comment{Zerowy koszt przejścia do węzła startowego}
 
 	\If{$mapa[cel.x][cel.y] == ZABLOKOWANE$} \Comment{Punkt docelowy zablokowany}
@@ -39,7 +44,7 @@ $TODO$
 		\State dodaj $obecny$ do $closed$ \Comment{Przesunięcie z $open$ do $closed$}
 		\State usuń $obecny$ z $open$
 		
-		\For{$sasiad \in$ \Call{sąsiedzi}{$obecny$}} \Comment{Dla każdego z wybranych przyległych pól (sasiad) do pola aktualnego}
+		\For{$sasiad \in$ \Call{sąsiedzi}{$obecny$}} \Comment{Dla każdego sąsiada aktualnego pola}
 			
 			\If{$mapa[sasiad.x][sasiad.y] == ZABLOKOWANE$}
 				\State {\bf continue}
@@ -48,10 +53,10 @@ $TODO$
 				\State {\bf continue}
 			\EndIf
 			
-			\State $nowyKoszt \gets obecny.g +$ \Call{kosztPrzejścia}{$obecny$, $sasiad$}
+			\State $nowyKoszt \gets obecny.g \ +$ \Call{kosztPrzejścia}{$obecny$, $sasiad$}
 
-			\If{$nowyKoszt < sasiad.g$} \Comment{potrzeba ponownego przeliczenia}
-				\If{$sasiad \in open$}
+			\If{$nowyKoszt < sasiad.g$} \Comment{znaleziono korzystniejsze połączenie}
+				\If{$sasiad \in open$} \Comment{konieczność ponownego przeliczenia}
 					\State usun $sasiad$ z $open$
 				\EndIf
 				\If{$sasiad \in closed$}

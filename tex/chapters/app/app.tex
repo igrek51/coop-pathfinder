@@ -2,31 +2,40 @@
 \label{ch:simulation-app}
 
 Na potrzeby pracy zostało stworzone oprogramowanie symulacyjne, które posłużyło do przeprowadzenia testów algorytmów oraz wizualizacji ich działania.
-Prezentacja działania algorytmów planowania tras możliwa jest dzięki wizualizacji ruchu robotów odbywajacego się w czasie rzeczywistym. 
+W tym rozdziale opisano techniczne rozwiązania wykorzystane podczas tworzenia oprogramowania.
+W aplikacji zostały zaimplementowane algorytmy opisane w rozdziale \ref{ch:alg-impl}.
+Prezentacja działania algorytmów planowania tras odbywa się poprzez wizualizację ruchu robotów w czasie rzeczywistym. 
 
 \section{Funkcjonalności aplikacji}
-
 Aplikacja umożliwia dowolne definiowanie przez użytkownika środowiska, w którym poruszają się roboty. Obejmuje to:
 \begin{itemize}
-	\item wybór rozmiaru mapy - dowolna wysokość oraz szerokość. Mapa nie musi być kwadratowa.
+	\item wybór rozmiaru mapy - dowolną wysokość oraz szerokość. Mapa nie musi być kwadratowa.
 	\item możliwość wygenerowania mapy za pomocą generatora labiryntów (por. \ref{ch:mazegen}) lub manualnego umieszczania przeszkód na mapie za pomocą myszki,
 	\item wybór liczby robotów i dokonanie ich automatycznego rozmieszczenia na mapie (w losowych polach z pominięciem pól zajętych). Użytkownik ma także możliwość manualnego dodawania i usuwania robotów.
 \end{itemize}
-położenia przeszkód 
-Aplikacja umożliwia symulację ruchu robotów oraz definiowanie położenia przeszkód przez użytkownika.
 
-Zakres pracy - Implementacja oprogramowania symulacyjnego
-
+Aplikacja przeprowadza symulację ruchu robotów w czasie rzeczywistym. W oprogramowaniu zostały zaimplementowane trzy algorytmy planowania ruchu robotów. Są to:
+\begin{itemize}
+	\item Metoda pól potencjałowych
+	\item Local-Repair A*
+	\item Windowed Hierarchical Cooperative A*
+\end{itemize}
+Wizualizacja każdego z tych algorytmów dostępna jest na osobnej zakładce w aplikacji.
 
 \section{Interfejs użytkownika}
 $TODO$ opis UI, zaznaczanie dróg, celów, płynne animacje, osobny wątek do UI
 kółka to roboty, wyświetlanie ścieżek, celów
-co robi każdy przycisk
+co robi każdy przycisk - instrukcja
+3 zakładki: potential field, 
+prawy klik
+skalowalnosć, responsywność okna
 
-\section{Stack technologiczny}
-$TODO$ Wykorzystane technologie i narzędzia - opis technologii:
+\section{Wykorzystane technologie}
+$TODO$ stack technologiczny, Wykorzystane technologie i narzędzia - opis technologii:
 Java 8 - lambda, functional interfaces, streamy,
 Java FX - FXML, Spring (core): IoC, DI; Spring Boot, testy jednostkowe jUnit, git, IntelliJ Ultimate, Maven, Linux, logback, Guava - joiner
+
+uruchomienie aplikacji z kodów źródłowych : mvn spring-boot:run
 
 \section{Testy}
 $TODO$ TDD - Test driven development, testy jednostkowe do algorytmów pathfinding
@@ -47,6 +56,7 @@ ponowne wykonanie symulacji - te same warunki
 przełaczanie między metodami na zakładkach ?
 wykonanie symulacji w pojedynczych krokach
 resizable window - responsive
+heuristic cache
 
 \section{Ograniczenia}
 $TODO$ nałożone uproszczenia: ruch skośny trwa tyle samo, czas dyskretny, brak czasu na obrót
