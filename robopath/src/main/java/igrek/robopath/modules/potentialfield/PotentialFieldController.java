@@ -13,8 +13,6 @@ import igrek.robopath.common.Point;
 import igrek.robopath.modules.common.ResizableCanvas;
 import igrek.robopath.modules.potentialfield.robot.MobileRobot;
 import igrek.robopath.modules.potentialfield.robot.Vector2;
-import igrek.robopath.pathfinder.PathFinder;
-import igrek.robopath.pathfinder.astar.AStarPathFinder;
 import igrek.robopath.pathfinder.astar.Path;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,7 +21,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -55,10 +52,6 @@ public class PotentialFieldController {
 	private TextField paramMapSizeW;
 	@FXML
 	private TextField paramMapSizeH;
-	@FXML
-	private TextField paramRobotsCount;
-	@FXML
-	private CheckBox paramRobotAutoTarget;
 	
 	public PotentialFieldController(@Autowired Random random) {
 		this.random = random;
@@ -249,27 +242,6 @@ public class PotentialFieldController {
 	}
 	
 	@FXML
-	private void findPathPressed(final Event event) {
-		// remove previous paths
-		replaceCellTypes(TileCellType.PATH, TileCellType.EMPTY);
-		
-		PathFinder pathFinder = new AStarPathFinder(map, 0, true);
-		Point start = findFirstCellType(map, TileCellType.START);
-		Point target = findFirstCellTypeButNot(map, TileCellType.START, start);
-		if (start != null && target != null) {
-			path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
-			if (path != null) {
-				
-				for (int i = 1; i < path.getLength() - 1; i++) {
-					Path.Step step = path.getStep(i);
-					map.set(step.getX(), step.getY(), TileCellType.PATH);
-				}
-				drawMap();
-			}
-		}
-	}
-	
-	@FXML
 	private void randomTargetPressed(final Event event) {
 		for (MobileRobot robot : robots) {
 			randomRobotTarget(robot);
@@ -445,16 +417,12 @@ public class PotentialFieldController {
 	private void updateParams() {
 		paramMapSizeW.setText(Integer.toString(params.mapSizeW));
 		paramMapSizeH.setText(Integer.toString(params.mapSizeH));
-		paramRobotsCount.setText(Integer.toString(params.robotsCount));
-		paramRobotAutoTarget.setSelected(params.robotAutoTarget);
 	}
 	
 	private void readParams() {
 		try {
 			params.mapSizeW = Integer.parseInt(paramMapSizeW.getText());
 			params.mapSizeH = Integer.parseInt(paramMapSizeH.getText());
-			params.robotsCount = Integer.parseInt(paramRobotsCount.getText());
-			params.robotAutoTarget = paramRobotAutoTarget.isSelected();
 		} catch (NumberFormatException e) {
 			logger.error(e.getMessage());
 		}

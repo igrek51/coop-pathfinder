@@ -1,7 +1,27 @@
 \chapter{Oprogramowanie symulacyjne}
 \label{ch:simulation-app}
 
-do symulacji, wizualizacji i przeprowadzenia testów
+Na potrzeby pracy zostało stworzone oprogramowanie symulacyjne, które posłużyło do przeprowadzenia testów algorytmów oraz wizualizacji ich działania.
+Prezentacja działania algorytmów planowania tras możliwa jest dzięki wizualizacji ruchu robotów odbywajacego się w czasie rzeczywistym. 
+
+\section{Funkcjonalności aplikacji}
+
+Aplikacja umożliwia dowolne definiowanie przez użytkownika środowiska, w którym poruszają się roboty. Obejmuje to:
+\begin{itemize}
+	\item wybór rozmiaru mapy - dowolna wysokość oraz szerokość. Mapa nie musi być kwadratowa.
+	\item możliwość wygenerowania mapy za pomocą generatora labiryntów (por. \ref{ch:mazegen}) lub manualnego umieszczania przeszkód na mapie za pomocą myszki,
+	\item wybór liczby robotów i dokonanie ich automatycznego rozmieszczenia na mapie (w losowych polach z pominięciem pól zajętych). Użytkownik ma także możliwość manualnego dodawania i usuwania robotów.
+\end{itemize}
+położenia przeszkód 
+Aplikacja umożliwia symulację ruchu robotów oraz definiowanie położenia przeszkód przez użytkownika.
+
+Zakres pracy - Implementacja oprogramowania symulacyjnego
+
+
+\section{Interfejs użytkownika}
+$TODO$ opis UI, zaznaczanie dróg, celów, płynne animacje, osobny wątek do UI
+kółka to roboty, wyświetlanie ścieżek, celów
+co robi każdy przycisk
 
 \section{Stack technologiczny}
 $TODO$ Wykorzystane technologie i narzędzia - opis technologii:
@@ -12,10 +32,8 @@ Java FX - FXML, Spring (core): IoC, DI; Spring Boot, testy jednostkowe jUnit, gi
 $TODO$ TDD - Test driven development, testy jednostkowe do algorytmów pathfinding
 
 \section{Struktura aplikacji}
-$TODO$ lista beanów / serwisów, struktura widok, prezenter, kontroler; osobny wątek w tle do obliczeń + synchronizacja, wątek UI - zapewnienie REal-time
+$TODO$ lista beanów / serwisów, struktura widok, prezenter, kontroler; osobny wątek w tle do obliczeń + synchronizacja, wątek UI - zapewnienie REal-time, prawie MVP
 
-\section{Interfejs użytkownika}
-$TODO$ opis UI, zaznaczanie dróg, celów, płynne animacje, osobny wątek do UI
 
 \section{Screeny}
 $TODO$ screeny

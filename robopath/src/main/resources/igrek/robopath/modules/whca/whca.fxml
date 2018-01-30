@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <HBox xmlns="http://javafx.com/javafx/8.0.121"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="igrek.robopath.modules.lra.LRAPresenter"
+      fx:controller="igrek.robopath.modules.whca.Presenter"
       HBox.hgrow="ALWAYS">
     <children>
         <GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
@@ -47,8 +47,10 @@
 
                         <Button mnemonicParsing="false" onAction="#buttonPathfind"
                                 text="Find Paths" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#buttonRestoreArrangement"
+                                text="Restore positions" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <!--parameters-->
-                        <TitledPane text="Map size">
+                        <TitledPane text="Map">
                             <HBox HBox.hgrow="ALWAYS">
                                 <children>
                                     <TextField fx:id="paramMapSizeW" prefWidth="${menu.width*0.4}"/>
@@ -73,6 +75,21 @@
                                     <CheckBox fx:id="paramRobotAutoTarget"
                                               text="auto-assign next target"
                                               onAction="#eventReadParams"/>
+                                </children>
+                            </VBox>
+                        </TitledPane>
+                        <TitledPane text="WHCA*">
+                            <VBox>
+                                <children>
+                                    <HBox HBox.hgrow="ALWAYS">
+                                        <children>
+                                            <Label text="Time window:"
+                                                   prefWidth="${menu.width*0.5}"
+                                                   alignment="CENTER"/>
+                                            <TextField fx:id="paramTimeDimension"
+                                                       prefWidth="${menu.width*0.5}"/>
+                                        </children>
+                                    </HBox>
                                 </children>
                             </VBox>
                         </TitledPane>

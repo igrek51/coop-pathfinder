@@ -9,7 +9,7 @@ import javafx.scene.control.TabPane;
 @FXMLController
 public class ContainerController {
 	
-	private static final int DEFAULT_TAB_INDEX = 0; // beginning from 0
+	private static final int DEFAULT_TAB_INDEX = 2; // beginning from 0
 	
 	@FXML
 	private TabPane containerTabPane;

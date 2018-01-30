@@ -11,15 +11,20 @@
             <children>
                 <TabPane fx:id="containerTabPane" HBox.hgrow="ALWAYS">
                     <tabs>
-                        <!--<Tab text="Simple A*"><content><fx:include source="../simpleastar/simpleastar.fxml"/></content></Tab>-->
-                        <!--<Tab text="Non-colliding A*"><content><fx:include source="../robomove/robomove.fxml"/></content></Tab>-->
-                        <!--<Tab text="Potential field"><content><fx:include source="../potentialfield/potentialfield.fxml"/></content></Tab>-->
-                        <!--<Tab text="Collision avoid"><content><fx:include source="../colavoid/colavoid.fxml"/></content></Tab>-->
-                        <!--<Tab text="WHCA1*"><content><fx:include source="../whca1/whca1.fxml"/></content></Tab>-->
-                        <!--<Tab text="LRA*"><content><fx:include source="../lra/lra.fxml"/></content></Tab>-->
+                        <Tab text="Potential field">
+                            <content>
+                                <fx:include source="../potentialfield/potentialfield.fxml"/>
+                            </content>
+                        </Tab>
+                        <!--<Tab text="WHCA1*"><content><fx:include source="../whcakilavuz/whcakilavuz.fxml"/></content></Tab>-->
+                        <Tab text="LRA*">
+                            <content>
+                                <fx:include source="../lra/lra.fxml"/>
+                            </content>
+                        </Tab>
                         <Tab text="WHCA2*">
                             <content>
-                                <fx:include source="../whca2/whca2.fxml"/>
+                                <fx:include source="../whca/whca.fxml"/>
                             </content>
                         </Tab>
                     </tabs>

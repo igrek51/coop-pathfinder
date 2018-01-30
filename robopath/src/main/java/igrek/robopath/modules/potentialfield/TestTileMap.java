@@ -1,8 +1,6 @@
 package igrek.robopath.modules.potentialfield;
 
-import igrek.robopath.pathfinder.TileBasedMap;
-
-public class TestTileMap implements TileBasedMap {
+public class TestTileMap {
 	
 	private int width;
 	private int height;
@@ -31,22 +29,18 @@ public class TestTileMap implements TileBasedMap {
 		return tiles[x][y];
 	}
 	
-	@Override
 	public int getWidthInTiles() {
 		return width;
 	}
 	
-	@Override
 	public int getHeightInTiles() {
 		return height;
 	}
 	
-	@Override
 	public boolean blocked(int x, int y) {
 		return tiles[x][y] == TileCellType.BLOCKED;
 	}
 	
-	@Override
 	public float getCost(int sx, int sy, int tx, int ty) {
 		return 1;
 	}

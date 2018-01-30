@@ -3,6 +3,7 @@
 
 <?import igrek.robopath.modules.common.ResizableCanvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <HBox xmlns="http://javafx.com/javafx/8.0.121"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="igrek.robopath.modules.potentialfield.PotentialFieldController"
+      fx:controller="igrek.robopath.modules.whcakilavuz.Presenter"
       HBox.hgrow="ALWAYS">
     <children>
         <GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
@@ -35,10 +36,17 @@
                 <VBox fx:id="menu" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" GridPane.columnIndex="1">
                     <children>
                         <!--actions-->
-                        <Button mnemonicParsing="false" onAction="#randomTargetPressed"
-                                text="Random target" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#resetMap"
                                 text="Reset map" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#generateMaze"
+                                text="Generate maze" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#placeRobots"
+                                text="Place robots" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button mnemonicParsing="false" onAction="#randomTargetPressed"
+                                text="Random target" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+
+                        <Button mnemonicParsing="false" onAction="#buttonPathfind"
+                                text="Find Paths" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                         <!--parameters-->
                         <TitledPane text="Map size">
                             <HBox HBox.hgrow="ALWAYS">
@@ -49,6 +57,24 @@
                                     <TextField fx:id="paramMapSizeH" prefWidth="${menu.width*0.4}"/>
                                 </children>
                             </HBox>
+                        </TitledPane>
+                        <TitledPane text="Robots">
+                            <VBox>
+                                <children>
+                                    <HBox HBox.hgrow="ALWAYS">
+                                        <children>
+                                            <Label text="Mobile robots:"
+                                                   prefWidth="${menu.width*0.5}"
+                                                   alignment="CENTER"/>
+                                            <TextField fx:id="paramRobotsCount"
+                                                       prefWidth="${menu.width*0.5}"/>
+                                        </children>
+                                    </HBox>
+                                    <CheckBox fx:id="paramRobotAutoTarget"
+                                              text="auto-assign next target"
+                                              onAction="#eventReadParams"/>
+                                </children>
+                            </VBox>
                         </TitledPane>
                     </children>
                 </VBox>

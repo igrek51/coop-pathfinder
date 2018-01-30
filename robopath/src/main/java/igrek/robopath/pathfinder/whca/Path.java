@@ -1,4 +1,4 @@
-package igrek.robopath.pathfinder.astar;
+package igrek.robopath.pathfinder.whca;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +50,17 @@ public class Path {
 		return getStep(index).y;
 	}
 	
+	public int getT(int index) {
+		return getStep(index).t;
+	}
+	
 	/**
 	 * Prepend a step to the path.
 	 * @param x The x coordinate of the new step
 	 * @param y The y coordinate of the new step
 	 */
-	public void prependStep(int x, int y) {
-		steps.add(0, new Step(x, y));
+	public void prependStep(int x, int y, int t) {
+		steps.add(0, new Step(x, y, t));
 	}
 	
 	/**
@@ -65,8 +69,8 @@ public class Path {
 	 * @param y The y coordinate of the step to check for
 	 * @return True if the path contains the given step
 	 */
-	public boolean contains(int x, int y) {
-		return steps.contains(new Step(x, y));
+	public boolean contains(int x, int y, int t) {
+		return steps.contains(new Step(x, y, t));
 	}
 	
 	@Override
@@ -87,15 +91,17 @@ public class Path {
 		private int x;
 		/** The y coordinate at the given step */
 		private int y;
+		private int t;
 		
 		/**
 		 * Create a new step
 		 * @param x The x coordinate of the new step
 		 * @param y The y coordinate of the new step
 		 */
-		public Step(int x, int y) {
+		public Step(int x, int y, int t) {
 			this.x = x;
 			this.y = y;
+			this.t = t;
 		}
 		
 		/**
@@ -114,6 +120,10 @@ public class Path {
 			return y;
 		}
 		
+		public int getT() {
+			return t;
+		}
+		
 		/**
 		 * @see Object#hashCode()
 		 */
@@ -127,14 +137,14 @@ public class Path {
 		public boolean equals(Object other) {
 			if (other instanceof Step) {
 				Step o = (Step) other;
-				return (o.x == x) && (o.y == y);
+				return (o.x == x) && (o.y == y) && (o.t == t);
 			}
 			return false;
 		}
 		
 		@Override
 		public String toString() {
-			return "(" + x + ", " + y + ")";
+			return "(" + x + ", " + y + ", " + t + ")";
 		}
 	}
 }
