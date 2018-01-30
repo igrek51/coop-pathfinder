@@ -25,32 +25,32 @@ $TODO$
 	\State $open \gets {start}$ \Comment{Lista otwartych}
 	\State $start.g \gets 0$ \Comment{Zerowy koszt przejścia do węzła startowego}
 
-	\If{$mapa[cel.x][cel.y] == ZABLOKOWANE$}
+	\If{$mapa[cel.x][cel.y] == ZABLOKOWANE$} \Comment{Punkt docelowy zablokowany}
 		\State \Return $\varnothing$ \Comment{Brak rozwiązania}
 	\EndIf
 
 	\While{$open \ne \varnothing$} \Comment{dopóki lista otwartych nie jest pusta}
-		\State $current \gets $ \Call{znajdzMinF}{$open$} \Comment{Szukamy pola o najniższej wartości f}
+		\State $obecny \gets $ \Call{znajdźMinF}{$open$} \Comment{Szukamy pola o najniższej wartości f}
 
-		\If{$current == cel$}
+		\If{$obecny == cel$}
 			\State \Return \Call{zbudujŚcieżkę}{$cel$} \Comment{Znaleziono ścieżkę}
 		\EndIf
 
-		\State dodaj $current$ do $closed$ \Comment{Przesunięcie z $open$ do $closed$}
-		\State usuń $current$ z $open$
+		\State dodaj $obecny$ do $closed$ \Comment{Przesunięcie z $open$ do $closed$}
+		\State usuń $obecny$ z $open$
 		
-		\For{$sasiad \in$ \Call{sąsiedzi}{$current$}} \Comment{Dla każdego z wybranych przyległych pól (sasiad) do pola aktualnego}
+		\For{$sasiad \in$ \Call{sąsiedzi}{$obecny$}} \Comment{Dla każdego z wybranych przyległych pól (sasiad) do pola aktualnego}
 			
 			\If{$mapa[sasiad.x][sasiad.y] == ZABLOKOWANE$}
 				\State {\bf continue}
 			\EndIf
-			\If{{\bf not} \Call{przejściePoprawne}{$current$, $sasiad$}}
+			\If{{\bf not} \Call{przejściePoprawne}{$obecny$, $sasiad$}}
 				\State {\bf continue}
 			\EndIf
 			
-			\State $nowyKoszt \gets current.g +$ \Call{kosztPrzejścia}{$current$, $sasiad$}
+			\State $nowyKoszt \gets obecny.g +$ \Call{kosztPrzejścia}{$obecny$, $sasiad$}
 
-			\If{$nowyKoszt < sasiad.g$}
+			\If{$nowyKoszt < sasiad.g$} \Comment{potrzeba ponownego przeliczenia}
 				\If{$sasiad \in open$}
 					\State usun $sasiad$ z $open$
 				\EndIf
@@ -60,185 +60,28 @@ $TODO$
 			\EndIf
 
 			\If{$sasiad \not\in open \land sasiad \not\in closed$}
-				\State $sasiad.g \gets nowyKoszt$
+				\State $sasiad.g \gets nowyKoszt$ \Comment{zapisanie korzystniejszego połączenia}
 				\State $sasiad.h \gets$ \Call{heurystyka}{$sasiad$, $cel$}
-				\State $sasiad.parent \gets current$
+				\State $sasiad.parent \gets obecny$ \Comment{pole $obecny$ rodzicem dla pola $sasiad$}
 				\State dodaj $sasiad$ do $open$
 			\EndIf
 
 		\EndFor
 	\EndWhile
 
-	\State \Return $\varnothing$ \Comment{Brak istniejącej ścieżki}
-\EndFunction
-
-
-\State 
-\Function{heurystyka}{$mapa$, $poleZ$, $poleDo$}
-	\State \Return dupa
+	\State \Return $\varnothing$ \Comment{Przeanalizowano wszystkie węzły, brak istniejącej ścieżki}
 \EndFunction
   \end{algorithmic}
 \end{algorithm}
 
-% public Path findPath(int sx, int sy, int tx, int ty) {
-% 	// initial state for A*. The closed group is empty. Only the starting
-% 	// tile is in the open list and it'e're already there
-% 	closed.clear();
-% 	open.clear();
-	
-% 	nodes = new Node[width()][height()];
-% 	for (int x = 0; x < width(); x++) {
-% 		for (int y = 0; y < height(); y++) {
-% 			nodes[x][y] = new Node(x, y);
-% 		}
-% 	}
-	
-% 	nodes[tx][ty].setParent(null);
-% 	nodes[sx][sy].setCost(0);
-% 	//Dodajemy pole startowe (lub węzeł) do Listy Otwartych.
-% 	open.add(nodes[sx][sy]);
-	
-% 	// first check, if the destination is blocked, we can't get there
-% 	if (map.blocked(tx, ty))
-% 		return null;
-% 	//jeśli punkt docelowy jest punktem startowym - brak ścieżki
-% 	if (sx == tx && sy == ty)
-% 		return null;
-	
-% 	//dopóki lista otwartych nie jest pusta
-% 	while (!open.isEmpty()) {
-% 		// pull out the first node in our open list, this is determined to
-% 		// be the most likely to be the next step based on our heuristic
-% 		//Szukamy pola o najniższej wartości F na Liście Otwartych. Czynimy je aktualnym polem
-% 		Node current = open.peek();
-% 		//jeśli current jest węzłem docelowym
-% 		if (current.getX() == tx && current.getY() == ty) {
-% 			// At this point we've definitely found a path so we can uses the parent
-% 			// references of the nodes to find out way from the target location back
-% 			// to the start recording the nodes on the way.
-% 			//Zapisujemy ścieżkę. Krocząc w kierunku od pola docelowego do startowego, przeskakujemy z kolejnych pól na im przypisane pola rodziców, aż do osiągnięcia pola startowego.
-% 			Path path = new Path();
-% 			Node target = nodes[tx][ty];
-% 			while (target != nodes[sx][sy]) {
-% 				path.prependStep(target.getX(), target.getY());
-% 				target = target.getParent();
-% 				if (target == null) {
-% 					logger.error("target = null");
-% 				}
-% 			}
-% 			path.prependStep(sx, sy);
-% 			return path;
-% 		}
-% 		//Aktualne pole przesuwamy do Listy Zamkniętych.
-% 		open.remove(current);
-% 		closed.add(current);
-% 		// search through all the neighbours of the current node evaluating
-% 		// them as next steps
-% 		//Dla każdego z wybranych przyległych pól (sasiad) do pola aktualnego
-% 		List<Node> neighbours = availableNeighbours(current);
-% 		for (Node neighbour : neighbours) {
-			
-% 			//jeśli NIE-MOŻNA go przejść, ignorujemy je.
-% 			if (!isValidLocation(sx, sy, neighbour.getX(), neighbour.getY()))
-% 				continue;
-			
-% 			if (!isValidMove(current.getX(), current.getY(), neighbour.getX(), neighbour.getY()))
-% 				continue;
-			
-% 			// the cost to get to this node is cost the current plus the movement
-% 			// cost to reach this node. Note that the heursitic value is only used
-% 			// in the sorted open list
-% 			float nextStepCost = current.getCost() + getMovementCost(current.getX(), current.getY(), neighbour
-% 					.getX(), neighbour.getY());
-			
-% 			// if the new cost we've determined for this node is lower than
-% 			// it has been previously makes sure the node hasn'e've
-% 			// determined that there might have been a better path to get to
-% 			// this node so it needs to be re-evaluated
-% 			if (nextStepCost < neighbour.getCost()) {
-% 				if (open.contains(neighbour)) {
-% 					open.remove(neighbour);
-% 				}
-% 				if (closed.contains(neighbour)) {
-% 					closed.remove(neighbour);
-% 				}
-% 			}
-% 			// if the node hasn't already been processed and discarded then
-% 			// reset it's cost to our current cost and add it as a next possible
-% 			// step (i.e. to the open list)
-% 			if (!open.contains(neighbour) && !closed.contains(neighbour)) {
-% 				neighbour.setCost(nextStepCost);
-% 				neighbour.setHeuristic(getHeuristicCost(neighbour.getX(), neighbour.getY(), tx, ty));
-% 				neighbour.setParent(current);
-% 				open.add(neighbour);
-% 			}
-			
-% 		}
-% 	}
-	
-% 	// since we'e've run out of search there was no path
-% 	return null;
-% }
+Wykorzystane zostały pomocnicze funkcje:
+\begin{itemize}
+	\item \textsc{znajdźMinF}($lista$) - zwraca z listy pole o najniższej wartości $f$ (sumy kosztu i heurystyki)
+	\item \textsc{zbudujŚcieżkę}($cel$) - zwraca ścieżkę z punktu startowego do punktu $cel$ zbudowaną na podstawie przechodzenia wstecz od punktu $cel$ po kolejnych rodzicach węzłów
+	\item \textsc{sąsiedzi}($pole$) - zwraca zbiór pól bezpośrednio sąsiadujących (dla których istnieje możliwość przejścia) z $pole$
+	\item \textsc{przejściePoprawne}($poleZ$, $poleDo$) - zwraca prawdę wtedy i tylko wtedy, gdy istnieje możliwość przejścia z $poleZ$ do $poleDo$. Gdy wykonywany jest ruch ukośny, ale na przynajmniej jednym polu sąsiadującym z $poleZ$ i $poleDo$ znajduje się przeszkoda, to taki ruch jest niepoprawny.
+	\item \textsc{kosztPrzejścia}($poleZ$, $poleDo$) - zwraca koszt przejścia z $poleZ$ do $poleDo$
+	\item \textsc{heurystyka}($poleZ$, $poleDo$) - zwraca przewidywaną pozostałą drogę od $poleZ$ do $poleDo$
+\end{itemize}
 
-% protected boolean isValidLocation(int sx, int sy, int x, int y) {
-% 	if (x < 0 || y < 0 || x >= width() || y >= height())
-% 		return false;
-	
-% 	if (map.blocked(x, y))
-% 		return false;
-	
-% 	return true;
-% }
-
-% protected boolean isValidMove(int sx, int sy, int x, int y) {
-% 	if (!isValidLocation(sx, sy, x, y)) {
-% 		return false;
-% 	}
-% 	// diagonal move not possible when one cell is blocked
-% 	int dx = abs(sx - x);
-% 	int dy = abs(sy - y);
-% 	// diagonal move
-% 	if (dx == 1 && dy == 1) {
-% 		if (map.blocked(x, y) || map.blocked(sx, sy) || map.blocked(sx, y) || map.blocked(x, sy)) {
-% 			return false;
-% 		}
-% 	}
-	
-% 	return true;
-% }
-
-% private int abs(int x) {
-% 	return x >= 0 ? x : -x;
-% }
-
-% protected float getMovementCost(int x, int y, int tx, int ty) {
-% 	return Math.max(Math.abs(tx - x), Math.abs(ty - y));
-% 	//		return (float) Math.hypot(tx - x, ty - y);
-% 	//		return (float) Math.abs(tx - x) + Math.abs(ty - y);
-% }
-
-% protected float getHeuristicCost(int x, int y, int tx, int ty) {
-% 	return (float) Math.max(Math.abs(tx - x), Math.abs(ty - y));
-% 	//		return (float) Math.abs(tx - x) + Math.abs(ty - y);
-% 	//		return (float) Math.hypot(tx - x, ty - y);
-% }
-
-% private List<Node> availableNeighbours(Node current) {
-% 	List<Node> neighbours = new LinkedList<>();
-% 	for (int dx = -1; dx <= 1; dx++) {
-% 		for (int dy = -1; dy <= 1; dy++) {
-% 			if (dx == 0 && dy == 0)
-% 				continue;
-% 			// determine the location of the neighbour and evaluate it
-% 			int xp = current.getX() + dx;
-% 			int yp = current.getY() + dy;
-% 			// validate out of bounds
-% 			if ((xp < 0) || (yp < 0) || (xp >= width()) || (yp >= height()))
-% 				continue;
-% 			neighbours.add(nodes[xp][yp]);
-% 		}
-% 	}
-% 	// możliwe czekanie w tym samym miejscu - jako ostatnia propozycja
-% 	neighbours.add(nodes[current.getX()][current.getY()]);
-% 	return neighbours;
-% }
+% https://en.wikipedia.org/wiki/A*_search_algorithm

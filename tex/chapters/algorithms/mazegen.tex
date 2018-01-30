@@ -48,7 +48,7 @@ Poniżej przedstawiono pseudokod, obrazujący szczegóły działania zaproponowa
 
 \State $mapa[][] \gets$ nowa tablica $w \times h$ wypełniona wartościami $ZABLOKOWANE$
 
-\State $nieodwiedzone \gets \varnothing$ \Comment{Inicjalizacja pustych list}
+\State $nieodwiedzone \gets \varnothing$ \Comment{inicjalizacja pustych list}
 \State $odwiedzone \gets \varnothing$
 \For{$x \gets 0$; $x < w$; $x \gets x + 2$} \Comment{co drugi indeks szerokości}
 	\For{$y \gets 0$; $y < h$; $y \gets y + 2$} \Comment{co drugi indeks wysokości}
@@ -92,7 +92,7 @@ Poniżej przedstawiono pseudokod, obrazujący szczegóły działania zaproponowa
 \end{algorithm}
 
 Oznaczenie $x\verb-++-$ oraz $x\verb+--+$ oznacza odpowiednio postinkrementację i postdekrementację (dokonanie zwiększenia lub zmniejszenia o 1 {\bf po} wykorzystaniu wartości zmiennej w wyrażeniu).
-Funkcja {\it znajdźNajbliższegoSąsiada} wyszukuje sąsiada dla pola $nowePole$ z listy $odwiedzone$. Wynik wyszukiwania jest najbliższy w sensie metryki miejskiej (metryki Manhattan).
+Funkcja \textsc{znajdźNajbliższegoSąsiada} wyszukuje sąsiada dla pola $nowePole$ z listy $odwiedzone$. Wynik wyszukiwania jest najbliższy w sensie metryki miejskiej (metryki Manhattan).
 
 Kolejne etapy generowania labiryntu zobrazowano na rysunku \ref{fig:etapy-generowania}.
 
