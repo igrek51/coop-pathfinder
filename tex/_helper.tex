@@ -78,16 +78,20 @@ $equation$
 
 % Algorytm - pseudokod
 \begin{algorithm}[H]
-  \caption{Opis}\label{alg:ddd}
+	\caption{Opis}\label{alg:name}
   \begin{algorithmic}[1]
-\REQUIRE {$w$ - szerokość}
-\STATE $x \gets poleZ.x$
-\STATE {\bf function} wyburzDrogę($mapa$, $poleZ$, $poleDo$)
-	\begin{ALC@g}
-	\WHILE{$x < poleDo.x$}
-		\STATE $mapa[x\verb-++-][y] \gets WOLNE$ 
-	\ENDWHILE
-	\end{ALC@g}
-\STATE {\bf end function}
-	\end{algorithmic}
+\Function{funkcja}{$mapa$, $start$, $cel$}
+	\State $closed \gets \varnothing$  \Comment{pusta lista zamkniętych}
+	\For{$wezel \in mapa$}
+		\State $wezel.g = \infty$ \Comment{domyślnie nieskończony koszt - odległość od startu}
+	\EndFor
+	\If{$mapa[cel.x][cel.y] == ZABLOKOWANE$} \Comment{Punkt docelowy zablokowany}
+		\State \Return $\varnothing$ \Comment{Brak rozwiązania}
+	\EndIf
+	\While{$open \ne \varnothing$} \Comment{dopóki lista otwartych nie jest pusta}
+		\State $obecny \gets $ \Call{znajdźMinF}{$open$} \Comment{Szukamy pola o najniższej wartości f}
+	\EndWhile
+	\State \Return $\varnothing$ \Comment{Przeanalizowano wszystkie węzły, brak istniejącej ścieżki}
+\EndFunction
+  \end{algorithmic}
 \end{algorithm}
