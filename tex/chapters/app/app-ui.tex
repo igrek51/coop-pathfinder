@@ -1,0 +1,69 @@
+\section{Wykorzystane technologie}
+Do stworzenia aplikacji wykorzystano wiele technologii oraz narzędzi deweloperskich opisanych w poniższych podrozdziałach.
+
+\subsection{Java 8}
+Aplikacja w całości została napisana w języku Java.
+Java jest językiem programowania ogólnego przeznaczenia, zorientowanym obiektowo. Posiada obsługę wyjątków oraz naturalne wsparcie dla wielowątkowości, pozwala na szybkie tworzenie wysokopoziomowych aplikacji. Aplikacje napisane w języku Java kompilowane są do kodu bajtowego, który uruchamiany jest przez wirtualną maszynę Javy (JVM), niezależnie od architektury urządzenia.
+
+Dzięki wieloplatformowości stworzona aplikacja może być uruchamiana na każdym systmie operacyjnym z wirtualną maszyną Javy.
+
+W projekcie aplikacji wykorzystano język Java w wersji 8. 
+Pozwoliło to na użycie w projekcie takich elementów języka, jak: wyrażenia lambda i interfejsy funkcyjne (skracające zapis i zwiększające czytelność kodu) oraz strumieni (stream API) - do szybkiego i przejrzystego przekształcania i filtracji danych.
+
+\subsection{JavaFX}
+JavaFX jest platformą do tworzenia aplikacji desktopowych (okienkowych) pisanych w języku Java.
+Od wersji 8 JavaFX została właczona do platformy Java Standard Edition.
+Jest to nowsze, obecnie zalecane przez firmę {\it Oracle} rozwiązanie do tworzenia aplikacji okienkowych. Nie zaleca się natomiast korzystania z bibliotek {\it AWT} lub {\it Swing} \ref{javafx-replacing-swing}.
+
+Do zbudowania widoków aplikacji wykorzystano specjalny format plików FXML, w którym to JavaFX przechowuje informację o właściwościach komponentów interfejsu użytkownika oraz o ich wzajemnych relacjach.
+
+\subsection{Spring}
+\subsubsection{Spring Framework}
+Spring jest frameworkiem, który umożliwia w aplikacjach Javy zastosowanie wzorca architektonicznego odwrócenia sterowania (ang. {\it Inversion of Control}), a w szczególności wstrzykiwania zależności (ang. {\it Dependency Injection}). Pozwala to uniknąć występowania bezpośrednich zależności pomiędzy komponentami oraz umożliwia automatyczne dostarczanie i zarządzanie cyklem życia komponentów aplikacji.
+
+W zaprojektowanej aplikacji Spring jest wykorzystywany m.in. do automatycznego dostarczania współdzielonych danych o parametrach symulacji oraz do zarządzania cyklem życia kontrolerów i widoków z biblioteki JavaFX.
+
+\subsubsection{Spring Boot}
+
+\subsubsection{Spring Boot JavaFx Support}
+
+\subsection{jUnit}
+testy jednostkowe jUnit
+$TODO$ TDD - Test driven development, testy jednostkowe do algorytmów pathfinding
+
+\subsection{Maven}
+uruchomienie aplikacji z kodów źródłowych : mvn spring-boot:run
+do uruchomienia aplikacji potrzebna jest zainstalowana java i maven
+
+\subsection{IntelliJ IDEA}
+IntelliJ Ultimate
+
+Na Linux: Arch i Debian - nie ma to znaczenia
+
+\subsection{Pozostałe narzędzia i biblioteki}
+\subsubsection{Guava}
+joiner
+\subsubsection{git}
+\subsubsection{logback}
+
+
+\section{Struktura aplikacji}
+$TODO$ lista beanów / serwisów, struktura widok, prezenter, kontroler; osobny wątek w tle do obliczeń + synchronizacja, wątek UI - zapewnienie REal-time, prawie MVP + MVC
+
+
+\section{Screeny}
+$TODO$ screeny
+
+\section{featurey}
+ustawianie random seeda
+ponowne wykonanie symulacji - te same warunki
+przełaczanie między metodami na zakładkach ?
+wykonanie symulacji w pojedynczych krokach
+resizable window - responsive
+heuristic cache
+działania na wektorach, immutable vector
+
+\section{Ograniczenia}
+$TODO$ nałożone uproszczenia: ruch skośny trwa tyle samo, czas dyskretny, brak czasu na obrót
+
+$TODO$ publikacja na GitHub, licencja MIT, filmiki na YT

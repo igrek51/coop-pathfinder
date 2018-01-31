@@ -30,7 +30,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 @FXMLController
-@ConditionalOnProperty(name = "simulation.mode", havingValue = "whca")
 @Qualifier("whca2Presenter")
 public class Presenter {
 	
