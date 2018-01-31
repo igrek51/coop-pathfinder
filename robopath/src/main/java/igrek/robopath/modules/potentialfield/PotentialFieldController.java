@@ -142,14 +142,19 @@ public class PotentialFieldController {
 				for (int y = 0; y <= map.getHeightInTiles(); y++) {
 					TileCellType type = map.get(x, y);
 					if (type == TileCellType.BLOCKED) {
+						double obstacleScale = obstacleScale(robot.getPosition(), x, y);
 						// force from center
 						Vector2 forceFromObstacle = forceFromObstacle(robot, x, y, 0, 0);
-						obstaclesForce = obstaclesForce.add(forceFromObstacle);
+						obstaclesForce = obstaclesForce.add(forceFromObstacle.scale(obstacleScale));
 						// force from corners
-						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, -0.5, -0.5));
-						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, -0.5, +0.5));
-						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, +0.5, -0.5));
-						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, +0.5, +0.5));
+						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, -0.5, -0.5)
+								.scale(obstacleScale));
+						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, -0.5, +0.5)
+								.scale(obstacleScale));
+						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, +0.5, -0.5)
+								.scale(obstacleScale));
+						obstaclesForce = obstaclesForce.add(forceFromObstacle(robot, x, y, +0.5, +0.5)
+								.scale(obstacleScale));
 					}
 				}
 			}
@@ -160,6 +165,23 @@ public class PotentialFieldController {
 			//					.getForce());
 			
 			robot.timeLapse(t);
+		}
+	}
+	
+	private double distanceTo(Vector2 position, int x, int y) {
+		return Math.hypot(position.getX() - x, position.getY() - y);
+	}
+	
+	private double obstacleScale(Vector2 position, int x, int y) {
+		double distance = distanceTo(position, x, y);
+		double MIN_D = 0.7;
+		double MAX_D = 5.0;
+		if (distance < MIN_D) {
+			return (MIN_D - distance) * 100.0 + 1.0;
+		} else if (distance - MIN_D < MAX_D) {
+			return (MAX_D - distance + MIN_D) / MAX_D;
+		} else {
+			return 0;
 		}
 	}
 	
@@ -400,7 +422,7 @@ public class PotentialFieldController {
 		// draw target
 		Vector2 target = robot.getTarget();
 		if (target != null && !target.equals(robot.getPosition())) {
-			gc.setStroke(Color.rgb(0, 100, 0));
+			gc.setStroke(Color.rgb(255, 0, 0));
 			double targetX = target.getX() * cellW;
 			double targetY = target.getY() * cellH;
 			gc.strokeLine(targetX - w / 2, targetY - h / 2, targetX + w / 2, targetY + h / 2);

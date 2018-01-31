@@ -1,10 +1,10 @@
 \chapter{Oprogramowanie symulacyjne}
 \label{ch:simulation-app}
 
-Na potrzeby pracy zostało stworzone oprogramowanie symulacyjne, które posłużyło do przeprowadzenia testów algorytmów oraz wizualizacji ich działania.
+Na potrzeby pracy zostało stworzone oprogramowanie symulacyjne, które posłużyło do przeprowadzenia testów algorytmów planowania oraz wizualizacji ich działania.
 W tym rozdziale opisano techniczne rozwiązania wykorzystane podczas tworzenia oprogramowania.
-W aplikacji zostały zaimplementowane algorytmy opisane w rozdziale \ref{ch:alg-impl}.
-Prezentacja działania algorytmów planowania tras odbywa się poprzez wizualizację ruchu robotów w czasie rzeczywistym. 
+W aplikacji zostały zaimplementowane algorytmy planowania tras opisane w rozdziale \ref{ch:alg-impl}.
+Prezentacja ich działania odbywa się poprzez wizualizację ruchu robotów w czasie rzeczywistym. 
 
 \section{Funkcjonalności aplikacji}
 Aplikacja umożliwia dowolne definiowanie przez użytkownika środowiska, w którym poruszają się roboty. Obejmuje to:
@@ -16,13 +16,47 @@ Aplikacja umożliwia dowolne definiowanie przez użytkownika środowiska, w któ
 
 Aplikacja przeprowadza symulację ruchu robotów w czasie rzeczywistym. W oprogramowaniu zostały zaimplementowane trzy algorytmy planowania ruchu robotów. Są to:
 \begin{itemize}
-	\item Metoda pól potencjałowych
-	\item Local-Repair A*
-	\item Windowed Hierarchical Cooperative A*
+	\item Metoda pól potencjałowych (por. \ref{ch:potential-fields})
+	\item Local-Repair A* (por. \ref{ch:alg-collision-avoid})
+	\item Windowed Hierarchical Cooperative A* (por. \ref{ch:alg-whca})
 \end{itemize}
 Wizualizacja każdego z tych algorytmów dostępna jest na osobnej zakładce w aplikacji.
 
-\section{Interfejs użytkownika}
+\section{Graficzny interfejs użytkownika}
+Graficzny interfejs użytkownika stanowi desktopowa aplikacja okienkowa, której głównym elementem jest panel zakładek. Każda z zakładek reprezentuje wizualizację osobnego algorytmu planowania ruchu robotów.
+
+Z myślą o spopularyzowaniu opracowanych algorytmów, elementy interfejsu użytkownika (takie, jak etykiety lub przyciski) posiadają tekst w języku angielskim.
+
+
+\subsection{Metoda pól potencjałowych}
+Na pierwszej zakładce w oknie aplikacji przedstawiona jest wizualizacja metody pól potencjałowych.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/robopath/ui-fields}
+	\caption{Zrzut ekranu aplikacji w trakcie wizualizacji metody pól potencjałowych.}
+	\label{fig:robopath-ui-fields}
+\end{figure}
+
+\subsection{Local-Repair A*}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/robopath/ui-lra}
+	\caption{Zrzut ekranu aplikacji w trakcie wizualizacji metody Local-Repair A*.}
+	\label{fig:robopath-ui-lra}
+\end{figure}
+
+\subsection{Windowed Hierarchical Cooperative A*}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/robopath/ui-whca}
+	\caption{Zrzut ekranu aplikacji w trakcie wizualizacji metody Windowed Hierarchical Cooperative A*.}
+	\label{fig:robopath-ui-whca}
+\end{figure},
+
+
 $TODO$ opis UI, zaznaczanie dróg, celów, płynne animacje, osobny wątek do UI
 kółka to roboty, wyświetlanie ścieżek, celów
 co robi każdy przycisk - instrukcja
@@ -57,6 +91,7 @@ przełaczanie między metodami na zakładkach ?
 wykonanie symulacji w pojedynczych krokach
 resizable window - responsive
 heuristic cache
+działania na wektorach, immutable vector
 
 \section{Ograniczenia}
 $TODO$ nałożone uproszczenia: ruch skośny trwa tyle samo, czas dyskretny, brak czasu na obrót

@@ -73,6 +73,8 @@ public class Vector2 {
 	
 	public Vector2 cutOff(double maxLength) {
 		double length = length();
+		if (length == 0.0)
+			return ZERO;
 		if (length <= maxLength)
 			return this;
 		return scale(maxLength / length);
