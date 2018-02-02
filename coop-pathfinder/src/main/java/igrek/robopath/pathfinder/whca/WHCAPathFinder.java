@@ -12,7 +12,7 @@ import igrek.robopath.common.BiHashMap;
 import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.pathfinder.astar.Astar2DPathFinder;
 
-public class MyWHCAPathFinder {
+public class WHCAPathFinder {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -26,7 +26,7 @@ public class MyWHCAPathFinder {
 	private TileMap map;
 	private BiHashMap<Integer, Integer, igrek.robopath.pathfinder.astar.Path> heuristicCache = new BiHashMap<>();
 	
-	public MyWHCAPathFinder(ReservationTable reservation, TileMap map) {
+	public WHCAPathFinder(ReservationTable reservation, TileMap map) {
 		this.reservation = reservation;
 		this.map = map;
 	}
@@ -156,6 +156,10 @@ public class MyWHCAPathFinder {
 			}
 			path.prependStep(sx, sy, 0);
 			
+			reservation.log();
+			logger.debug("most promising node: " + mostPromising.get());
+			logger.debug("path: " + path);
+			
 			return path;
 		}
 		
@@ -205,6 +209,9 @@ public class MyWHCAPathFinder {
 		//		float dy = ty - sy;
 		//		return (float) (Math.sqrt((dx * dx) + (dy * dy)));
 		//		return Math.max(Math.abs(tx - x), Math.abs(ty - y));
+		if (x == tx && y == ty) { // staying in the same place
+			return (float) 1.0 / reservation.getWidth() / reservation.getHeight();
+		}
 		return (float) Math.hypot(tx - x, ty - y);
 	}
 	

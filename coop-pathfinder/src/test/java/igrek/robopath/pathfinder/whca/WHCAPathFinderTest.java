@@ -191,6 +191,56 @@ public class WHCAPathFinderTest {
 				.toString());
 	}
 	
+	@Test
+	public void testDetour3() {
+		/*
+		 * TileMap:
+		 * G1 S2 S1 G2
+		 * .  X  X  .
+		 * .  .  .  .
+		 */
+		TileMap map = new TileMap(4, 3);
+		map.setCell(1, 1, true);
+		map.setCell(2, 1, true);
+		// robots
+		List<MobileRobot> robots = new ArrayList<>();
+		robots.add(createRobot(1, 0, 3, 0, 2));
+		robots.add(createRobot(2, 0, 0, 0, 1));
+		
+		List<Path> paths = findPaths(map, robots, 9);
+		assertEquals("[" + "(1, 0, 0), " + "(2, 0, 1), " + "(3, 0, 2), " + "(3, 0, 3), " + "(3, 0, 4), " + "(3, 0, 5), " + "(3, 0, 6), " + "(3, 0, 7), " + "(3, 0, 8)" + "]", paths
+				.get(0)
+				.toString());
+		assertEquals("[" + "(2, 0, 0), " + "(3, 0, 1), " + "(3, 1, 2), " + "(3, 2, 3), " + "(2, 2, 4), " + "(1, 2, 5), " + "(0, 2, 6), " + "(0, 1, 7), " + "(0, 0, 8)" + "]", paths
+				.get(1)
+				.toString());
+	}
+	
+	@Test
+	public void testDetour4() {
+		/*
+		 * TileMap:
+		 * G1 S2 S1 G2
+		 * .  X  X  .
+		 * .  .  .  .
+		 */
+		TileMap map = new TileMap(4, 3);
+		map.setCell(1, 1, true);
+		map.setCell(2, 1, true);
+		// robots
+		List<MobileRobot> robots = new ArrayList<>();
+		robots.add(createRobot(1, 0, 3, 0, 2));
+		robots.add(createRobot(2, 0, 0, 0, 1));
+		
+		List<Path> paths = findPaths(map, robots, 11);
+		assertEquals("[" + "(1, 0, 0), " + "(2, 0, 1), " + "(3, 0, 2), " + "(3, 0, 3), " + "(3, 0, 4), " + "(3, 0, 5), " + "(3, 0, 6), " + "(3, 0, 7), " + "(3, 0, 8), " + "(3, 0, 9), " + "(3, 0, 10)" + "]", paths
+				.get(0)
+				.toString());
+		assertEquals("[" + "(2, 0, 0), " + "(3, 0, 1), " + "(3, 1, 2), " + "(3, 2, 3), " + "(2, 2, 4), " + "(1, 2, 5), " + "(0, 2, 6), " + "(0, 1, 7), " + "(0, 0, 8), " + "(0, 0, 9), " + "(0, 0, 10)" + "]", paths
+				.get(1)
+				.toString());
+	}
+	
 	private void assertStaticPosition(Path path, int expectedX, int expectedY) {
 		assertTrue(path.getLength() > 0);
 		try {
@@ -222,14 +272,14 @@ public class WHCAPathFinderTest {
 		});
 		// find path
 		for (MobileRobot robot : robots) {
-			logger.debug("robot " + robot.toString());
 			robot.resetMovesQue();
 			Point start = robot.getPosition();
 			Point target = robot.getTarget();
 			if (target != null) {
-				MyWHCAPathFinder pathFinder = new MyWHCAPathFinder(reservationTable, map);
+				WHCAPathFinder pathFinder = new WHCAPathFinder(reservationTable, map);
 				Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
 				paths.add(path);
+				logger.debug("path planned (" + robot.toString() + "): " + path);
 				if (path != null) {
 					// enque path
 					int t = 0;
@@ -253,8 +303,6 @@ public class WHCAPathFinderTest {
 					reservationTable.setBlocked(start.x, start.y);
 				}
 				reservationTable.log();
-			} else {
-				reservationTable.setBlocked(start.x, start.y);
 			}
 		}
 		return paths;

@@ -15,9 +15,9 @@ import java.util.Random;
 import igrek.robopath.common.Point;
 import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.mazegenerator.MazeGenerator;
-import igrek.robopath.pathfinder.whca.MyWHCAPathFinder;
 import igrek.robopath.pathfinder.whca.Path;
 import igrek.robopath.pathfinder.whca.ReservationTable;
+import igrek.robopath.pathfinder.whca.WHCAPathFinder;
 
 public class Controller {
 	
@@ -156,9 +156,8 @@ public class Controller {
 	
 	synchronized void findPaths() {
 		calculatingPaths = true;
-		int tDim = robots.size() + 1;
-		params.timeDimension = tDim;
-		params.sendToUI();
+		params.readFromUI();
+		int tDim = params.timeDimension;
 		TileMap map2 = new TileMap(map);
 		ReservationTable reservationTable = new ReservationTable(map2.getWidthInTiles(), map2.getHeightInTiles(), tDim);
 		map2.foreach((x, y, occupied) -> {
@@ -184,9 +183,9 @@ public class Controller {
 		Point start = robot.getPosition();
 		Point target = robot.getTarget();
 		if (target != null) {
-			MyWHCAPathFinder pathFinder = new MyWHCAPathFinder(reservationTable, map);
+			WHCAPathFinder pathFinder = new WHCAPathFinder(reservationTable, map);
 			Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
-			//			logger.info("path: " + path);
+			logger.debug("path planned (" + robot.toString() + "): " + path);
 			if (path != null) {
 				// enque path
 				int t = 0;
@@ -208,7 +207,7 @@ public class Controller {
 				}
 				// cant find a way - it's waiting, then promote its priority
 				if (path.getLength() <= 1) {
-					promotePriority(robot, " - due to path not found");
+					promotePriority(robot, " - due to path not found, path: " + path.toString());
 				}
 			} else {
 				logger.warn("path not found due to static obstacles");
@@ -247,7 +246,7 @@ public class Controller {
 				logger.debug("collidedRobot " + collidedRobot.getId() + " previous path: " + collidedRobot
 						.getMovesQue());
 				robot.resetMovesQue();
-				collidedRobot.resetMovesQue();
+				//				collidedRobot.resetMovesQue();
 				MobileRobot minorPriority = robot.getPriority() < collidedRobot.getPriority() ? collidedRobot : robot;
 				MobileRobot majorPriority = robot.getPriority() < collidedRobot.getPriority() ? robot : collidedRobot;
 				// priority promotion for robot with minor priority

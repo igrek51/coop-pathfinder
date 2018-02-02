@@ -115,6 +115,8 @@ public class Presenter {
 		if (event != null)
 			params.readFromUI();
 		controller.placeRobots();
+		params.timeDimension = getRobots().size() + 1;
+		params.sendToUI();
 	}
 	
 	@FXML
