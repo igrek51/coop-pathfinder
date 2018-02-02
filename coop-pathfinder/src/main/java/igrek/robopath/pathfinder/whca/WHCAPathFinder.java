@@ -109,7 +109,7 @@ public class WHCAPathFinder {
 				// cost to reach this node. Note that the heursitic value is only used
 				// in the sorted open list
 				float nextStepCost = current.getCost() + getMovementCost(current.getX(), current.getY(), neighbour
-						.getX(), neighbour.getY());
+						.getX(), neighbour.getY(), tx, ty);
 				
 				// if the new cost we've determined for this node is lower than
 				// it has been previously makes sure the node hasn'e've
@@ -211,12 +211,15 @@ public class WHCAPathFinder {
 		return x >= 0 ? x : -x;
 	}
 	
-	protected float getMovementCost(int x, int y, int tx, int ty) {
+	protected float getMovementCost(int x, int y, int tx, int ty, int targetX, int targetY) {
 		//		float dx = tx - sx;
 		//		float dy = ty - sy;
 		//		return (float) (Math.sqrt((dx * dx) + (dy * dy)));
 		//		return Math.max(Math.abs(tx - x), Math.abs(ty - y));
 		if (x == tx && y == ty) { // staying in the same place is not recommended
+			//			if (x == targetX && y == targetY){
+			//				return 0;
+			//			}
 			return (float) 1.0 / reservation.getWidth() / reservation.getHeight();
 		}
 		return (float) Math.hypot(tx - x, ty - y);
