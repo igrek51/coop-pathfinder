@@ -83,7 +83,7 @@ public class WHCAPathFinder {
 					path.prependStep(target.getX(), target.getY(), target.getT());
 					target = target.getParent();
 					if (target == null)
-						throw new AssertionError("dupa");
+						throw new AssertionError("target == null");
 				}
 				path.prependStep(sx, sy, 0);
 				return path;

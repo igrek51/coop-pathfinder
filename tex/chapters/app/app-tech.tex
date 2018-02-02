@@ -13,7 +13,7 @@ Pozwoliło to na użycie w projekcie takich elementów języka, jak: wyrażenia 
 \subsection{JavaFX}
 JavaFX jest platformą do tworzenia aplikacji desktopowych (okienkowych) pisanych w języku Java.
 Od wersji 8 JavaFX została właczona do platformy Java Standard Edition.
-Jest to nowsze, obecnie zalecane przez firmę {\it Oracle} rozwiązanie do tworzenia aplikacji okienkowych. Nie zaleca się natomiast korzystania z bibliotek {\it AWT} lub {\it Swing} \ref{javafx-replacing-swing}.
+Jest to nowsze, obecnie zalecane przez firmę {\it Oracle} rozwiązanie do tworzenia aplikacji okienkowych. Nie zaleca się natomiast korzystania z bibliotek {\it AWT} lub {\it Swing} \cite{javafx-replacing-swing}.
 
 Do zbudowania widoków aplikacji wykorzystano specjalny format plików FXML, w którym to JavaFX przechowuje informację o właściwościach komponentów interfejsu użytkownika oraz o ich wzajemnych relacjach.
 
@@ -25,16 +25,16 @@ W zaprojektowanej aplikacji Spring jest wykorzystywany m.in. do automatycznego d
 
 \subsubsection{Spring Boot}
 Spring Boot jest rozwiązaniem przyspieszającym proces konfiguracji, tworzenia oraz uruchamiania aplikacji opartych na Spring Framework.
-Jest to zestaw wstępnie skonfigurowanych komponentów, dzięki którym jeszcze łatwiejsze staje się dołączenie nowych bibliotek zewnętrznych do aplikacj. Celem jest pozbycie się zbędnych konfiguracji w plikach XML a zastąpienie ich domyślnym zestawem konfiguratorów, gdyż większość komponentów w aplikacji zazwyczaj konfigurowana jest w typowy, powtarzalny sposób \ref{docs-springboot}.
+Jest to zestaw wstępnie skonfigurowanych komponentów, dzięki którym jeszcze łatwiejsze staje się dołączenie nowych bibliotek zewnętrznych do aplikacj. Celem jest pozbycie się zbędnych konfiguracji w plikach XML a zastąpienie ich domyślnym zestawem konfiguratorów, gdyż większość komponentów w aplikacji zazwyczaj konfigurowana jest w typowy, powtarzalny sposób \cite{docs-springboot}.
 
 Spring Boot dostarcza do aplikacji symulacyjnej wiele zależności do bibliotek (np. logback) oraz dostarcza konfigurację dla systemu budowania Maven.
 \subsubsection{Spring Boot JavaFx Support}
 {\it Spring Boot JavaFx Support} jest niewielką biblioteką umożliwiającą użycie Spring Boot w jednym projekcie w połączeniu z JavaFx.
 
-\subsection{jUnit i TDD}
+\subsection{jUnit i Test-driven development}
 jUnit jest frameworkiem do wykonywania testów jednostkowych dla aplikacji napisanych w Javie.
 
-W projekcie zastosowano podejście {\it Test-driven development} dla procesu rozwoju oprogramowania. Dotyczy to rozwoju logiki silnika planowania tras dla algorytmu A* i WHCA*. Algorytm WHCA* jest na tyle złożony, że zdecydowano się najpierw napisać szczególne przypadki testowe, które określały jakie dane wyjściowe są oczekiwane przy zadanych danych wejśiowych. Dopiero po takim pokryciu testami przystąpiono do implementacji algorytmu. Warunkiem poprawności zaimplementowanego algorytmu było, aby wszystkie testy jednostkowe wykonały się prawidłowo. Na tym właśnie podejściu opiera się proces TDD (ang. {\it Test-driven development}), który jest wspierany przez framework jUnit.
+W projekcie zastosowano podejście {\it Test-driven development} dla procesu rozwoju oprogramowania. Dotyczy to w szczególności rozwoju logiki silnika planowania tras dla algorytmu A* i WHCA*. Algorytm WHCA* jest na tyle złożony, że zdecydowano się najpierw napisać szczególne przypadki testowe, które określały jakie dane wyjściowe są oczekiwane przy zadanych danych wejśiowych. Dopiero po takim pokryciu testami przystąpiono do implementacji algorytmu. Warunkiem poprawności zaimplementowanego algorytmu było, aby wszystkie testy jednostkowe wykonały się prawidłowo. Na tym właśnie podejściu opiera się proces TDD (ang. {\it Test-driven development}), który jest wspierany przez framework jUnit.
 
 \subsection{Maven}
 {\it Apache Maven} jest narzędziem do automatyzacji procesu budowania aplikacji napisanych w języku Java.
@@ -64,26 +64,27 @@ Do śledzenia i zapisywania zmian wykorzystano w projekcie system kontroli wersj
 Kody źródłowe aplikacji są ogólnie dostępne w repozytorium git na portalu GitHub:
 $TODO$ adres
 \subsubsection{Logback}
-Do zapisu dziennika zdarzeń w aplikacji została wykorzystana biblioteka {\it Logback}, która jest domyślnie dostarczana do aplikacji i skonfigurowana dzięki {\it Spring Boot}.
+Do zapisu dziennika zdarzeń oraz błędów w aplikacji została wykorzystana biblioteka {\it Logback}, która jest domyślnie dostarczana do aplikacji i skonfigurowana dzięki {\it Spring Boot}.
 
 
 \section{Struktura aplikacji}
 $TODO$ lista beanów / serwisów, struktura widok, prezenter, kontroler; osobny wątek w tle do obliczeń + synchronizacja, wątek UI - zapewnienie REal-time, prawie MVP + MVC
-
-
-\section{Screeny}
-$TODO$ screeny
+factory beanów, DI, IoC
 
 \section{featurey}
 ustawianie random seeda
+działania na wektorach, immutable vector
+heuristic cache
+kolejkowanie ruchów robota
+
 ponowne wykonanie symulacji - te same warunki
 przełaczanie między metodami na zakładkach ?
-wykonanie symulacji w pojedynczych krokach
 resizable window - responsive
-heuristic cache
-działania na wektorach, immutable vector
+wykonanie symulacji w pojedynczych krokach
 
 \section{Ograniczenia}
-$TODO$ nałożone uproszczenia: ruch skośny trwa tyle samo, czas dyskretny, brak czasu na obrót
+W aplikacji zostały wprowadzone pewne uproszczenia, które m.in. przyspieszają i ułatwiają proces obliczeniowy planowania trajektorii dla robotów.
+Założono, że ruch ukośny robota o jedno pole (po przekątnej) trwa tyle samo, co ruch poziomy lub pionowy. Wprowadzono takie założenie ze względu na możliwość ujednolicenia jednostki wymiaru czasu w tablicy rezerwacji pól przez agentów.
+Nie uwzględniono także czasu obrotu robota w celu zmiany kierunku jazdy. Założono, że ten czas jest zerowy, gdyż celem zaprojektowanego algorytmu było skupienie się na rozwiązaniu innego zagadnienia - problemu zakleszczeń w wąskich gardłach.
 
 $TODO$ publikacja na GitHub, licencja MIT, filmiki na YT
