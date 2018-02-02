@@ -111,10 +111,14 @@ public class PotentialFieldController {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				long current = System.currentTimeMillis();
-				timeLapse(((double) (current - lastTime)) / 1000);
-				lastTime = current;
-				drawMap();
+				try {
+					long current = System.currentTimeMillis();
+					timeLapse(((double) (current - lastTime)) / 1000);
+					lastTime = current;
+					drawMap();
+				} catch (Throwable t) {
+					logger.error(t.getMessage(), t);
+				}
 			}
 		}));
 		fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);

@@ -18,6 +18,7 @@ import igrek.robopath.mazegenerator.MazeGenerator;
 import igrek.robopath.pathfinder.whca.Path;
 import igrek.robopath.pathfinder.whca.ReservationTable;
 import igrek.robopath.pathfinder.whca.WHCAPathFinder;
+import javafx.util.Pair;
 
 public class Controller {
 	
@@ -229,7 +230,7 @@ public class Controller {
 				robotsReached.add(robot);
 				replan = true;
 			} else if (!robot.hasNextMove() && !robot.hasReachedTarget()) {
-				logger.info("robot: " + robot.getId() + " - no planned moves, replanning all paths");
+				logger.info("robot: " + robot.getId() + " - no planned moves");
 				replan = true;
 			}
 		}
@@ -237,26 +238,32 @@ public class Controller {
 			robot.targetReached();
 		}
 		//		resetCollidedRobots();
-		if (replan)
+		if (replan) {
 			findPaths();
+			logger.info("replanning all paths");
+		}
 	}
 	
 	private void resetCollidedRobots() {
+		List<Pair<MobileRobot, MobileRobot>> collidedRobots = new ArrayList<>();
 		for (MobileRobot robot : robots) {
 			MobileRobot collidedRobot = collisionDetected(robot);
 			if (collidedRobot != null) {
 				logger.info("Collision detected between robots: " + robot.getId() + ", " + collidedRobot
 						.getId());
+				collidedRobots.add(new Pair<>(robot, collidedRobot));
 				//				logger.debug("robot " + robot.getId() + " previous path: " + robot.getMovesQue());
 				//				logger.debug("collidedRobot " + collidedRobot.getId() + " previous path: " + collidedRobot.getMovesQue());
-				robot.resetMovesQue();
-				collidedRobot.resetMovesQue();
-				MobileRobot minorPriority = robot.getPriority() < collidedRobot.getPriority() ? collidedRobot : robot;
-				MobileRobot majorPriority = robot.getPriority() < collidedRobot.getPriority() ? robot : collidedRobot;
-				// priority promotion for robot with minor priority
-				//				promotePriority(minorPriority, " - due to collision");
-				//				majorPriority.setPriority(majorPriority.getPriority() - 1);
 			}
+		}
+		for (Pair<MobileRobot, MobileRobot> pair : collidedRobots) {
+			pair.getKey().resetMovesQue();
+			pair.getValue().resetMovesQue();
+			//				MobileRobot minorPriority = robot.getPriority() < collidedRobot.getPriority() ? collidedRobot : robot;
+			//				MobileRobot majorPriority = robot.getPriority() < collidedRobot.getPriority() ? robot : collidedRobot;
+			// priority promotion for robot with minor priority
+			//				promotePriority(minorPriority, " - due to collision");
+			//				majorPriority.setPriority(majorPriority.getPriority() - 1);
 		}
 	}
 	

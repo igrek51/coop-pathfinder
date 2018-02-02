@@ -139,12 +139,16 @@ public class LRAPresenter {
 	
 	private void startSimulationTimer() {
 		new Thread(() -> {
-			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(MOVE_STEP_DURATION), event -> {
-				controller.stepSimulation();
-				lastSimulationTime = System.currentTimeMillis();
-			}));
-			timeline.setCycleCount(Timeline.INDEFINITE);
-			timeline.play();
+			try {
+				Timeline timeline = new Timeline(new KeyFrame(Duration.millis(MOVE_STEP_DURATION), event -> {
+					controller.stepSimulation();
+					lastSimulationTime = System.currentTimeMillis();
+				}));
+				timeline.setCycleCount(Timeline.INDEFINITE);
+				timeline.play();
+			} catch (Throwable t) {
+				logger.error(t.getMessage(), t);
+			}
 		}).start();
 	}
 	
