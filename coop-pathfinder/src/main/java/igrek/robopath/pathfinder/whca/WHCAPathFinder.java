@@ -143,8 +143,15 @@ public class WHCAPathFinder {
 		
 		// time window could be too little - find most promising path
 		Optional<Node> mostPromising = closed.stream()
-				.filter(node -> node.getHeuristic() < map.getWidthInTiles() * map.getHeightInTiles()) // not max
-				.min((o1, o2) -> Float.compare(o1.getHeuristic(), o2.getHeuristic()));
+				.filter(node -> node.getHeuristic() < maxF()) // not max
+				.min((o1, o2) -> {
+					// first - compare H
+					int cmp = Float.compare(o1.getHeuristic(), o2.getHeuristic());
+					if (cmp != 0)
+						return cmp;
+					// if equal - compare F
+					return Float.compare(o1.getF(), o2.getF());
+				});
 		if (mostPromising.isPresent()) {
 			Path path = new Path();
 			Node target = mostPromising.get();
@@ -156,9 +163,9 @@ public class WHCAPathFinder {
 			}
 			path.prependStep(sx, sy, 0);
 			
-			reservation.log();
-			logger.debug("most promising node: " + mostPromising.get());
-			logger.debug("path: " + path);
+			//			reservation.log();
+			//			logger.debug("most promising node: " + mostPromising.get());
+			//			logger.debug("path: " + path);
 			
 			return path;
 		}
@@ -209,7 +216,7 @@ public class WHCAPathFinder {
 		//		float dy = ty - sy;
 		//		return (float) (Math.sqrt((dx * dx) + (dy * dy)));
 		//		return Math.max(Math.abs(tx - x), Math.abs(ty - y));
-		if (x == tx && y == ty) { // staying in the same place
+		if (x == tx && y == ty) { // staying in the same place is not recommended
 			return (float) 1.0 / reservation.getWidth() / reservation.getHeight();
 		}
 		return (float) Math.hypot(tx - x, ty - y);

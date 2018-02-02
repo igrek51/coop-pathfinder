@@ -33,6 +33,7 @@ public class Controller {
 		return Integer.compare(o2.getPriority(), o1.getPriority());
 	};
 	private List<MobileRobot> robots = new ArrayList<>();
+	private List<MobileRobot> robotsReached = new ArrayList<>();
 	
 	private SimulationParams params;
 	private boolean reorderNeeded = false;
@@ -219,17 +220,21 @@ public class Controller {
 	synchronized void stepSimulation() {
 		boolean replan = false;
 		resetCollidedRobots();
+		robotsReached.clear();
 		for (MobileRobot robot : robots) {
 			if (robot.hasNextMove()) {
 				robot.setPosition(robot.pollNextMove());
 			}
 			if (robot.hasReachedTarget() && params.robotAutoTarget) {
-				robot.targetReached();
+				robotsReached.add(robot);
 				replan = true;
 			} else if (!robot.hasNextMove() && !robot.hasReachedTarget()) {
 				logger.info("robot: " + robot.getId() + " - no planned moves, replanning all paths");
 				replan = true;
 			}
+		}
+		for (MobileRobot robot : robotsReached) {
+			robot.targetReached();
 		}
 		//		resetCollidedRobots();
 		if (replan)
@@ -242,11 +247,10 @@ public class Controller {
 			if (collidedRobot != null) {
 				logger.info("Collision detected between robots: " + robot.getId() + ", " + collidedRobot
 						.getId());
-				logger.debug("robot " + robot.getId() + " previous path: " + robot.getMovesQue());
-				logger.debug("collidedRobot " + collidedRobot.getId() + " previous path: " + collidedRobot
-						.getMovesQue());
+				//				logger.debug("robot " + robot.getId() + " previous path: " + robot.getMovesQue());
+				//				logger.debug("collidedRobot " + collidedRobot.getId() + " previous path: " + collidedRobot.getMovesQue());
 				robot.resetMovesQue();
-				//				collidedRobot.resetMovesQue();
+				collidedRobot.resetMovesQue();
 				MobileRobot minorPriority = robot.getPriority() < collidedRobot.getPriority() ? collidedRobot : robot;
 				MobileRobot majorPriority = robot.getPriority() < collidedRobot.getPriority() ? robot : collidedRobot;
 				// priority promotion for robot with minor priority
