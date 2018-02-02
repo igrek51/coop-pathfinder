@@ -45,7 +45,7 @@ Do kompilacji i uruchomienia całej aplikacji wystarczy zatem, aby w systemie op
 
 \subsection{IntelliJ IDEA}
 IntelliJ IDEA jest zintegrowanym środowiskiem deweloperskim przeznaczonym głównie do rozwoju aplikacji w języku Java.
-Podczas opracowywania aplikacji korzystano z wersji IntelliJ IDEA Ultimate 2017.2.6, z licencji studenckiej.
+Podczas opracowywania aplikacji korzystano z wersji IntelliJ IDEA Ultimate 2017.2.6, z licencji studenckiej. Zrzut ekranu podczas pracy ze środowiskiem zaprezentowano na rysunku \label{fig:app-tech-intellij}.
 Środowisko to zapewnia integrację ze wszystkimi technologiami wymienionymi w tym podrozdziale.
 Aplikacja była rozwijana i testowana na systemach operacyjnych z jądrem Linux (Arch Linux oraz Debian 9), jednak wszystkie wymienione narzędzia oraz technologie są wieloplatformowe i z powodzeniem mogą być uruchomione na innych systemach opearcyjnych (Windows, macOS)
 
@@ -58,11 +58,13 @@ Aplikacja była rozwijana i testowana na systemach operacyjnych z jądrem Linux 
 
 \subsection{Pozostałe narzędzia i biblioteki}
 \subsubsection{Guava}
-Guava jest biblioteką dostarczającą do Javy m.in. nowe typy kolekcji (struktur danych). W rozwijanej aplikacji wykorzystaną ją np. do przetwarzania łańcuchów tekstowych.
+Guava jest biblioteką rozwijaną przez Google dostarczającą do Javy m.in. nowe typy kolekcji (struktur danych). W rozwijanej aplikacji wykorzystano ją m.in. do przetwarzania łańcuchów tekstowych.
 \subsubsection{git}
-
-\subsubsection{logback}
-domyślnie dostarczony i skonfigurowany przez Spring Boot
+Do śledzenia i zapisywania zmian wykorzystano w projekcie system kontroli wersji {\it git}.
+Kody źródłowe aplikacji są ogólnie dostępne w repozytorium git na portalu GitHub:
+$TODO$ adres
+\subsubsection{Logback}
+Do zapisu dziennika zdarzeń w aplikacji została wykorzystana biblioteka {\it Logback}, która jest domyślnie dostarczana do aplikacji i skonfigurowana dzięki {\it Spring Boot}.
 
 
 \section{Struktura aplikacji}

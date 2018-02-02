@@ -9,7 +9,7 @@ import java.util.List;
 
 import igrek.robopath.common.Point;
 import igrek.robopath.common.tilemap.TileMap;
-import igrek.robopath.modules.whca.MobileRobot;
+import igrek.robopath.simulation.whca.MobileRobot;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -166,6 +166,31 @@ public class WHCAPathFinderTest {
 		}
 	}
 	
+	@Test
+	public void testDetour2() {
+		/*
+		 * TileMap:
+		 * G2 S1 S2 G1
+		 * .  X  X  .
+		 * .  .  .  .
+		 */
+		TileMap map = new TileMap(4, 3);
+		map.setCell(1, 1, true);
+		map.setCell(2, 1, true);
+		// robots
+		List<MobileRobot> robots = new ArrayList<>();
+		robots.add(createRobot(2, 0, 0, 0, 2));
+		robots.add(createRobot(1, 0, 3, 0, 1));
+		
+		List<Path> paths = findPaths(map, robots, 9);
+		assertEquals("[" + "(2, 0, 0), " + "(1, 0, 1), " + "(0, 0, 2), " + "(0, 0, 3), " + "(0, 0, 4), " + "(0, 0, 5), " + "(0, 0, 6), " + "(0, 0, 7), " + "(0, 0, 8)" + "]", paths
+				.get(0)
+				.toString());
+		assertEquals("[" + "(1, 0, 0), " + "(0, 0, 1), " + "(0, 1, 2), " + "(0, 2, 3), " + "(1, 2, 4), " + "(2, 2, 5), " + "(3, 2, 6), " + "(3, 1, 7), " + "(3, 0, 8)" + "]", paths
+				.get(1)
+				.toString());
+	}
+	
 	private void assertStaticPosition(Path path, int expectedX, int expectedY) {
 		assertTrue(path.getLength() > 0);
 		try {
@@ -197,6 +222,7 @@ public class WHCAPathFinderTest {
 		});
 		// find path
 		for (MobileRobot robot : robots) {
+			logger.debug("robot " + robot.toString());
 			robot.resetMovesQue();
 			Point start = robot.getPosition();
 			Point target = robot.getTarget();
@@ -209,12 +235,19 @@ public class WHCAPathFinderTest {
 					int t = 0;
 					reservationTable.setBlocked(start.x, start.y, t);
 					reservationTable.setBlocked(start.x, start.y, t + 1);
+					Path.Step step = null;
 					for (int i = 1; i < path.getLength(); i++) {
-						Path.Step step = path.getStep(i);
+						step = path.getStep(i);
 						robot.enqueueMove(step.getX(), step.getY());
 						t++;
 						reservationTable.setBlocked(step.getX(), step.getY(), t);
 						reservationTable.setBlocked(step.getX(), step.getY(), t + 1);
+					}
+					// fill the rest with last position
+					if (step != null) {
+						for (int i = t + 1; i < reservationTable.getTimeDimension(); i++) {
+							reservationTable.setBlocked(step.getX(), step.getY(), i);
+						}
 					}
 				} else {
 					reservationTable.setBlocked(start.x, start.y);
