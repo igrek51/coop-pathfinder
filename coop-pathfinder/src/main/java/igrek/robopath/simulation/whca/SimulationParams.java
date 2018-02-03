@@ -33,20 +33,24 @@ public class SimulationParams {
 	}
 	
 	public synchronized void sendToUI() {
-		paramMapSizeW.setText(Integer.toString(mapSizeW));
-		paramMapSizeH.setText(Integer.toString(mapSizeH));
-		paramRobotsCount.setText(Integer.toString(robotsCount));
-		paramRobotAutoTarget.setSelected(robotAutoTarget);
-		paramTimeDimension.setText(Integer.toString(timeDimension));
+		if (paramMapSizeW != null) {
+			paramMapSizeW.setText(Integer.toString(mapSizeW));
+			paramMapSizeH.setText(Integer.toString(mapSizeH));
+			paramRobotsCount.setText(Integer.toString(robotsCount));
+			paramRobotAutoTarget.setSelected(robotAutoTarget);
+			paramTimeDimension.setText(Integer.toString(timeDimension));
+		}
 	}
 	
 	public synchronized void readFromUI() {
 		try {
-			mapSizeW = Integer.parseInt(paramMapSizeW.getText());
-			mapSizeH = Integer.parseInt(paramMapSizeH.getText());
-			robotsCount = Integer.parseInt(paramRobotsCount.getText());
-			robotAutoTarget = paramRobotAutoTarget.isSelected();
-			timeDimension = Integer.parseInt(paramTimeDimension.getText());
+			if (paramMapSizeW != null) {
+				mapSizeW = Integer.parseInt(paramMapSizeW.getText());
+				mapSizeH = Integer.parseInt(paramMapSizeH.getText());
+				robotsCount = Integer.parseInt(paramRobotsCount.getText());
+				robotAutoTarget = paramRobotAutoTarget.isSelected();
+				timeDimension = Integer.parseInt(paramTimeDimension.getText());
+			}
 		} catch (NumberFormatException e) {
 			Logger logger = LoggerFactory.getLogger(this.getClass());
 			logger.error(e.getMessage());

@@ -23,9 +23,8 @@ import javafx.util.Pair;
 public class Controller {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	@Autowired
+	
 	private Random random;
-	@Autowired
 	private MazeGenerator mazegen;
 	
 	private TileMap map;
@@ -45,6 +44,16 @@ public class Controller {
 		resetMap();
 	}
 	
+	@Autowired
+	public void setRandom(Random random) {
+		this.random = random;
+	}
+	
+	@Autowired
+	public void setMazegen(MazeGenerator mazegen) {
+		this.mazegen = mazegen;
+	}
+	
 	public TileMap getMap() {
 		return map;
 	}
@@ -58,7 +67,7 @@ public class Controller {
 		robots.clear();
 	}
 	
-	synchronized void placeRobots() {
+	public synchronized void placeRobots() {
 		robots.clear();
 		for (int i = 0; i < params.robotsCount; i++) {
 			Point cell = randomUnoccupiedCellForRobot(map);
@@ -87,7 +96,7 @@ public class Controller {
 		}
 	}
 	
-	synchronized void randomTargetPressed() {
+	public synchronized void randomTargetPressed() {
 		for (MobileRobot robot : robots) {
 			robot.setTarget(null); // clear targets - not to block each other during randoming
 		}
@@ -218,7 +227,7 @@ public class Controller {
 		}
 	}
 	
-	synchronized void stepSimulation() {
+	public synchronized void stepSimulation() {
 		boolean replan = false;
 		resetCollidedRobots();
 		robotsReached.clear();
