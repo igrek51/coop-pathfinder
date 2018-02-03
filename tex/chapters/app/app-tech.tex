@@ -1,11 +1,11 @@
 \section{Wykorzystane technologie}
-Do stworzenia aplikacji wykorzystano wiele technologii oraz narzędzi deweloperskich opisanych w poniższych podrozdziałach.
+Do stworzenia aplikacji wykorzystano wiele technologii, narzędzi deweloperskich oraz metodyk opisanych w poniższych podrozdziałach.
 
 \subsection{Java 8}
 Aplikacja w całości została napisana w języku Java.
-Java jest językiem programowania ogólnego przeznaczenia, zorientowanym obiektowo. Posiada obsługę wyjątków oraz naturalne wsparcie dla wielowątkowości, pozwala na szybkie tworzenie wysokopoziomowych aplikacji. Aplikacje napisane w języku Java kompilowane są do kodu bajtowego, który uruchamiany jest przez wirtualną maszynę Javy (JVM), niezależnie od architektury urządzenia.
+Java jest językiem programowania ogólnego przeznaczenia, zorientowanym obiektowo. Posiada obsługę wyjątków oraz naturalne wsparcie dla wielowątkowości, pozwala na szybkie tworzenie wysokopoziomowych programów. Aplikacje napisane w języku Java kompilowane są do kodu bajtowego, który uruchamiany jest przez wirtualną maszynę Javy (JVM), niezależnie od architektury urządzenia.
 
-Dzięki wieloplatformowości stworzona aplikacja może być uruchamiana na każdym systmie operacyjnym z wirtualną maszyną Javy.
+Dzięki wieloplatformowości stworzony program może być uruchamiany na każdym systemie operacyjnym z wirtualną maszyną Javy.
 
 W projekcie aplikacji wykorzystano język Java w wersji 8. 
 Pozwoliło to na użycie w projekcie takich elementów języka, jak: wyrażenia lambda i interfejsy funkcyjne (skracające zapis i zwiększające czytelność kodu) oraz strumieni (stream API) - do szybkiego i przejrzystego przekształcania i filtracji danych.
@@ -25,29 +25,32 @@ W zaprojektowanej aplikacji Spring jest wykorzystywany m.in. do automatycznego d
 
 \subsubsection{Spring Boot}
 Spring Boot jest rozwiązaniem przyspieszającym proces konfiguracji, tworzenia oraz uruchamiania aplikacji opartych na Spring Framework.
-Jest to zestaw wstępnie skonfigurowanych komponentów, dzięki którym jeszcze łatwiejsze staje się dołączenie nowych bibliotek zewnętrznych do aplikacj. Celem jest pozbycie się zbędnych konfiguracji w plikach XML a zastąpienie ich domyślnym zestawem konfiguratorów, gdyż większość komponentów w aplikacji zazwyczaj konfigurowana jest w typowy, powtarzalny sposób \cite{docs-springboot}.
+Jest to zestaw wstępnie skonfigurowanych komponentów, dzięki którym jeszcze łatwiejsze staje się dołączenie nowych bibliotek zewnętrznych do projektu. Celem jest pozbycie się zbędnych konfiguracji w plikach XML a zastąpienie ich domyślnym zestawem konfiguratorów, gdyż większość komponentów w aplikacji zazwyczaj konfigurowana jest w typowy, powtarzalny sposób \cite{docs-springboot}.
 
 Spring Boot dostarcza do aplikacji symulacyjnej wiele zależności do bibliotek (np. logback) oraz dostarcza konfigurację dla systemu budowania Maven.
 \subsubsection{Spring Boot JavaFx Support}
 {\it Spring Boot JavaFx Support} jest niewielką biblioteką umożliwiającą użycie Spring Boot w jednym projekcie w połączeniu z JavaFx.
 
 \subsection{jUnit i Test-driven development}
-jUnit jest frameworkiem do wykonywania testów jednostkowych dla aplikacji napisanych w Javie.
+jUnit jest frameworkiem do wykonywania testów jednostkowych dla programów napisanych w Javie. Testy jednostkowe weryfikują poprawność działania pojedynczych komponentów aplikacji.
 
-W projekcie zastosowano podejście {\it Test-driven development} dla procesu rozwoju oprogramowania. Dotyczy to w szczególności rozwoju logiki silnika planowania tras dla algorytmu A* i WHCA*. Algorytm WHCA* jest na tyle złożony, że zdecydowano się najpierw napisać szczególne przypadki testowe, które określały jakie dane wyjściowe są oczekiwane przy zadanych danych wejśiowych. Dopiero po takim pokryciu testami przystąpiono do implementacji algorytmu. Warunkiem poprawności zaimplementowanego algorytmu było, aby wszystkie testy jednostkowe wykonały się prawidłowo. Na tym właśnie podejściu opiera się proces TDD (ang. {\it Test-driven development}), który jest wspierany przez framework jUnit.
+W projekcie zastosowano podejście TDD (ang. {\it Test-driven development}) dla procesu rozwoju oprogramowania. Dotyczy to w szczególności rozwoju logiki silnika planowania tras dla algorytmu A* i WHCA*. Algorytm WHCA* jest na tyle złożony, że zdecydowano się najpierw napisać szczególne przypadki testowe, które określały jakie dane wyjściowe (zaplanowane trajektorie) są oczekiwane przy zadanych danych wejśiowych. Dopiero po takim pokryciu testami przystąpiono do implementacji algorytmu. Warunkiem poprawności zaimplementowanego algorytmu było, aby wszystkie testy jednostkowe wykonały się prawidłowo. Na tym właśnie podejściu opiera się proces TDD (ang. {\it Test-driven development}), który jest naturalnie wspierany przez framework jUnit.
+
+Bibliotekę jUnit wykorzystano także do wykonania testów skuteczności algorytmów i wszystkich pozostałych testów opisanych w rozdziale \ref{ch:tests}. Pomimo, że nie jest to typowym zastosowaniem biblioteki jUnit, to jednak umożliwia to wykonanie fragmentów logiki w innych, niestandardowych trybach pracy bez zmiany działania głównej aplikacji w normalnym trybie.
 
 \subsection{Maven}
 {\it Apache Maven} jest narzędziem do automatyzacji procesu budowania aplikacji napisanych w języku Java.
 Przy pierwszym wykorzystaniu zadeklarowanych bibliotek Maven automatycznie pobiera biblioteki ze swojego repozytorium i rozwiązuje wszystkie brakujące zależności do nich. Użytkownik zatem nie musi martwić się o brakujące biblioteki i o manualne dołaczanie ich do projektu.
 
-Narzędzie to zostało użyte w aplikacji do kompilacji ze źródeł oraz uruchamiania. Domyślna konfiguracja procesu budowania dla Maven została zapewniona przez Spring Boot. Uruchomienie aplikacji z kodów źródłowych następuje po wykonaniu w systemie polecenia: $mvn spring-boot:run$.
-Do kompilacji i uruchomienia całej aplikacji wystarczy zatem, aby w systemie operacyjnym było zainstalowane środowisko Java JDK oraz {\it Apache Maven}.
+Narzędzie to zostało użyte w aplikacji do kompilacji ze źródeł oraz uruchamiania. Konfiguracja procesu budowania dla Maven jest wspomagana przez Spring Boot. Uruchomienie programu z kodów źródłowych następuje po wykonaniu w systemie polecenia: $mvn spring-boot:run$.
+Do kompilacji i uruchomienia całej aplikacji wystarczy zatem, aby w systemie operacyjnym było zainstalowane środowisko Java JDK oraz {\it Apache Maven}. Wszystkie potrzebne biblioteki zostaną pobrane automatycznie przez sieć Internet.
 
 \subsection{IntelliJ IDEA}
 IntelliJ IDEA jest zintegrowanym środowiskiem deweloperskim przeznaczonym głównie do rozwoju aplikacji w języku Java.
-Podczas opracowywania aplikacji korzystano z wersji IntelliJ IDEA Ultimate 2017.2.6, z licencji studenckiej. Zrzut ekranu podczas pracy ze środowiskiem zaprezentowano na rysunku \label{fig:app-tech-intellij}.
+Podczas opracowywania oprogramowania korzystano z wersji IntelliJ IDEA Ultimate 2017.2.6, z licencji studenckiej. Zrzut ekranu podczas pracy ze środowiskiem zaprezentowano na rysunku \ref{fig:app-tech-intellij}.
 Środowisko to zapewnia integrację ze wszystkimi technologiami wymienionymi w tym podrozdziale.
-Aplikacja była rozwijana i testowana na systemach operacyjnych z jądrem Linux (Arch Linux oraz Debian 9), jednak wszystkie wymienione narzędzia oraz technologie są wieloplatformowe i z powodzeniem mogą być uruchomione na innych systemach opearcyjnych (Windows, macOS)
+
+Aplikacja była rozwijana i testowana na systemach operacyjnych z jądrem Linux (Arch Linux oraz Debian 9), jednak wszystkie zastosowane narzędzia oraz technologie są wieloplatformowe i z powodzeniem mogą być uruchomione na innych systemach opearcyjnych (np. Windows, macOS)
 
 \begin{figure}
 	\centering
@@ -61,46 +64,48 @@ Aplikacja była rozwijana i testowana na systemach operacyjnych z jądrem Linux 
 Guava jest biblioteką rozwijaną przez Google dostarczającą do Javy m.in. nowe typy kolekcji (struktur danych). W rozwijanej aplikacji wykorzystano ją m.in. do przetwarzania łańcuchów tekstowych.
 \subsubsection{git}
 Do śledzenia i zapisywania zmian wykorzystano w projekcie system kontroli wersji {\it git}.
-Kody źródłowe aplikacji są ogólnie dostępne w repozytorium git na portalu GitHub:
-$TODO$ adres
+Kody źródłowe powstałego programu są ogólnie dostępne w repozytorium git na portalu GitHub:
+
+$TODO$ adres Github
 \subsubsection{Logback}
 Do zapisu dziennika zdarzeń oraz błędów w aplikacji została wykorzystana biblioteka {\it Logback}, która jest domyślnie dostarczana do aplikacji i skonfigurowana dzięki {\it Spring Boot}.
 
 
 \section{Struktura aplikacji}
 Aplikacja została zbudowana w oparciu o architekturę warstwową. Obsługa interfejsu użytkownika została wydzielona do osobnych modułów.
-Za główną logikę aplikacji (wykonywanie kolejnych kroków symulacji i planowanie trajektorii robotów) odpowiedzialne są kontrolery - osobne dla każdej prezentowanej metody. Aplikacja zbudowana jest na wzorcu architektonicznym MVC ({\it Model-View-Controller}). Sama warstwa prezentacji została dodatkowo podzielona na dwa komponenty nazwa jako widok i prezenter, gdyż instancje widoków są generowane automatycznie przez JavaFX z ich definicji zapisanych w plikach FXML. Zaś prezenter deleguje dane pochodzące z kontrolera do widoku, uprzednio odpowiednio przygotowując je do wyświetlenia.
+Aplikacja zbudowana jest na wzorcu architektonicznym MVC ({\it Model-View-Controller}).
+Kontrolery w tym ujęciu są odpowiedzialne za główną logikę aplikacji (wykonywanie kolejnych kroków symulacji i planowanie trajektorii robotów). Są to osobne klasy dla każdej prezentowanej metody.
+Sama warstwa prezentacji została dodatkowo podzielona na dwa komponenty nazwane jako {\it widok} i {\it prezenter}, gdyż instancje widoków są generowane automatycznie przez mechanizmy JavaFX na podstawie ich definicji zapisanych w plikach formatu FXML. Zaś prezenter deleguje dane otrzymane z kontrolera do widoku, uprzednio odpowiednio przygotowując je do wyświetlenia.
+
+$TODO$ zmienić: model - logika, widok - fxml, preseneter - supervising controller
+$TODO$ dlaczego MVP? a nie MVC, bo lepsza testowalność i separacja modelu z widokiem
+
+Taka separacja warstw prezentacji od warstwy logiki umożliwia łatwe "odpięcie" logiki od interfejsu użytkownika i wykorzystanie jej do wykonania testów skuteczności metod planowania. Pozwala to na wykonanie "przyspieszonej" symulacji poprzez sekwencyjne uruchamianie kroków symulacji, zamiast wyzwalania przez cykle zegara. Pozostałe klasy również były projektowane z myślą o możliwości odpięcia
+
 Model aplikacji reprezentowany jest m.in przez klasy odpowiedzialne za logikę ruchu robotów, kolejkowania ich zaplanowanych ruchów, działania na wektorach (w metodzie pól potencjalnych), reprezentację pól na mapie oraz algorytmów planowania trajektorii.
 
-Aplikacja uruchamia planowanie trajektorii w osobnych wątkach w tle, aby nie wpływać na wątek interfejsu użytkownika i uzyskać możliwie płynne animacje. Wymaga to synchronizacji między wątkami, jednak język Java zapewnia stosunkowo łatwą obsługę wątków i synchronizacji dostępu do sekcji krytycznych. Wątki obliczeń oraz odświeżania interfejsu użytkownika są powtarzane w stałych, zadanych cyklach zegara, które nie są ze sobą zsynchronizowane (nie czekają na siebie), co zapewnia symulację w czasie rzeczywistym, niezależnie od stanu ukończenia obliczeń.
+Aplikacja uruchamia planowanie trajektorii w osobnych wątkach w tle, aby nie wpływać na wątek interfejsu użytkownika i uzyskać możliwie płynne animacje. Wymaga to synchronizacji między wątkami, jednak język Java zapewnia stosunkowo łatwą obsługę wątków i synchronizacji sekcji krytycznych. Wątki obliczeń oraz odświeżania interfejsu użytkownika są powtarzane w stałych, zadanych cyklach zegara, które nie są ze sobą zsynchronizowane (nie czekają na siebie), co zapewnia symulację w czasie rzeczywistym, niezależnie od stanu ukończenia obliczeń.
 
-Każda zaimplementowana metoda symulacji ruchu została wydzielona do osobnego modułu (pakietu). Pakiety te dalej są podzielone na poszczególne komponenty, których odpowiedzialności nie powinny się nakładać.
+Każda zaimplementowana metoda symulacji ruchu została wydzielona do osobnego modułu (pakietu). Pakiety te dalej składają się z poszczególnych komponentów, których odpowiedzialności nie nakłada się.
 
-Klasy kontrolerów oraz widoków są automatycznie instancjonowane przez Spring Framework. Dzięki wykorzystaniu kontenera IoC (ang. {\it Inversion of Control}) możliwe jest wstrzykiwanie zależności (ang. {Dependency Injection}) do poszczególnych instancji.
+Klasy kontrolerów oraz widoków są automatycznie instancjonowane przez Spring Framework. Dzięki wykorzystaniu kontenera IoC (ang. {\it Inversion of Control}) możliwe jest zautomatyzowane wstrzykiwanie zależności (ang. {Dependency Injection}) do poszczególnych instancji.
 
-Odpowiednie serwisy zarejestrowane jako Beany.
-Do tworzenia potrzebnych instancji klas odbywa się w fabrykach (wykorzystanie wzorca fabryki)
+Do instancjonowania potrzebnych obiektów wykorzystano wzorzec fabryki.
 
-$TODO$ lista beanów / serwisów
-factory beanów, DI, IoC
-serwis do randoma
-component scan ze springa - spring boota
-
-\section{Dodatkowe funkckjonalności}
-$featurey$
-ustawianie random seeda
-działania na wektorach, immutable vector
-heuristic cache
-kolejkowanie ruchów robota
-
-ponowne wykonanie symulacji - te same warunki
-przełaczanie między metodami na zakładkach ?
-resizable window - responsive
-wykonanie symulacji w pojedynczych krokach
+% \section{Dodatkowe funkckjonalności}
+% ustawianie random seeda
+% działania na wektorach, immutable vector
+% heuristic cache
+% kolejkowanie ruchów robota
+% component scan ze springa - spring boota
+% ponowne wykonanie symulacji - te same warunki
+% przełaczanie między metodami na zakładkach ?
+% resizable window - responsive
+% wykonanie symulacji w pojedynczych krokach
 
 \section{Ograniczenia}
 W aplikacji zostały wprowadzone pewne uproszczenia, które m.in. przyspieszają i ułatwiają proces obliczeniowy planowania trajektorii dla robotów.
 Założono, że ruch ukośny robota o jedno pole (po przekątnej) trwa tyle samo, co ruch poziomy lub pionowy. Wprowadzono takie założenie ze względu na możliwość ujednolicenia jednostki wymiaru czasu w tablicy rezerwacji pól przez agentów.
 Nie uwzględniono także czasu obrotu robota w celu zmiany kierunku jazdy. Założono, że ten czas jest zerowy, gdyż celem zaprojektowanego algorytmu było skupienie się na rozwiązaniu innego zagadnienia - problemu zakleszczeń w wąskich gardłach.
 
-$TODO$ publikacja na GitHub, licencja MIT, filmiki na YT
+% $TODO$ publikacja na GitHub, licencja MIT, filmiki na YT
