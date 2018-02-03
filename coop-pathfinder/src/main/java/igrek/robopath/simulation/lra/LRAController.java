@@ -17,9 +17,7 @@ import igrek.robopath.pathfinder.astar.Path;
 public class LRAController {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	@Autowired
 	private Random random;
-	@Autowired
 	private MazeGenerator mazegen;
 	
 	private TileMap map;
@@ -29,6 +27,16 @@ public class LRAController {
 	public LRAController(LRAPresenter presenter, LRASimulationParams params) {
 		this.params = params;
 		resetMap();
+	}
+	
+	@Autowired
+	public void setRandom(Random random) {
+		this.random = random;
+	}
+	
+	@Autowired
+	public void setMazegen(MazeGenerator mazegen) {
+		this.mazegen = mazegen;
 	}
 	
 	public TileMap getMap() {
@@ -44,7 +52,7 @@ public class LRAController {
 		robots.clear();
 	}
 	
-	synchronized void placeRobots() {
+	public synchronized void placeRobots() {
 		robots.clear();
 		for (int i = 0; i < params.robotsCount; i++) {
 			Point cell = randomUnoccupiedCellForRobot(map);
@@ -61,13 +69,13 @@ public class LRAController {
 	private void onTargetReached(MobileRobot robot) {
 		if (params.robotAutoTarget) {
 			if (robot.getTarget() == null || robot.hasReachedTarget()) {
-				logger.info("robot: " + robot.getPriority() + " - assigning new target");
+				logger.debug("robot: " + robot.getPriority() + " - assigning new target");
 				randomRobotTarget(robot);
 			}
 		}
 	}
 	
-	void randomTargetPressed() {
+	public void randomTargetPressed() {
 		for (MobileRobot robot : robots) {
 			robot.setTarget(null); // clear targets - not to block each other during randoming
 		}
@@ -140,7 +148,7 @@ public class LRAController {
 	}
 	
 	private void findPath(MobileRobot robot) {
-		logger.info("robot: " + robot.getPriority() + " - planning path");
+		logger.debug("robot: " + robot.getPriority() + " - planning path");
 		robot.resetMovesQue();
 		Point start = robot.getPosition();
 		Point target = robot.getTarget();
@@ -166,7 +174,7 @@ public class LRAController {
 		return map2;
 	}
 	
-	synchronized void stepSimulation() {
+	public synchronized void stepSimulation() {
 		for (MobileRobot robot : robots) {
 			if (robot.hasNextMove()) {
 				robot.setPosition(robot.pollNextMove());

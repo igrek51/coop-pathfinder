@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import igrek.robopath.common.Point;
 
-class MobileRobot {
+public class MobileRobot {
 	
 	private Point position;
 	private Point target;
@@ -118,7 +118,7 @@ class MobileRobot {
 		return num;
 	}
 	
-	boolean hasReachedTarget() {
+	public boolean hasReachedTarget() {
 		return target == null || target.equals(position);
 	}
 	

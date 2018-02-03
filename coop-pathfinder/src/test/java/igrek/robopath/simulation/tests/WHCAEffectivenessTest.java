@@ -15,7 +15,7 @@ import igrek.robopath.simulation.whca.MobileRobot;
 import igrek.robopath.simulation.whca.SimulationParams;
 
 
-public class PlanningEffectivenessTest {
+public class WHCAEffectivenessTest {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
