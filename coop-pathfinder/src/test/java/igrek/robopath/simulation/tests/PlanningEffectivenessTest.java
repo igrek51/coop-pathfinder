@@ -35,44 +35,36 @@ public class PlanningEffectivenessTest {
 	}
 	
 	@Test
-	public void testEffectiveness() {
-		int SIMS_COUNT = 10;
-		int mapW = 15, mapH = 15;
+	public void testBothAlgorithmsEffectiveness() {
+		int SIMS_COUNT = 30;
+		int mapW = 11, mapH = 11;
 		int robotsCount = 5;
-		int stepsMax = mapW * mapH;
+		int stepsMax = mapW * mapH * 2;
 		
 		logger.info("Simulation params: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
 		
 		int bothSuccessful = 0;
-		int lraSuccess = 0;
 		int whcaSuccess = 0;
+		int lraSuccess = 0;
 		int bothFailed = 0;
 		for (int s = 0; s < SIMS_COUNT; s++) {
-			//			create shared map
-			
-			//			WHCA
+			//			prepare WHCA
 			Controller whcaController = createWHCARandomSimulation(mapW, mapH, robotsCount);
 			whcaController.generateMaze();
 			whcaController.placeRobots();
 			whcaController.getParams().timeDimension = whcaController.getRobots().size() + 1;
 			whcaController.randomTargetPressed();
-			int whcaSteps = simulateWHCA(whcaController, stepsMax);
-			if (whcaSteps <= 0) {
-				logger.info("WHCA: failed to reach all targets");
-			} else {
-				logger.info("WHCA: all targets reached in " + whcaSteps + " steps");
-			}
-			//			LRA
+			//			prepare LRA
 			LRAController lraController = createLRARandomSimulation(mapW, mapH, robotsCount);
-			//			 same maze as in whca
+			// same maze as in whca
 			TileMap lraMap = lraController.getMap();
-			TileMap whcaMap = lraController.getMap();
+			TileMap whcaMap = whcaController.getMap();
 			for (int x = 0; x < lraMap.getWidthInTiles(); x++) {
 				for (int y = 0; y < lraMap.getHeightInTiles(); y++) {
 					lraMap.setCell(x, y, whcaMap.getCell(x, y));
 				}
 			}
-			//			 robots locations same as in whca
+			// robots locations same as in whca
 			for (int i = 0; i < robotsCount; i++) {
 				igrek.robopath.simulation.whca.MobileRobot whcaRobot = whcaController.getRobots()
 						.get(i);
@@ -81,9 +73,13 @@ public class PlanningEffectivenessTest {
 				//set target
 				lraController.getRobots().get(i).setTarget(whcaRobot.getTarget());
 			}
-			
-			// TODO test if it's really the same
-			
+			//			simulate both
+			int whcaSteps = simulateWHCA(whcaController, stepsMax);
+			if (whcaSteps <= 0) {
+				logger.info("WHCA: failed to reach all targets");
+			} else {
+				logger.info("WHCA: all targets reached in " + whcaSteps + " steps");
+			}
 			int lraSteps = simulateLRA(lraController, stepsMax);
 			if (lraSteps <= 0) {
 				logger.info("LRA: failed to reach all targets");
@@ -93,17 +89,17 @@ public class PlanningEffectivenessTest {
 			//			Summary
 			if (lraSteps > 0 && whcaSteps > 0) {
 				bothSuccessful++;
-			} else if (lraSteps > 0 && whcaSteps <= 0) {
-				lraSuccess++;
 			} else if (lraSteps <= 0 && whcaSteps > 0) {
 				whcaSuccess++;
+			} else if (lraSteps > 0 && whcaSteps <= 0) {
+				lraSuccess++;
 			} else {
 				bothFailed++;
 			}
 		}
 		logger.info("bothSuccessful: " + bothSuccessful + " / " + SIMS_COUNT);
-		logger.info("lraSuccess: " + lraSuccess + " / " + SIMS_COUNT);
 		logger.info("whcaSuccess: " + whcaSuccess + " / " + SIMS_COUNT);
+		logger.info("lraSuccess: " + lraSuccess + " / " + SIMS_COUNT);
 		logger.info("bothFailed: " + bothFailed + " / " + SIMS_COUNT);
 	}
 	
