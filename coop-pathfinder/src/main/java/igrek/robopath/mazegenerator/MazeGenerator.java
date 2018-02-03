@@ -55,19 +55,19 @@ public class MazeGenerator {
 			int p1x = p1.x; //aktualna pozycja w drodze między punktami
 			int p1y = p1.y;
 			while (p1x < p2.x) { //idź w prawo
-				map.setCell(p1y, p1x, false); //wyburzenie ściany
+				map.setCell(p1x, p1y, false); //wyburzenie ściany
 				p1x++;
 			}
 			while (p1x > p2.x) { //idź w lewo
-				map.setCell(p1y, p1x, false); //wyburzenie ściany
+				map.setCell(p1x, p1y, false); //wyburzenie ściany
 				p1x--;
 			}
 			while (p1y < p2.y) { //idź w dół
-				map.setCell(p1y, p1x, false); //wyburzenie ściany
+				map.setCell(p1x, p1y, false); //wyburzenie ściany
 				p1y++;
 			}
 			while (p1y > p2.y) { //idź w górę
-				map.setCell(p1y, p1x, false); //wyburzenie ściany
+				map.setCell(p1x, p1y, false); //wyburzenie ściany
 				p1y--;
 			}
 			//przepisz punkt z listy nieodwiedzonych do odwiedzonych

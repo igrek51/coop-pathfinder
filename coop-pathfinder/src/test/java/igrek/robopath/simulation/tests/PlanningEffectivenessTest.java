@@ -10,6 +10,7 @@ import java.util.Random;
 import ch.qos.logback.classic.Level;
 import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.mazegenerator.MazeGenerator;
+import igrek.robopath.mazegenerator.NoNextFieldException;
 import igrek.robopath.mazegenerator.RandomFactory;
 import igrek.robopath.simulation.lra.LRAController;
 import igrek.robopath.simulation.lra.LRASimulationParams;
@@ -27,7 +28,7 @@ public class PlanningEffectivenessTest {
 	@BeforeClass
 	public static void beforeAll() {
 		RandomFactory randomFactory = new RandomFactory();
-		randomFactory.randomSeed = "";
+		randomFactory.randomSeed = "1517667150426";
 		random = randomFactory.provideRandom();
 		// please, shut up
 		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(LRAController.class)).setLevel(Level.INFO);
@@ -48,22 +49,36 @@ public class PlanningEffectivenessTest {
 		int lraSuccess = 0;
 		int bothFailed = 0;
 		for (int s = 0; s < SIMS_COUNT; s++) {
+			// random params
+			mapW = randomInt(5, 45);
+			mapH = randomInt(5, 45);
+			robotsCount = randomInt(1, mapW * mapH / 10);
+			stepsMax = mapW * mapH * 2;
+			logger.info("Simulation params: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
+			
 			//			prepare WHCA
 			Controller whcaController = createWHCARandomSimulation(mapW, mapH, robotsCount);
-			whcaController.generateMaze();
-			whcaController.placeRobots();
-			whcaController.getParams().timeDimension = whcaController.getRobots().size() + 1;
-			whcaController.randomTargetPressed();
+			try {
+				whcaController.generateMaze();
+				whcaController.placeRobots();
+				whcaController.getParams().timeDimension = whcaController.getRobots().size() + 1;
+				whcaController.randomTargetPressed();
+			} catch (NoNextFieldException e) {
+				logger.warn(e.getMessage());
+				continue;
+			}
 			//			prepare LRA
 			LRAController lraController = createLRARandomSimulation(mapW, mapH, robotsCount);
 			// same maze as in whca
-			TileMap lraMap = lraController.getMap();
 			TileMap whcaMap = whcaController.getMap();
+			TileMap lraMap = lraController.getMap();
 			for (int x = 0; x < lraMap.getWidthInTiles(); x++) {
 				for (int y = 0; y < lraMap.getHeightInTiles(); y++) {
 					lraMap.setCell(x, y, whcaMap.getCell(x, y));
 				}
 			}
+			logger.debug("whcaMap: " + whcaMap);
+			logger.debug("lraMap: " + lraMap);
 			// robots locations same as in whca
 			for (int i = 0; i < robotsCount; i++) {
 				igrek.robopath.simulation.whca.MobileRobot whcaRobot = whcaController.getRobots()
@@ -75,17 +90,17 @@ public class PlanningEffectivenessTest {
 			}
 			//			simulate both
 			int whcaSteps = simulateWHCA(whcaController, stepsMax);
-			if (whcaSteps <= 0) {
-				logger.info("WHCA: failed to reach all targets");
-			} else {
-				logger.info("WHCA: all targets reached in " + whcaSteps + " steps");
-			}
+			//			if (whcaSteps <= 0) {
+			//				logger.info("WHCA: failed to reach all targets");
+			//			} else {
+			//				logger.info("WHCA: all targets reached in " + whcaSteps + " steps");
+			//			}
 			int lraSteps = simulateLRA(lraController, stepsMax);
-			if (lraSteps <= 0) {
-				logger.info("LRA: failed to reach all targets");
-			} else {
-				logger.info("LRA: all targets reached in " + lraSteps + " steps");
-			}
+			//			if (lraSteps <= 0) {
+			//				logger.info("LRA: failed to reach all targets");
+			//			} else {
+			//				logger.info("LRA: all targets reached in " + lraSteps + " steps");
+			//			}
 			//			Summary
 			if (lraSteps > 0 && whcaSteps > 0) {
 				bothSuccessful++;
@@ -96,11 +111,17 @@ public class PlanningEffectivenessTest {
 			} else {
 				bothFailed++;
 			}
+			int all = s + 1;
+			logger.info(String.format("both: %d/%d, WHCA: %d/%d, LRA: %d/%d, none: %d/%d", bothSuccessful, all, whcaSuccess, all, lraSuccess, all, bothFailed, all));
 		}
 		logger.info("bothSuccessful: " + bothSuccessful + " / " + SIMS_COUNT);
 		logger.info("whcaSuccess: " + whcaSuccess + " / " + SIMS_COUNT);
 		logger.info("lraSuccess: " + lraSuccess + " / " + SIMS_COUNT);
 		logger.info("bothFailed: " + bothFailed + " / " + SIMS_COUNT);
+	}
+	
+	private int randomInt(int fromInclusive, int toInclusive) {
+		return fromInclusive + random.nextInt(toInclusive - fromInclusive + 1);
 	}
 	
 	private LRAController createLRARandomSimulation(int mapW, int mapH, int robotsCount) {

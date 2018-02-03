@@ -8,6 +8,9 @@ public class TileMap {
 	
 	private int width;
 	private int height;
+	/**
+	 * is blocked
+	 */
 	private boolean[][] tiles;
 	
 	public TileMap(int width, int height) {
@@ -84,4 +87,19 @@ public class TileMap {
 		return getCell(x, y);
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("Map:\n");
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				if (tiles[x][y]) {
+					sb.append("X");
+				} else {
+					sb.append(".");
+				}
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
 }
