@@ -239,7 +239,7 @@ public class Controller {
 				robotsReached.add(robot);
 				replan = true;
 			} else if (!robot.hasNextMove() && !robot.hasReachedTarget()) {
-				logger.info("robot: " + robot.getId() + " - no planned moves");
+				logger.debug("robot: " + robot.getId() + " - no planned moves");
 				replan = true;
 			}
 		}
@@ -249,7 +249,7 @@ public class Controller {
 		//		resetCollidedRobots();
 		if (replan) {
 			findPaths();
-			logger.info("replanning all paths");
+			logger.debug("replanning all paths");
 		}
 	}
 	
@@ -258,7 +258,7 @@ public class Controller {
 		for (MobileRobot robot : robots) {
 			MobileRobot collidedRobot = collisionDetected(robot);
 			if (collidedRobot != null) {
-				logger.info("Collision detected between robots: " + robot.getId() + ", " + collidedRobot
+				logger.debug("Collision detected between robots: " + robot.getId() + ", " + collidedRobot
 						.getId());
 				collidedRobots.add(new Pair<>(robot, collidedRobot));
 				//				logger.debug("robot " + robot.getId() + " previous path: " + robot.getMovesQue());
@@ -279,11 +279,11 @@ public class Controller {
 	private void promotePriority(MobileRobot robot, String reason) {
 		robot.setPriority(robot.getPriority() + 1);
 		reorderNeeded = true;
-		logger.info("robot " + robot.getId() + " promoted to priority " + robot.getPriority() + reason);
+		logger.debug("robot " + robot.getId() + " promoted to priority " + robot.getPriority() + reason);
 		if (robot.getPriority() > params.timeDimension) {
 			params.timeDimension = robot.getPriority();
 			params.sendToUI();
-			logger.info("Time dimension increased to " + params.timeDimension);
+			logger.debug("Time dimension increased to " + params.timeDimension);
 		}
 	}
 	

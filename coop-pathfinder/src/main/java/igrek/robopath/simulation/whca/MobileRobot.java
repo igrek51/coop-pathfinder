@@ -135,7 +135,7 @@ public class MobileRobot {
 		return num;
 	}
 	
-	boolean hasReachedTarget() {
+	public boolean hasReachedTarget() {
 		return target == null || target.equals(position);
 	}
 	
