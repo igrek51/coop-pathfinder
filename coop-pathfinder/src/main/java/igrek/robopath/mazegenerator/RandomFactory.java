@@ -14,7 +14,7 @@ public class RandomFactory {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Value("${randomseed}")
-	private String randomSeed;
+	public String randomSeed;
 	
 	@Bean
 	public Random provideRandom() {

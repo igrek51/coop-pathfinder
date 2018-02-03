@@ -23,17 +23,21 @@ public class PlanningEffectivenessTest {
 	
 	@BeforeClass
 	public static void beforeAll() {
-		random = new RandomFactory().provideRandom();
+		RandomFactory randomFactory = new RandomFactory();
+		randomFactory.randomSeed = "";
+		random = randomFactory.provideRandom();
 		// please, shut up
 		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Controller.class)).setLevel(Level.INFO);
 	}
 	
 	@Test
 	public void testEffectiveness() {
-		int SIMS_COUNT = 10;
-		int mapW = 11, mapH = 11;
-		int robotsCount = 5;
+		int SIMS_COUNT = 100;
+		int mapW = 15, mapH = 15;
+		int robotsCount = 15;
 		int stepsMax = mapW * mapH;
+		
+		logger.info("Simulation params: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
 		
 		int successful = 0;
 		for (int s = 0; s < SIMS_COUNT; s++) {
