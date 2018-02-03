@@ -60,7 +60,7 @@ public class LRAController {
 		}
 	}
 	
-	synchronized MobileRobot createMobileRobot(Point point, int i) {
+	public synchronized MobileRobot createMobileRobot(Point point, int i) {
 		MobileRobot robo = new MobileRobot(point, robot -> onTargetReached(robot), i);
 		robots.add(robo);
 		return robo;
@@ -84,7 +84,7 @@ public class LRAController {
 		}
 	}
 	
-	synchronized void generateMaze() {
+	public synchronized void generateMaze() {
 		mazegen.generateMaze(map);
 	}
 	

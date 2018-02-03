@@ -62,6 +62,10 @@ public class Controller {
 		return robots;
 	}
 	
+	public SimulationParams getParams() {
+		return params;
+	}
+	
 	synchronized void resetMap() {
 		map = new TileMap(params.mapSizeW, params.mapSizeH);
 		robots.clear();
@@ -106,7 +110,7 @@ public class Controller {
 		reorderNeeded = true;
 	}
 	
-	synchronized void generateMaze() {
+	public synchronized void generateMaze() {
 		mazegen.generateMaze(map);
 	}
 	

@@ -35,7 +35,7 @@ public class MobileRobot {
 		return target;
 	}
 	
-	void setTarget(Point target) {
+	public void setTarget(Point target) {
 		this.target = target;
 	}
 	

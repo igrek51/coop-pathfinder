@@ -32,9 +32,9 @@ public class WHCAEffectivenessTest {
 	
 	@Test
 	public void testEffectiveness() {
-		int SIMS_COUNT = 100;
+		int SIMS_COUNT = 20;
 		int mapW = 15, mapH = 15;
-		int robotsCount = 15;
+		int robotsCount = 5;
 		int stepsMax = mapW * mapH;
 		
 		logger.info("Simulation params: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
@@ -70,6 +70,7 @@ public class WHCAEffectivenessTest {
 		controller.setRandom(random);
 		controller.setMazegen(new MazeGenerator(random));
 		
+		controller.generateMaze();
 		controller.placeRobots();
 		params.timeDimension = controller.getRobots().size() + 1;
 		controller.randomTargetPressed();
