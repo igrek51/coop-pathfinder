@@ -1,5 +1,5 @@
 \section{Wykorzystane technologie}
-Do stworzenia aplikacji wykorzystano wiele technologii, narzędzi deweloperskich oraz metodyk opisanych w poniższych podrozdziałach.
+Do stworzenia aplikacji wykorzystano wiele technologii, narzędzi deweloperskich oraz technik opisanych w poniższych podrozdziałach.
 
 \subsection{Java 8}
 Aplikacja w całości została napisana w języku Java.
@@ -21,7 +21,7 @@ Do zbudowania widoków aplikacji wykorzystano specjalny format plików FXML, w k
 \subsubsection{Spring Framework}
 Spring jest frameworkiem, który umożliwia w aplikacjach Javy zastosowanie wzorca architektonicznego odwrócenia sterowania (IoC - ang. {\it Inversion of Control}), a w szczególności wstrzykiwania zależności (ang. {\it Dependency Injection}). Pozwala to uniknąć występowania bezpośrednich zależności pomiędzy komponentami oraz umożliwia automatyczne dostarczanie i zarządzanie cyklem życia komponentów aplikacji.
 
-W zaprojektowanej aplikacji Spring jest wykorzystywany m.in. do automatycznego dostarczania współdzielonych danych o parametrach symulacji oraz do zarządzania cyklem życia kontrolerów i widoków z biblioteki JavaFX.
+W zaprojektowanej aplikacji Spring jest wykorzystywany m.in. do automatycznego dostarczania współdzielonych danych o parametrach symulacji oraz do zarządzania cyklem życia klas prezenterów i widoków z biblioteki JavaFX.
 
 \subsubsection{Spring Boot}
 Spring Boot jest rozwiązaniem przyspieszającym proces konfiguracji, tworzenia oraz uruchamiania aplikacji opartych na Spring Framework.
@@ -32,7 +32,7 @@ Spring Boot dostarcza do aplikacji symulacyjnej wiele zależności do bibliotek 
 {\it Spring Boot JavaFx Support} jest niewielką biblioteką umożliwiającą użycie Spring Boot w jednym projekcie w połączeniu z JavaFx.
 
 \subsection{jUnit i Test-driven development}
-jUnit jest frameworkiem do wykonywania testów jednostkowych dla programów napisanych w Javie. Testy jednostkowe weryfikują poprawność działania pojedynczych komponentów aplikacji.
+jUnit jest frameworkiem do wykonywania testów jednostkowych dla programów napisanych w Javie. Testy jednostkowe weryfikują poprawność działania pojedynczych komponentów aplikacji. Uruchamiane są automatycznie podczas budowania projektu.
 
 W projekcie zastosowano podejście TDD (ang. {\it Test-driven development}) dla procesu rozwoju oprogramowania. Dotyczy to w szczególności rozwoju logiki silnika planowania tras dla algorytmu A* i WHCA*. Algorytm WHCA* jest na tyle złożony, że zdecydowano się najpierw napisać szczególne przypadki testowe, które określały jakie dane wyjściowe (zaplanowane trajektorie) są oczekiwane przy zadanych danych wejśiowych. Dopiero po takim pokryciu testami przystąpiono do implementacji algorytmu. Warunkiem poprawności zaimplementowanego algorytmu było, aby wszystkie testy jednostkowe wykonały się prawidłowo. Na tym właśnie podejściu opiera się proces TDD (ang. {\it Test-driven development}), który jest naturalnie wspierany przez framework jUnit.
 
@@ -72,23 +72,28 @@ Do zapisu dziennika zdarzeń oraz błędów w aplikacji została wykorzystana bi
 
 
 \section{Struktura aplikacji}
-Aplikacja została zbudowana w oparciu o architekturę warstwową. Obsługa interfejsu użytkownika została wydzielona do osobnych modułów.
-Aplikacja zbudowana jest na wzorcu architektonicznym MVC ({\it Model-View-Controller}).
-Kontrolery w tym ujęciu są odpowiedzialne za główną logikę aplikacji (wykonywanie kolejnych kroków symulacji i planowanie trajektorii robotów). Są to osobne klasy dla każdej prezentowanej metody.
-Sama warstwa prezentacji została dodatkowo podzielona na dwa komponenty nazwane jako {\it widok} i {\it prezenter}, gdyż instancje widoków są generowane automatycznie przez mechanizmy JavaFX na podstawie ich definicji zapisanych w plikach formatu FXML. Zaś prezenter deleguje dane otrzymane z kontrolera do widoku, uprzednio odpowiednio przygotowując je do wyświetlenia.
+% \subsection{Model-View-Presenter}
+Oprogramowanie zostało zorganizowane w architekturę warstwową.
+Główny szkielet aplikacji zbudowany jest w oparciu o wzorzec architektoniczny MVP (ang. {\it Model-View-Presenter} - Model-Widok-Prezenter), będący pochodną wzorca MVC (ang. {\it Model-View-Controller}).
+Takie podejście zapewnia separację głównej logiki dziedziny programu od warstwy interfejsu użytkownika.
 
-$TODO$ zmienić: model - logika, widok - fxml, preseneter - supervising controller
-$TODO$ dlaczego MVP? a nie MVC, bo lepsza testowalność i separacja modelu z widokiem
+Wybrano podejście MVP, gdyż (w porównaniu do MVC) oferuje ono łatwiejszą testowalność kodu, możliwość "odczepiania" i wymieniania poszczególnych warstw (w celach testowania). Zapewnia to także większą separację modelu z widokiem, które nie muszą "wiedzieć" o sobie, a komunikują się jedynie za pośrednictwem prezentera.
 
-Taka separacja warstw prezentacji od warstwy logiki umożliwia łatwe "odpięcie" logiki od interfejsu użytkownika i wykorzystanie jej do wykonania testów skuteczności metod planowania. Pozwala to na wykonanie "przyspieszonej" symulacji poprzez sekwencyjne uruchamianie kroków symulacji, zamiast wyzwalania przez cykle zegara. Pozostałe klasy również były projektowane z myślą o możliwości odpięcia
+Każdą zaimplementowaną metodę symulacji ruchu robotów zamknięto w osobnych modułach (pakietach). Każdy z tych modułów posiada swoje osobne klasy pochodzące z architektury MVP:
+\begin{itemize}
+	\item {\bf Model} jest zbiorem klas zajmujących się główną logiką dziedziny aplikacji. Model reprezentowany jest m.in przez klasy odpowiedzialne za reguły poruszania się robotów, obsługę wykonywania kolejnych kroków symulacji, algorytmy planowania trajektorii, kolejkowanie zaplanowanych ruchów, działania na wektorach (w metodzie pól potencjalnych) oraz reprezentację pól na mapie.
+	\item {\bf Widok} jest reprezentacją interfejsu użytkownika, który wyświetla dane i kieruje informacje o akcjach użytkownika (zdarzeniach) do prezentera. W tym wypadku instancje widoków generowane są automatycznie przez mechanizmy JavaFX na podstawie ich definicji zapisanych w plikach formatu FXML.
+	\item {\bf Prezenter} deleguje dane otrzymane z modelu do widoku, uprzednio przygotowując je do wyświetlenia. Jest w nim zawarta logika warstwy prezentacji.
+\end{itemize}
 
-Model aplikacji reprezentowany jest m.in przez klasy odpowiedzialne za logikę ruchu robotów, kolejkowania ich zaplanowanych ruchów, działania na wektorach (w metodzie pól potencjalnych), reprezentację pól na mapie oraz algorytmów planowania trajektorii.
+Taka separacja warstw prezentacji od warstwy logiki umożliwia łatwe "odpięcie" logiki od interfejsu użytkownika i wykorzystanie jej do wykonania testów skuteczności metod planowania. Pozwala to wtedy na wykonanie "przyspieszonej" symulacji poprzez sekwencyjne uruchamianie kroków symulacji tak szybko, jak to możliwe, zamiast oczekiwania na wyzwolenie ich przez kolejne cykle zegara.
+Klasy modelu były projektowane właśnie z myślą o możliwości wykorzystania ich zarówno w wizualizacji w czasie rzeczywistym, jak i w przyspieszonej symulacji w celu przeprowadzenia testów.
 
-Aplikacja uruchamia planowanie trajektorii w osobnych wątkach w tle, aby nie wpływać na wątek interfejsu użytkownika i uzyskać możliwie płynne animacje. Wymaga to synchronizacji między wątkami, jednak język Java zapewnia stosunkowo łatwą obsługę wątków i synchronizacji sekcji krytycznych. Wątki obliczeń oraz odświeżania interfejsu użytkownika są powtarzane w stałych, zadanych cyklach zegara, które nie są ze sobą zsynchronizowane (nie czekają na siebie), co zapewnia symulację w czasie rzeczywistym, niezależnie od stanu ukończenia obliczeń.
+$TODO$
+Aplikacja uruchamia planowanie trajektorii w osobnych wątkach w tle, aby nie wpływać na wątek interfejsu użytkownika i uzyskać możliwie płynne animacje. Wymaga to synchronizacji między wątkami, jednak język Java zapewnia stosunkowo łatwą obsługę wątków i synchronizacji sekcji krytycznych. Wątki obliczeń oraz odświeżania interfejsu użytkownika są powtarzane w stałych, zadanych cyklach zegara, które nie są ze sobą zsynchronizowane (nie czekają na siebie), co daje efekt symulacji w czasie rzeczywistym, niezależnie od stanu ukończenia obliczeń.
 
-Każda zaimplementowana metoda symulacji ruchu została wydzielona do osobnego modułu (pakietu). Pakiety te dalej składają się z poszczególnych komponentów, których odpowiedzialności nie nakłada się.
-
-Klasy kontrolerów oraz widoków są automatycznie instancjonowane przez Spring Framework. Dzięki wykorzystaniu kontenera IoC (ang. {\it Inversion of Control}) możliwe jest zautomatyzowane wstrzykiwanie zależności (ang. {Dependency Injection}) do poszczególnych instancji.
+$TODO$
+Klasy serwisów, prezenterów oraz widoków są automatycznie instancjonowane przez Spring Framework. Dzięki wykorzystaniu kontenera IoC (ang. {\it Inversion of Control}) możliwe jest zautomatyzowane wstrzykiwanie zależności (ang. {Dependency Injection}) do poszczególnych instancji.
 
 Do instancjonowania potrzebnych obiektów wykorzystano wzorzec fabryki.
 
@@ -105,7 +110,9 @@ Do instancjonowania potrzebnych obiektów wykorzystano wzorzec fabryki.
 
 \section{Ograniczenia}
 W aplikacji zostały wprowadzone pewne uproszczenia, które m.in. przyspieszają i ułatwiają proces obliczeniowy planowania trajektorii dla robotów.
-Założono, że ruch ukośny robota o jedno pole (po przekątnej) trwa tyle samo, co ruch poziomy lub pionowy. Wprowadzono takie założenie ze względu na możliwość ujednolicenia jednostki wymiaru czasu w tablicy rezerwacji pól przez agentów.
-Nie uwzględniono także czasu obrotu robota w celu zmiany kierunku jazdy. Założono, że ten czas jest zerowy, gdyż celem zaprojektowanego algorytmu było skupienie się na rozwiązaniu innego zagadnienia - problemu zakleszczeń w wąskich gardłach.
+\begin{enumerate}
+	\item Założono, że ruch ukośny robota o jedno pole (po przekątnej) trwa tyle samo, co ruch poziomy lub pionowy. Wprowadzono takie przybliżenie ze względu na możliwość ujednolicenia jednostki wymiaru czasu w tablicy rezerwacji pól przez agentów.
+	\item Nie uwzględniono czasu obrotu robota podczas zmiany kierunku jazdy. Założono, że czas ten jest zerowy, gdyż celem zaprojektowanego algorytmu było skupienie się na rozwiązaniu innego zagadnienia - problemu zakleszczeń w wąskich gardłach.
+\end{enumerate}
 
 % $TODO$ publikacja na GitHub, licencja MIT, filmiki na YT
