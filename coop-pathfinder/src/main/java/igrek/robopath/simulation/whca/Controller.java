@@ -15,6 +15,7 @@ import java.util.Random;
 import igrek.robopath.common.Point;
 import igrek.robopath.common.tilemap.TileMap;
 import igrek.robopath.mazegenerator.MazeGenerator;
+import igrek.robopath.mazegenerator.NoNextFieldException;
 import igrek.robopath.pathfinder.whca.Path;
 import igrek.robopath.pathfinder.whca.ReservationTable;
 import igrek.robopath.pathfinder.whca.WHCAPathFinder;
@@ -75,6 +76,8 @@ public class Controller {
 		robots.clear();
 		for (int i = 0; i < params.robotsCount; i++) {
 			Point cell = randomUnoccupiedCellForRobot(map);
+			if (cell == null)
+				throw new NoNextFieldException("can't find next random robot posistion - all seems to be occupied");
 			createMobileRobot(cell);
 		}
 	}
@@ -128,6 +131,8 @@ public class Controller {
 		Point target = randomUnoccupiedCellForTarget(map);
 		// reset its initial priority
 		robot.setPriority(robot.getId());
+		if (target == null)
+			throw new NoNextFieldException("can't find next random robot target - all seems to be occupied");
 		robot.setTarget(target);
 	}
 	
