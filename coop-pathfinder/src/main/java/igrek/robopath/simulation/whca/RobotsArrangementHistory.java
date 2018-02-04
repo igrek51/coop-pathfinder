@@ -24,7 +24,7 @@ class RobotsArrangementHistory {
 	List<MobileRobot> restoreRobots(List<MobileRobot> robots) {
 		robots.clear();
 		for (MobileRobot robot : deepCopy) {
-			// clone once again to keep original
+			// clone once again to keep original here
 			robots.add(robot.clone());
 		}
 		logger.info("robots arrangement has been restored from history");

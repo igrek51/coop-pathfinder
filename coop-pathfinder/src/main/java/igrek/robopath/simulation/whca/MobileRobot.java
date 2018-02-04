@@ -26,9 +26,9 @@ public class MobileRobot {
 	
 	@Override
 	protected MobileRobot clone() {
-		MobileRobot clone = new MobileRobot(this.position, this.targetReachedHandler, this.id, this.priority);
+		MobileRobot clone = new MobileRobot(this.position, null, this.id, this.priority);
 		clone.target = this.target;
-		clone.movesQue = this.movesQue;
+		clone.movesQue = new LinkedList<>(this.movesQue);
 		return clone;
 	}
 	

@@ -186,10 +186,10 @@ public class Controller {
 	public synchronized void stepSimulation() {
 		logger.info("next simulation step...");
 		boolean replan = false;
-		logger.debug("collision detection (before)...");
+		//		logger.debug("collision detection (before)...");
 		resetAllCollidedRobots();
 		robotsReached.clear();
-		logger.debug("moving robots...");
+		//		logger.debug("moving robots...");
 		for (MobileRobot robot : robots) {
 			if (robot.hasNextMove()) {
 				robot.setPosition(robot.pollNextMove());
@@ -209,7 +209,7 @@ public class Controller {
 			logger.debug("replanning all paths...");
 			findPaths();
 		}
-		logger.debug("collision detection (after)...");
+		//		logger.debug("collision detection (after)...");
 		resetAllCollidedRobots();
 	}
 	
@@ -305,7 +305,8 @@ public class Controller {
 			MobileRobot minorPriority = first.getPriority() < second.getPriority() ? first : second;
 			MobileRobot majorPriority = first.getPriority() < second.getPriority() ? second : first;
 			//			 priority promotion for robot with minor priority
-			promotePriority(minorPriority, " - due to collision");
+			//			promotePriority(minorPriority, " - due to collision");
+			//			promotePriority(majorPriority, " - due to collision");
 			//							majorPriority.setPriority(majorPriority.getPriority() - 1);
 		}
 		return collisionHappened;
