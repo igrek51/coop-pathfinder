@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration;
 public class WHCAFactory {
 	
 	@Bean(name = "whca2Params")
-	public SimulationParams provideSimulationParams() {
-		return new SimulationParams();
+	public WHCASimulationParams provideSimulationParams() {
+		return new WHCASimulationParams();
 	}
 	
 	@Bean(name = "whca2Controller")
-	public Controller provideController(@Qualifier("whca2Presenter") Presenter presenter, @Qualifier("whca2Params") SimulationParams params) {
-		return new Controller(presenter, params);
+	public WHCAController provideController(@Qualifier("whca2Presenter") WHCAPresenter presenter, @Qualifier("whca2Params") WHCASimulationParams params) {
+		return new WHCAController(presenter, params);
 	}
 	
 }

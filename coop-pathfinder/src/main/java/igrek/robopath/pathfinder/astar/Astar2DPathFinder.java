@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import igrek.robopath.common.tilemap.TileMap;
+import igrek.robopath.common.TileMap;
 
 public class Astar2DPathFinder {
 	

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import igrek.robopath.common.Point;
-import igrek.robopath.common.tilemap.TileMap;
+import igrek.robopath.common.TileMap;
 import igrek.robopath.simulation.whca.MobileRobot;
 
 import static org.junit.Assert.assertEquals;

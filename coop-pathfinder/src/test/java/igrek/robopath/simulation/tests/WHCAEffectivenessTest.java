@@ -10,9 +10,9 @@ import java.util.Random;
 import ch.qos.logback.classic.Level;
 import igrek.robopath.mazegenerator.MazeGenerator;
 import igrek.robopath.mazegenerator.RandomFactory;
-import igrek.robopath.simulation.whca.Controller;
 import igrek.robopath.simulation.whca.MobileRobot;
-import igrek.robopath.simulation.whca.SimulationParams;
+import igrek.robopath.simulation.whca.WHCAController;
+import igrek.robopath.simulation.whca.WHCASimulationParams;
 
 
 public class WHCAEffectivenessTest {
@@ -27,7 +27,7 @@ public class WHCAEffectivenessTest {
 		randomFactory.randomSeed = "";
 		random = randomFactory.provideRandom();
 		// please, shut up
-		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Controller.class)).setLevel(Level.INFO);
+		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(WHCAController.class)).setLevel(Level.INFO);
 	}
 	
 	@Test
@@ -49,7 +49,7 @@ public class WHCAEffectivenessTest {
 	}
 	
 	private boolean runSimulation(int mapW, int mapH, int robotsCount, int stepsMax) {
-		Controller controller = createRandomSimulation(mapW, mapH, robotsCount);
+		WHCAController controller = createRandomSimulation(mapW, mapH, robotsCount);
 		int steps = simulate(controller, stepsMax);
 		if (steps <= 0) {
 			logger.info("failed to reach all targets");
@@ -61,12 +61,12 @@ public class WHCAEffectivenessTest {
 	}
 	
 	
-	private Controller createRandomSimulation(int mapW, int mapH, int robotsCount) {
-		SimulationParams params = new SimulationParams();
+	private WHCAController createRandomSimulation(int mapW, int mapH, int robotsCount) {
+		WHCASimulationParams params = new WHCASimulationParams();
 		params.mapSizeW = mapW;
 		params.mapSizeH = mapH;
 		params.robotsCount = robotsCount;
-		Controller controller = new Controller(null, params);
+		WHCAController controller = new WHCAController(null, params);
 		controller.setRandom(random);
 		controller.setMazegen(new MazeGenerator(random));
 		
@@ -77,7 +77,7 @@ public class WHCAEffectivenessTest {
 		return controller;
 	}
 	
-	private int simulate(Controller controller, int stepsMax) {
+	private int simulate(WHCAController controller, int stepsMax) {
 		for (int step = 0; step < stepsMax; step++) {
 			//			logger.debug("simulation step " + step);
 			controller.stepSimulation();

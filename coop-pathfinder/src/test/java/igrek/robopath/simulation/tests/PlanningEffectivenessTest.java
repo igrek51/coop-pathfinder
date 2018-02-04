@@ -8,15 +8,15 @@ import org.slf4j.LoggerFactory;
 import java.util.Random;
 
 import ch.qos.logback.classic.Level;
-import igrek.robopath.common.tilemap.TileMap;
+import igrek.robopath.common.TileMap;
 import igrek.robopath.mazegenerator.MazeGenerator;
 import igrek.robopath.mazegenerator.NoNextFieldException;
 import igrek.robopath.mazegenerator.RandomFactory;
 import igrek.robopath.simulation.lra.LRAController;
 import igrek.robopath.simulation.lra.LRASimulationParams;
 import igrek.robopath.simulation.lra.MobileRobot;
-import igrek.robopath.simulation.whca.Controller;
-import igrek.robopath.simulation.whca.SimulationParams;
+import igrek.robopath.simulation.whca.WHCAController;
+import igrek.robopath.simulation.whca.WHCASimulationParams;
 
 
 public class PlanningEffectivenessTest {
@@ -32,17 +32,12 @@ public class PlanningEffectivenessTest {
 		random = randomFactory.provideRandom();
 		// please, shut up
 		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(LRAController.class)).setLevel(Level.INFO);
-		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Controller.class)).setLevel(Level.INFO);
+		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(WHCAController.class)).setLevel(Level.INFO);
 	}
 	
 	@Test
 	public void testBothAlgorithmsEffectiveness() {
-		int SIMS_COUNT = 30;
-		int mapW = 11, mapH = 11;
-		int robotsCount = 5;
-		int stepsMax = mapW * mapH * 2;
-		
-		//		logger.info("Simulation params: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
+		int SIMS_COUNT = 100;
 		
 		int bothSuccessful = 0;
 		int whcaSuccess = 0;
@@ -50,14 +45,14 @@ public class PlanningEffectivenessTest {
 		int bothFailed = 0;
 		for (int s = 1; s <= SIMS_COUNT; s++) {
 			// random params
-			mapW = randomInt(5, 39);
-			mapH = randomInt(5, 39);
-			robotsCount = randomInt(1, mapW * mapH / 40);
-			stepsMax = (mapW + mapH) * 2;
+			int mapW = randomInt(5, 39);
+			int mapH = randomInt(5, 39);
+			int robotsCount = randomInt(1, mapW * mapH / 40);
+			int stepsMax = (mapW + mapH) * 2;
 			logger.info("Simulation " + s + ": map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
 			
 			//			prepare WHCA
-			Controller whcaController = createWHCARandomSimulation(mapW, mapH, robotsCount);
+			WHCAController whcaController = createWHCARandomSimulation(mapW, mapH, robotsCount);
 			try {
 				whcaController.generateMaze();
 				whcaController.placeRobots();
@@ -118,6 +113,8 @@ public class PlanningEffectivenessTest {
 	}
 	
 	private int randomInt(int fromInclusive, int toInclusive) {
+		if (toInclusive < fromInclusive)
+			return fromInclusive;
 		return fromInclusive + random.nextInt(toInclusive - fromInclusive + 1);
 	}
 	
@@ -132,12 +129,12 @@ public class PlanningEffectivenessTest {
 		return controller;
 	}
 	
-	private Controller createWHCARandomSimulation(int mapW, int mapH, int robotsCount) {
-		SimulationParams params = new SimulationParams();
+	private WHCAController createWHCARandomSimulation(int mapW, int mapH, int robotsCount) {
+		WHCASimulationParams params = new WHCASimulationParams();
 		params.mapSizeW = mapW;
 		params.mapSizeH = mapH;
 		params.robotsCount = robotsCount;
-		Controller controller = new Controller(null, params);
+		WHCAController controller = new WHCAController(null, params);
 		controller.setRandom(random);
 		controller.setMazegen(new MazeGenerator(random));
 		return controller;
@@ -160,7 +157,7 @@ public class PlanningEffectivenessTest {
 		return -1;
 	}
 	
-	private int simulateWHCA(Controller controller, int stepsMax) {
+	private int simulateWHCA(WHCAController controller, int stepsMax) {
 		for (int step = 0; step < stepsMax; step++) {
 			//			logger.debug("simulation step " + step);
 			controller.stepSimulation();

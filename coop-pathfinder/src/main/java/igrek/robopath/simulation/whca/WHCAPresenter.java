@@ -10,7 +10,7 @@ import java.util.List;
 
 import de.felixroske.jfxsupport.FXMLController;
 import igrek.robopath.common.Point;
-import igrek.robopath.common.tilemap.TileMap;
+import igrek.robopath.common.TileMap;
 import igrek.robopath.simulation.common.ResizableCanvas;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -30,12 +30,12 @@ import javafx.util.Duration;
 
 @FXMLController
 @Qualifier("whca2Presenter")
-public class Presenter {
+public class WHCAPresenter {
 	
 	private final double FPS = 24;
 	private final double MOVE_STEP_DURATION = 500;
 	
-	private Controller controller;
+	private WHCAController controller;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private Boolean pressedTransformer;
 	private long lastSimulationTime;
@@ -50,7 +50,7 @@ public class Presenter {
 	
 	@Autowired
 	@Qualifier("whca2Params")
-	private SimulationParams params;
+	private WHCASimulationParams params;
 	@FXML
 	public TextField paramMapSizeW;
 	@FXML
@@ -64,7 +64,7 @@ public class Presenter {
 	
 	
 	@Autowired
-	public void setController(@Qualifier("whca2Controller") Controller controller) {
+	public void setController(@Qualifier("whca2Controller") WHCAController controller) {
 		this.controller = controller;
 	}
 	

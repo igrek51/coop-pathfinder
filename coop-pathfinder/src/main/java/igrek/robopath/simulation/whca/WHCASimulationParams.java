@@ -7,7 +7,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
 
-public class SimulationParams {
+public class WHCASimulationParams {
 	
 	public int mapSizeW = 11;
 	public int mapSizeH = 11;
@@ -24,7 +24,7 @@ public class SimulationParams {
 	private CheckBox paramRobotAutoTarget;
 	private TextField paramTimeDimension;
 	
-	public void init(Presenter presenter) {
+	public void init(WHCAPresenter presenter) {
 		this.paramMapSizeW = presenter.paramMapSizeW;
 		this.paramMapSizeH = presenter.paramMapSizeH;
 		this.paramRobotsCount = presenter.paramRobotsCount;

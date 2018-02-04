@@ -16,7 +16,6 @@
                                 <fx:include source="../potentialfield/potentialfield.fxml"/>
                             </content>
                         </Tab>
-                        <!--<Tab text="WHCA1*"><content><fx:include source="../whcakilavuz/whcakilavuz.fxml"/></content></Tab>-->
                         <Tab text="LRA*">
                             <content>
                                 <fx:include source="../lra/lra.fxml"/>

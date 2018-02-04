@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import igrek.robopath.common.Point;
-import igrek.robopath.common.tilemap.TileMap;
+import igrek.robopath.common.TileMap;
 import igrek.robopath.mazegenerator.MazeGenerator;
 import igrek.robopath.mazegenerator.NoNextFieldException;
 import igrek.robopath.pathfinder.whca.Path;
@@ -21,7 +21,7 @@ import igrek.robopath.pathfinder.whca.ReservationTable;
 import igrek.robopath.pathfinder.whca.WHCAPathFinder;
 import javafx.util.Pair;
 
-public class Controller {
+public class WHCAController {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -36,11 +36,11 @@ public class Controller {
 	private List<MobileRobot> robots = new ArrayList<>();
 	private List<MobileRobot> robotsReached = new ArrayList<>();
 	
-	private SimulationParams params;
+	private WHCASimulationParams params;
 	private boolean reorderNeeded = false;
 	private volatile boolean calculatingPaths = false;
 	
-	public Controller(Presenter presenter, SimulationParams params) {
+	public WHCAController(WHCAPresenter presenter, WHCASimulationParams params) {
 		this.params = params;
 		resetMap();
 	}
@@ -63,7 +63,7 @@ public class Controller {
 		return robots;
 	}
 	
-	public SimulationParams getParams() {
+	public WHCASimulationParams getParams() {
 		return params;
 	}
 	
@@ -184,7 +184,7 @@ public class Controller {
 	
 	
 	public synchronized void stepSimulation() {
-		logger.info("next simulation step...");
+		//		logger.debug("next simulation step...");
 		boolean replan = false;
 		//		logger.debug("collision detection (before)...");
 		resetAllCollidedRobots();
