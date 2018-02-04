@@ -226,6 +226,7 @@ public class Presenter {
 	@FXML
 	private void randomTargetPressed(final Event event) {
 		controller.randomTargetPressed();
+		params.readFromUI();
 		arrangementHistory = new RobotsArrangementHistory(getRobots(), params.timeDimension); // store history
 	}
 	
