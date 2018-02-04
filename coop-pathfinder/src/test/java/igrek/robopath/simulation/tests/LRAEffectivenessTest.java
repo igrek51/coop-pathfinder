@@ -31,7 +31,7 @@ public class LRAEffectivenessTest {
 	}
 	
 	@Test
-	public void testEffectiveness() {
+	public void testLRAEffectiveness() {
 		int SIMS_COUNT = 20;
 		int mapW = 15, mapH = 15;
 		int robotsCount = 5;

@@ -39,6 +39,7 @@ public class WHCAController {
 	private WHCASimulationParams params;
 	private boolean reorderNeeded = false;
 	private volatile boolean calculatingPaths = false;
+	private boolean prioritiesPromotion = true;
 	
 	public WHCAController(WHCAPresenter presenter, WHCASimulationParams params) {
 		this.params = params;
@@ -53,6 +54,10 @@ public class WHCAController {
 	@Autowired
 	public void setMazegen(MazeGenerator mazegen) {
 		this.mazegen = mazegen;
+	}
+	
+	public void setPrioritiesPromotion(boolean prioritiesPromotion) {
+		this.prioritiesPromotion = prioritiesPromotion;
 	}
 	
 	public TileMap getMap() {
@@ -324,6 +329,8 @@ public class WHCAController {
 	}
 	
 	private void promotePriority(MobileRobot robot, String reason) {
+		if (!prioritiesPromotion)
+			return;
 		robot.setPriority(robot.getPriority() + 1);
 		reorderNeeded = true;
 		logger.debug("robot " + robot.getId() + " promoted to priority " + robot.getPriority() + reason);

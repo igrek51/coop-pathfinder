@@ -31,8 +31,8 @@ public class WHCAEffectivenessTest {
 	}
 	
 	@Test
-	public void testEffectiveness() {
-		int SIMS_COUNT = 20;
+	public void testWHCAEffectiveness() {
+		int SIMS_COUNT = 100;
 		int mapW = 15, mapH = 15;
 		int robotsCount = 5;
 		int stepsMax = mapW * mapH;
@@ -69,6 +69,8 @@ public class WHCAEffectivenessTest {
 		WHCAController controller = new WHCAController(null, params);
 		controller.setRandom(random);
 		controller.setMazegen(new MazeGenerator(random));
+		
+		//		controller.setPrioritiesPromotion(false); // z 23% -> 86%
 		
 		controller.generateMaze();
 		controller.placeRobots();
