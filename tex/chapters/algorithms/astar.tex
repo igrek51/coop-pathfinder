@@ -63,7 +63,7 @@ Wykorzystane zostały pomocnicze funkcje:
 \begin{itemize}
 	\item \textsc{znajdźMinF}($lista$) - Funkcja zwraca z listy pole o najniższej wartości $f$ (sumie kosztu i heurystyki);
 	\item \textsc{zbudujŚcieżkę}($cel$) - Funkcja zwraca ścieżkę z punktu startowego do punktu $cel$ zbudowaną na podstawie przechodzenia wstecz od punktu $cel$ po kolejnych rodzicach węzłów, aż do dotarcia do węzła bez rodzica (punktu startowego).
-	\item \textsc{sąsiedzi}($pole$) - Funkcja zwraca zbiór pól bezpośrednio sąsiadujących (dla których istnieje możliwość przejścia) ze wskazanym polem. Jest to zazwyczaj zbiór ośmiu sąsiadujących pól. Funkcja uwzględnia warunki brzegowe na granicach mapy.
+	\item \textsc{sąsiedzi}($pole$) - Funkcja zwraca zbiór pól bezpośrednio sąsiadujących (dla których istnieje możliwość przejścia) ze wskazanym polem. Jest to zazwyczaj zbiór ośmiu sąsiadujących pól. Na granicach mapy należy uwzględniać warunki brzegowe.
 	\item \textsc{przejściePoprawne}($poleZ$, $poleDo$) - Funkcja zwraca prawdę wtedy i tylko wtedy, gdy istnieje możliwość przejścia z $poleZ$ do $poleDo$. Gdy wykonywany jest ruch ukośny, ale na przynajmniej jednym polu sąsiadującym z $poleZ$ i $poleDo$ znajduje się przeszkoda, to taki ruch jest niepoprawny. Ruch ukośny agenta z punktu $(x_1, y_1)$ do $(x_2, y_2)$ możliwy jest tylko w przypadku, gdy na żadnym z czterech pól: $(x_1, y_1)$, $(x_2, y_1)$, $(x_1, y_2)$, $(x_2, y_2)$ nie znajduje się przeszkoda. W rzeczywistym środkowisku zabezpiecza to robota przed uderzaniem o wystający róg ściany.
 	\item \textsc{kosztPrzejścia}($poleZ$, $poleDo$) - Funkcja zwraca koszt przejścia z $poleZ$ do $poleDo$. Jest to odległość w sensie metryki euklidesowej.
 	\item \textsc{heurystyka}($poleZ$, $poleDo$) - Funkcja zwraca przewidywaną długość pozostałej drogi od $poleZ$ do $poleDo$. Jest to również odległość euklidesowa.
@@ -73,8 +73,8 @@ Potwierdzeniem poprawności zaimplementowania algorytmu wyznaczania najkrótszej
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.7\columnwidth]{img/robopath/astar-simple}
-	\caption{Przykładowa ścieżka wyznaczona przez zaimplementowany algorytm A*. Czarne kwadraty reprezentują przeszkody, kolorowe koło - robota, linia łamana - wyznaczoną ścieżkę.}
+	\includegraphics[width=0.5\columnwidth]{img/robopath/astar-simple}
+	\caption{Przykładowa ścieżka wyznaczona przez zaimplementowany w aplikacji algorytm A*. Kolorowe koło reprezentuje robota, kolorowe koło - robota, linia łamana - wyznaczoną ścieżkę, czarne kwadraty - przeszkody.}
 	\label{fig:robopath-astar-simple}
 \end{figure}
 
