@@ -19,79 +19,77 @@ W naszym przypadku wszystkie przejezdne pola na mapie są wierzchołkami grafu. 
 Aby zapewnić, że powstały graf będzie spójny, na początku losujemy jedno pole będące ziarnem rozrostu labiryntu, a następnie do takiego podgrafu dołączamy kolejne wierzchołki, łącząc je drogą na mapie. Krok ten powtarzamy do momentu, aż wszystkie wierzchołki zostaną dołączone.
 W tym celu wykorzystamy dwie pomocnicze listy wierzchołków:
 \begin{itemize}
-	\item lista wierzchołków {\it odwiedzonych} - zawiera wierzchołki (pola) należące już do labiryntu. Między wszystkimi wierzchołkami z listy {\it odwiedzonych} istnieje łącząca je droga, tworzą one graf spójny.
+	\item lista wierzchołków {\it odwiedzonych} - zawiera wierzchołki (pola) należące już do grafu tworzącego labirynt. Między wszystkimi wierzchołkami z listy {\it odwiedzonych} istnieje łącząca je droga - tworzą one graf spójny.
 	\item lista wierzchołków {\it nieodwiedzonych} - zawiera nieodwiedzone wierzchołki (pola), które nie zostały jeszcze dołączone do labiryntu.
 \end{itemize}
 
-Kolejne kroki algorytmu przedstawiają się następująco:
+Kolejne kroki proponowanego algorytmu przedstawiają się następująco:
 \begin{enumerate}
 	\item Inicjalizacja pustych list wierzchołków: {\it odwiedzonych} i {\it nieodwiedzonych}.
-	\item Zapełnienie całej mapy przeszkodami.
-	\item Zaznaczenie co drugiego pola (wzdłuż każdego z wymiarów) jako wolne (por. rys. \ref{fig:etapy-generowania}a) i dodanie ich do listy {\it nieodwiedzonych}.
+	\item Zapełnienie całej mapy przeszkodami. Następnie, zaznaczenie co drugiego pola (wzdłuż każdego z wymiarów) jako wolne (por. rys. \ref{fig:etapy-generowania}a) i dodanie ich do listy {\it nieodwiedzonych}.
 	\item Wylosowanie ziarna rozrostu labiryntu z listy {\it nieodwiedzonych}, przeniesienie go na listę {\it odwiedzonych}.
 	\item Łączenie kolejnych wierzchołków nieodwiedzonych z wierzchołkami odwiedzonymi. Dopóki lista {\it nieodwiedzonych} nie jest pusta:
 	\begin{enumerate}
 		\item Wylosowanie wierzchołka z listy {\it nieodwiedzonych}.
 		\item Znalezienie najbliższego dla niego (w sensie metryki miejskiej) sąsiada z listy {\it odwiedzonych}.
-		\item Połączenie wierzchołków drogą poprzez "wyburzanie" przeszkód (zaznaczania pola jako wolne) przy przesuwaniu się w kierunku wierzchołka docelowego, najpierw wzdłuż osi poziomej, następnie wzdłuż osi pionowej (por. rys. \ref{fig:etapy-generowania}b).
+		\item Połączenie wierzchołków drogą poprzez "wyburzanie" przeszkód (zaznaczania pola jako wolne), przesuwając się w kierunku wierzchołka docelowego, najpierw wzdłuż osi poziomej, następnie wzdłuż osi pionowej (por. rys. \ref{fig:etapy-generowania}b).
 	\end{enumerate}
 \end{enumerate}
 
 Pojedyncze dołączanie kolejnych wierzchołków do rozrastającego się grafu labiryntu zapewnia, że wynikowy graf również będzie grafem spójnym.
 
-Poniżej przedstawiono pseudokod, obrazujący szczegóły działania zaproponowanej metody.
+Algorytm \ref{alg:mazegen} przedstawia pseudokod, obrazujący szczegóły działania zaprojektowanej metody.
 
 \begin{algorithm}[H]
 	\caption{Generowanie labiryntu}\label{alg:mazegen}
   \begin{algorithmic}[1]
-\Require {$w$ - szerokość mapy, $h$ - wysokość mapy}
+\Function{generujLabirynt}{$w$, $h$} \Comment{$w$ - szerokość mapy, $h$ - wysokość mapy}
+	\State $mapa[][] \gets$ nowa tablica $w \times h$ wypełniona wartościami $ZABLOKOWANE$
 
-\State $mapa[][] \gets$ nowa tablica $w \times h$ wypełniona wartościami $ZABLOKOWANE$
-
-\State $nieodwiedzone \gets \varnothing$ \Comment{inicjalizacja pustych list}
-\State $odwiedzone \gets \varnothing$
-\For{$x \gets 0$; $x < w$; $x \gets x + 2$} \Comment{co drugi indeks szerokości}
-	\For{$y \gets 0$; $y < h$; $y \gets y + 2$} \Comment{co drugi indeks wysokości}
-		\State $mapa[x][y] \gets WOLNE$
-		\State dodaj $mapa[x][y]$ do $nieodwiedzone$
+	\State $nieodwiedzone \gets \varnothing$, $odwiedzone \gets \varnothing$ \Comment{inicjalizacja pustych list}
+	\For{$x \gets 0$; $x < w$; $x \gets x + 2$} \Comment{co drugi indeks szerokości}
+		\For{$y \gets 0$; $y < h$; $y \gets y + 2$} \Comment{co drugi indeks wysokości}
+			\State $mapa[x][y] \gets WOLNE$
+			\State dodaj $mapa[x][y]$ do $nieodwiedzone$
+		\EndFor
 	\EndFor
-\EndFor
 
-\State $ziarno$ $\gets$ losowe pole z $nieodwiedzone$
-\State dodaj $ziarno$ do $odwiedzone$
-\State usuń $ziarno$ z $nieodwiedzone$
+	\State $ziarno$ $\gets$ losowe pole z $nieodwiedzone$
+	\State dodaj $ziarno$ do $odwiedzone$ \Comment{przeniesienie do $odwiedzone$}
+	\State usuń $ziarno$ z $nieodwiedzone$
 
-\While{$nieodwiedzone \ne \varnothing$} \Comment{dopóki $nieodwiedzone$ nie jest pusta}
-	\State $nowePole$ $\gets$ losowe pole z $nieodwiedzone$
-	\State $sasiad$ $\gets$ \Call{znajdźNajbliższegoSąsiada}{$odwiedzone$, $nowePole$}
-	\State \Call{wyburzDrogę}{$mapa$, $nowePole$, $sasiad$}
-	\State dodaj $nowePole$ do $odwiedzone$
-	\State usuń $nowePole$ z $nieodwiedzone$
-\EndWhile
+	\While{$nieodwiedzone \ne \varnothing$} \Comment{dopóki $nieodwiedzone$ nie jest pusta}
+		\State $nowePole$ $\gets$ losowe pole z $nieodwiedzone$
+		\State $sasiad$ $\gets$ \Call{znajdźNajbliższegoSąsiada}{$odwiedzone$, $nowePole$}
+		\State \Call{wyburzDrogę}{$mapa$, $nowePole$, $sasiad$}
+		\State dodaj $nowePole$ do $odwiedzone$ \Comment{przeniesienie do $odwiedzone$}
+		\State usuń $nowePole$ z $nieodwiedzone$
+	\EndWhile
 
-\State {\bf return} $mapa[][]$
+	\State {\bf return} $mapa[][]$
+\EndFunction
 
 \State 
 \Function{wyburzDrogę}{$mapa$, $poleZ$, $poleDo$}
 	\State $x \gets poleZ.x$
 	\State $y \gets poleZ.y$
-	\While{$x < poleDo.x$} \Comment{Przesuwanie w prawo}
-		\State $mapa[x\verb-++-][y] \gets WOLNE$ 
+	\While{$x < poleDo.x$} \Comment{przesuwanie w prawo}
+		\State $mapa[x\verb-++-][y] \gets WOLNE$ \Comment{zwiększenie $x$}
 	\EndWhile
-	\While{$x > poleDo.x$} \Comment{Przesuwanie w lewo}
-		\State $mapa[x\verb+--+][y] \gets WOLNE$
+	\While{$x > poleDo.x$} \Comment{przesuwanie w lewo}
+		\State $mapa[x\verb+--+][y] \gets WOLNE$ \Comment{zmniejszenie $x$}
 	\EndWhile
-	\While{$y < poleDo.y$} \Comment{Przesuwanie w dół}
-		\State $mapa[x][y\verb-++-] \gets WOLNE$
+	\While{$y < poleDo.y$} \Comment{przesuwanie w dół}
+		\State $mapa[x][y\verb-++-] \gets WOLNE$ \Comment{zwiększenie $y$}
 	\EndWhile
-	\While{$y > poleDo.y$} \Comment{Przesuwanie w górę}
-		\State $mapa[x][y\verb+--+] \gets WOLNE$
+	\While{$y > poleDo.y$} \Comment{przesuwanie w górę}
+		\State $mapa[x][y\verb+--+] \gets WOLNE$ \Comment{zmniejszenie $y$}
 	\EndWhile
 \EndFunction
   \end{algorithmic}
 \end{algorithm}
 
-Oznaczenie $x\verb-++-$ oraz $x\verb+--+$ oznacza odpowiednio postinkrementację i postdekrementację (dokonanie zwiększenia lub zmniejszenia o 1 {\bf po} wykorzystaniu wartości zmiennej w wyrażeniu).
+Wyrażenie $x\verb-++-$ oraz $x\verb+--+$ oznacza odpowiednio postinkrementację oraz postdekrementację (dokonanie zwiększenia lub zmniejszenia o 1 {\bf po} wykorzystaniu wartości zmiennej w wyrażeniu).
 Funkcja \textsc{znajdźNajbliższegoSąsiada} wyszukuje sąsiada dla pola $nowePole$ z listy $odwiedzone$. Wynik wyszukiwania jest najbliższy w sensie metryki miejskiej (metryki Manhattan).
 
 Kolejne etapy generowania labiryntu zobrazowano na rysunku \ref{fig:etapy-generowania}.
@@ -103,7 +101,7 @@ Kolejne etapy generowania labiryntu zobrazowano na rysunku \ref{fig:etapy-genero
         \subfloat[]{\includegraphics[width=0.3\columnwidth]{img/mazegen/maze-1cycle-marks}}
         \qquad
         \subfloat[]{\includegraphics[width=0.3\columnwidth]{img/mazegen/maze-result}}
-    \caption{Kolejne etapy generowania labiryntu.
+    \caption{Kolejne etapy generowania labiryntu:
     (a) Zaznaczenie co drugiego pola jako wolne i wybór ziarna rozrostu labiryntu.
     (b) Wylosowanie i łączenie kolejnego wierzchołka poprzez "wyburzanie" przeszkód na drodze
     (c) Wynikowa mapa pochodząca z generatora}
@@ -114,7 +112,7 @@ Na rysunku \ref{fig:maze75-75} przedstawiono przykładowy labirynt wygenerowany 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.6\columnwidth]{img/mazegen/maze-75-75}
-	\caption{Przykładowy labirynt rozmiaru $75 \times 75$ pochodzący z generatora map}
+	\caption{Przykładowy labirynt rozmiaru $75 \times 75$ pochodzący z zaprojektowanego generatora map}
 	\label{fig:maze75-75}
 \end{figure}
 
