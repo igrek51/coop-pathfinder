@@ -72,10 +72,12 @@ Do zapisu dziennika zdarzeń oraz błędów w aplikacji została wykorzystana bi
 
 
 \section{Struktura aplikacji}
-% \subsection{Model-View-Presenter}
+\subsection{Wzorzec Model-View-Presenter}
+Bardzo istotnym aspektem projektowanego oprogramowania okazała się być jego architektura. Przed będącym przedmiotem tego rozdziału symulatorem ruchu robotów zostało postawione wymaganie możliwości wykonania symulacji zarówno w trybie graficznej wizualizacji w czasie rzeczywistym, jak i w trybie przeprowadzenia obszernych testów algorytmów w celu zebrania potrzebnych danych statystycznych.
+
 Oprogramowanie zostało zorganizowane w architekturę warstwową.
 Główny szkielet aplikacji zbudowany jest w oparciu o wzorzec architektoniczny MVP (ang. {\it Model-View-Presenter} - Model-Widok-Prezenter), będący pochodną wzorca MVC (ang. {\it Model-View-Controller}).
-Takie podejście zapewnia separację głównej logiki dziedziny programu od warstwy interfejsu użytkownika.
+Takie podejście zapewnia separację głównej logiki dziedziny programu od warstwy interfejsu użytkownika \cite{mvp}.
 
 Wybrano podejście MVP, gdyż (w porównaniu do MVC) oferuje ono łatwiejszą testowalność kodu, możliwość "odczepiania" i wymieniania poszczególnych warstw (w celach testowania). Zapewnia to także większą separację modelu z widokiem, które nie muszą "wiedzieć" o sobie, a komunikują się jedynie za pośrednictwem prezentera.
 
@@ -86,16 +88,22 @@ Każdą zaimplementowaną metodę symulacji ruchu robotów zamknięto w osobnych
 	\item {\bf Prezenter} deleguje dane otrzymane z modelu do widoku, uprzednio przygotowując je do wyświetlenia. Jest w nim zawarta logika warstwy prezentacji.
 \end{itemize}
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\columnwidth]{img/app/mvp}
+	\caption{Relacja pomiędzy poszczególnymi elementami wzorca architektonicznego Model-View-Presenter. Źródło: \cite{mvp}}
+	\label{fig:app-mvp}
+\end{figure}
+
 Taka separacja warstw prezentacji od warstwy logiki umożliwia łatwe "odpięcie" logiki od interfejsu użytkownika i wykorzystanie jej do wykonania testów skuteczności metod planowania. Pozwala to wtedy na wykonanie "przyspieszonej" symulacji poprzez sekwencyjne uruchamianie kroków symulacji tak szybko, jak to możliwe, zamiast oczekiwania na wyzwolenie ich przez kolejne cykle zegara.
 Klasy modelu były projektowane właśnie z myślą o możliwości wykorzystania ich zarówno w wizualizacji w czasie rzeczywistym, jak i w przyspieszonej symulacji w celu przeprowadzenia testów.
 
-$TODO$
+\subsection{Wielowątkowość}
 Aplikacja uruchamia planowanie trajektorii w osobnych wątkach w tle, aby nie wpływać na wątek interfejsu użytkownika i uzyskać możliwie płynne animacje. Wymaga to synchronizacji między wątkami, jednak język Java zapewnia stosunkowo łatwą obsługę wątków i synchronizacji sekcji krytycznych. Wątki obliczeń oraz odświeżania interfejsu użytkownika są powtarzane w stałych, zadanych cyklach zegara, które nie są ze sobą zsynchronizowane (nie czekają na siebie), co daje efekt symulacji w czasie rzeczywistym, niezależnie od stanu ukończenia obliczeń.
 
-$TODO$
-Klasy serwisów, prezenterów oraz widoków są automatycznie instancjonowane przez Spring Framework. Dzięki wykorzystaniu kontenera IoC (ang. {\it Inversion of Control}) możliwe jest zautomatyzowane wstrzykiwanie zależności (ang. {Dependency Injection}) do poszczególnych instancji.
+% Klasy serwisów, prezenterów oraz widoków są automatycznie instancjonowane przez Spring Framework. Dzięki wykorzystaniu kontenera IoC (ang. {\it Inversion of Control}) możliwe jest zautomatyzowane wstrzykiwanie zależności (ang. {Dependency Injection}) do poszczególnych instancji.
 
-Do instancjonowania potrzebnych obiektów wykorzystano wzorzec fabryki.
+% Dodatkowo do instancjonowania potrzebnych obiektów wykorzystano wzorzec fabryki.
 
 % \section{Dodatkowe funkckjonalności}
 % ustawianie random seeda

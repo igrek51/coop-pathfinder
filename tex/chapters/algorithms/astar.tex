@@ -69,4 +69,13 @@ Wykorzystane zostały pomocnicze funkcje:
 	\item \textsc{heurystyka}($poleZ$, $poleDo$) - Funkcja zwraca przewidywaną długość pozostałej drogi od $poleZ$ do $poleDo$. Jest to również odległość euklidesowa.
 \end{itemize}
 
+Potwierdzeniem poprawności zaimplementowania algorytmu wyznaczania najkrótszej ścieżki jest przykładowa droga przedstawiona na rysunku \ref{fig:robopath-astar-simple} pochodzącym z aplikacji. Warto zauważyć, że możliwy jest ruch ukośny robota, ale nie taki, który powodowałby kolizję z wystającym rogiem "ściany".
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\columnwidth]{img/robopath/astar-simple}
+	\caption{Przykładowa ścieżka wyznaczona przez zaimplementowany algorytm A*. Czarne kwadraty reprezentują przeszkody, kolorowe koło - robota, linia łamana - wyznaczoną ścieżkę.}
+	\label{fig:robopath-astar-simple}
+\end{figure}
+
 % https://en.wikipedia.org/wiki/A*_search_algorithm
