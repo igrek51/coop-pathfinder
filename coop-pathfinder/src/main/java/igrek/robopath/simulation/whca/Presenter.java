@@ -226,7 +226,7 @@ public class Presenter {
 	@FXML
 	private void randomTargetPressed(final Event event) {
 		controller.randomTargetPressed();
-		arrangementHistory = new RobotsArrangementHistory(getRobots()); // store history
+		arrangementHistory = new RobotsArrangementHistory(getRobots(), params.timeDimension); // store history
 	}
 	
 	@FXML
@@ -373,7 +373,9 @@ public class Presenter {
 	@FXML
 	private void buttonRestoreArrangement() {
 		if (arrangementHistory != null) {
-			controller.setRobots(arrangementHistory.restore(controller.getRobots()));
+			controller.setRobots(arrangementHistory.restoreRobots(controller.getRobots()));
+			params.timeDimension = arrangementHistory.restoreTimeWindow();
+			params.sendToUI();
 		}
 	}
 }

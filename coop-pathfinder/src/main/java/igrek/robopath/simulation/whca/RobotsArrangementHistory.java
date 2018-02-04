@@ -8,17 +8,20 @@ import java.util.List;
 
 class RobotsArrangementHistory {
 	
-	private List<MobileRobot> deepCopy;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	RobotsArrangementHistory(List<MobileRobot> robots) {
+	private List<MobileRobot> deepCopy;
+	private int timeWindow;
+	
+	RobotsArrangementHistory(List<MobileRobot> robots, int timeWindow) {
 		deepCopy = new ArrayList<>();
 		for (MobileRobot robot : robots) {
 			deepCopy.add(robot.clone());
 		}
+		this.timeWindow = timeWindow;
 	}
 	
-	List<MobileRobot> restore(List<MobileRobot> robots) {
+	List<MobileRobot> restoreRobots(List<MobileRobot> robots) {
 		robots.clear();
 		for (MobileRobot robot : deepCopy) {
 			// clone once again to keep original
@@ -28,4 +31,7 @@ class RobotsArrangementHistory {
 		return robots;
 	}
 	
+	public int restoreTimeWindow() {
+		return timeWindow;
+	}
 }

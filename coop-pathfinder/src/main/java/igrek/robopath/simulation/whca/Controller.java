@@ -117,6 +117,14 @@ public class Controller {
 		mazegen.generateMaze(map);
 	}
 	
+	public boolean isCalculatingPaths() {
+		return calculatingPaths;
+	}
+	
+	public synchronized void setRobots(List<MobileRobot> robots) {
+		this.robots = robots;
+	}
+	
 	MobileRobot occupiedByRobot(Point point) {
 		for (MobileRobot robot : robots) {
 			if (robot.getPosition().equals(point))
@@ -174,6 +182,37 @@ public class Controller {
 		return frees.get(random.nextInt(frees.size()));
 	}
 	
+	
+	public synchronized void stepSimulation() {
+		logger.info("next simulation step...");
+		boolean replan = false;
+		logger.debug("collision detection (before)...");
+		resetAllCollidedRobots();
+		robotsReached.clear();
+		logger.debug("moving robots...");
+		for (MobileRobot robot : robots) {
+			if (robot.hasNextMove()) {
+				robot.setPosition(robot.pollNextMove());
+			}
+			if (robot.hasReachedTarget() && params.robotAutoTarget) {
+				robotsReached.add(robot);
+				replan = true;
+			} else if (!robot.hasNextMove() && !robot.hasReachedTarget()) {
+				logger.debug("robot: " + robot.getId() + " has no planned moves, replanning needed");
+				replan = true;
+			}
+		}
+		for (MobileRobot robot : robotsReached) {
+			robot.targetReached();
+		}
+		if (replan) {
+			logger.debug("replanning all paths...");
+			findPaths();
+		}
+		logger.debug("collision detection (after)...");
+		resetAllCollidedRobots();
+	}
+	
 	synchronized void findPaths() {
 		calculatingPaths = true;
 		params.readFromUI();
@@ -184,16 +223,17 @@ public class Controller {
 			if (occupied)
 				reservationTable.setBlocked(x, y);
 		});
-		reorderNeeded = true; // FIXME reorder only when needed
+		
+		reorderNeeded = true; // TODO reorder only when needed
 		if (reorderNeeded) {
 			Collections.sort(robots, robotsPriorityComparator);
 			logger.debug("the new order: " + Joiner.on(", ").join(robots));
 			reorderNeeded = false;
 		}
+		
 		for (MobileRobot robot : robots) {
 			findPath(robot, reservationTable, map);
 		}
-		resetCollidedRobots();
 		calculatingPaths = false;
 	}
 	
@@ -205,7 +245,7 @@ public class Controller {
 		if (target != null) {
 			WHCAPathFinder pathFinder = new WHCAPathFinder(reservationTable, map);
 			Path path = pathFinder.findPath(start.getX(), start.getY(), target.getX(), target.getY());
-			logger.debug("path planned (" + robot.toString() + "): " + path);
+			//			logger.debug("path planned (" + robot.toString() + "): " + path);
 			if (path != null) {
 				// enque path
 				int t = 0;
@@ -227,7 +267,7 @@ public class Controller {
 				}
 				// cant find a way - it's waiting, then promote its priority
 				if (path.getLength() <= 1) {
-					promotePriority(robot, " - due to path not found, path: " + path.toString());
+					promotePriority(robot, " - due to path not found");
 				}
 			} else {
 				logger.warn("path not found due to static obstacles");
@@ -236,33 +276,15 @@ public class Controller {
 		}
 	}
 	
-	public synchronized void stepSimulation() {
-		boolean replan = false;
-		resetCollidedRobots();
-		robotsReached.clear();
-		for (MobileRobot robot : robots) {
-			if (robot.hasNextMove()) {
-				robot.setPosition(robot.pollNextMove());
-			}
-			if (robot.hasReachedTarget() && params.robotAutoTarget) {
-				robotsReached.add(robot);
-				replan = true;
-			} else if (!robot.hasNextMove() && !robot.hasReachedTarget()) {
-				logger.debug("robot: " + robot.getId() + " - no planned moves");
-				replan = true;
-			}
-		}
-		for (MobileRobot robot : robotsReached) {
-			robot.targetReached();
-		}
-		//		resetCollidedRobots();
-		if (replan) {
-			findPaths();
-			logger.debug("replanning all paths");
+	private void resetAllCollidedRobots() {
+		int iterations = 1;
+		while (resetCollidedRobots()) {
+			iterations++;
 		}
 	}
 	
-	private void resetCollidedRobots() {
+	private boolean resetCollidedRobots() {
+		boolean collisionHappened = false;
 		List<Pair<MobileRobot, MobileRobot>> collidedRobots = new ArrayList<>();
 		for (MobileRobot robot : robots) {
 			MobileRobot collidedRobot = collisionDetected(robot);
@@ -270,30 +292,23 @@ public class Controller {
 				logger.debug("Collision detected between robots: " + robot.getId() + ", " + collidedRobot
 						.getId());
 				collidedRobots.add(new Pair<>(robot, collidedRobot));
+				collisionHappened = true;
 				//				logger.debug("robot " + robot.getId() + " previous path: " + robot.getMovesQue());
 				//				logger.debug("collidedRobot " + collidedRobot.getId() + " previous path: " + collidedRobot.getMovesQue());
 			}
 		}
 		for (Pair<MobileRobot, MobileRobot> pair : collidedRobots) {
-			pair.getKey().resetMovesQue();
-			pair.getValue().resetMovesQue();
-			//				MobileRobot minorPriority = robot.getPriority() < collidedRobot.getPriority() ? collidedRobot : robot;
-			//				MobileRobot majorPriority = robot.getPriority() < collidedRobot.getPriority() ? robot : collidedRobot;
-			// priority promotion for robot with minor priority
-			//				promotePriority(minorPriority, " - due to collision");
-			//				majorPriority.setPriority(majorPriority.getPriority() - 1);
+			MobileRobot first = pair.getKey();
+			MobileRobot second = pair.getValue();
+			first.resetMovesQue();
+			second.resetMovesQue();
+			MobileRobot minorPriority = first.getPriority() < second.getPriority() ? first : second;
+			MobileRobot majorPriority = first.getPriority() < second.getPriority() ? second : first;
+			//			 priority promotion for robot with minor priority
+			promotePriority(minorPriority, " - due to collision");
+			//							majorPriority.setPriority(majorPriority.getPriority() - 1);
 		}
-	}
-	
-	private void promotePriority(MobileRobot robot, String reason) {
-		robot.setPriority(robot.getPriority() + 1);
-		reorderNeeded = true;
-		logger.debug("robot " + robot.getId() + " promoted to priority " + robot.getPriority() + reason);
-		if (robot.getPriority() > params.timeDimension) {
-			params.timeDimension = robot.getPriority();
-			params.sendToUI();
-			logger.debug("Time dimension increased to " + params.timeDimension);
-		}
+		return collisionHappened;
 	}
 	
 	private MobileRobot collisionDetected(MobileRobot robot) {
@@ -307,11 +322,15 @@ public class Controller {
 		return null;
 	}
 	
-	public boolean isCalculatingPaths() {
-		return calculatingPaths;
+	private void promotePriority(MobileRobot robot, String reason) {
+		robot.setPriority(robot.getPriority() + 1);
+		reorderNeeded = true;
+		logger.debug("robot " + robot.getId() + " promoted to priority " + robot.getPriority() + reason);
+		if (robot.getPriority() > params.timeDimension) {
+			params.timeDimension = robot.getPriority();
+			params.sendToUI();
+			//			logger.debug("Time dimension increased to " + params.timeDimension);
+		}
 	}
 	
-	public void setRobots(List<MobileRobot> robots) {
-		this.robots = robots;
-	}
 }
