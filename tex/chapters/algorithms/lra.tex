@@ -1,7 +1,7 @@
-\section{Prosta detekcja i zapobieganie kolizjom}
+\section{Detekcja i przeciwdziałanie kolizjom}
 \label{ch:alg-collision-avoid}
 
-Do prezentacji prostego przeciwdziałania kolizjom robotów wykorzystano metodę LRA* ({\it Local-Repair A*}).
+Do zademonstrowania prostego przeciwdziałania kolizjom robotów wykorzystano metodę LRA* ({\it Local-Repair A*}).
 Należy zaznaczyć, że jest to bardzo uproszczone podejście i stanowi wstęp do bardziej złożonego algorytmu.
 Dużo skuteczniejsza w zapobieganiu kolizji jesto metoda WHCA* (por. \ref{ch:alg-whca}) z dynamicznym przydziałem priorytetów (por. \ref{ch:alg-priorities-allocation}), która została opisana w późniejszych rozdziałach.
 
@@ -25,3 +25,12 @@ Skutkiem tak wykrytej potencjalnej kolizji jest wykonanie ponownego planowania (
 
 Przy takim podejściu priorytety robotów nie mają znaczenia, zaś samo planowanie może odbywać się dla agentów równolegle.
 W celu poprawy wydajności technikę tą można połączyć z algorytmem D* Lite, D* Extra Lite lub RRA*.
+
+Łatwo zauważyć, że metoda ta nie zapobiega tworzeniu się cykli planowanych akcji - powtarzających się w nieskończoność sekwencji tych samych ruchów, które nie doprowadzają agenta do celu (por. rys. \ref{fig:robopath-lra-cycle}).
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\columnwidth]{img/robopath/lra-cycle}
+	\caption{Przykład powtarzających się cykli planowanych akcji uzyskanych przez metodę LRA*. Dwa roboty "zderzą się" w wąskim przejściu po prawej stronie i wyznaczą trajektorie przechodzące przez przejście po lewej stronie, gdzie ponownie dojdzie do kolizji.}
+	\label{fig:robopath-lra-cycle}
+\end{figure}
