@@ -1,10 +1,27 @@
-\section{Detekcja i zapobieganie kolizjom}
+\section{Prosta detekcja i zapobieganie kolizjom}
 \label{ch:alg-collision-avoid}
 
+Do prezentacji prostego przeciwdziałania kolizjom robotów wykorzystano metodę LRA* ({\it Local-Repair A*}).
+Należy zaznaczyć, że jest to bardzo uproszczone podejście i stanowi wstęp do bardziej złożonego algorytmu.
+Dużo skuteczniejsza w zapobieganiu kolizji jesto metoda WHCA* (por. \ref{ch:alg-whca}) z dynamicznym przydziałem priorytetów (por. \ref{ch:alg-priorities-allocation}), która została opisana w późniejszych rozdziałach.
 
-Do zapobiegania kolizjom wykorzystano metodę ponownego planowania 
+Zasada działania LRA* mocno opiera się na standardowym algorytmie A*. Jest to metoda korekcji tras w przypadku lokalnie wykrytych kolizji.
 
-tymczasowy algorytm
-LRA* - lokalna korekcja wykrytych kolizji
-Detekcja i zapobieganie kolizjom między robotami
-$TODO$ wyszło całkiem nieźle, raczej nie potrzeba przydziału priorytetów, można łączyć z D* Lite lub D* Extra Lite, lub RRA
+Planowanie trajektorii odbywa się dla każdego agenta niezależnie, stosując algorytm A*. Przy wyznaczaniu najkrótszej drogi uwzględniane są (jako zajęte pola) zarówno wszystkie przeszkody statyczne, jak i aktualne pozycje pozostałych robotów. Wyznaczona ścieżka dzielona jest na pojedyncze akcje agenta (ruchy robota), które zostają zakolejkowane na liście akcji do wykonania przez robota. Jeśli droga do celu nie mogła zostać wyznaczona, próba ta zostanie powtórzona w następnym kroku.
+
+W każdym kroku symulacji agenci poruszają się wzdłuż wyznaczonych tras. Co prawda w kolejnych krokach ścieżki te mogą być już nieaktualne, jednak agenci wciąż nimi podążają, aż do osiągnięcia punktu docelowego lub wykrycia kolizji.
+Wykrycie kolizji w tym przypadku nie oznacza faktycznego zderzenia (przebywania więcej niż jednego robota na tym samym polu), a jedynie możliwość wystąpienia takiej niepożądanej sytuacji w następnym kroku symulacji.
+
+Detekcja potencjalnej kolizji sprowadza się do przeanalizowania dla każdego robota jego zaplanowanego położenia z następnego kroku. Jeśli robot nie ma zaplanowanej żadnej ścieżki, oznacza to, że jego położenie w następnym kroku będzie takie samo, jak w obecnym. Uznaje się, że kolizja może wystapić w dwóch przypadkach:
+\begin{itemize}
+	\item w przypadku, gdy planowane położenie robota w następnym kroku jest takie samo jak aktualne położenie innego robota;
+	\item w przypadku, gdy planowane położenie robota w następnym kroku jest takie samo jak planowane położenie innego robota w następnym kroku.
+\end{itemize}
+Sprawdzenie obu tych przypadków jest konieczne, aby wykrywać także zderzenia czołowe robotów zmierzających w przeciwnych kierunkach.
+
+% TODO screen ze zderzenia czołowego
+
+Skutkiem tak wykrytej potencjalnej kolizji jest wykonanie ponownego planowania (tylko dla jednego robota lub dla wielu) trajektorii. Uwzględnienie aktualnego położenia sąsiadującego robota zapobiega zderzeniu się z nim, gdyż pole, które on zajmuje jest już podczas ponownego planowania rozpatrywane jako nieprzejezdne.
+
+Przy takim podejściu priorytety robotów nie mają znaczenia, zaś samo planowanie może odbywać się dla agentów równolegle.
+W celu poprawy wydajności technikę tą można połączyć z algorytmem D* Lite, D* Extra Lite lub RRA*.
