@@ -14,15 +14,14 @@
 
 % STRONA TYTUŁOWA
 \input{attach/title-page}
-% TODO karta tematu wygenerowana z USOSa
+% TODO strona tytułowa wygenerowana z USOSa
 % \includepdf[pages={1}]{attach/title-page.pdf}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \cleardoublepage
 
 % KARTA TEMATU
 \phantomsection
-% TODO skan podpisanej karty
-\includepdf[pages={1}]{attach/karta-tematu.pdf}
+\includepdf[pages={1}]{attach/karta-tematu-scan.pdf}
 \cleardoublepage
 
 % STRESZCZENIA
@@ -32,6 +31,7 @@
 \cleardoublepage
 
 % OŚWIADCZENIE AUTORA PRACY
+% TODO skan \includepdf[pages={1}]{attach/oswiadczenie_autora_pracy-scan.pdf}
 \includepdf[pages={1}]{attach/oswiadczenie_autora_pracy.pdf}
 \cleardoublepage
 
@@ -60,6 +60,7 @@
 \input{chapters/algorithms/whca}
 \input{chapters/algorithms/priorities}
 \input{chapters/algorithms/potential-fields}
+\input{chapters/algorithms/limitations}
 
 \input{chapters/app/app}
 \input{chapters/app/app-ui}

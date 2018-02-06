@@ -4,7 +4,6 @@
 \section{Obszerne testy aplikacji}
 $TODO$ obszerne testy, porównanie metod: LRA*, WHCA* przy tych samych warunkach początkowych, porównanie czasu wykonania, porównanie tego samego algorytmu w zależności od parametru (np. okna czasowego); badanie skuteczności, długości tras, czasu wykonania, 
 do przeprowadzenia testów wykorzystano biblitekę jUnit, która co prawda służy do wykonywania testów jednostkowych sprawdzających poprawność pojedynczych komponentów aplikacji
-nie działa wycofywanie się obu robotów (zawsze jeden czeka)
 metodyka przeprowadzenia testów
 3 typy środowisk testowych (rozmiar, roboty, screeny)
 histogram liczby kroków potrzebnych do rozwiązania
@@ -54,7 +53,7 @@ $TODO$ screeny ciekawych przypadków
 \section{Środowiska}
 labirynt, otwarte, puzzle 15
 
-filmiki można se obejrzć na YT, link
+filmiki można obejrzć na YT, link
 
 LRA: wyszło całkiem nieźle,
 testy ograniczać trzeba liczbą kroków symulacji, bo LRA może trwać wiecznie
@@ -66,4 +65,8 @@ porównanie metod przydziału i zmiany priorytetów - jak zmienia się skuteczno
 porównanie LRA* z WHCA*
 porównanie CA* z WHCA*
 porównanie z potential fields
-porównanie WHCA z promocją priorytetów (własną, autorską) i bez
+porównanie WHCA z promocją priorytetów (własną, autorską) i bez + z/bez rozszerzania okna czasowego
+
+\section{Dyskusja wyników}
+wolno działa WHCA* przy dużych mapach / oknach czasu / robotach. Dałoby się zoptymalizować (RRA)
+autorski WHCA* działa dobrze nawet przy rozwiązywaniu dużych deadlocków, problem z puzzle 15
