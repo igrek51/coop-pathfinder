@@ -1,30 +1,34 @@
-\section{Konspekt pracy}
-\label{ch:konspekt}
+% \section{Pytania}
 \begin{itemize}
-	\item (P) Cel i zakres pracy, założenia, zastosowanie
-	\item (P) Podobieństwo do gier RTS
-	\item (P) Wstęp teoretyczny:
+	\item demo: LRA*, autorski WHCA* + dynamiczne priorytety + dynamiczne okno czasowe
+	\item filmiki, publikacja na GitHub, link zamieszczony w pracy, YT
+	\item rozdział Opracowanie i implementacja algorytmów - rdzeń logiki (3 metody)
 	\begin{itemize}
-		\item (P) Podstawowe pojęcia
-		\item (P) Cooperative Pathfinding, przegląd metod planowania tras, rozproszone i priorytetyzowane planowanie
-		\item (P) Metoda pól potencjałowych
-		\item (P) Metoda Path Coordination
-		\item (P) Algorytm A* - szczegółowo, algorytm, rola funkcji heurystycznej
-		\item (P) Local Repair A*, D*
-		\item (P) Cooperative A* - wprowadzenie trzeciego wymiaru, tablica rezerwacji
-		\item (P) Hierarchical Cooperative A*
-		\item (P) Windowed Hierarchical Cooperative A*
+		\item (X) generator map (własności), (X) A*, (X) LRA*
+		\item własna implementacja WHCA*,
+		\item autorska metoda dynamicznego przydziału priorytetów + okna czasowego
 	\end{itemize}
-	\item Generowanie mapy - labiryntu do testów: własny algorytm, teoria grafów, własności mapy
-	\item Time-space A* - pseudokod, schemat blokowy, własne heurystyki i modyfikacje
-	\item Metoda przydziału / zmiany priorytetów - zwiększanie i rekalkulacja
-	\item Metoda pól potencjałowych - minima lokalne
-	\item Implementacja aplikacji
+	\item (X) Oprogramowanie symulacyjne - software development
 	\begin{itemize}
-		\item stack technologiczny: Java 8, Java FX, Spring, Spring Boot, testy jednostkowe jUnit, git, IntelliJ, Maven, Linux / Windows
-		\item screeny
-		\item schemat struktury klas aplikacji
+		\item architektura MVP - testy skuteczności
+		\item wykorzystane technologie
+		\item TDD, jUnit
+		\item wielowątkowość
 	\end{itemize}
-	\item Obszerne testy - porównanie wyników metod (WHCA*, CA*, LRA*?) przy tych samych warunkacj początkowych, porównanie czasu wykonania od rozmiaru okna czasowego
-	\item Ograniczenia - nałożone uproszczenia: ruch skośny, czas dyskretny, brak czasu na obrót
+	\item rozdział Wyniki testów
+	\begin{itemize}
+		\item obszerne testy automatyczne: skuteczności i wydajności metod
+		\item 3 środowiska testowe: 11x11, 5 robotów; 11x11, 10 robotów; 35x35, 5 robotów
+		\begin{itemize}
+			\item charakterystyka map - jak często nie wystarcza zwykły A*, bo występują kolizje?
+			\item porównanie skuteczności LRA* z WHCA* (z promocją priorytetów) w tych samych warunkach
+			\item porównanie samego WHCA* z/bez autorską promocją priorytetów
+			\item porównanie WHCA* z promocją priorytetów + rozszerzanie okna czasowego
+			\item liczba kroków potrzebna do rozwiązania (LRA*, WHCA*, WHCA*+priorytety): histogram
+		\end{itemize}
+		\item odróżnienie testów wydajności od testów poprawności
+	\end{itemize}
+	\item aplikacja 100\%, 75 / 100 PDF
+	\item przedłużenie - wniosek
+	\item wysyłać całość, czy rozdziałami?
 \end{itemize}
