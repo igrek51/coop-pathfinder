@@ -141,8 +141,14 @@ public class LRAPresenter {
 		new Thread(() -> {
 			try {
 				Timeline timeline = new Timeline(new KeyFrame(Duration.millis(MOVE_STEP_DURATION), event -> {
-					controller.stepSimulation();
-					lastSimulationTime = System.currentTimeMillis();
+					try {
+						if (controller != null) {
+							controller.stepSimulation();
+							lastSimulationTime = System.currentTimeMillis();
+						}
+					} catch (Throwable t) {
+						logger.error(t.getMessage(), t);
+					}
 				}));
 				timeline.setCycleCount(Timeline.INDEFINITE);
 				timeline.play();
@@ -236,9 +242,11 @@ public class LRAPresenter {
 	
 	private void drawMap() {
 		GraphicsContext gc = drawArea.getGraphicsContext2D();
-		drawGrid(gc);
-		drawCells(gc);
-		drawRobots(gc);
+		if (controller != null) {
+			drawGrid(gc);
+			drawCells(gc);
+			drawRobots(gc);
+		}
 	}
 	
 	private void drawCells(GraphicsContext gc) {

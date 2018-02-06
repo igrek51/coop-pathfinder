@@ -60,13 +60,6 @@
             <artifactId>guava</artifactId>
             <version>23.6-jre</version>
         </dependency>
-        <dependency>
-            <groupId>raft.kilavuz</groupId>
-            <artifactId>kilavuz-run</artifactId>
-            <version>0.9.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/kilavuz-run-0.9.1.jar</systemPath>
-        </dependency>
     </dependencies>
 
     <build>

@@ -148,8 +148,14 @@ public class WHCAPresenter {
 		new Thread(() -> {
 			try {
 				simulationTimeline = new Timeline(new KeyFrame(Duration.millis(MOVE_STEP_DURATION), event -> {
-					controller.stepSimulation();
-					lastSimulationTime = System.currentTimeMillis();
+					try {
+						if (controller != null) {
+							controller.stepSimulation();
+							lastSimulationTime = System.currentTimeMillis();
+						}
+					} catch (Throwable t) {
+						logger.error(t.getMessage(), t);
+					}
 				}));
 				simulationTimeline.setCycleCount(Timeline.INDEFINITE);
 				simulationTimeline.play();
@@ -243,9 +249,11 @@ public class WHCAPresenter {
 	
 	private void drawMap() {
 		GraphicsContext gc = drawArea.getGraphicsContext2D();
-		drawGrid(gc);
-		drawCells(gc);
-		drawRobots(gc);
+		if (controller != null) {
+			drawGrid(gc);
+			drawCells(gc);
+			drawRobots(gc);
+		}
 	}
 	
 	private void drawCells(GraphicsContext gc) {
