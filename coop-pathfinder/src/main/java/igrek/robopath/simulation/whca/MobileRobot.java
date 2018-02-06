@@ -86,13 +86,13 @@ public class MobileRobot {
 		return movesQue.getLast();
 	}
 	
-	synchronized Point nearestTarget() {
+	Point nearestTarget() {
 		if (movesQue.isEmpty())
 			return position;
 		return movesQue.getFirst();
 	}
 	
-	synchronized MobileRobot enqueueMove(Point target) {
+	MobileRobot enqueueMove(Point target) {
 		if (!lastTarget().isAdjacentOrEqual(target))
 			throw new IllegalArgumentException("appended move is not adjacent or equal to last target");
 		movesQue.add(target);
@@ -115,13 +115,13 @@ public class MobileRobot {
 		}
 	}
 	
-	synchronized double getInterpolatedX(double moveProgress) {
+	double getInterpolatedX(double moveProgress) {
 		moveProgress = cutOff(moveProgress, 0, 1);
 		Point nearest = nearestTarget();
 		return position.x + (nearest.x - position.x) * moveProgress;
 	}
 	
-	synchronized double getInterpolatedY(double moveProgress) {
+	double getInterpolatedY(double moveProgress) {
 		moveProgress = cutOff(moveProgress, 0, 1);
 		Point nearest = nearestTarget();
 		return position.y + (nearest.y - position.y) * moveProgress;

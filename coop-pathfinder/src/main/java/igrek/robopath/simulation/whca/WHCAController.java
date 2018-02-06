@@ -64,7 +64,7 @@ public class WHCAController {
 		return map;
 	}
 	
-	public synchronized List<MobileRobot> getRobots() {
+	public List<MobileRobot> getRobots() {
 		return robots;
 	}
 	
@@ -98,7 +98,7 @@ public class WHCAController {
 		return robots.stream().mapToInt(robot -> robot.getId()).max().orElse(0) + 1;
 	}
 	
-	private synchronized void onTargetReached(MobileRobot robot) {
+	private void onTargetReached(MobileRobot robot) {
 		if (params.robotAutoTarget) {
 			if (robot.getTarget() == null || robot.hasReachedTarget()) {
 				logger.info("robot: " + robot + " - assigning new target");
@@ -307,8 +307,8 @@ public class WHCAController {
 			MobileRobot second = pair.getValue();
 			first.resetMovesQue();
 			second.resetMovesQue();
-			MobileRobot minorPriority = first.getPriority() < second.getPriority() ? first : second;
-			MobileRobot majorPriority = first.getPriority() < second.getPriority() ? second : first;
+			//			MobileRobot minorPriority = first.getPriority() < second.getPriority() ? first : second;
+			//			MobileRobot majorPriority = first.getPriority() < second.getPriority() ? second : first;
 			//			 priority promotion for robot with minor priority
 			//			promotePriority(minorPriority, " - due to collision");
 			//			promotePriority(majorPriority, " - due to collision");
