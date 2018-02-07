@@ -78,11 +78,11 @@ public class WHCAPathFinder {
 				// to the start recording the nodes on the way.
 				//Zapisujemy ścieżkę. Krocząc w kierunku od pola docelowego do startowego, przeskakujemy z kolejnych pól na im przypisane pola rodziców, aż do osiągnięcia pola startowego.
 				Path path = new Path();
-				Node target = nodes[tx][ty][reservation.getTimeDimension() - 1];
-				while (target != startNode) {
-					path.prependStep(target.getX(), target.getY(), target.getT());
-					target = target.getParent();
-					if (target == null)
+				Node node = nodes[tx][ty][current.getT()];
+				while (node != startNode) {
+					path.prependStep(node.getX(), node.getY(), node.getT());
+					node = node.getParent();
+					if (node == null)
 						throw new AssertionError("target == null");
 				}
 				path.prependStep(sx, sy, 0);
@@ -150,7 +150,12 @@ public class WHCAPathFinder {
 					if (cmp != 0)
 						return cmp;
 					// if equal - compare F
-					return Float.compare(o1.getF(), o2.getF());
+					cmp = Float.compare(o1.getF(), o2.getF());
+					if (cmp != 0)
+						return cmp;
+					// if equal - compare T
+					cmp = Integer.compare(o1.getT(), o2.getT());
+					return cmp;
 				});
 		if (mostPromising.isPresent()) {
 			Path path = new Path();
