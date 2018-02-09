@@ -31,7 +31,7 @@ show:
 	okular ${OUT}/${PROJECT_VIEW}.pdf &
 
 watch:
-	watchtower -i 2 -f '**/*.tex' 'bibliography.bib' -e make
+	watchtower -i 2 -f '**/*.tex' 'bibliography.bib' -e make build
 
 success:
 	# replace file when it's actually ready to prevent spurious reloadings by okular
