@@ -309,11 +309,14 @@ public class WHCAPresenter {
 			simulationStepProgress = 0;
 		List<MobileRobot> robots = getRobots();
 		for (MobileRobot robot : robots) {
+			drawRobotPaths(gc, robot, simulationStepProgress);
+		}
+		for (MobileRobot robot : robots) {
 			drawRobot(gc, robot, simulationStepProgress);
 		}
 	}
 	
-	private void drawRobot(GraphicsContext gc, MobileRobot robot, double stepProgress) {
+	private void drawRobotPaths(GraphicsContext gc, MobileRobot robot, double stepProgress) {
 		TileMap map = getMap();
 		double cellW = drawArea.getWidth() / map.getWidthInTiles();
 		double cellH = drawArea.getHeight() / map.getHeightInTiles();
@@ -342,6 +345,15 @@ public class WHCAPresenter {
 			gc.strokeLine(fromX, fromY, toX, toY);
 			previous = move;
 		}
+	}
+	
+	private void drawRobot(GraphicsContext gc, MobileRobot robot, double stepProgress) {
+		TileMap map = getMap();
+		double cellW = drawArea.getWidth() / map.getWidthInTiles();
+		double cellH = drawArea.getHeight() / map.getHeightInTiles();
+		double w = 0.6 * cellW;
+		double h = 0.6 * cellH;
+		Color robotColor = robotColor(robot.getId());
 		// draw robot
 		gc.setFill(robotColor);
 		double x = robot.getInterpolatedX(stepProgress) * cellW + cellW / 2 - w / 2;
