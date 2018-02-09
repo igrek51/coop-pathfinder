@@ -31,6 +31,7 @@ public class WHCAPathFinder {
 		this.map = map;
 	}
 	
+	
 	public Path findPath(int sx, int sy, int tx, int ty) {
 		// initial state for A*. The closed group is empty. Only the starting
 		// tile is in the open list and it'e're already there
