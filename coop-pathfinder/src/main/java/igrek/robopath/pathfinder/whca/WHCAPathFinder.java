@@ -128,8 +128,7 @@ public class WHCAPathFinder {
 				// step (i.e. to the open list)
 				if (!open.contains(neighbour) && !closed.contains(neighbour)) {
 					neighbour.setCost(nextStepCost);
-					heuristicCost = getHeuristicCost(neighbour.getX(), neighbour.getY(), neighbour
-							.getT(), tx, ty);
+					heuristicCost = getHeuristicCost(neighbour.getX(), neighbour.getY(), neighbour.getT(), tx, ty);
 					if (heuristicCost == null) {
 						heuristicCost = maxF();
 					}
@@ -222,9 +221,9 @@ public class WHCAPathFinder {
 		//		return (float) (Math.sqrt((dx * dx) + (dy * dy)));
 		//		return Math.max(Math.abs(tx - x), Math.abs(ty - y));
 		if (x == tx && y == ty) { // staying in the same place is not recommended
-			//			if (x == targetX && y == targetY){
-			//				return 0;
-			//			}
+			if (x == targetX && y == targetY) { // unless it's the goal
+				return 0;
+			}
 			return (float) 1.0 / reservation.getWidth() / reservation.getHeight();
 		}
 		return (float) Math.hypot(tx - x, ty - y);
@@ -268,7 +267,7 @@ public class WHCAPathFinder {
 					neighbours.add(nodes[xp][yp][t]);
 				}
 			}
-			// możliwe czekanie w tym samym miejscu - jako ostatnia propozycja
+			// possible waiting in the same place - the last offer
 			neighbours.add(nodes[current.getX()][current.getY()][t]);
 		}
 		return neighbours;
