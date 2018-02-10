@@ -1,15 +1,71 @@
 \section{Implementacja algorytmu WHCA*}
 \label{ch:alg-whca}
 
-$TODO$ rozwiązuje bottleneck - nawet radzi sobie dla większej liczby.
-Roboty wykazują inteligentne zachowanie, potrafią kooperować ze sobą, schodzić sobie z drogi, nawet, gdy już dotarły do swojego celu
+Implementacja algorytmu {\it  Windowed Hierarchical Cooperative A*} oparta została na podstawach teoretycznych opisanych w rozdziałach \ref{ch:theory-coop-astar}, \ref{ch:hier_cooperative_a} oraz \ref{ch:whca}, które w większości pochodzą z artykułu autorstwa Davida Silvera \cite{cooppath}.
+Praca ta jednak nie opisuje szczegółów realizacyjnych algorytmu i należało opracować wiele własnych podejść do zaistniałych problemów, dlatego implmenetacja algorytmu WHCA* w aplikacji jest efektem własnej pracy.
 
-WHCA - własny, schemat blokowy, pseudokod
-wiele trzeba było zrobić samemu, bo nic nie było podane
-zaprojektowany własny algorytm
-planowanie tylko części ścieżki (długości okna)
-koszt pozostania w miejscu - niezerowy,  chyba, że w celu (żeby zachęcić do szybszego dotarcia)
-po przejsciu algorytmu, wyłanianie najlepszego rozwiązania, 2 kryteria
+Metoda WHCA* stanowi rozszerzenie metody A* (por. \ref{ch:alg-single-astar}). W tym rozdziale zostaną opisane zmiany wprowadzone w stosunku do bazowej metody A*.
 
-rozszerzona wersja o dynamiczne przydzielanie priorytetów i rozszerzanie okna
-wada - nie moze się dwóch agentów "cofać". MOże tylko uciekać  z drogi ważniesjzemu
+Dla węzłów na mapie dodano kolejny (trzeci) wymiar - współrzędną czasu, będącą numerem kroku trajektorii robota.
+Stan zajętości pól na mapie w danym kroku czasowym zapisany jest w tablicy rezerwacji.
+Rozmiar tablicy rezerwacji wynosi: szerokość mapy $\times$ wysokość mapy $\times$ długość okna czasowego.
+Długość okna czasowego w bazowej wersji WHCA* jest stała i jest równa całkowitej liczbie agentów na mapie zwiększonej o 1. Wartość ta nie jest stała i jest tylko początkową wartością w przypadku dynamicznego przydziału priorytetów i podejścia rozszerzania okna czasowego, które zostało opisane w późniejszym rozdziale (por. \ref{ch:alg-priorities-allocation}).
+
+Na początku w tablicy rezerwacji wpisywane są położenia przeszkód jako pola zajęte w każdym kroku czasowym.
+Następnie dla każdego z robotów w kolejności ich priorytetów wyznaczana jest ścieżka do określonego celu.
+
+Spośród możliwych akcji do wykonania robot musi w każdym kroku wybrać ruch o jedno pole poziomo (wzdłuż długości mapy), pionowo (wzdłuż wysokości mapy), na ukos lub pozostanie na tym samym polu.
+Odpowiada to odpowiednim przejściom między sąsiednimi węzłami w grafie.
+Z tego powodu dla węzła o współrzędnych $(x, y, t)$ potencjalnymi sąsiadami (możliwymi przejściami do innego stanu) są węzły:
+
+\begin{table}
+\caption{Możliwe przejścia robota do sąsiednich węzłów} \label{tab:node-neighbours} 
+\centering
+\begin{tabular}{| c | c | c |}
+\hline
+$(x-1, y-1, t+1)$ & $(x, y-1, t+1)$ & $(x+1, y-1, t+1)$ \\ \hline
+$(x-1, y, t+1)$   & $(x, y, t+1)$   & $(x+1, y, t+1)$   \\ \hline
+$(x-1, y+1, t+1)$ & $(x, y+1, t+1)$ & $(x+1, y+1, t+1)$ \\ \hline
+\end{tabular}
+\end{table}
+Warto zauważyć, że każdy z sąsiadów ma krok czasowy zwiększony o $1$ od węzła aktualnego.
+
+Każdy taki potencjalny sąsiad zostaje zweryfikowany pod kątem poprawności wykonania ruchu oraz zajętości pola w tablicy rezerwacji.
+
+Koszt wykonania ruchu jest równy reczywistej przebytej odległosci (odległości euklidesowej).
+W przypadku akcji pozostania na tym samym polu przez robota, koszt ten wynosi $1 / maxF$, gdzie $maxF$ oznacza zakładaną maksymalną wartość funkcji $f$ będącej sumą kosztu i heurystyki, równą liczbie wszystkich pól na mapie.
+Takie zwiększenie kosztu o niewielką wartość, która nie będzie kolidować z wartościami wyznaczonymi na podstawie przebytej odległości, ma na celu szybsze doprowadzenie robota do celu. Natomiast jeśli pole, na którym pozostaje robot jest polem docelowym, to koszt pozostania na tym samym polu wynosi 0.
+Gdyby opierać funkcję kosztu jedynie na podstawie rzeczywistej przebytej drogi, to agenci mogliby zatrzymywać się niepotrzebnie przed dotarciem do celu, gdyż nie wpływałoby to w żaden sposób na koszt ich trajektorii. Takie zachowanie było obserwowane przed wprowadzeniem wspomnianej modyfikacji funkcji kosztu.
+Roboty zatrzymywały się na kilka kroków przed osiągnięciem celu, mimo iż nic nie stało na przeszkodzie, aby dotrzeć do celu wcześniej. Było to spowodowane tym, że rozwiązanie spełniało swoje załozenie - nadal miało minimalny koszt i mieściło się w wyznaczonym oknie czasowym.
+Zatem "zniechęcanie" do postoju poprzez sztuczne zwiększenie kosztu przejścia między węzłami skutecznie zapobiega takim, niepożądanym zachowaniom robotów.
+
+Funkcja heurystyczna, która ma na celu oszacować długosć pozostałej drogi do celu, wykorzystuje przestrzenny algorytm A*.
+Funkcja ta zwraca dokładne oszacowania odległości do celu, ignorując potencjalne interakcje z innymi agentami. Jej niedokładność będzie wynikać jedynie z trudności związanych z interakcją z innymi agentami.
+Wynikiem jest długosć wyznaczonej trasy z obecnego punktu do celu, bez jakichkolwiek ograniczeń głębokości przeszukiwania (oknem czasowym).
+Aby przyspieszyć wykonywanie algorytmu i zapobiec zbędnemu powtarzaniu obliczeń, wynik zapisywany jest w pamięci podręcznej. Jest to mapa (w sensie kolekcji) o dwóch kluczach całkowitoliczbowych (współrzędnych $x$ i $y$) i wartości będącej zapamiętaną długością trasy.
+W przypadku, gdy przestrzenny algorytm A* nie potrafi znaleźć rozwiązania (w przypadku braku istnienia drogi do celu) jako wartość heurystyki algorytmu WHCA* zwracana jest maksymalna wartość $maxF$.
+
+Przeszukiwanie węzłów jest ograniczone wielkością okna czasowego. Jeśli po przejściu wszystkich węzłów nie znaleziono węzła będącego punktem docelowym, to po zakończeniu głównej pętli algorytmu należy wybrać rozwiazanie spośród listy odwiedzonych węzłów.
+Należy zaznaczyć, że w takiej sytuacji algorytm nie zwraca optymalnej ścieżki i należy wybrać najbardziej obiecujące rozwiązanie.
+W zaproponowanej implementacji algorytmu WHCA* najbardziej obiecujące rozwiązanie wybierane jest z listy {\it zamkniętych} (węzłów odwiedzonych i przeanalizowanych):
+\begin{enumerate}
+	\item Pozostawiane są tylko te węzły, dla których wartość heurystyki jest mniejsza od $maxF$ (istnieje droga do celu)
+	\item Zwracany jest węzeł spełniający kryterium (jeśli pozostaje wielu kandydatów, rozstrzygają kolejne kryteria):
+	\begin{enumerate}
+		\item Wybranie węzła o najmniejszej wartości heurystyki (najbliżej celu).
+		\item Wybranie węzła o najmniejszej wartości funkcji kosztu (najkrótsza droga).
+		\item Wybranie węzła o najmniejszej wartości współrzędnej czasu (najszybsza droga).
+	\end{enumerate}
+\end{enumerate}
+
+Dla wybranego w ten sposób węzła tworzona jest ścieżka, która jest budowana poprzez rekurencyjne przechodzenie po kolejnych rodzicach przypisanych do węzłów.
+Zatem wynikiem algorytmu planowania może być tylko częściowa ścieżka (zależna od długości okna czasowego), którą robot bedzie podążał w kolejnych krokach symulacji. Po wyznaczeniu ścieżki do kolejki ruchów robota zostają dodane zaplanowane akcje oraz zaznaczana jest obecność robota w odpowiendich polach i czasie w tablicy rezerwacji. Po wykonaniu zaplanowanych ruchów, w przypadku pustej listy zaplanowanych ruchów, zostaje wykonywane ponowne planowanie trasy.
+
+Jak wykazały testy skuteczności algorytmu WHCA* w kooperacyjnym doprowadzaniu robotów do celu (por. \ref{ch:tests}), algorytm WHCA* potrafi rozwiązywać pewne zagadnienia występowania wąskich gardła . 
+Sama obserwacja symulowanego zachowania robotów pozwala stwierdzić, że roboty wykazują bardziej "inteligentne" zachowanie w porównaniu np. do metody LRA*. W pewnych sytuacjach potrafią kooperować ze sobą, schodzić sobie z drogi, nawet, gdy już dotarły do swojego celu.
+Algorytm radzi sobie nawet dla stosunkowo dużej liczby robotów.
+
+% TODO screen jak schodzą sobie z drogi
+
+Wadą i ograniczeniem metody jest niezmienny przydział priorytetów robotów oraz stała szerokość okna czasowego.
+Dopiero wprowadzenie dynamicznego przydzielania priorytetów oraz skalowania okna czasowego, pozwala skuteczniej rozwiązywać skomplikowane problemy zakleszczenia robotów.

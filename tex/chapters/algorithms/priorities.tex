@@ -1,11 +1,30 @@
 \section{Dynamiczny przydział priorytetów}
 \label{ch:alg-priorities-allocation}
 
-$TODO$ metoda przydziału / zmiany priorytetów - zwiekszanie i rekalkulacja w przypadku braku znalezienia trasy, nie dotyczy np LRA
+Obok algorytmu WHCA* zrealizowano własną metodę dynamicznego przydziału priorytetów oraz skalowania okna czasowego.
+Układ priorytetów w metodzie WHCA* ma znaczący wpływ na wynik planowania tras. Od priorytetów robotów zależy kolejność wyznaczania tras.
+Jest to na tyle istotne, gdyż podczas wyznaczania tras uwzględniane są tylko roboty o priorytetach wyższych (których planowanie odbyło się wcześniej).
+
+Podobnie jak w algorytmie LRA*, również w metodzie WHCA* należy wykrywać kolizje (odpowiednio wcześnie).
+Nawet w przypadku, gdy roboty podążają wzdłuż zaplanowanych ścieżek, wciiąż mogą zdarzyć się kolizje.
+Może to wystąpić w przypadku, gdy robot, który planuje drogę wczesniej (ma wyższy priorytet), nie uwzględnia, że następnemu robotowi może nie udać się wyznaczenie trajektorii (z powodu właśnie zaplanowanej trasy).
+
+
+
+% TODO screen z przypadku kolizjii
+
+Zaproponowana meotda polega na zwiększaniu priorytetów robotów w przypadku niepowodzenia w znalezieniu trasy.
+
 
 zwiększanie priorytetu w każdym kroku, jeśli nie znaleziono trasy, z próbą ponownego znalezienia w następnym kroku
 zwiększanie okna czasowego do max z priorytetów
 
-przykłady rozwiązywanych problemów
 
-należy wykrywać kolizje. kolizje też mogą się zdarzyć, bo np robot który planuje drogę wcześniej nie uwzględnia że następnemu robotowi nie uda się wyznaczenie trajektorii.
+rozszerzona wersja o dynamiczne przydzielanie priorytetów i rozszerzanie okna
+
+przed planowaniem: sortowanie po priorytetach
+brak znalezienia ścieżki (kolizje z innymi robotami i za niski priorytet ) - promocja priorytetu - zwiększenie o 1 
+resetCollidedRobots po planowaniu (podobnie jak w LRA*)
+rozmiar okna czasowego zwiększa się, jeśli któryś z robotów ma wyższy priorytet
+
+przykłady rozwiązywanych problemów
