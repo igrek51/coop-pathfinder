@@ -1,6 +1,22 @@
 \section{Metoda pól potencjałowych}
 \label{ch:potential-fields}
-$TODO$ nie wyszło , bo minima lokalne
+
+W aplikacji zaimplementowano także metodę pól potencjałowych.
+Cykl symulacji powtarzany jest w stałych cyklach zegarowych.
+30 FPS
+W każdym takim cyklu wyznaczana jest siła wypadkowa działająca na robota.
+Wpływa to na zmianę wektora prędkości robota, a w konsekwencji na zmianę jego położenia.
+
+Zastosowano działania na wektorach.
+
+Siła "przyciągająca" robota do punktu docelowego ma stałą wartość, aby w każdej odległości od celu robot podążał do niego tak samo.
+
+Wartość sumarycznej siły pochodzącej od wszystkich przeszkód jest ograniczana do maksymalnej wartości, aby wpływ od wielu przeszkód nie był na tyle znaczący, aby uniemożliwić robotowi dotarcie do celu.
+
+
 zalety: real time - potrzeba mało obliczeń, szybka metoda
-siła od celu robota jest stała (niezależna od odległości)
-efekt wallhacka
+
+Problem minimów lokalnch
+bardzo słaba skuteczność
+siła z pięciu punktów przeszkody, a i tak efekt wallhacka
+może się zderzyć z przeszkodą w wyniku nadmiernego rozpędzenia i braku wyhamowania, z powodu rozpatrywania jako punkty nie jako bryły
