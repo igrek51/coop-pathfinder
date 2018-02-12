@@ -37,20 +37,20 @@ public class PlanningEffectivenessTest {
 	
 	@Test
 	public void testBothAlgorithmsEffectiveness() {
-		int SIMS_COUNT = 100;
+		int SIMS_COUNT = 1000;
 		
 		int bothSuccessful = 0;
 		int whcaSuccess = 0;
 		int lraSuccess = 0;
 		int bothFailed = 0;
+		
+		int mapW = 35;
+		int mapH = 35;
+		int robotsCount = 5;
+		int stepsMax = (mapW + mapH) * 3;
+		logger.info("Simulation: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
+		
 		for (int s = 1; s <= SIMS_COUNT; s++) {
-			// random params
-			int mapW = randomInt(5, 39);
-			int mapH = randomInt(5, 39);
-			int robotsCount = randomInt(1, mapW * mapH / 40);
-			int stepsMax = (mapW + mapH) * 2;
-			logger.info("Simulation " + s + ": map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
-			
 			//			prepare WHCA
 			WHCAController whcaController = createWHCARandomSimulation(mapW, mapH, robotsCount);
 			try {

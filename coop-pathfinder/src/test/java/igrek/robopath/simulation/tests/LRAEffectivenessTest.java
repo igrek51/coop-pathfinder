@@ -32,10 +32,10 @@ public class LRAEffectivenessTest {
 	
 	@Test
 	public void testLRAEffectiveness() {
-		int SIMS_COUNT = 20;
+		int SIMS_COUNT = 100;
 		int mapW = 15, mapH = 15;
-		int robotsCount = 5;
-		int stepsMax = mapW * mapH;
+		int robotsCount = 40;
+		int stepsMax = (mapW + mapH) * 5;
 		
 		logger.info("Simulation params: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
 		
@@ -79,7 +79,11 @@ public class LRAEffectivenessTest {
 	private int simulate(LRAController controller, int stepsMax) {
 		for (int step = 0; step < stepsMax; step++) {
 			//			logger.debug("simulation step " + step);
-			controller.stepSimulation();
+			try {
+				controller.stepSimulation();
+			} catch (LRAController.CollisionDetectedException e) {
+				return -1;
+			}
 			boolean allReached = true;
 			for (MobileRobot robot : controller.getRobots()) {
 				//				logger.debug("robot " + robot.toString() + ": " + robot.getPosition() + " -> " + robot

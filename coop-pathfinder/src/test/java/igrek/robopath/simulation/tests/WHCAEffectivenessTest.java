@@ -35,7 +35,7 @@ public class WHCAEffectivenessTest {
 		int SIMS_COUNT = 100;
 		int mapW = 15, mapH = 15;
 		int robotsCount = 5;
-		int stepsMax = mapW * mapH;
+		int stepsMax = (mapW + mapH) * 5;
 		
 		logger.info("Simulation params: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
 		

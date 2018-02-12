@@ -265,8 +265,8 @@ public class WHCAPresenter {
 		TileMap map = getMap();
 		double cellW = drawArea.getWidth() / map.getWidthInTiles();
 		double cellH = drawArea.getHeight() / map.getHeightInTiles();
-		double w2 = 0.9 * cellW;
-		double h2 = 0.9 * cellH;
+		double w2 = 0.95 * cellW;
+		double h2 = 0.95 * cellH;
 		if (occupied) {
 			gc.setFill(Color.rgb(0, 0, 0));
 			double x2 = x * cellW + (cellW - w2) / 2;

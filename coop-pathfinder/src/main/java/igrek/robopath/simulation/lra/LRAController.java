@@ -195,9 +195,14 @@ public class LRAController {
 				continue;
 			if (otherRobot.getPosition().equals(robot.nearestTarget()) || otherRobot.nearestTarget()
 					.equals(robot.nearestTarget())) {
+				// throw new CollisionDetectedException(); // collisions frequency tests
 				return otherRobot;
 			}
 		}
 		return null;
+	}
+	
+	public class CollisionDetectedException extends RuntimeException {
+	
 	}
 }
