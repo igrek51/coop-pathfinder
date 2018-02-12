@@ -12,7 +12,7 @@ Sumarycznie przeprowadzono $TODO ile$ symulacji różnych metod, w różnych war
 testy powodzenia (skuteczności i wydajnosci) i testy poprawności (różnica)
 histogram liczby kroków potrzebnych do rozwiązania
 WHCA* z różnym parametrem okna czasowego
-ustalenie maksymalnego kroku czasowego: (w + h) * 2 (robots)
+ustalenie maksymalnego kroku czasowego: (w + h) * 2 (robots) - arbitralnie na podstawie obserwacji liczby potrzebnych kroków
 sytuacja, w której tylko jeden robot nie znalazł rozwiązania jest traktowana tak samo jako brak rozwiązania, jak gdy żaden nie znajdzie
 testy ograniczać trzeba liczbą kroków symulacji, bo LRA może trwać wiecznie
 po przekroczeniu liczby kroków limitu - uznanie za nieudaną
@@ -121,31 +121,43 @@ E-15x15-40R & 1000 & 823 (82,3\%) & 177 (17,7\%) & 0 (0\%) & 0   (0\%)    \\ \hl
 \end{tabular}
 \end{table}
 
-Warto zauważyć, że we wszystkich typach środowisk nie zdarzyło się, aby metoda LRA* dała lepsze rozwiazanie od WHCA*. Potwierdza to przypuszczenia, jako że metoda WHCA* jest dużo bardziej zaawansowana od LRA*.
+Warto zauważyć, że we wszystkich typach środowisk nie zdarzyło się, aby metoda LRA* dała lepsze rozwiazanie od WHCA*. Potwierdza to przypuszczenia, jako że metoda WHCA* jest dużo bardziej zaawansowana od metody LRA*.
 
-\subsection{WHCA* w różnych oknach czasowych}
+\subsection{WHCA* w stałych oknach czasowych}
+Zbadano skuteczność metody WHCA* bez dynamicznego przydziału priorytetów w zależności od wielkości stałego okna czasowego.
+Dla każdego badanego typu środowiska wylosowano 100 map, dla których powtórzono eksperymenty w tych samych warunkach, ale z różnymi rozmiarami okna czasowego od 1 do 30.
+Dla rozmiaru okna równego 1 skuteczność metody zawsze jest zerowa, gdyż zaplanowane dla robotów ścieżki są zawsze długości 1, a pierwszym punktem ścieżki jest zawsze aktualna pozycja robota.
+Uzyskane wyniki dla każdego środowiska przedstawiono na wykresach \ref{fig:test-whca-window-M-15x15-5R}, \ref{fig:test-whca-window-M-15x15-10R}, \ref{fig:test-whca-window-M-35x35-5R} i \ref{fig:test-whca-window-E-15x15-40R}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-whca-window-M-15x15-5R}
+	\caption{Wykres skuteczności metody WHCA* w zależności od rozmiaru okna czasowego dla środowiska typu M-15x15-5R}
+	\label{fig:test-whca-window-M-15x15-5R}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-whca-window-M-15x15-10R}
+	\caption{Wykres skuteczności metody WHCA* w zależności od rozmiaru okna czasowego dla środowiska typu M-15x15-10R}
+	\label{fig:test-whca-window-M-15x15-10R}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-whca-window-M-35x35-5R}
+	\caption{Wykres skuteczności metody WHCA* w zależności od rozmiaru okna czasowego dla środowiska typu M-35x35-5R}
+	\label{fig:test-whca-window-M-35x35-5R}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-whca-window-E-15x15-40R}
+	\caption{Wykres skuteczności metody WHCA* w zależności od rozmiaru okna czasowego dla środowiska typu E-15x15-40R}
+	\label{fig:test-whca-window-E-15x15-40R}
+\end{figure}
+
+
 $TODO$
-porównanie WHCA* przy różnych oknach czasowych
-porównanie skuteczności, liczby kroków i czasu obliczeń
-wykres skuteczności + wyniki w tabeli
-histogramy liczby kroków (tylko dla tych co się powiodło)
 stwierdzenie wzoru, jak wybierać okno czasowe: (w + h) * 2 (lub robots)
-
-\begin{table}
-\caption{WHCA* w różnych oknach czasowych} \label{tab:test-whca-windows} 
-\centering
-\begin{tabular}{| l | r | r | r  | r  | r |}
-\hline
-{\bf \shortstack{Typ\\środowiska}} &
-{\bf \shortstack{Przeprowadzone\\symulacje}} &
-{\bf \shortstack{Skuteczność}} \\
-\hline
-M-15x15-5R  & 1000 & 0 (0\%) \\ \hline
-M-15x15-10R & 1000 & 0 (0\%) \\ \hline
-M-35x35-5R  & 1000 & 0 (0\%) \\ \hline
-E-15x15-40R & 1000 & 0 (0\%) \\ \hline
-\end{tabular}
-\end{table}
+Zgodnie z oczekiwaniami jest to funkcja monotonicznie rosnąca
 
 \subsection{WHCA* z dynamicznym przydziałem priorytetów}
 porównanie WHCA*, WHCA* + dynamiczne priorytety, WHCA* + dynamiczne priorytety + dynamiczne okno: skuteczność

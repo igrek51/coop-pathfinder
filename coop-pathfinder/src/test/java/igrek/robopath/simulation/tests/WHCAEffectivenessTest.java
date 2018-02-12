@@ -32,10 +32,10 @@ public class WHCAEffectivenessTest {
 	
 	@Test
 	public void testWHCAEffectiveness() {
-		int SIMS_COUNT = 100;
+		int SIMS_COUNT = 10;
 		int mapW = 15, mapH = 15;
-		int robotsCount = 5;
-		int stepsMax = (mapW + mapH) * 5;
+		int robotsCount = 40;
+		int stepsMax = (mapW + mapH) * 3;
 		int timeDimension = 15;
 		
 		logger.info("Simulation params: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
