@@ -116,4 +116,8 @@ Na rysunku \ref{fig:maze75-75} przedstawiono przykładowy labirynt wygenerowany 
 	\label{fig:maze75-75}
 \end{figure}
 
+Warto zaznaczyć, że łączenie kolejnych wierzchołków do najbliższego sąsiada nadaje pewną właściwość wygenerowanym mapom.
+Bardzo często (choć nie zawsze) między dwoma polami tworzy się tylko jedna łącząca je ścieżka (nie ma alternatywanych ścieżek). Sprzyja to tworzeniu się wąskich gardeł na mapie.
+
 Wygenerowane w ten sposób mapy mają jeszcze jedną właściwość - w takim środowisku robot nie ma nigdy możliwości wykonania ruchu ukośnego (innego niż w poziomie lub pionie). Pozwala to wprowadzić pewne ograniczenia do niektórych algorytmów planowania (por. \ref{ch:theory-coop-astar}), które przyspieszają wykonywanie obliczeń ze względu na możliwość założenia jednakowego czasu trwania wszystkich ruchów robotów. Nie będziemy jednak tego zakładać na tym etapie, gdyż chcemy, aby opracowana metoda planowania tras mogła także działać w środowiskach innego typu.
+

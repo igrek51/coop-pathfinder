@@ -5,6 +5,8 @@ Do zademonstrowania prostego przeciwdziałania kolizjom robotów wykorzystano me
 Należy zaznaczyć, że jest to bardzo uproszczone podejście i stanowi wstęp do bardziej złożonego algorytmu.
 Dużo skuteczniejsza w zapobieganiu kolizji jesto metoda WHCA* (por. \ref{ch:alg-whca}) z dynamicznym przydziałem priorytetów (por. \ref{ch:alg-priorities-allocation}), która została opisana w późniejszych rozdziałach.
 
+Przez kolizję będziemy rozumieć sytuację, w której przynajmniej 2 roboty przebywają w tym samym miejscu (na tym samym polu) i w tym samym czasie (w tym samym kroku czasowym). Należy zaznaczyć, że dopuszczalne jest przecinanie się trajektorii robotów w różnym czasie.
+
 Zasada działania LRA* mocno opiera się na standardowym algorytmie A*. Jest to metoda korekcji tras w przypadku lokalnie wykrytych kolizji.
 
 Planowanie trajektorii odbywa się dla każdego agenta niezależnie, stosując algorytm A*. Przy wyznaczaniu najkrótszej drogi uwzględniane są (jako zajęte pola) zarówno wszystkie przeszkody statyczne, jak i aktualne pozycje pozostałych robotów. Wyznaczona ścieżka dzielona jest na pojedyncze akcje agenta (ruchy robota), które zostają zakolejkowane na liście akcji do wykonania przez robota. Jeśli droga do celu nie mogła zostać wyznaczona, próba ta zostanie powtórzona w następnym kroku.
