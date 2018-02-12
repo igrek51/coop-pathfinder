@@ -36,32 +36,35 @@ public class WHCAEffectivenessTest {
 		int mapW = 15, mapH = 15;
 		int robotsCount = 5;
 		int stepsMax = (mapW + mapH) * 5;
+		int timeDimension = 15;
 		
 		logger.info("Simulation params: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
 		
-		int successful = 0;
-		for (int s = 0; s < SIMS_COUNT; s++) {
-			if (runSimulation(mapW, mapH, robotsCount, stepsMax))
-				successful++;
+		for (timeDimension = 1; timeDimension <= 30; timeDimension++) {
+			int successful = 0;
+			for (int s = 0; s < SIMS_COUNT; s++) {
+				if (runSimulation(mapW, mapH, robotsCount, stepsMax, timeDimension))
+					successful++;
+			}
+			logger.info("time window: " + timeDimension + ": successfull: " + successful + " / " + SIMS_COUNT);
 		}
-		logger.info("successfull: " + successful + " / " + SIMS_COUNT);
 		
 	}
 	
-	private boolean runSimulation(int mapW, int mapH, int robotsCount, int stepsMax) {
-		WHCAController controller = createRandomSimulation(mapW, mapH, robotsCount);
+	private boolean runSimulation(int mapW, int mapH, int robotsCount, int stepsMax, int timeDimension) {
+		WHCAController controller = createRandomSimulation(mapW, mapH, robotsCount, timeDimension);
 		int steps = simulate(controller, stepsMax);
 		if (steps <= 0) {
-			logger.info("failed to reach all targets");
+			// logger.info("failed to reach all targets");
 			return false;
 		} else {
-			logger.info("all targets reached in " + steps + " steps");
+			// logger.info("all targets reached in steps: " + steps);
 			return true;
 		}
 	}
 	
 	
-	private WHCAController createRandomSimulation(int mapW, int mapH, int robotsCount) {
+	private WHCAController createRandomSimulation(int mapW, int mapH, int robotsCount, int timeDimension) {
 		WHCASimulationParams params = new WHCASimulationParams();
 		params.mapSizeW = mapW;
 		params.mapSizeH = mapH;
@@ -70,11 +73,11 @@ public class WHCAEffectivenessTest {
 		controller.setRandom(random);
 		controller.setMazegen(new MazeGenerator(random));
 		
-		//		controller.setPrioritiesPromotion(false); // z 23% -> 86%
+		controller.setPrioritiesPromotion(false); // z 23% -> 86%
 		
 		controller.generateMaze();
 		controller.placeRobots();
-		params.timeDimension = controller.getRobots().size() + 1;
+		params.timeDimension = timeDimension;
 		controller.randomTargetPressed();
 		return controller;
 	}

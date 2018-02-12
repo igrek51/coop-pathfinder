@@ -44,10 +44,10 @@ public class PlanningEffectivenessTest {
 		int lraSuccess = 0;
 		int bothFailed = 0;
 		
-		int mapW = 35;
-		int mapH = 35;
-		int robotsCount = 5;
-		int stepsMax = (mapW + mapH) * 3;
+		int mapW = 15;
+		int mapH = 15;
+		int robotsCount = 40;
+		int stepsMax = (mapW + mapH) * 2;
 		logger.info("Simulation: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
 		
 		for (int s = 1; s <= SIMS_COUNT; s++) {
