@@ -40,6 +40,7 @@ public class WHCAController {
 	private boolean reorderNeeded = false;
 	private volatile boolean calculatingPaths = false;
 	private boolean prioritiesPromotion = true;
+	private boolean timeWindowScaling = true;
 	
 	public WHCAController(WHCAPresenter presenter, WHCASimulationParams params) {
 		this.params = params;
@@ -58,6 +59,10 @@ public class WHCAController {
 	
 	public void setPrioritiesPromotion(boolean prioritiesPromotion) {
 		this.prioritiesPromotion = prioritiesPromotion;
+	}
+	
+	public void setTimeWindowScaling(boolean timeWindowScaling) {
+		this.timeWindowScaling = timeWindowScaling;
 	}
 	
 	public TileMap getMap() {
@@ -87,7 +92,7 @@ public class WHCAController {
 		}
 	}
 	
-	synchronized MobileRobot createMobileRobot(Point point) {
+	public synchronized MobileRobot createMobileRobot(Point point) {
 		int id = nextRobotId(robots);
 		MobileRobot robo = new MobileRobot(point, robot -> onTargetReached(robot), id, id);
 		robots.add(robo);
@@ -334,7 +339,7 @@ public class WHCAController {
 		robot.setPriority(robot.getPriority() + 1);
 		reorderNeeded = true;
 		logger.debug("robot " + robot.getId() + " promoted to priority " + robot.getPriority() + reason);
-		if (robot.getPriority() > params.timeDimension) {
+		if (robot.getPriority() > params.timeDimension && timeWindowScaling) {
 			params.timeDimension = robot.getPriority();
 			params.sendToUI();
 			//			logger.debug("Time dimension increased to " + params.timeDimension);

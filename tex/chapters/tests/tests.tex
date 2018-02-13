@@ -8,7 +8,7 @@ metodyka przeprowadzenia testów
 przeprowadzenie testów jest trudne i wymaga losowania środowisk i warunków i wyciągania statystyki, brak porównania do absolutu, ale można porównać różne metody w tych samych wylosowanych mapach - te same warunki początkowe
 jak whca* nie zadziała, nie wiadomo, czy w ogole nie ma rozwiazania
 potential field - nawet nie warto testować, raczej jako ciekawostka, nie potrafi doprowadzić do celu nawet jednego robota, screen z minimum lokalnego - studni potencjału
-Sumarycznie przeprowadzono $TODO ile$ symulacji różnych metod, w różnych warunkach, na różnych mapach.
+Na potrzeby testów do tego rozdziału Sumarycznie przeprowadzono $TODO ile$ symulacji różnych metod, w różnych warunkach, na różnych mapach.
 testy powodzenia (skuteczności i wydajnosci) i testy poprawności (różnica)
 histogram liczby kroków potrzebnych do rozwiązania
 WHCA* z różnym parametrem okna czasowego
@@ -16,6 +16,8 @@ ustalenie maksymalnego kroku czasowego: (w + h) * 2 (robots) - arbitralnie na po
 sytuacja, w której tylko jeden robot nie znalazł rozwiązania jest traktowana tak samo jako brak rozwiązania, jak gdy żaden nie znajdzie
 testy ograniczać trzeba liczbą kroków symulacji, bo LRA może trwać wiecznie
 po przekroczeniu liczby kroków limitu - uznanie za nieudaną
+nazwa whca123
+testy w bardzo trudnych środowiskach, dlatego niska skuteczność
 
 Przetestowane metody:
 \begin{itemize}
@@ -98,33 +100,8 @@ E-15x15-40R & 1000 & 0\%  & 100\%  \\ \hline
 
 Uzyskane niskie wskaźniki skuteczności potwierdzają, że w tego typu mapach, problem występowania kolzji jest bardzo istotny i prosty algorytm A* nie wystarcza, aby poradzić sobie z bezkolizyjnym doprowadzeniem robotów do celów.
 
-\subsection{Skuteczność LRA* i WHCA*}
-W następnym teście przeprowadzono serie testów mających na celu porównanie skuteczności metody LRA* oraz WHCA* z dynamicznym przydziałem priorytetów.
-Mapy generowane były losowo, natomiast dla każdego środowiska symulacja została wykonana dwukrotnie: raz wykonując planowanie tras metodą WHCA* a następnie metodą LRA* po odtworzeniu tych samych warunków początkowych. Dla każdej takiej symulacji zliczano, ile razy obie metody pomyślnie doprowadziły wszystkie roboty do celu, ile razy powiodła się tylko metoda WHCA*, ile razy tylko metoda LRA*, oraz ile razy żadna z metod nie powiodła się.
-Umożliwiło to porównanie skuteczności metod w dokładnie tych samym warunkach. Wyniki przedstawiono w tabeli \ref{tab:test-lra-whca-effectiveness}.
-
-\begin{table}
-\caption{LRA* i WHCA* z dynamicznymi priorytetami} \label{tab:test-lra-whca-effectiveness} 
-\centering
-\begin{tabular}{| l | r | r | r  | r  | r |}
-\hline
-{\bf \shortstack{Typ\\środowiska}} &
-{\bf \shortstack{Przeprowadzone\\symulacje}} &
-{\bf \shortstack{Obie\\udane}} &
-{\bf \shortstack{tylko WHCA*\\(dynamiczne\\priorytety)}} &
-{\bf \shortstack{tylko\\LRA*}} &
-{\bf \shortstack{żadna}} \\ \hline
-M-15x15-5R  & 1000 & 230 (23,0\%) & 667 (66,7\%) & 0 (0\%) & 103 (10,3\%) \\ \hline
-M-15x15-10R & 1000 & 12  (1,2\%)  & 640 (64,0\%) & 0 (0\%) & 348 (34,8\%) \\ \hline
-M-35x35-5R  & 1000 & 513 (51,3\%) & 471 (47,1\%) & 0 (0\%) & 16  (1,6\%)  \\ \hline
-E-15x15-40R & 1000 & 823 (82,3\%) & 177 (17,7\%) & 0 (0\%) & 0   (0\%)    \\ \hline
-\end{tabular}
-\end{table}
-
-Warto zauważyć, że we wszystkich typach środowisk nie zdarzyło się, aby metoda LRA* dała lepsze rozwiazanie od WHCA*. Potwierdza to przypuszczenia, jako że metoda WHCA* jest dużo bardziej zaawansowana od metody LRA*.
-
 \subsection{WHCA* w stałych oknach czasowych}
-Zbadano skuteczność metody WHCA* bez dynamicznego przydziału priorytetów w zależności od wielkości stałego okna czasowego.
+Zbadano skuteczność metody WHCA* bez dynamicznego przydziału priorytetów w zależności od wielkości okna czasowego, które pozostaje stałe w trakcie trwania jednej symulacji.
 Dla każdego badanego typu środowiska wylosowano 100 map, dla których powtórzono eksperymenty w tych samych warunkach, ale z różnymi rozmiarami okna czasowego od 1 do 30.
 Dla rozmiaru okna równego 1 skuteczność metody zawsze jest zerowa, gdyż zaplanowane dla robotów ścieżki są zawsze długości 1, a pierwszym punktem ścieżki jest zawsze aktualna pozycja robota.
 Uzyskane wyniki dla każdego środowiska przedstawiono na wykresach \ref{fig:test-whca-window-M-15x15-5R}, \ref{fig:test-whca-window-M-15x15-10R}, \ref{fig:test-whca-window-M-35x35-5R} i \ref{fig:test-whca-window-E-15x15-40R}.
@@ -154,15 +131,63 @@ Uzyskane wyniki dla każdego środowiska przedstawiono na wykresach \ref{fig:tes
 	\label{fig:test-whca-window-E-15x15-40R}
 \end{figure}
 
+Zgodnie z oczekiwaniami skuteczność metody WHCA* rośnie monotonicznie wraz ze wzrostem rozmiaru okna czasowego.
 
-$TODO$
-stwierdzenie wzoru, jak wybierać okno czasowe: (w + h) * 2 (lub robots)
-Zgodnie z oczekiwaniami jest to funkcja monotonicznie rosnąca
+\subsection{Skuteczność LRA* i WHCA*}
+W następnym teście przeprowadzono serie testów mających na celu porównanie skuteczności metody LRA* oraz WHCA* z dynamicznym przydziałem priorytetów.
+Mapy generowane były losowo, natomiast dla każdego środowiska symulacja została wykonana dwukrotnie: raz wykonując planowanie tras metodą WHCA* a następnie metodą LRA* po odtworzeniu tych samych warunków początkowych. Dla każdej takiej symulacji zliczano, ile razy obie metody pomyślnie doprowadziły wszystkie roboty do celu, ile razy powiodła się tylko metoda WHCA*, ile razy tylko metoda LRA*, oraz ile razy żadna z metod nie powiodła się.
+Umożliwiło to porównanie skuteczności metod w dokładnie tych samym warunkach. Wyniki przedstawiono w tabeli \ref{tab:test-lra-whca-effectiveness}.
+
+\begin{table}
+\caption{LRA* i WHCA* z dynamicznymi priorytetami} \label{tab:test-lra-whca-effectiveness} 
+\centering
+\begin{tabular}{| l | r | r | r  | r  | r |}
+\hline
+{\bf \shortstack{Typ\\środowiska}} &
+{\bf \shortstack{Przeprowadzone\\symulacje}} &
+{\bf \shortstack{Obie\\udane}} &
+{\bf \shortstack{tylko WHCA*\\(dynamiczne\\priorytety)}} &
+{\bf \shortstack{tylko\\LRA*}} &
+{\bf \shortstack{żadna}} \\ \hline
+M-15x15-5R  & 1000 & 230 (23,0\%) & 667 (66,7\%) & 0 (0\%) & 103 (10,3\%) \\ \hline
+M-15x15-10R & 1000 & 12  (1,2\%)  & 640 (64,0\%) & 0 (0\%) & 348 (34,8\%) \\ \hline
+M-35x35-5R  & 1000 & 513 (51,3\%) & 471 (47,1\%) & 0 (0\%) & 16  (1,6\%)  \\ \hline
+E-15x15-40R & 1000 & 823 (82,3\%) & 177 (17,7\%) & 0 (0\%) & 0   (0\%)    \\ \hline
+\end{tabular}
+\end{table}
+
+$TODO$ sumaryczna skuteczność
+
+Warto zauważyć, że we wszystkich typach środowisk nie zdarzyło się, aby metoda LRA* dała lepsze rozwiazanie od WHCA*. Potwierdza to przypuszczenia, jako że metoda WHCA* jest dużo bardziej zaawansowana od metody LRA*.
 
 \subsection{WHCA* z dynamicznym przydziałem priorytetów}
 porównanie WHCA*, WHCA* + dynamiczne priorytety, WHCA* + dynamiczne priorytety + dynamiczne okno: skuteczność
 
-\subsection{}
+poprawność malejącej skuteczności (weryfikowana podczas testów)
+testowane na tych samych mapach
+
+\begin{table}
+\caption{LRA*, WHCA*, WHCA* + dynamicznymi priorytetami, WHCA* + priorytety + skalowanie okno czasowe} \label{tab:test-lra-whca-whca2-effectiveness} 
+\centering
+\begin{tabular}{| l | r | r | r  | r  | r |}
+\hline
+{\bf \shortstack{Typ\\środowiska}} &
+{\bf \shortstack{Przeprowadzone\\symulacje}} &
+{\bf \shortstack{Skuteczność\\WHCA*3} &
+{\bf \shortstack{Skuteczność\\WHCA*2}} &
+{\bf \shortstack{Skuteczność\\WHCA*}} &
+{\bf \shortstack{Skuteczność\\LRA*}} \\ \hline
+M-15x15-5R  & 1000 & 435/500 & 273/500 & 132/500 & 113/500 \\ \hline
+M-15x15-10R & 1000 & whca: 272/500, whcaWS: 244/500, whcaWP: 17/500, lra: 1/500 \\ \hline
+M-35x35-5R  & 1000 & whca: 493/500, whcaWS: 349/500, whcaWP: 200/500, lra: 264/500  \\ \hline
+E-15x15-40R & 1000 & whca: 150/150, whcaWS: 150/150, whcaWP: 150/150, lra: 115/150 \\ \hline
+\end{tabular}
+\end{table}
+
+czasem lra by lepszy od whca1 i whca2
+
+\subsection{2}
+2)
 w przypadkach gdzie LRA* się udało, wykres 2-4 algorytmów (serie):
 	x dla pustych map, z labiryntem
 	x w funkcji rozmiaru mapy, w funkcji liczby robotów
@@ -171,7 +196,7 @@ w przypadkach gdzie LRA* się udało, wykres 2-4 algorytmów (serie):
 dla wszystkich, wykres 2-4 algorytmów (serie):
 	x dla pustych map, z labiryntem
 	x w funkcji rozmiaru mapy, w funkcji liczby robotów
-	x wartość: skuteczność, czas planowania
+	x wartość: skuteczność
 
 \subsection{Metoda pól potencjałowych}
 $TODO$
@@ -193,12 +218,12 @@ $TODO$ screeny ciekawych przypadków
 	\label{fig:test-lra-bigmap}
 \end{figure}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\columnwidth]{img/robopath/lra-cycle}
-	\caption{Metoda LRA*: 2 roboty w cyklu akcji}
-	\label{fig:test-lra-cycle}
-\end{figure}
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=0.8\columnwidth]{img/robopath/lra-cycle}
+% 	\caption{Metoda LRA*: 2 roboty w cyklu akcji}
+% 	\label{fig:test-lra-cycle}
+% \end{figure}
 
 \begin{figure}
 	\centering

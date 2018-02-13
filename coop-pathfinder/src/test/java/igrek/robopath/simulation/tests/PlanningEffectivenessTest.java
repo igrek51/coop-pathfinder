@@ -37,16 +37,13 @@ public class PlanningEffectivenessTest {
 	
 	@Test
 	public void testBothAlgorithmsEffectiveness() {
-		int SIMS_COUNT = 1000;
+		int SIMS_COUNT = 500;
 		
-		int bothSuccessful = 0;
-		int whcaSuccess = 0;
-		int lraSuccess = 0;
-		int bothFailed = 0;
+		int[] successful = new int [4];
 		
 		int mapW = 15;
 		int mapH = 15;
-		int robotsCount = 40;
+		int robotsCount = 5;
 		int stepsMax = (mapW + mapH) * 2;
 		logger.info("Simulation: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
 		
@@ -62,14 +59,25 @@ public class PlanningEffectivenessTest {
 				logger.warn(e.getMessage());
 				continue;
 			}
+			// WHCA variants
+			WHCAController whcaControllerWS = createWHCARandomSimulation(mapW, mapH, robotsCount);
+			whcaControllerWS.setPrioritiesPromotion(true);
+			whcaControllerWS.setTimeWindowScaling(false);
+			WHCAController whcaControllerWP = createWHCARandomSimulation(mapW, mapH, robotsCount);
+			whcaControllerWP.setPrioritiesPromotion(false);
+			whcaControllerWP.setTimeWindowScaling(false);
 			//			prepare LRA
 			LRAController lraController = createLRARandomSimulation(mapW, mapH, robotsCount);
 			// same maze as in whca
 			TileMap whcaMap = whcaController.getMap();
 			TileMap lraMap = lraController.getMap();
-			for (int x = 0; x < lraMap.getWidthInTiles(); x++) {
-				for (int y = 0; y < lraMap.getHeightInTiles(); y++) {
+			TileMap whcaMapWS = whcaControllerWS.getMap();
+			TileMap whcaMapWP = whcaControllerWP.getMap();
+			for (int x = 0; x < whcaMap.getWidthInTiles(); x++) {
+				for (int y = 0; y < whcaMap.getHeightInTiles(); y++) {
 					lraMap.setCell(x, y, whcaMap.getCell(x, y));
+					whcaMapWS.setCell(x, y, whcaMap.getCell(x, y));
+					whcaMapWP.setCell(x, y, whcaMap.getCell(x, y));
 				}
 			}
 			// robots locations same as in whca
@@ -78,38 +86,39 @@ public class PlanningEffectivenessTest {
 						.get(i);
 				// set start point
 				lraController.createMobileRobot(whcaRobot.getPosition(), i);
+				whcaControllerWS.createMobileRobot(whcaRobot.getPosition());
+				whcaControllerWP.createMobileRobot(whcaRobot.getPosition());
 				//set target
 				lraController.getRobots().get(i).setTarget(whcaRobot.getTarget());
+				whcaControllerWS.getRobots().get(i).setTarget(whcaRobot.getTarget());
+				whcaControllerWP.getRobots().get(i).setTarget(whcaRobot.getTarget());
 			}
 			//			simulate both
 			int whcaSteps = simulateWHCA(whcaController, stepsMax);
-			//			if (whcaSteps <= 0) {
-			//				logger.info("WHCA: failed to reach all targets");
-			//			} else {
-			//				logger.info("WHCA: all targets reached in " + whcaSteps + " steps");
-			//			}
+			whcaControllerWS.getParams().timeDimension = whcaControllerWS.getRobots().size() + 1;
+			int whcaStepsWS = simulateWHCA(whcaControllerWS, stepsMax);
+			whcaControllerWP.getParams().timeDimension = whcaControllerWP.getRobots().size() + 1;
+			int whcaStepsWP = simulateWHCA(whcaControllerWP, stepsMax);
 			int lraSteps = simulateLRA(lraController, stepsMax);
-			//			if (lraSteps <= 0) {
-			//				logger.info("LRA: failed to reach all targets");
-			//			} else {
-			//				logger.info("LRA: all targets reached in " + lraSteps + " steps");
-			//			}
 			//			Summary
-			if (lraSteps > 0 && whcaSteps > 0) {
-				bothSuccessful++;
-			} else if (lraSteps <= 0 && whcaSteps > 0) {
-				whcaSuccess++;
-			} else if (lraSteps > 0 && whcaSteps <= 0) {
-				lraSuccess++;
-			} else {
-				bothFailed++;
+			if (whcaSteps <= 0 && (whcaStepsWS > 0 || whcaStepsWP > 0 || lraSteps > 0)) {
+				logger.warn(String.format("whcaSteps: %d, whcaStepsWS: %d, whcaStepsWP: %d, lraSteps: %d", whcaSteps, whcaStepsWS, whcaStepsWP, lraSteps));
+			} else if (whcaStepsWS <= 0 && (whcaStepsWP > 0 || lraSteps > 0)) {
+				logger.warn(String.format("whcaSteps: %d, whcaStepsWS: %d, whcaStepsWP: %d, lraSteps: %d", whcaSteps, whcaStepsWS, whcaStepsWP, lraSteps));
+			} else if (whcaStepsWP <= 0 && lraSteps > 0) {
+				logger.warn(String.format("whcaSteps: %d, whcaStepsWS: %d, whcaStepsWP: %d, lraSteps: %d", whcaSteps, whcaStepsWS, whcaStepsWP, lraSteps));
 			}
-			logger.info(String.format("both: %d/%d, WHCA: %d/%d, LRA: %d/%d, none: %d/%d", bothSuccessful, s, whcaSuccess, s, lraSuccess, s, bothFailed, s));
+			if (whcaSteps > 0)
+				successful[0] += 1;
+			if (whcaStepsWS > 0)
+				successful[1] += 1;
+			if (whcaStepsWP > 0)
+				successful[2] += 1;
+			if (lraSteps > 0)
+				successful[3] += 1;
+			// logger.info(String.format("both: %d/%d, WHCA: %d/%d, LRA: %d/%d, none: %d/%d", bothSuccessful, s, whcaSuccess, s, lraSuccess, s, bothFailed, s));
+			logger.info(String.format("whca: %d/%d, whcaWS: %d/%d, whcaWP: %d/%d, lra: %d/%d", successful[0], s, successful[1], s, successful[2], s, successful[3], s));
 		}
-		logger.info("bothSuccessful: " + bothSuccessful + " / " + SIMS_COUNT);
-		logger.info("whcaSuccess: " + whcaSuccess + " / " + SIMS_COUNT);
-		logger.info("lraSuccess: " + lraSuccess + " / " + SIMS_COUNT);
-		logger.info("bothFailed: " + bothFailed + " / " + SIMS_COUNT);
 	}
 	
 	private int randomInt(int fromInclusive, int toInclusive) {
