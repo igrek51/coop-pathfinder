@@ -18,6 +18,7 @@ testy ograniczać trzeba liczbą kroków symulacji, bo LRA może trwać wiecznie
 po przekroczeniu liczby kroków limitu - uznanie za nieudaną
 nazwa whca123
 testy w bardzo trudnych środowiskach, dlatego niska skuteczność
+próba 1000 i wyciąganie średniej, bo wszystko jest losowe i zależy od specyfiki układu
 
 Przetestowane metody:
 \begin{itemize}
@@ -173,30 +174,41 @@ testowane na tych samych mapach
 \hline
 {\bf \shortstack{Typ\\środowiska}} &
 {\bf \shortstack{Przeprowadzone\\symulacje}} &
-{\bf \shortstack{Skuteczność\\WHCA*3} &
+{\bf \shortstack{Skuteczność\\WHCA*3}} &
 {\bf \shortstack{Skuteczność\\WHCA*2}} &
-{\bf \shortstack{Skuteczność\\WHCA*}} &
+{\bf \shortstack{Skuteczność\\WHCA*1}} &
 {\bf \shortstack{Skuteczność\\LRA*}} \\ \hline
-M-15x15-5R  & 1000 & 435/500 & 273/500 & 132/500 & 113/500 \\ \hline
-M-15x15-10R & 1000 & whca: 272/500, whcaWS: 244/500, whcaWP: 17/500, lra: 1/500 \\ \hline
-M-35x35-5R  & 1000 & whca: 493/500, whcaWS: 349/500, whcaWP: 200/500, lra: 264/500  \\ \hline
-E-15x15-40R & 1000 & whca: 150/150, whcaWS: 150/150, whcaWP: 150/150, lra: 115/150 \\ \hline
+M-15x15-5R  & 1000 & 435/500 & 273/500 & 132/500 & 113/500  \\ \hline
+M-15x15-10R & 1000 & 272/500 & 244/500 & 17/500  & 1/500    \\ \hline
+M-35x35-5R  & 1000 & 493/500 & 349/500 & 200/500 & 264/500  \\ \hline
+E-15x15-40R & 1000 & 150/150 & 150/150 & 150/150 & 115/150  \\ \hline
 \end{tabular}
 \end{table}
+$TODO$ zmienić na /1000  i na procenty
 
 czasem lra by lepszy od whca1 i whca2
 
-\subsection{2}
-2)
-w przypadkach gdzie LRA* się udało, wykres 2-4 algorytmów (serie):
-	x dla pustych map, z labiryntem
+\subsection{porównanie 2}
+1) w przypadkach gdzie LRA* się udało, wykres 4 algorytmów (serie), z labiryntem:
 	x w funkcji rozmiaru mapy, w funkcji liczby robotów
 	x wartość: liczba kroków, czas planowania
 
-dla wszystkich, wykres 2-4 algorytmów (serie):
-	x dla pustych map, z labiryntem
-	x w funkcji rozmiaru mapy, w funkcji liczby robotów
-	x wartość: skuteczność
+2) dla wszystkich, wykres skuteczności 4 algorytmów (serie):
+	z labirytntem:
+		- w funkcji liczby robotów (15x15) (1-30) * 100 symulacji (3000 sym)
+			effect-maze-robots
+		- w funkcji rozmiaru mapy (5 robotów) (3x3 - 40x40) * 100 symulacji
+			effect-maze-size
+	pusta mapa:
+		- w funkcji liczby robotów (6x6) (1-30) * 100 symulacji (3000 sym)
+			effect-empty-robots
+		- w funkcji rozmiaru mapy (5 robotów) (3x3 - 40x40) * 100 symulacji
+			effect-empty-size
+
+zachowanie nierówności: WHCA*1 <= WHCA*2 <= WHCA*3
+przy wyższych wartościach robotów się zlewają, bo początkowe okno czasowe jest większe
+na pustej mapie WHCA*23 dają radę, ale ilość kroków jest duża
+zamieszczać też tabelki?
 
 \subsection{Metoda pól potencjałowych}
 $TODO$
