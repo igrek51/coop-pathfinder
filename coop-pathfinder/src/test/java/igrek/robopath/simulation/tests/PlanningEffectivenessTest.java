@@ -39,20 +39,22 @@ public class PlanningEffectivenessTest {
 	public void testBothAlgorithmsEffectiveness() {
 		int SIMS_COUNT = 100;
 		
-		int mapW = 6;
-		int mapH = 6;
+		int mapW = 15;
+		int mapH = 15;
 		int robotsCount = 5;
 		
-		for(mapW = 3; mapW <= 40; mapW++) {
-			mapH = mapW;
+		for(robotsCount = 1; robotsCount <= 30; robotsCount++) {
+			// mapH = mapW;
 			int stepsMax = (mapW + mapH) * 3;
 			// logger.info("Simulation: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
 			int[] successful = new int [4];
+			int[] stepsCount = new int [4];
+			long[] calcTimes = new long [4];
 			for (int s = 1; s <= SIMS_COUNT; s++) {
 				//			prepare WHCA
 				WHCAController whcaController = createWHCARandomSimulation(mapW, mapH, robotsCount);
 				try {
-					// whcaController.generateMaze();
+					whcaController.generateMaze();
 					whcaController.placeRobots();
 					whcaController.getParams().timeDimension = whcaController.getRobots().size() + 1;
 					whcaController.randomTargetPressed();
@@ -94,13 +96,43 @@ public class PlanningEffectivenessTest {
 					whcaControllerWS.getRobots().get(i).setTarget(whcaRobot.getTarget());
 					whcaControllerWP.getRobots().get(i).setTarget(whcaRobot.getTarget());
 				}
-				//			simulate both
-				int whcaSteps = simulateWHCA(whcaController, stepsMax);
-				whcaControllerWS.getParams().timeDimension = whcaControllerWS.getRobots().size() + 1;
-				int whcaStepsWS = simulateWHCA(whcaControllerWS, stepsMax);
+				//			simulate
+				int steps;
+				long startTime;
+				// LRA* - 3
+				startTime = System.currentTimeMillis();
+				steps = simulateLRA(lraController, stepsMax);
+				if (steps > 0) {
+					stepsCount[3] += steps;
+					calcTimes[3] += System.currentTimeMillis() - startTime;
+					successful[3] += 1;
+				}
+				// WHCA*1 - 2
 				whcaControllerWP.getParams().timeDimension = whcaControllerWP.getRobots().size() + 1;
-				int whcaStepsWP = simulateWHCA(whcaControllerWP, stepsMax);
-				int lraSteps = simulateLRA(lraController, stepsMax);
+				startTime = System.currentTimeMillis();
+				steps = simulateWHCA(whcaControllerWP, stepsMax);
+				if (steps > 0) {
+					stepsCount[2] += steps;
+					calcTimes[2] += System.currentTimeMillis() - startTime;
+					successful[2] += 1;
+				}
+				// WHCA*2 - 1
+				whcaControllerWS.getParams().timeDimension = whcaControllerWS.getRobots().size() + 1;
+				startTime = System.currentTimeMillis();
+				steps = simulateWHCA(whcaControllerWS, stepsMax);
+				if (steps > 0) {
+					stepsCount[1] += steps;
+					calcTimes[1] += System.currentTimeMillis() - startTime;
+					successful[1] += 1;
+				}
+				// WHCA*3 - 0
+				startTime = System.currentTimeMillis();
+				steps = simulateWHCA(whcaController, stepsMax);
+				if (steps > 0) {
+					stepsCount[0] += steps;
+					calcTimes[0] += System.currentTimeMillis() - startTime;
+					successful[0] += 1;
+				}
 				//			Summary
 				// if (whcaSteps <= 0 && (whcaStepsWS > 0 || whcaStepsWP > 0 || lraSteps > 0)) {
 				// 	logger.warn(String.format("whcaSteps: %d, whcaStepsWS: %d, whcaStepsWP: %d, lraSteps: %d", whcaSteps, whcaStepsWS, whcaStepsWP, lraSteps));
@@ -109,19 +141,26 @@ public class PlanningEffectivenessTest {
 				// } else if (whcaStepsWP <= 0 && lraSteps > 0) {
 				// 	logger.warn(String.format("whcaSteps: %d, whcaStepsWS: %d, whcaStepsWP: %d, lraSteps: %d", whcaSteps, whcaStepsWS, whcaStepsWP, lraSteps));
 				// }
-				if (whcaSteps > 0)
-					successful[0] += 1;
-				if (whcaStepsWS > 0)
-					successful[1] += 1;
-				if (whcaStepsWP > 0)
-					successful[2] += 1;
-				if (lraSteps > 0)
-					successful[3] += 1;
+				// for (int i = 0; i < 4; i++) {
+				// 	if (stepsCount[i] > 0)
+				// 		successful[i] += 1;
+				// }
 				// logger.info(String.format("both: %d/%d, WHCA: %d/%d, LRA: %d/%d, none: %d/%d", bothSuccessful, s, whcaSuccess, s, lraSuccess, s, bothFailed, s));
 				// logger.info(String.format("whca: %d/%d, whcaWS: %d/%d, whcaWP: %d/%d, lra: %d/%d", successful[0], s, successful[1], s, successful[2], s, successful[3], s));
 			}
-			double pcFactor = 100.0 / SIMS_COUNT;
-			logger.info(String.format("map %dx%d, robots %d\t%f\t%f\t%f\t%f", mapW, mapH, robotsCount, pcFactor * successful[3], pcFactor * successful[2], pcFactor * successful[1], pcFactor * successful[0]));
+			double[] avgFactor = new double [4];
+			for (int i = 0; i < 4; i++) {
+				if (successful[i] == 0){
+					logger.warn("successful["+i+"] = 0");
+					successful[i] = -1;
+				}
+				avgFactor[i] = 1.0 / successful[i];
+			}
+			String info = String.format("map %dx%d, robots %d", mapW, mapH, robotsCount);
+			info += String.format(", successfulls: \t%d\t%d\t%d\t%d", successful[3], successful[2], successful[1], successful[0]);
+			info += String.format(", steps: \t%f\t%f\t%f\t%f", avgFactor[3] * stepsCount[3], avgFactor[2] * stepsCount[2], avgFactor[1] * stepsCount[1], avgFactor[0] * stepsCount[0]);
+			info += String.format(", time: \t%f\t%f\t%f\t%f", avgFactor[3] * calcTimes[3], avgFactor[2] * calcTimes[2], avgFactor[1] * calcTimes[1], avgFactor[0] * calcTimes[0]);
+			logger.info(info);
 		}
 	}
 	

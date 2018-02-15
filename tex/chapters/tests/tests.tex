@@ -12,13 +12,13 @@ Na potrzeby testów do tego rozdziału Sumarycznie przeprowadzono $TODO ile$ sym
 testy powodzenia (skuteczności i wydajnosci) i testy poprawności (różnica)
 histogram liczby kroków potrzebnych do rozwiązania
 WHCA* z różnym parametrem okna czasowego
-ustalenie maksymalnego kroku czasowego: (w + h) * 2 (robots) - arbitralnie na podstawie obserwacji liczby potrzebnych kroków
+ustalenie maksymalnego kroku czasowego: (w + h) * 3 (robots) - arbitralnie na podstawie obserwacji liczby potrzebnych kroków
 sytuacja, w której tylko jeden robot nie znalazł rozwiązania jest traktowana tak samo jako brak rozwiązania, jak gdy żaden nie znajdzie
 testy ograniczać trzeba liczbą kroków symulacji, bo LRA może trwać wiecznie
 po przekroczeniu liczby kroków limitu - uznanie za nieudaną
 nazwa whca123
 testy w bardzo trudnych środowiskach, dlatego niska skuteczność
-próba 1000 i wyciąganie średniej, bo wszystko jest losowe i zależy od specyfiki układu
+próba 1000 i wyciąganie średniej, bo wszystko jest losowe i zależy od specyfiki układu, dlatego jedynym sensownym porównaniem jest porównywanie w tych samych warunkach
 
 Przetestowane metody:
 \begin{itemize}
@@ -189,11 +189,7 @@ $TODO$ zmienić na /1000  i na procenty
 czasem lra by lepszy od whca1 i whca2
 
 \subsection{porównanie 2}
-1) w przypadkach gdzie LRA* się udało, wykres 4 algorytmów (serie), z labiryntem:
-	x w funkcji rozmiaru mapy, w funkcji liczby robotów
-	x wartość: liczba kroków, czas planowania
-
-2) dla wszystkich, wykres skuteczności 4 algorytmów (serie):
+1) dla wszystkich, wykres skuteczności 4 algorytmów (serie):
 	z labirytntem:
 		- w funkcji liczby robotów (15x15) (1-30) * 100 symulacji (3000 sym)
 			effect-maze-robots
@@ -209,6 +205,32 @@ zachowanie nierówności: WHCA*1 <= WHCA*2 <= WHCA*3
 przy wyższych wartościach robotów się zlewają, bo początkowe okno czasowe jest większe
 na pustej mapie WHCA*23 dają radę, ale ilość kroków jest duża
 zamieszczać też tabelki?
+
+2) w przypadkach gdzie LRA* się udało, wykres 4 algorytmów (serie), z labiryntem:
+	z labirytntem:
+		- w funkcji liczby robotów (15x15) (1-30) * 100 symulacji (3000 sym)
+			- liczba kroków
+			- czas planowania
+				lra-steps-maze-robots
+		- w funkcji rozmiaru mapy (5 robotów) (3x3 - 40x40) * 100 symulacji
+			- liczba kroków
+			- czas planowania
+				lra-steps-maze-mapsize
+
+są to tylko przypadki w których udało się LRA, czyli proste układy
+pomiar czasu może być obarczony błędami wynikającymi z narzutu JVM i działania Garbage Collectora
+
+3) w przypadkach gdzie WHCA*1 się udało, wykres 3 algorytmów (serie), z labiryntem:
+	z labirytntem:
+		- w funkcji liczby robotów (15x15) (1-30) * 100 symulacji (3000 sym)
+			- liczba kroków
+			- czas planowania
+				whca1-steps-maze-robots
+		- w funkcji rozmiaru mapy (5 robotów) (3x3 - 40x40) * 100 symulacji
+			- liczba kroków
+			- czas planowania
+				whca1-steps-maze-mapsize
+
 
 \subsection{Metoda pól potencjałowych}
 $TODO$
