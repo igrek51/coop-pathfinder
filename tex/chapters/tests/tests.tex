@@ -206,30 +206,21 @@ przy wyższych wartościach robotów się zlewają, bo początkowe okno czasowe 
 na pustej mapie WHCA*23 dają radę, ale ilość kroków jest duża
 zamieszczać też tabelki?
 
-2) w przypadkach gdzie LRA* się udało, wykres 4 algorytmów (serie), z labiryntem:
+2) dla wszystkich, wykres 4 algorytmów (serie):
 	z labirytntem:
 		- w funkcji liczby robotów (15x15) (1-30) * 100 symulacji (3000 sym)
-			- liczba kroków
-			- czas planowania
-				lra-steps-maze-robots
+			- średnia liczba kroków (dla udanych)
+			- średni czas planowania (dla udanych)
+			- skuteczność
+				steps-maze-robots
 		- w funkcji rozmiaru mapy (5 robotów) (3x3 - 40x40) * 100 symulacji
-			- liczba kroków
-			- czas planowania
-				lra-steps-maze-mapsize
+			- średnia liczba kroków (dla udanych)
+			- średni czas planowania (dla udanych)
+			- skuteczność
+				steps-maze-mapsize
 
-są to tylko przypadki w których udało się LRA, czyli proste układy
+-- są to tylko przypadki w których udało się LRA, czyli proste układy
 pomiar czasu może być obarczony błędami wynikającymi z narzutu JVM i działania Garbage Collectora
-
-3) w przypadkach gdzie WHCA*1 się udało, wykres 3 algorytmów (serie), z labiryntem:
-	z labirytntem:
-		- w funkcji liczby robotów (15x15) (1-30) * 100 symulacji (3000 sym)
-			- liczba kroków
-			- czas planowania
-				whca1-steps-maze-robots
-		- w funkcji rozmiaru mapy (5 robotów) (3x3 - 40x40) * 100 symulacji
-			- liczba kroków
-			- czas planowania
-				whca1-steps-maze-mapsize
 
 
 \subsection{Metoda pól potencjałowych}
