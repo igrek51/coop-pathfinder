@@ -218,10 +218,21 @@ zamieszczać też tabelki?
 			- średni czas planowania (dla udanych)
 			- skuteczność
 				steps-maze-mapsize
+	pusta mapa:
+		- w funkcji liczby robotów (6x6) (1-30) * 100 symulacji (3000 sym)
+			- średnia liczba kroków (dla udanych)
+			- średni czas planowania (dla udanych)
+			- skuteczność
+				steps-empty-robots
+		- w funkcji rozmiaru mapy (5 robotów) (3x3 - 40x40) * 100 symulacji
+			- średnia liczba kroków (dla udanych)
+			- średni czas planowania (dla udanych)
+			- skuteczność
+				steps-empty-mapsize
 
 -- są to tylko przypadki w których udało się LRA, czyli proste układy
 pomiar czasu może być obarczony błędami wynikającymi z narzutu JVM i działania Garbage Collectora
-
+wyniki zgodne - zwiększęnie liczby robotów zmniejsza skuteczność, utrudnia znalezienie rozwiązania
 
 \subsection{Metoda pól potencjałowych}
 $TODO$

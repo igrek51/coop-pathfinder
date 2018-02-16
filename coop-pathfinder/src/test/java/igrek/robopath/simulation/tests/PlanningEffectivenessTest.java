@@ -43,9 +43,9 @@ public class PlanningEffectivenessTest {
 		int mapH = 15;
 		int robotsCount = 5;
 		
-		for(robotsCount = 16; robotsCount <= 20; robotsCount++) {
+		for(robotsCount = 1; robotsCount <= 30; robotsCount++) {
 			mapH = mapW;
-			int stepsMax = (mapW + mapH) * 3;
+			int stepsMax = (mapW + mapH) * 3*2;
 			// logger.info("Simulation: map " + mapW + "x" + mapH + ", " + robotsCount + " robots, maxSteps=" + stepsMax);
 			int[] successful = new int [4];
 			int[] stepsCount = new int [4];
