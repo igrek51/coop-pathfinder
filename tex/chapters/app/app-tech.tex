@@ -34,6 +34,7 @@ Spring Boot dostarcza do aplikacji symulacyjnej wiele zależności do bibliotek 
 {\it Spring Boot JavaFx Support} jest niewielką biblioteką umożliwiającą użycie Spring Boot w jednym projekcie w połączeniu z JavaFx.
 
 \subsection{jUnit i Test-driven development}
+\label{ch:junit-tdd}
 jUnit jest frameworkiem do wykonywania testów jednostkowych dla programów napisanych w Javie. Testy jednostkowe weryfikują poprawność działania pojedynczych komponentów aplikacji. Uruchamiane są automatycznie podczas budowania projektu.
 
 W projekcie zastosowano podejście TDD (ang. {\it Test-driven development}) dla procesu rozwoju oprogramowania. Dotyczy to w szczególności rozwoju logiki silnika planowania tras dla algorytmu A* i WHCA*. Algorytm WHCA* jest na tyle złożony, że zdecydowano się najpierw napisać szczególne przypadki testowe, które określały jakie dane wyjściowe (zaplanowane trajektorie) są oczekiwane przy zadanych danych wejśiowych. Dopiero po takim pokryciu testami przystąpiono do implementacji algorytmu. Warunkiem poprawności zaimplementowanego algorytmu było, aby wszystkie testy jednostkowe wykonały się prawidłowo. Na tym właśnie podejściu opiera się proces TDD (ang. {\it Test-driven development}), który jest naturalnie wspierany przez framework jUnit.
@@ -72,6 +73,7 @@ Do zapisu dziennika zdarzeń oraz błędów w aplikacji została wykorzystana bi
 
 \section{Struktura aplikacji}
 \subsection{Wzorzec Model-View-Presenter}
+\label{ch:app-mvp}
 Bardzo istotnym aspektem projektowanego oprogramowania okazała się być jego architektura. Przed będącym przedmiotem tego rozdziału symulatorem ruchu robotów zostało postawione wymaganie możliwości wykonania symulacji zarówno w trybie graficznej wizualizacji w czasie rzeczywistym, jak i w trybie przeprowadzenia obszernych testów algorytmów w celu zebrania potrzebnych danych statystycznych.
 
 Oprogramowanie zostało zorganizowane w architekturę warstwową.
