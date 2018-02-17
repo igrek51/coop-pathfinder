@@ -11,39 +11,40 @@ W ramach testów metod planowania tras wykonano pomiary skuteczności oraz wydaj
 Wśród testowanych algorytmów znalazły się:
 \begin{itemize}
 	\item Algorytm A* bez rozwiązywania kolizji (por. \ref{ch:alg-single-astar}),
-	\item LRA* (por. \ref{ch:alg-collision-avoid}),
-	\item WHCA*1 bez dynamicznego przydzielania priotytetów (por. \ref{ch:alg-whca}),
-	\item WHCA*2 z dynamicznym przydziałem priorytetów (por. \ref{ch:alg-priorities-allocation}),
-	\item WHCA*3 z dynamicznym przydziałem priorytetów oraz skalowaniem okna czasowego (por. \ref{ch:alg-priorities-allocation}).
+	\item LRA* - Local-Repair A* (por. \ref{ch:alg-collision-avoid}),
+	\item WHCA*1 - Windowed Hierarchical Cooperative A* ze stałym oknem czasowym, bez dynamicznego przydzielania priotytetów (por. \ref{ch:alg-whca}),
+	\item WHCA*2 - Windowed Hierarchical Cooperative A* z dynamicznym przydziałem priorytetów (por. \ref{ch:alg-priorities-allocation}),
+	\item WHCA*3 - Windowed Hierarchical Cooperative A* z dynamicznym przydziałem priorytetów oraz skalowaniem okna czasowego (por. \ref{ch:alg-priorities-allocation}).
 \end{itemize}
 
 Mierzonymi wskaźnikami były:
 \begin{itemize}
-	\item fakt pomyślnego, bezkolizyjnego doprowadzenia wszystkich robotów do ich celów,
-	\item skuteczność rozumiana jako iloraz liczby udanych planowań do liczby wszystkich symulacji,
-	\item liczba potrzebnych kroków symulacji (czas wykonywania akcji w rzeczywistym środowisku do momentu doprowadzenia wszystkich robotów do celu),
+	\item liczba wystąpień pomyślnego, bezkolizyjnego doprowadzenia wszystkich robotów do ich celów oraz skuteczność rozumiana jako iloraz liczby udanych planowań do liczby wszystkich symulacji,
+	\item liczba kroków symulacji (minimalny czas wykonywania akcji w rzeczywistym środowisku do momentu doprowadzenia wszystkich robotów do celu),
 	\item złożoność obliczeniowa samego planowania (czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
 \end{itemize}
 
 \section{Automatyczne zarządzanie symulacjami}
-Na potrzeby testów, których wyniki zamieszczono w tym rozdziale, przeprowadzono razem $82 800$ automatycznie zarządzanych symulacji. Wykonano to dla różnych metod planowania, w różnych warunkach i na różnych mapach.
+Na potrzeby wszystkich testów, których wyniki zamieszczono rozdziale \ref{ch:tests}, przeprowadzono razem $82 800$ automatycznie zarządzanych symulacji. Wykonano to dla różnych metod planowania, z różnymi parametrami i na różnych mapach oraz układach robotów.
 
-Do zarządzania automatycznie wykonywanymi symulacjami wykorzystano bibliotekę {\it jUnit}. Służy ona w standardowym zastosowaniu do wykonywania automatycznych testów jednostkowych sprawdzających poprawność pojedynczych komponentów aplikacji, jednak wykorzystano ją tutaj z powodu możliwości uruchomienia fragmentów aplikacji w innym trybie. Pozwala to na uruchomienie serii symulacji bez wyświetlania graficznego interfejsu użytkownika, które zarządzane są osobnymi fragmentami kodu. Jednocześnie nie powoduje to jakiejkolwiek ingerencji w kod źródłowy głównej aplikacji graficznego sumulatora.
-Takie podejście możliwe jest również dzięki zastosowaniu warstwowej architektury MVP (por. \ref{ch:app-mvp}).
+Do automatycznego wykonywania symulacji wykorzystano bibliotekę {\it jUnit}. Chociaż w standardowym zastosowaniu służy ona do wykonywania automatycznych testów jednostkowych sprawdzających poprawność pojedynczych komponentów aplikacji, to jednak wykorzystano ją tutaj ze względu na możliwość uruchomienia istniejących fragmentów aplikacji w innym trybie.
+Pozwala to na wykonanie serii symulacji bez wyświetlania graficznego interfejsu użytkownika.
+Jednocześnie nie powoduje to jakiejkolwiek ingerencji w kod źródłowy głównej aplikacji graficznego sumulatora.
+Takie podejście możliwe jest również dzięki zastosowaniu warstwowej architektury MVP w aplikacji (por. \ref{ch:app-mvp}).
 
-Przykładem takiego automatycznego zarządzania symulacjami jest fragment testu utworzonego na potrzeby rozdziału \ref{ch:tests-function-robots}.
-W pętli dla kolejnych wartości liczby robotów (od 1 do 30) generowana jest losowa mapę z labiryntem o ustalonej wielkości.
+Przykładem automatycznego zarządzania symulacjami jest fragment aplikacji utworzony na potrzeby testów z rozdziału \ref{ch:tests-function-robots}.
+W pętli dla kolejnych wartości liczby robotów (od 1 do 30) generowana jest losowa mapa z labiryntem o ustalonej wielkości.
 Nastepnie na mapie umieszczane są roboty w losowych polach i przydzielane są im losowe punkty docelowe.
-Stanowi to warunki początkowe dla wykonywanej symulacji. Kolejne kroki symulacji wykonywane są sekwencyjnie w sposób ciągły, bez ograniczeń czasowych (bez oczekiwania na kolejne cykle zegarowe, jak w przypadku symulacji z graficznym interfejsem użytkownika).
+Stanowi to warunki początkowe dla wykonywanej symulacji. Kolejne kroki symulacji wykonywane są sekwencyjnie, w sposób ciągły, bez ograniczeń czasowych (bez oczekiwania na kolejne cykle zegarowe, jak w przypadku symulacji z graficznym interfejsem użytkownika).
 Następnie odtwarzane są te same warunki początkowe a symulacja wykonywana jest ponownie, tym razem z wykorzystaniem innych metod planowania.
 Wszystko to jest powtarzane 1000 razy (dla różnych losowych środowisk) a ze zmierzonych wskaźników obliczana jest wartość średnia.
 Liczba sytuacji, w których bezkolizyjne doprowadzenie wszystkich robotów do celu powiodło się, zapisywana jest dla każdej metody planowania osobno.
 Wyniki przebiegu symulacji, wyjątkowe zdarzenia oraz obliczone statystyczne wskaźniki wyświetlane są w konsoli a także zapisywane są do pliku dziennika zdarzeń.
 
-Wykonywane symulacje ograniczone są maksymalną liczbą kroków, po przekroczeniu której symulacja jest przerywana i stwierdzane jest niepowodzenie w odnalezieniu bezkolizyjnych tras do celów dla wszystkich robotów.
+Wykonywane symulacje ograniczone są maksymalną liczbą kroków, po przekroczeniu której symulacja jest przerywana i stwierdzane jest niepowodzenie w odnalezieniu bezkolizyjnych tras dla wszystkich robotów.
 Zatem sytuacja, w której tylko jeden robot nie znalazł bezkolizyjnej ścieżki do punktu docelowego, jest traktowana tak samo (jako brak rozwiązania), jak gdy żaden z robotów nie dotrze do swojego indywidualnego celu.
-Ograniczenie to jest konieczne ze względu na fakt, że w niektórych algorytmach planowania tras (np. LRA*) mogą wystąpić nieskończone cykle zaplanowanych akcji.
-Wartość maksymalnej liczby kroków $stepsLimit$ w symulacji została przyjęta arbitralnie na podstawie obserwacji liczby kroków potrzebnych do pomyślnego doprowadzenia robotów do celów przy zmiennej liczbie robotów oraz rozmiarze mapy:
+Ograniczenie liczby kroków symulacji jest konieczne ze względu na fakt, że w niektórych algorytmach wyznaczania tras (np. LRA*) mogą wystąpić nieskończone cykle zaplanowanych akcji.
+Wartość maksymalnej liczby kroków $stepsLimit$ w symulacji została przyjęta arbitralnie na podstawie obserwacji liczby kroków potrzebnych do pomyślnego doprowadzenia robotów do celów przy zmiennej liczbie robotów oraz rozmiarze mapy, wynosi ona:
 
 \begin{gather}
  	stepsLimit = (w + h) * r
@@ -51,16 +52,16 @@ Wartość maksymalnej liczby kroków $stepsLimit$ w symulacji została przyjęta
 \end{gather}
  gdzie:
 
- $w$ - szerokość mapy (w liczbie pól)
+ $w$ - szerokość mapy (wyrażona w liczbie pól)
 
- $h$ - wysokość mapy (w liczbie pól)
+ $h$ - wysokość mapy (wyrażona w liczbie pól)
 
  $r$ - liczba robotów na mapie
 
-Warto dodać, że testowane środowiska są bardzo trudnymi warunkami dla metod planowania tras, dlatego skuteczność badanych algorytmów może wydawać się względnie niska, podczas gdy uzycie tych samych metod na innych mapach może skutkować dużo wyższą skutecznością.
+Warto dodać, że testowane środowiska są bardzo trudnymi warunkami dla metod planowania tras, dlatego skuteczność badanych algorytmów może wydawać się względnie niska, podczas gdy użycie tych samych metod na innych mapach mogłoby skutkować dużo wyższą skutecznością.
 
 \section{Środowiska testowe}
-Testy zostały przeprowadzone na czterech typach losowych środowisk, którym dla uproszczenia zapisu nadano nazwy:
+Część testów została przeprowadzona na czterech typach losowych środowisk, którym dla uproszczenia zapisu nadano nazwy:
 \begin{itemize}
 	\item {\bf M-15x15-5R} - mapa rozmiaru $15 \times 15$ z wygenerowanym labiryntem, 5 robotów na mapie (por. rys. \ref{fig:test-env-15-15-5}),
 	\item {\bf M-15x15-10R} - mapa rozmiaru $15 \times 15$ z wygenerowanym labiryntem, 10 robotów na mapie (por. rys. \ref{fig:test-env-15-15-10}),
@@ -263,7 +264,7 @@ E-15x15-40R & 1000 & 76,7\% & 99,5\%  & 100\%  & 100\%  \\ \hline
 \end{table}
 
 Wyniki potwierdzają oczekiwaną nierówność zachodzącą pomiedzy średnimi skutecznościami poszczególnych metod dla każdego z badanych typów środowisk:
-skuteczność LRA* $\le$ skuteczność WHCA*1 $\le$ skuteczność WHCA*2 $\le$ skuteczność WHCA*3
+skuteczność LRA* $\le$ skuteczność WHCA*1 $\le$ skuteczność WHCA*2 $\le$ skuteczność WHCA*3.
 Warto dodać, że w pewnych sytuacjach algorytm LRA* pomyślnie doprowadził wszystkie roboty do ich celów, podczas gdy w tych samych warunkach metody WHCA*1 i WHCA*2 nie znalazły rozwiązania.
 
 \subsection{Wpływ rozmiaru mapy} % 30400
@@ -273,73 +274,197 @@ Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzeb
 Symulacje przeprowadzano na kwadratowych mapach (rozmiar mapy oznacza jednocześnie jej wysokość i szerokość).
 Rozmiar mapy zwiększano od $3 \times 3$ do $40 \times 40$, generując 100 losowych układów dla każdego rozmiaru mapy, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
 Wszystko powtórzono zarówno dla map z wygenerowanym labiryntem, jak i dla pustych map bez umieszczonych przeszkód.
-Na wykresach w tabeli 
+W ramach tych testów przeprowadzono razem $30 400$ symulacji.
+Wyniki przedstawiono w tabelach \ref{tab:test-steps-maze-mapsize}, \ref{tab:test-steps-empty-mapsize} oraz na wykresach \ref{fig:test-steps-maze-mapsize-eff}, \ref{fig:test-steps-maze-mapsize-steps}, \ref{fig:test-steps-maze-mapsize-calctime}, \ref{fig:test-steps-empty-mapsize-eff}, \ref{fig:test-steps-empty-mapsize-steps}, \ref{fig:test-steps-empty-mapsize-calctime}.
 
-$TODO$ zrobić wykresy i tabelki
+$TODO$ zrobić tabelki (screeny) i wykresy
+
 \begin{table}
-\caption{LRA*, WHCA*, WHCA* + dynamicznymi priorytetami, WHCA* + priorytety + skalowanie okno czasowe}
-\label{tab:test-lra-whca-whca2-effectiveness}
+\caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, z wygenerowanym labiryntem}
+\label{tab:test-steps-maze-mapsize}
 \centering
-\begin{tabular}{| l | r | r | r | r | r |}
+\begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
 \hline
-{\bf \shortstack{Typ\\środowiska}} &
-{\bf \shortstack{Wylosowane\\mapy}} &
-{\bf \shortstack{Skuteczność\\WHCA*3}} \\ \hline
-M-15x15-5R  & 1000 & 22,5\% & 26,3\%  & 54,6\% & 87\%   \\ \hline
+{\bf \shortstack{Rozmiar\\mapy}} &
+{\bf \shortstack{Skuteczność\\LRA*}} &
+{\bf \shortstack{Skuteczność\\WHCA*1}} &
+{\bf \shortstack{Skuteczność\\WHCA*2}} &
+{\bf \shortstack{Skuteczność\\WHCA*3}} &
+{\bf \shortstack{Liczba kroków\\LRA*}} &
+{\bf \shortstack{Liczba kroków\\WHCA*1}} &
+{\bf \shortstack{Liczba kroków\\WHCA*2}} &
+{\bf \shortstack{Liczba kroków\\WHCA*3}} &
+{\bf \shortstack{Czas planowania\\LRA*}} &
+{\bf \shortstack{Czas planowania\\WHCA*1}} &
+{\bf \shortstack{Czas planowania\\WHCA*2}} &
+{\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
+1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+\end{tabular}
+\end{table}
+\begin{table}
+\caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, bez umieszczonych przeszkód}
+\label{tab:test-steps-empty-mapsize}
+\centering
+\begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
+\hline
+{\bf \shortstack{Rozmiar\\mapy}} &
+{\bf \shortstack{Skuteczność\\LRA*}} &
+{\bf \shortstack{Skuteczność\\WHCA*1}} &
+{\bf \shortstack{Skuteczność\\WHCA*2}} &
+{\bf \shortstack{Skuteczność\\WHCA*3}} &
+{\bf \shortstack{Liczba kroków\\LRA*}} &
+{\bf \shortstack{Liczba kroków\\WHCA*1}} &
+{\bf \shortstack{Liczba kroków\\WHCA*2}} &
+{\bf \shortstack{Liczba kroków\\WHCA*3}} &
+{\bf \shortstack{Czas planowania\\LRA*}} &
+{\bf \shortstack{Czas planowania\\WHCA*1}} &
+{\bf \shortstack{Czas planowania\\WHCA*2}} &
+{\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
+1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-mapsize}
-	\caption{Wykres skuteczności metody WHCA* w zależności od rozmiaru okna czasowego dla środowiska typu M-15x15-5R}
-	\label{fig:test-steps-maze-mapsize}
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-mapsize-eff}
+	\caption{Wykres skuteczności metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, z wygenerowanym labiryntem}
+	\label{fig:test-steps-maze-mapsize-eff}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-mapsize-steps}
+	\caption{Wykres średniej liczby kroków symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, z wygenerowanym labiryntem}
+	\label{fig:test-steps-maze-mapsize-steps}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-mapsize-calctime}
+	\caption{Wykres czasu planowania dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, z wygenerowanym labiryntem}
+	\label{fig:test-steps-maze-mapsize-calctime}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-mapsize-eff}
+	\caption{Wykres skuteczności metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, bez umieszczonych przeszkód}
+	\label{fig:test-steps-empty-mapsize-eff}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-mapsize-steps}
+	\caption{Wykres średniej liczby kroków symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, bez umieszczonych przeszkód}
+	\label{fig:test-steps-empty-mapsize-steps}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-mapsize-calctime}
+	\caption{Wykres czasu planowania dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, bez umieszczonych przeszkód}
+	\label{fig:test-steps-empty-mapsize-calctime}
 \end{figure}
 
-dla wszystkich, wykres 4 algorytmów (serie):
-	z labirytntem:
-		- w funkcji rozmiaru mapy (5 robotów) (3x3 - 40x40) * 100 symulacji % 3800 * 4 = 15200
-			- średnia liczba kroków (dla udanych)
-			- średni czas planowania (dla udanych)
-			- skuteczność
-				steps-maze-mapsize
-	pusta mapa:
-		- w funkcji rozmiaru mapy (5 robotów) (3x3 - 40x40) * 100 symulacji % 3800 * 4 = 15200
-			- średnia liczba kroków (dla udanych)
-			- średni czas planowania (dla udanych)
-			- skuteczność
-				steps-empty-mapsize
 
 \subsection{Wpływ liczby robotów} % 24000
 \label{ch:tests-function-robots}
-dla wszystkich, wykres 4 algorytmów (serie):
-	z labirytntem:
-		- w funkcji liczby robotów (15x15) (1-30) * 100 symulacji (3000 sym) % 3000 * 4 = 12000
-			- średnia liczba kroków (dla udanych)
-			- średni czas planowania (dla udanych)
-			- skuteczność
-				steps-maze-robots
-	pusta mapa:
-		- w funkcji liczby robotów (6x6) (1-30) * 100 symulacji (3000 sym) % 3000 * 4 = 12000
-			- średnia liczba kroków (dla udanych)
-			- średni czas planowania (dla udanych)
-			- skuteczność
-				steps-empty-robots
+Dla stałego rozmiaru mapy przeprowadzono testy wpływu liczby robotów na skuteczność metod LRA*, WHCA*1, WHCA*2 oraz WHCA*3.
+Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzebną do doprowadzenia wszystkich robotów do celów (dla symulacji zakończonych powodzeniem) oraz złożoność obliczeniową samego planowania (średni czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
+Liczbę robotów zwiększano od $1$ do $30$, generując 100 losowych układów dla każdej liczby robotow, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
+Wszystko powtórzono zarówno dla map z wygenerowanym labiryntem o rozmiarze $15 \times 15$, jak i dla pustych map bez umieszczonych przeszkód o rozmiarze $6 \times 6$.
+W ramach tych testów przeprowadzono razem $24 000$ symulacji.
+Wyniki przedstawiono w tabelach \ref{tab:test-steps-maze-robots}, \ref{tab:test-steps-empty-robots} oraz na wykresach \ref{fig:test-steps-maze-robots-eff}, \ref{fig:test-steps-maze-robots-steps}, \ref{fig:test-steps-maze-robots-calctime}, \ref{fig:test-steps-empty-robots-eff}, \ref{fig:test-steps-empty-robots-steps}, \ref{fig:test-steps-empty-robots-calctime}.
 
-$TODO$
-tabelki + wykresy
-zachowanie nierówności: WHCA*1 <= WHCA*2 <= WHCA*3
-przy wyższych wartościach robotów się zlewają, bo początkowe okno czasowe jest większe
-na pustej mapie WHCA*23 dają radę, ale ilość kroków jest duża
-wyniki zgodne - zwiększęnie liczby robotów zmniejsza skuteczność, utrudnia znalezienie rozwiązania
-ze względnu na wybraną technologię, pomiar czasu może być obarczony błędami wynikającymi z narzutu JVM i działania Garbage Collectora, na który nie ma wpływu programista
+$TODO$ zrobić tabelki (screeny) i wykresy
+
+\begin{table}
+\caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, z wygenerowanym labiryntem}
+\label{tab:test-steps-maze-robots}
+\centering
+\begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
+\hline
+{\bf \shortstack{Liczba\\robotów}} &
+{\bf \shortstack{Skuteczność\\LRA*}} &
+{\bf \shortstack{Skuteczność\\WHCA*1}} &
+{\bf \shortstack{Skuteczność\\WHCA*2}} &
+{\bf \shortstack{Skuteczność\\WHCA*3}} &
+{\bf \shortstack{Liczba kroków\\LRA*}} &
+{\bf \shortstack{Liczba kroków\\WHCA*1}} &
+{\bf \shortstack{Liczba kroków\\WHCA*2}} &
+{\bf \shortstack{Liczba kroków\\WHCA*3}} &
+{\bf \shortstack{Czas planowania\\LRA*}} &
+{\bf \shortstack{Czas planowania\\WHCA*1}} &
+{\bf \shortstack{Czas planowania\\WHCA*2}} &
+{\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
+1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+\end{tabular}
+\end{table}
+\begin{table}
+\caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, bez umieszczonych przeszkód}
+\label{tab:test-steps-empty-robots}
+\centering
+\begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
+\hline
+{\bf \shortstack{Liczba\\robotów}} &
+{\bf \shortstack{Skuteczność\\LRA*}} &
+{\bf \shortstack{Skuteczność\\WHCA*1}} &
+{\bf \shortstack{Skuteczność\\WHCA*2}} &
+{\bf \shortstack{Skuteczność\\WHCA*3}} &
+{\bf \shortstack{Liczba kroków\\LRA*}} &
+{\bf \shortstack{Liczba kroków\\WHCA*1}} &
+{\bf \shortstack{Liczba kroków\\WHCA*2}} &
+{\bf \shortstack{Liczba kroków\\WHCA*3}} &
+{\bf \shortstack{Czas planowania\\LRA*}} &
+{\bf \shortstack{Czas planowania\\WHCA*1}} &
+{\bf \shortstack{Czas planowania\\WHCA*2}} &
+{\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
+1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-robots-eff}
+	\caption{Wykres skuteczności metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, z wygenerowanym labiryntem}
+	\label{fig:test-steps-maze-robots-eff}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-robots-steps}
+	\caption{Wykres średniej liczby kroków symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, z wygenerowanym labiryntem}
+	\label{fig:test-steps-maze-robots-steps}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-robots-calctime}
+	\caption{Wykres czasu planowania dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, z wygenerowanym labiryntem}
+	\label{fig:test-steps-maze-robots-calctime}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-robots-eff}
+	\caption{Wykres skuteczności metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, bez umieszczonych przeszkód}
+	\label{fig:test-steps-empty-robots-eff}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-robots-steps}
+	\caption{Wykres średniej liczby kroków symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, bez umieszczonych przeszkód}
+	\label{fig:test-steps-empty-robots-steps}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-robots-calctime}
+	\caption{Wykres czasu planowania dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, bez umieszczonych przeszkód}
+	\label{fig:test-steps-empty-robots-calctime}
+\end{figure}
+
+Wyniki potwierdzają oczekiwaną nierówność zachodzącą pomiedzy średnimi skutecznościami poszczególnych metod dla każdego z badanych typów środowisk:
+skuteczność WHCA*1 $\le$ skuteczność WHCA*2 $\le$ skuteczność WHCA*3.
+Zgodny z oczekiwaniami jest także oczywisty fakt, że zwiększenie liczby robotów utrudnia znalezienie rozwiązania, zmniejszając skuteczność metod.
+Na pustych mapach bez przeszkód metody WHCA*2 i WHCA*3 mają wysoką skuteczność, ale ilość kroków symulacji potrzebnych do znalezienia rozwiązania jest większa niż dla metody WHCA*3.
 
 \subsection{Metoda pól potencjałowych}
-potential field - nawet nie warto testować, raczej jako ciekawostka, nie potrafi doprowadzić do celu nawet jednego robota, screen z minimum lokalnego - studni potencjału
-$TODO$
-
-\section{Charakterystyczne przypadki}
-$TODO$ screeny ciekawych przypadków
+Metoda pól potencjałowych zaimplementowana w aplikacji okazała się mieć bardzo niską skuteczność w doprowadzeniu do celu nawet jednego robota.
+Tym bardziej nie nadaje się do rozwiązania skomplikowanego zagadnienia znalezienia bezkolizyjnych tras dla wielu robotów.
+Niska skuteczność metody wynika także z charakteru wygenerowanych map, w których robot bardzo często napotyka lokalne minimum, z którego nie potrafi się wydostać.
+Przykład uwięzienia robota w takiej "studni potencjału" został przedstawiony na rysunku \ref{fig:test-field-potential-hole}.
 
 \begin{figure}
 	\centering
@@ -347,36 +472,6 @@ $TODO$ screeny ciekawych przypadków
 	\caption{Robot uwięziony w studni potencjału. Zerowa siła wypadkowa nie pozwala mu dotrzeć do celu.}
 	\label{fig:test-field-potential-hole}
 \end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\columnwidth]{img/robopath/lra-bigmap}
-	\caption{Metoda LRA*: duża mapa z dużą liczbą robotów}
-	\label{fig:test-lra-bigmap}
-\end{figure}
-
-% \begin{figure}
-% 	\centering
-% 	\includegraphics[width=0.8\columnwidth]{img/robopath/lra-cycle}
-% 	\caption{Metoda LRA*: 2 roboty w cyklu akcji}
-% 	\label{fig:test-lra-cycle}
-% \end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\columnwidth]{img/robopath/lra-lot-robots}
-	\caption{Metoda LRA*: dużo robotów, mała mapa}
-	\label{fig:test-lra-lot-robots}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\columnwidth]{img/robopath/puzzle-15}
-	\caption{Metoda WHCA*: puzzle 15}
-	\label{fig:test-puzzle-15}
-\end{figure}
-
-przykład chowania się robotów (przepuszczania się VIPów) - z zaznaczeniem i opisem tras
 
 \section{Dyskusja wyników}
 Przeprowadzenie eksperymentów pozwalających wyciągnąć z ich rezultatów niepodważalne wnioski o metodach planowania jest w tym przypadku utrudnione.
@@ -388,6 +483,7 @@ Warto zaznaczyć, że nie dysponujemy kompletną metodą planowania tras, która
 Niestety brak takiego źródła referencyjnego nie pozwala ocenić, czy testowana metoda planowania nie uzyskała rozwiązania z powodu swoich ograniczeń, czy też z powodu tego, że wylosowany układ przeszkód i robotów jest sam w sobie niemożliwy do rozwiązania.
 Możliwe jest natomiast porównanie rezultatów różnych metod planowania w tych samych warunkach początkowych, co może jednak dostarczyć pewnych wniosków.
 
+ze względnu na wybraną technologię, pomiar czasu obliczeń może być obarczony błędami wynikającymi z narzutu JVM i działania Garbage Collectora, na który nie ma wpływu programista
 
 LRA: wyszło całkiem nieźle w przypadku, gdy do celu prowadzi wiele alternatywnych ścieżek i można ominąć wąskie gardło
 potwierdzenie oczekiwań (poprawności) - nigdy nie było tak, żeby LRA był lepszy
