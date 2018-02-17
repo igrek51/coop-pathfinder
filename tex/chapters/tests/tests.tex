@@ -19,7 +19,7 @@ Wśród testowanych algorytmów znalazły się:
 
 Mierzonymi wskaźnikami były:
 \begin{itemize}
-	\item fakt pomyślnego doprowadzenia wszystkich robotów do ich celów wzdłuż bezkolizyjnych tras,
+	\item fakt pomyślnego, bezkolizyjnego doprowadzenia wszystkich robotów do ich celów,
 	\item skuteczność rozumiana jako iloraz liczby udanych planowań do liczby wszystkich symulacji,
 	\item liczba potrzebnych kroków symulacji (czas wykonywania akcji w rzeczywistym środowisku do momentu doprowadzenia wszystkich robotów do celu),
 	\item złożoność obliczeniowa samego planowania (czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
@@ -29,26 +29,24 @@ Na potrzeby testów, których wyniki zamieszczono w tym rozdziale, sumarycznie p
 Do zarządzania automatycznie wykonywanymi symulacjami wykorzystano bibliotekę {\it jUnit}. Służy ona w standardowym zastosowaniu do wykonywania automatycznych testów jednostkowych sprawdzających poprawność pojedynczych komponentów aplikacji, jednak wykorzystano ją tutaj z powodu możliwości uruchomienia fragmentów aplikacji w innym trybie. Pozwala to na uruchomienie serii symulacji bez wyświetlania graficznego interfejsu użytkownika, które zarządzane są osobnymi fragmentami kodu. Jednocześnie nie powoduje to jakiejkolwiek ingerencji w kod źródłowy głównej aplikacji graficznego sumulatora.
 Takie podejście możliwe jest również dzięki zastosowaniu warstwowej architektury MVP (por. \ref{ch:app-mvp}).
 
-Przykładem takiego automatycznego zarządzania symulacjami jest fragment kodu, który w pętli dla kolejnych wartości liczby robotów (od 1 do 30) generuje losową mapę z labiryntem o ustalonej wielkości. Nastepnie na mapie umieszczane są roboty w losowych polach i przydzielane są im losowe punkty docelowe. Stanowi to warunki początkowe dla wykonywanej symulacji. Kolejne kroki symulacji wykonywane są sekwencyjnie w sposób ciągły, bez ograniczeń czasowych (bez oczekiwania na kolejne cykle zegarowe, jak w przypadku symulacji z graficznym interfejsem użytkownika). Następnie odtwarzane są te same warunki początkowe a symulacja wykonywana jest ponownie, tym razem z wykorzystaniem innych metody planowania. Wszystko to jest powtarzane 1000 razy (dla różnych losowych środowisk) a ze zmierzonych wskaźników obliczana jest wartość średnia. Liczba sytuacji, w których bezkolizyjne doprowadzenie wszystkich robotów do celu powiodło się, zapisywana jest dla każdej metody planowania osobno.
+Przykładem takiego automatycznego zarządzania symulacjami jest fragment testu utworzonego na potrzeby rozdziału \ref{ch:tests-function-maps-robots}. W pętli dla kolejnych wartości liczby robotów (od 1 do 30) generowana jest losowa mapę z labiryntem o ustalonej wielkości. Nastepnie na mapie umieszczane są roboty w losowych polach i przydzielane są im losowe punkty docelowe. Stanowi to warunki początkowe dla wykonywanej symulacji. Kolejne kroki symulacji wykonywane są sekwencyjnie w sposób ciągły, bez ograniczeń czasowych (bez oczekiwania na kolejne cykle zegarowe, jak w przypadku symulacji z graficznym interfejsem użytkownika). Następnie odtwarzane są te same warunki początkowe a symulacja wykonywana jest ponownie, tym razem z wykorzystaniem innych metod planowania. Wszystko to jest powtarzane 1000 razy (dla różnych losowych środowisk) a ze zmierzonych wskaźników obliczana jest wartość średnia. Liczba sytuacji, w których bezkolizyjne doprowadzenie wszystkich robotów do celu powiodło się, zapisywana jest dla każdej metody planowania osobno.
 Wyniki przebiegu symulacji, wyjątkowe zdarzenia oraz obliczone statystyczne wskaźniki wyświetlane są w konsoli a także zapisywane są do pliku dziennika zdarzeń.
 
-
+Przeprowadzenie eksperymentów pozwalających wyciągnąć z ich rezultatów niepodważalne wnioski o metodach planowania jest w tym przypadku utrudnione.
+Należy pamiętać, że 
 $TODO$
-obszerne testy powodzenia (skuteczności i wydajnosci), porównanie metod przy tych samych warunkach początkowych
-testy ograniczać trzeba liczbą kroków symulacji, bo LRA może trwać wiecznie
-po przekroczeniu liczby kroków limitu - uznanie za nieudaną
 przeprowadzenie testów jest trudne i wymaga losowania środowisk i warunków i wyciągania statystyki, brak porównania do absolutu, ale można porównać różne metody w tych samych wylosowanych mapach - te same warunki początkowe
+
+testy ograniczać trzeba liczbą kroków symulacji, bo LRA może trwać wiecznie, po przekroczeniu liczby kroków limitu - uznanie za nieudaną
 jak whca*3 nie zadziała, nie wiadomo, czy w ogole nie ma rozwiazania
 ustalenie maksymalnego kroku czasowego: (w + h) * 3 (robots) - arbitralnie na podstawie obserwacji liczby potrzebnych kroków
+
 sytuacja, w której tylko jeden robot nie znalazł rozwiązania jest traktowana tak samo jako brak rozwiązania, jak gdy żaden nie znajdzie
 testy w bardzo trudnych środowiskach, dlatego niska skuteczność
 próba 1000 i wyciąganie średniej, bo wszystko jest losowe i zależy od specyfiki układu, dlatego jedynym sensownym porównaniem jest porównywanie w tych samych warunkach
 
 $TODO$ nazwa whca123 w pozostałych rozdziałach
 $TODO$ sumaryczna liczba przeprowadzonych symulacji w każdym rozdziale
-
-
-
 
 
 \section{Środowiska testowe}
@@ -205,6 +203,7 @@ $TODO$ zmienić na /1000  i na procenty
 czasem lra był lepszy od whca1 i whca2
 
 \subsection{porównanie parametrów w funkcji rozmiaru mapy i liczby robotów} % 54400
+\label{ch:tests-function-maps-robots}
 $TODO$ zmergować z 2) - pokrywa sie
 1) dla wszystkich, wykres skuteczności 4 algorytmów (serie):
 	z labirytntem:
