@@ -54,10 +54,10 @@ Nad robotem, w jego aktualnym położeniu wyświetlany jest jego numer (identyfi
 
 
 \subsection{Windowed Hierarchical Cooperative A*}
-Pod ostatnią zakładką "WHCA*" w oknie aplikacji dostępna jest wizualizacja metody kooperacyjnego planowania tras dla wielu robotów z planowaniem odbywającym się w ograniczonym oknie czasowym.
+Pod ostatnią zakładką "WHCA*" w oknie aplikacji dostępna jest wizualizacja metody kooperacyjnego planowania tras dla wielu robotów z wykorzystaniem wariantu metody WHCA*3 z dynamicznym przydziałem priorytetów oraz skalowaniem okna czasowego (por. \ref{ch:alg-priorities-allocation}).
 
 Interfejs użytkownika jest praktycznie taki sam, jak w przypadku opisanej metody LRA* (por. \ref{ch:app-lra}).
-Różni się obecnością dodatkowej sekcji "WHCA*" na panelu konfiguracji z polem "Time window", które pozwala na zmianę wielkości okna czasowego dla algorytmu WHCA*. W wyniku dynamicznego przydzielania priorytetów wielkość ta może zostać zwiększana automatycznie podczas symulacji.
+Różni się obecnością dodatkowej sekcji "WHCA*" na panelu konfiguracji z polem "Time window", które pozwala na zmianę początkowej wielkości okna czasowego dla algorytmu WHCA*. W wyniku dynamicznego przydzielania priorytetów wielkość ta może zostać zwiększana automatycznie podczas symulacji.
 Dodatkowy przycisk "Restore positions" pozwala na cofnięcie stanu robotów do momentu, tuż przed rozpoczęciem symulacji (zaraz po przydzieleniu punktów docelowych). Pozwala to na ponowną obserwację przebiegu symulacji dzięki przywróceniu położenia i stanu agentów.
 
 Nad robotem, w jego aktualnym położeniu wyświetlany jest jego numer (identyfikator) oraz priorytet (oddzielony kropką). Priorytet może być zmienny w trakcie symulacji (w przeciwieństwie do identyfikatora). Początkowo robot zawsze ma priorytet równy identyfikatorowi. Większa wartość priorytetu względem pozostałych oznacza pierwszeństwo uwzględniane podczas planowania tras.

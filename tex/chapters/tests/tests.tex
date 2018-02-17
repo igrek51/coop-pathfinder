@@ -100,6 +100,7 @@ Każdy z robotów otrzymuje losowe położenie początkowe. Jest to zawsze pole,
 Punkty docelowe także są losowane. Mogą to być pola, na których obecnie znajduje się jakiś robot, natomiast nie może to być punkt docelowy należący do innego robota, gdyż w przeciwnym wypadku uniemożliwiłoby to znalezienie rozwiązania, niezależnie od metody planowania.
 
 \section{Wyniki testów}
+\label{ch:test-results}
 \subsection{Częstotliwość występowania potencjalnych kolizji} % 4000
 Na początku przeprowadzamy testy częstotliwości występowania potencjalnych kolizji w badanych środowiskach, aby ocenić znaczenie tego problemu.
 Dla każdego robota wykonujemy planowanie trasy za pomocą prostego algorytmu A*. Następnie przeprowadzamy symulację ruchu. W momencie wykrycia kolizji robotów zatrzymujemy symulację i zliczamy ilość takich sytuacji. W ten sposób mierzymy, jak często występują kolizję miedzy robotami, jeśli planowanie odbywa się za pomocą algorytmu wyznaczania najkrótszych tras (bez unikania kolizji).
@@ -462,7 +463,7 @@ Na pustych mapach bez przeszkód metody WHCA*2 i WHCA*3 mają wysoką skuteczno�
 
 \subsection{Metoda pól potencjałowych}
 Metoda pól potencjałowych zaimplementowana w aplikacji okazała się mieć bardzo niską skuteczność w doprowadzeniu do celu nawet jednego robota.
-Tym bardziej nie nadaje się do rozwiązania skomplikowanego zagadnienia znalezienia bezkolizyjnych tras dla wielu robotów.
+Tym bardziej nie nadaje się do skutecznego rozwiązania skomplikowanego zagadnienia znalezienia bezkolizyjnych tras dla wielu robotów.
 Niska skuteczność metody wynika także z charakteru wygenerowanych map, w których robot bardzo często napotyka lokalne minimum, z którego nie potrafi się wydostać.
 Przykład uwięzienia robota w takiej "studni potencjału" został przedstawiony na rysunku \ref{fig:test-field-potential-hole}.
 
@@ -474,25 +475,25 @@ Przykład uwięzienia robota w takiej "studni potencjału" został przedstawiony
 \end{figure}
 
 \section{Dyskusja wyników}
-Przeprowadzenie eksperymentów pozwalających wyciągnąć z ich rezultatów niepodważalne wnioski o metodach planowania jest w tym przypadku utrudnione.
-Należy pamiętać, że porównanie wyników algorytmów możliwe jest tutaj jedynie w kontekście indywidualnej konfiguracji przeszkód i robotów na mapie.
-Nie uzyskujemy ogólnego stwierdzenia, które byłoby prawdziwe dla wszystkich możliwych układów robotów.
-Dlatego testy przeprowadzane są w dużej ilości, w losowych środowiskach, następnie posługujemy się statystyką w celu generalizacji uzyskanych rezultatów.
+Przeprowadzenie eksperymentów, które pozwoliłyby uzyskać niepodważalne wnioski, jest bardzo trudnym zadaniem w przypadku metod planowania tras.
+Należy pamiętać, że porównanie wyników badanych algorytmów możliwe jest jedynie w kontekście indywidualnej, pojedynczej konfiguracji przeszkód i robotów na mapie.
+Zatem utrudnione jest otrzymanie ogólnego wniosku, który byłby prawdziwy dla wszystkich możliwych układów robotów.
+Z tego powodu testy zostały przeprowadzone w dużej ilości, w losowych środowiskach, a następnie posłużono się statystyką w celu generalizacji uzyskanych rezultatów.
 
-Warto zaznaczyć, że nie dysponujemy kompletną metodą planowania tras, która byłaby w stanie znaleźć zawsze optymalne rozwiązanie lub obiektywnie stwierdzić, że żadne rozwiązanie nie istnieje.
-Niestety brak takiego źródła referencyjnego nie pozwala ocenić, czy testowana metoda planowania nie uzyskała rozwiązania z powodu swoich ograniczeń, czy też z powodu tego, że wylosowany układ przeszkód i robotów jest sam w sobie niemożliwy do rozwiązania.
-Możliwe jest natomiast porównanie rezultatów różnych metod planowania w tych samych warunkach początkowych, co może jednak dostarczyć pewnych wniosków.
+Warto zaznaczyć, że nie dysponujemy zupełną metodą planowania tras, która byłaby w stanie znaleźć zawsze optymalne rozwiązanie lub obiektywnie stwierdzić, że żadne rozwiązanie nie istnieje.
+Niestety brak takiego źródła referencyjnego nie pozwala w pełni ocenić skuteczności badanych metod. W szczególności nie można stwierdzić, czy testowana metoda planowania nie uzyskała rozwiązania z powodu własnych ograniczeń, czy też z powodu tego, że wylosowany układ przeszkód i robotów jest sam w sobie niemożliwy do rozwiązania.
+Możliwe natomiast jest porównanie rezultatów różnych metod planowania w tych samych warunkach początkowych, co może dostarczyć pewnych wniosków.
 
-ze względnu na wybraną technologię, pomiar czasu obliczeń może być obarczony błędami wynikającymi z narzutu JVM i działania Garbage Collectora, na który nie ma wpływu programista
+Należy pamiętać, że ze względnu na wybraną technologię realizacji (Java), pomiar czasu obliczeń mógł być obarczony pewnymi błędami wynikającymi z narzutu wirtualnej maszyny JVM oraz działania mechanizmu Garbage Collector, na który nie ma wpływu programista, a który może wystąpić w dowolnym momencie działania aplikacji.
+
+Wyniki testów potwierdziły oczekiwania w stosunku do skuteczności porównywanych metod.
+Najwyższą skuteczność w planowaniu bezkolizyjnych tras dla wielu robotów uzyskała własna metoda WHCA*3.
+Brak zastosowania skalowania okna czasowego skutkował niższą skutrecznością metody WHCA*2.
+$TODO$ bez dyhnamicznego przydziału priorytetów - gorzej WHCA*1
+$TODO$ najgorzej lra
 
 LRA: wyszło całkiem nieźle w przypadku, gdy do celu prowadzi wiele alternatywnych ścieżek i można ominąć wąskie gardło
 potwierdzenie oczekiwań (poprawności) - nigdy nie było tak, żeby LRA był lepszy
 
-wolno działa WHCA* przy dużych mapach / oknach czasu / robotach. Dałoby się zoptymalizować (RRA)
-autorski WHCA* działa dobrze nawet przy rozwiązywaniu dużych deadlocków, problem z puzzle 15
-
-wada - nie moze się dwóch agentów "cofać". MOże tylko uciekać  z drogi ważniesjzemu
-
-
-$TODO$ nazwa whca123 w pozostałych rozdziałach
-$TODO$ sumaryczna liczba przeprowadzonych symulacji w każdym rozdziale
+wolno działa WHCA*3 przy dużych mapach / oknach czasu / robotach. Dałoby się zoptymalizować (RRA)
+autorski WHCA*3 działa dobrze nawet przy rozwiązywaniu dużych deadlocków
