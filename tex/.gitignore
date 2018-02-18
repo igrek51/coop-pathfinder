@@ -1,8 +1,1 @@
-build/*.aux
-build/*.log
-build/*.out
-build/*.toc
-build/*.lot
-build/*.bbl
-build/*.blg
-build/*.lof
+build/
