@@ -25,7 +25,7 @@ Mierzonymi wskaźnikami były:
 \end{itemize}
 
 \section{Automatyczne zarządzanie symulacjami}
-Na potrzeby wszystkich testów, których wyniki zamieszczono rozdziale \ref{ch:tests}, przeprowadzono razem $82 800$ automatycznie zarządzanych symulacji. Wykonano to dla różnych metod planowania, z różnymi parametrami i na różnych mapach oraz układach robotów.
+Na potrzeby wszystkich testów, których wyniki zamieszczono rozdziale \ref{ch:tests}, przeprowadzono razem $76 800$ automatycznie zarządzanych symulacji. Wykonano to dla różnych metod planowania, z różnymi parametrami i na różnych mapach oraz układach robotów.
 
 Do automatycznego wykonywania symulacji wykorzystano bibliotekę {\it jUnit}. Chociaż w standardowym zastosowaniu służy ona do wykonywania automatycznych testów jednostkowych sprawdzających poprawność pojedynczych komponentów aplikacji, to jednak wykorzystano ją tutaj ze względu na możliwość uruchomienia istniejących fragmentów aplikacji w innym trybie.
 Pozwala to na wykonanie serii symulacji bez wyświetlania graficznego interfejsu użytkownika.
@@ -144,7 +144,7 @@ $TODO$ sprawdzić wygląd tabelki
 {} &
 {\bf \shortstack{M-15x15-5R}} &
 {\bf \shortstack{M-15x15-10R}} &
-{\bf \shortstack{M-35x35-5R}}} &
+{\bf \shortstack{M-35x35-5R}} &
 {\bf \shortstack{E-15x15-40R}} \\
 \midrule
 1	& 0\%	& 0\%	& 0\%	& 0\%	\\
@@ -268,62 +268,63 @@ Wyniki potwierdzają oczekiwaną nierówność zachodzącą pomiedzy średnimi s
 skuteczność LRA* $\le$ skuteczność WHCA*1 $\le$ skuteczność WHCA*2 $\le$ skuteczność WHCA*3.
 Warto dodać, że w pewnych sytuacjach algorytm LRA* pomyślnie doprowadził wszystkie roboty do ich celów, podczas gdy w tych samych warunkach metody WHCA*1 i WHCA*2 nie znalazły rozwiązania.
 
-\subsection{Wpływ rozmiaru mapy} % 30400
+\subsection{Wpływ rozmiaru mapy} % 24400 = 15200 + 9200
 \label{ch:tests-function-mapsize}
 Dla stałej liczby robotów (rownej 5) przeprowadzono testy wpływu rozmiaru mapy na skuteczność metod LRA*, WHCA*1, WHCA*2 oraz WHCA*3.
 Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzebną do doprowadzenia wszystkich robotów do celów (dla symulacji zakończonych powodzeniem) oraz złożoność obliczeniową samego planowania (średni czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
 Symulacje przeprowadzano na kwadratowych mapach (rozmiar mapy oznacza jednocześnie jej wysokość i szerokość).
-Rozmiar mapy zwiększano od $3 \times 3$ do $40 \times 40$, generując 100 losowych układów dla każdego rozmiaru mapy, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
+Rozmiar mapy zmieniał się w zakresie od $3 \times 3$ do $40 \times 40$ (w przypadku mapy z labiryntem) oraz w zakresie od $3 \times 3$ do $25 \times 25$ (w przypadku pustej mapy), generując 100 losowych układów dla każdego rozmiaru mapy, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
 Wszystko powtórzono zarówno dla map z wygenerowanym labiryntem, jak i dla pustych map bez umieszczonych przeszkód.
-W ramach tych testów przeprowadzono razem $30 400$ symulacji.
-Wyniki przedstawiono w tabelach \ref{tab:test-steps-maze-mapsize}, \ref{tab:test-steps-empty-mapsize} oraz na wykresach \ref{fig:test-steps-maze-mapsize-eff}, \ref{fig:test-steps-maze-mapsize-steps}, \ref{fig:test-steps-maze-mapsize-calctime}, \ref{fig:test-steps-empty-mapsize-eff}, \ref{fig:test-steps-empty-mapsize-steps}, \ref{fig:test-steps-empty-mapsize-calctime}.
+W ramach tych testów przeprowadzono razem $24 400$ symulacji.
+Wyniki przedstawiono na wykresach \ref{fig:test-steps-maze-mapsize-eff}, \ref{fig:test-steps-maze-mapsize-steps}, \ref{fig:test-steps-maze-mapsize-calctime}, \ref{fig:test-steps-empty-mapsize-eff}, \ref{fig:test-steps-empty-mapsize-steps}, \ref{fig:test-steps-empty-mapsize-calctime}.
 
-$TODO$ zrobić tabelki (screeny) i wykresy
+% w tabelach \ref{tab:test-steps-maze-mapsize}, \ref{tab:test-steps-empty-mapsize} oraz
+% $TODO$ zrobić tabelki (screeny) i wykresy
 
-\begin{table}
-\caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, z wygenerowanym labiryntem}
-\label{tab:test-steps-maze-mapsize}
-\centering
-\begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
-\hline
-{\bf \shortstack{Rozmiar\\mapy}} &
-{\bf \shortstack{Skuteczność\\LRA*}} &
-{\bf \shortstack{Skuteczność\\WHCA*1}} &
-{\bf \shortstack{Skuteczność\\WHCA*2}} &
-{\bf \shortstack{Skuteczność\\WHCA*3}} &
-{\bf \shortstack{Liczba kroków\\LRA*}} &
-{\bf \shortstack{Liczba kroków\\WHCA*1}} &
-{\bf \shortstack{Liczba kroków\\WHCA*2}} &
-{\bf \shortstack{Liczba kroków\\WHCA*3}} &
-{\bf \shortstack{Czas planowania\\LRA*}} &
-{\bf \shortstack{Czas planowania\\WHCA*1}} &
-{\bf \shortstack{Czas planowania\\WHCA*2}} &
-{\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
-1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
-\end{tabular}
-\end{table}
-\begin{table}
-\caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, bez umieszczonych przeszkód}
-\label{tab:test-steps-empty-mapsize}
-\centering
-\begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
-\hline
-{\bf \shortstack{Rozmiar\\mapy}} &
-{\bf \shortstack{Skuteczność\\LRA*}} &
-{\bf \shortstack{Skuteczność\\WHCA*1}} &
-{\bf \shortstack{Skuteczność\\WHCA*2}} &
-{\bf \shortstack{Skuteczność\\WHCA*3}} &
-{\bf \shortstack{Liczba kroków\\LRA*}} &
-{\bf \shortstack{Liczba kroków\\WHCA*1}} &
-{\bf \shortstack{Liczba kroków\\WHCA*2}} &
-{\bf \shortstack{Liczba kroków\\WHCA*3}} &
-{\bf \shortstack{Czas planowania\\LRA*}} &
-{\bf \shortstack{Czas planowania\\WHCA*1}} &
-{\bf \shortstack{Czas planowania\\WHCA*2}} &
-{\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
-1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
-\end{tabular}
-\end{table}
+% \begin{table}
+% \caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, z wygenerowanym labiryntem}
+% \label{tab:test-steps-maze-mapsize}
+% \centering
+% \begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
+% \hline
+% {\bf \shortstack{Rozmiar\\mapy}} &
+% {\bf \shortstack{Skuteczność\\LRA*}} &
+% {\bf \shortstack{Skuteczność\\WHCA*1}} &
+% {\bf \shortstack{Skuteczność\\WHCA*2}} &
+% {\bf \shortstack{Skuteczność\\WHCA*3}} &
+% {\bf \shortstack{Liczba kroków\\LRA*}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*1}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*2}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*3}} &
+% {\bf \shortstack{Czas planowania\\LRA*}} &
+% {\bf \shortstack{Czas planowania\\WHCA*1}} &
+% {\bf \shortstack{Czas planowania\\WHCA*2}} &
+% {\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
+% 1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+% \end{tabular}
+% \end{table}
+% \begin{table}
+% \caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, bez umieszczonych przeszkód}
+% \label{tab:test-steps-empty-mapsize}
+% \centering
+% \begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
+% \hline
+% {\bf \shortstack{Rozmiar\\mapy}} &
+% {\bf \shortstack{Skuteczność\\LRA*}} &
+% {\bf \shortstack{Skuteczność\\WHCA*1}} &
+% {\bf \shortstack{Skuteczność\\WHCA*2}} &
+% {\bf \shortstack{Skuteczność\\WHCA*3}} &
+% {\bf \shortstack{Liczba kroków\\LRA*}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*1}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*2}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*3}} &
+% {\bf \shortstack{Czas planowania\\LRA*}} &
+% {\bf \shortstack{Czas planowania\\WHCA*1}} &
+% {\bf \shortstack{Czas planowania\\WHCA*2}} &
+% {\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
+% 1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+% \end{tabular}
+% \end{table}
 
 \begin{figure}
 	\centering
@@ -370,54 +371,55 @@ Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzeb
 Liczbę robotów zwiększano od $1$ do $30$, generując 100 losowych układów dla każdej liczby robotow, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
 Wszystko powtórzono zarówno dla map z wygenerowanym labiryntem o rozmiarze $15 \times 15$, jak i dla pustych map bez umieszczonych przeszkód o rozmiarze $6 \times 6$.
 W ramach tych testów przeprowadzono razem $24 000$ symulacji.
-Wyniki przedstawiono w tabelach \ref{tab:test-steps-maze-robots}, \ref{tab:test-steps-empty-robots} oraz na wykresach \ref{fig:test-steps-maze-robots-eff}, \ref{fig:test-steps-maze-robots-steps}, \ref{fig:test-steps-maze-robots-calctime}, \ref{fig:test-steps-empty-robots-eff}, \ref{fig:test-steps-empty-robots-steps}, \ref{fig:test-steps-empty-robots-calctime}.
+Wyniki przedstawiono na wykresach \ref{fig:test-steps-maze-robots-eff}, \ref{fig:test-steps-maze-robots-steps}, \ref{fig:test-steps-maze-robots-calctime}, \ref{fig:test-steps-empty-robots-eff}, \ref{fig:test-steps-empty-robots-steps}, \ref{fig:test-steps-empty-robots-calctime}.
 
-$TODO$ zrobić tabelki (screeny) i wykresy
+% w tabelach \ref{tab:test-steps-maze-robots}, \ref{tab:test-steps-empty-robots} oraz
+% $TODO$ zrobić tabelki (screeny) i wykresy
 
-\begin{table}
-\caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, z wygenerowanym labiryntem}
-\label{tab:test-steps-maze-robots}
-\centering
-\begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
-\hline
-{\bf \shortstack{Liczba\\robotów}} &
-{\bf \shortstack{Skuteczność\\LRA*}} &
-{\bf \shortstack{Skuteczność\\WHCA*1}} &
-{\bf \shortstack{Skuteczność\\WHCA*2}} &
-{\bf \shortstack{Skuteczność\\WHCA*3}} &
-{\bf \shortstack{Liczba kroków\\LRA*}} &
-{\bf \shortstack{Liczba kroków\\WHCA*1}} &
-{\bf \shortstack{Liczba kroków\\WHCA*2}} &
-{\bf \shortstack{Liczba kroków\\WHCA*3}} &
-{\bf \shortstack{Czas planowania\\LRA*}} &
-{\bf \shortstack{Czas planowania\\WHCA*1}} &
-{\bf \shortstack{Czas planowania\\WHCA*2}} &
-{\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
-1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
-\end{tabular}
-\end{table}
-\begin{table}
-\caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, bez umieszczonych przeszkód}
-\label{tab:test-steps-empty-robots}
-\centering
-\begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
-\hline
-{\bf \shortstack{Liczba\\robotów}} &
-{\bf \shortstack{Skuteczność\\LRA*}} &
-{\bf \shortstack{Skuteczność\\WHCA*1}} &
-{\bf \shortstack{Skuteczność\\WHCA*2}} &
-{\bf \shortstack{Skuteczność\\WHCA*3}} &
-{\bf \shortstack{Liczba kroków\\LRA*}} &
-{\bf \shortstack{Liczba kroków\\WHCA*1}} &
-{\bf \shortstack{Liczba kroków\\WHCA*2}} &
-{\bf \shortstack{Liczba kroków\\WHCA*3}} &
-{\bf \shortstack{Czas planowania\\LRA*}} &
-{\bf \shortstack{Czas planowania\\WHCA*1}} &
-{\bf \shortstack{Czas planowania\\WHCA*2}} &
-{\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
-1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
-\end{tabular}
-\end{table}
+% \begin{table}
+% \caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, z wygenerowanym labiryntem}
+% \label{tab:test-steps-maze-robots}
+% \centering
+% \begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
+% \hline
+% {\bf \shortstack{Liczba\\robotów}} &
+% {\bf \shortstack{Skuteczność\\LRA*}} &
+% {\bf \shortstack{Skuteczność\\WHCA*1}} &
+% {\bf \shortstack{Skuteczność\\WHCA*2}} &
+% {\bf \shortstack{Skuteczność\\WHCA*3}} &
+% {\bf \shortstack{Liczba kroków\\LRA*}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*1}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*2}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*3}} &
+% {\bf \shortstack{Czas planowania\\LRA*}} &
+% {\bf \shortstack{Czas planowania\\WHCA*1}} &
+% {\bf \shortstack{Czas planowania\\WHCA*2}} &
+% {\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
+% 1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+% \end{tabular}
+% \end{table}
+% \begin{table}
+% \caption{Wskaźniki symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, bez umieszczonych przeszkód}
+% \label{tab:test-steps-empty-robots}
+% \centering
+% \begin{tabular}{| r | r | r | r | r | r | r | r | r | r | r | r | r |}
+% \hline
+% {\bf \shortstack{Liczba\\robotów}} &
+% {\bf \shortstack{Skuteczność\\LRA*}} &
+% {\bf \shortstack{Skuteczność\\WHCA*1}} &
+% {\bf \shortstack{Skuteczność\\WHCA*2}} &
+% {\bf \shortstack{Skuteczność\\WHCA*3}} &
+% {\bf \shortstack{Liczba kroków\\LRA*}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*1}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*2}} &
+% {\bf \shortstack{Liczba kroków\\WHCA*3}} &
+% {\bf \shortstack{Czas planowania\\LRA*}} &
+% {\bf \shortstack{Czas planowania\\WHCA*1}} &
+% {\bf \shortstack{Czas planowania\\WHCA*2}} &
+% {\bf \shortstack{Czas planowania\\WHCA*3}} \\ \hline
+% 1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+% \end{tabular}
+% \end{table}
 
 \begin{figure}
 	\centering
