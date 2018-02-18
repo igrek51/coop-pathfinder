@@ -52,9 +52,9 @@ Wartość maksymalnej liczby kroków $stepsLimit$ w symulacji została przyjęta
 \end{gather}
  gdzie:
 
- $w$ - szerokość mapy (wyrażona w liczbie pól)
+ $w$ - szerokość mapy wyrażona w liczbie pól
 
- $h$ - wysokość mapy (wyrażona w liczbie pól)
+ $h$ - wysokość mapy wyrażona w liczbie pól
 
  $r$ - liczba robotów na mapie
 
@@ -115,7 +115,7 @@ Kolumna "Przeprowadzone symulacje" wyraża liczbę losowo wygenerowanych środow
 \centering
 \begin{tabular}{| l | r | r | r |}
 \hline
-{\bf Typ środowiska} & {\bf Przeprowadzone symulacje} & {\bf Skuteczność} & {\bf Wystąpienie kolizji} \\ \hline
+{\bf Typ środowiska} & {\bf Przeprowadzone symulacje} & {\bf Skuteczność} & {\bf Występowanie kolizji} \\ \hline
 M-15x15-5R  & 1000 & 10\% & 90\% \\ \hline
 M-15x15-10R & 1000 & 1\%  & 99\%  \\ \hline
 M-35x35-5R  & 1000 & 14\% & 86\% \\ \hline
@@ -133,20 +133,17 @@ Dla każdego badanego typu środowiska wylosowano 100 map, dla których powtórz
 Dla rozmiaru okna równego 1 skuteczność metody zawsze jest zerowa, gdyż zaplanowane dla robotów ścieżki są zawsze długości 1, a pierwszym punktem ścieżki jest zawsze aktualna pozycja robota, przez co roboty pozostają w tym samym miejscu.
 Uzyskane wyniki dla każdego środowiska przedstawiono w tabeli \ref{tab:test-whca-window-size} oraz na wykresach \ref{fig:test-whca-window-M-15x15-5R}, \ref{fig:test-whca-window-M-15x15-10R}, \ref{fig:test-whca-window-M-35x35-5R} i \ref{fig:test-whca-window-E-15x15-40R}.
 
-$TODO$ sprawdzić wygląd tabelki
 \begin{table}
-\caption{Wpływ wielkości okna czasowego na skuteczność metody WHCA*1} 
+\caption{Wpływ wielkości okna czasowego na skuteczność metody WHCA*1 w różnych typach środowisk} 
 \label{tab:test-whca-window-size}
 \centering
 \begin{tabular}{| r | r | r | r | r |}
-\toprule
-{\bf \shortstack{Rozmiar okna\\czasowego}} & \multicolumn{4}{c}{{\bf \shortstack{Skuteczność dla typu środowiska}}} \\
-{} &
+\hline
+{\bf \shortstack{Rozmiar okna\\czasowego}} &
 {\bf \shortstack{M-15x15-5R}} &
 {\bf \shortstack{M-15x15-10R}} &
 {\bf \shortstack{M-35x35-5R}} &
-{\bf \shortstack{E-15x15-40R}} \\
-\midrule
+{\bf \shortstack{E-15x15-40R}} \\ \hline
 1	& 0\%	& 0\%	& 0\%	& 0\%	\\
 2	& 9\%	& 0\%	& 27\%	& 0\%	\\
 3	& 11\%	& 0\%	& 30\%	& 0\%	\\
@@ -177,7 +174,7 @@ $TODO$ sprawdzić wygląd tabelki
 28	& 69\%	& 35\%	& 100\%	& 100\%	\\
 29	& 69\%	& 35\%	& 100\%	& 100\%	\\
 30	& 69\%	& 35\%	& 100\%	& 100\%	\\
-\bottomrule
+\hline
 \end{tabular}
 \end{table}
 
@@ -239,7 +236,7 @@ Warto zaznaczyć, że niepowodzenie metody WHCA*3 może wynikać zarówno z ogra
 Należy także podkreślić, że spośród wszystkich środowisk nie zdarzyło się, aby metoda LRA* dała lepsze rozwiazanie od WHCA*3.
 Potwierdza to oczekiwania w stosunku do metody WHCA*3, która jest znacznie bardziej zaawansowana od metody LRA*.
 
-\subsection{Skuteczność wariantów WHCA*} % 16000
+\subsection{Porównanie wariantów WHCA*} % 16000
 W kolejnych testach porównano skuteczność różnych wariantów metody WHCA*: WHCA*1, WHCA*2 (z dynamicznym przydziałem priorytetów), WHCA*3 (z dynamicznym przydziałem priorytetów i skalowaniem okna czasowego) oraz metodę LRA*.
 Symulacje powtarzano dla każdej metody, odtwarzając te same warunki początkowe (układ map i robotów).
 Wyniki przedstawiono w tabeli \ref{tab:test-lra-whca-whca2-effectiveness}.
@@ -458,9 +455,11 @@ Wyniki przedstawiono na wykresach \ref{fig:test-steps-maze-robots-eff}, \ref{fig
 	\label{fig:test-steps-empty-robots-calctime}
 \end{figure}
 
-Wyniki potwierdzają oczekiwaną nierówność zachodzącą pomiedzy średnimi skutecznościami poszczególnych metod dla każdego z badanych typów środowisk:
-skuteczność WHCA*1 $\le$ skuteczność WHCA*2 $\le$ skuteczność WHCA*3.
-Zgodny z oczekiwaniami jest także oczywisty fakt, że zwiększenie liczby robotów utrudnia znalezienie rozwiązania, zmniejszając skuteczność metod.
+Na wykresach średniej liczby kroków symulacji oraz czasu planowania widoczne są "ucięte" serie pomiarów. Oznacza to zerową skuteczność w tych obszarach i tym samym brak możliwości wyznaczenia tych wartości z powodu zerowej liczby pomyślnie zakończonych symulacji dla danej metody planowania.
+
+% Wyniki potwierdzają oczekiwaną nierówność zachodzącą pomiedzy średnimi skutecznościami poszczególnych metod dla każdego z badanych typów środowisk:
+% skuteczność WHCA*1 $\le$ skuteczność WHCA*2 $\le$ skuteczność WHCA*3.
+Zgodny z oczekiwaniami jest niewątpliwy fakt, iż zwiększenie liczby robotów utrudnia znalezienie rozwiązania, zmniejszając skuteczność metod.
 Na pustych mapach bez przeszkód metody WHCA*2 i WHCA*3 mają wysoką skuteczność, ale ilość kroków symulacji potrzebnych do znalezienia rozwiązania jest większa niż dla metody WHCA*3.
 
 \subsection{Metoda pól potencjałowych}
@@ -499,3 +498,5 @@ potwierdzenie oczekiwań (poprawności) - nigdy nie było tak, żeby LRA był le
 
 wolno działa WHCA*3 przy dużych mapach / oknach czasu / robotach. Dałoby się zoptymalizować (RRA)
 autorski WHCA*3 działa dobrze nawet przy rozwiązywaniu dużych deadlocków
+
+$TODO$ wnioski o zachodzących nierównościach
