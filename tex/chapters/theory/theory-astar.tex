@@ -45,7 +45,8 @@ Algorytm zwraca optymalny wynik (najkrótszą możliwą ścieżkę), ale w pewny
 \label{ch:astar_heurystyki}
 Od wyboru sposobu obliczania heurystyki zależy czas wykonywania algorytmu oraz optymalność wyznaczonego rozwiązania.
 
-Funkcja heurystyczna $h(n)$ jest dopuszczalna, jeśli dla dowolnego węzła $n$ spełniony jest warunek
+\begin{definition}{\bf Heurystyka dopuszczalna\\}
+	Funkcja heurystyczna $h(n)$ jest dopuszczalna, jeśli dla dowolnego węzła $n$ spełniony jest warunek:
 \begin{gather}
  	h(n) \leq h^*(n)
  	\label{eq_astar_heurystyka_admissible} 
@@ -53,6 +54,7 @@ Funkcja heurystyczna $h(n)$ jest dopuszczalna, jeśli dla dowolnego węzła $n$ 
  gdzie:
 
  $h^*(n)$ - rzeczywisty koszt ścieżki od węzła $n$ do celu
+\end{definition}
 
 Innymi słowy, heurystyka dopuszczalna to taka, która nigdy nie przeszacowuje pozostałej do przebycia drogi. Wtedy algorytm A* zwraca optymalną (najkrótszą) ścieżkę \cite{cooppath}.
 

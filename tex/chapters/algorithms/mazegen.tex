@@ -6,7 +6,7 @@ Do ich automatycznego utworzenia wykorzystano własny generator map, który zape
 
 Zastosowanie zwykłego losowania położenia przeszkód na mapie mogłoby spowodować, że do niektórych obszarów na mapie nie udałoby się znaleźć drogi, nawet mimo braku istnienia pozostałych agentów. Takie środowisko nie miałoby sensownego zastosowania w praktyce, w kooperacyjnym znajdowaniu tras.
 
-Zależy nam, aby uzyskać środowisko cechujące się dużą liczbą przeszkód i wąskimi korytarzami, aby uwypuklić problem występowania wąskich gardeł. Jednocześnie chcemy jednak, aby istniała możliwość przejścia między dwoma dowolnymi punktami na mapie.
+Zależy nam, aby uzyskać środowisko cechujące się dużą liczbą przeszkód i wąskimi korytarzami, aby uwypuklić problem występowania wąskich gardeł. Jednocześnie chcemy, aby istniała możliwość przejścia między dwoma dowolnymi punktami na mapie.
 Do rozwiązania problemu wygenerowania takich labiryntów posłużymy się teorią grafów i pojęciem grafu spójnego.
 
 \begin{definition}{\bf Graf spójny\\}
@@ -119,5 +119,5 @@ Na rysunku \ref{fig:maze75-75} przedstawiono przykładowy labirynt wygenerowany 
 Warto zaznaczyć, że łączenie kolejnych wierzchołków do najbliższego sąsiada nadaje pewną właściwość wygenerowanym mapom.
 Bardzo często (choć nie zawsze) między dwoma polami tworzy się tylko jedna łącząca je ścieżka (nie ma alternatywanych ścieżek). Sprzyja to tworzeniu się wąskich gardeł na mapie.
 
-Wygenerowane w ten sposób mapy mają jeszcze jedną właściwość - w takim środowisku robot nie ma nigdy możliwości wykonania ruchu ukośnego (innego niż w poziomie lub pionie). Pozwala to wprowadzić pewne ograniczenia do niektórych algorytmów planowania (por. \ref{ch:theory-coop-astar}), które przyspieszają wykonywanie obliczeń ze względu na możliwość założenia jednakowego czasu trwania wszystkich ruchów robotów. Nie będziemy jednak tego zakładać na tym etapie, gdyż chcemy, aby opracowana metoda planowania tras mogła także działać w środowiskach innego typu.
+Wygenerowane w ten sposób mapy mają jeszcze jedną właściwość - w takim środowisku robot nie ma nigdy możliwości wykonania ruchu ukośnego (innego niż w poziomie lub pionie). Pozwaliłoby to wprowadzić pewne ograniczenia do niektórych algorytmów planowania (por. \ref{ch:theory-coop-astar}), które to przyspieszyłyby wykonywanie obliczeń ze względu na możliwość założenia jednakowego czasu trwania wszystkich ruchów robotów. Nie będziemy jednak tego zakładać na tym etapie, gdyż chcemy, aby opracowana metoda planowania tras mogła także działać w środowiskach o innym charakterze.
 
