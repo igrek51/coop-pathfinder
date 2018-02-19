@@ -488,15 +488,20 @@ Możliwe natomiast jest porównanie rezultatów różnych metod planowania w tyc
 Należy pamiętać, że ze względnu na wybraną technologię realizacji (Java), pomiar czasu obliczeń mógł być obarczony pewnymi błędami wynikającymi z narzutu wirtualnej maszyny JVM oraz działania mechanizmu Garbage Collector, na który nie ma wpływu programista, a który może wystąpić w dowolnym momencie działania aplikacji.
 
 Wyniki testów potwierdziły oczekiwania w stosunku do skuteczności porównywanych metod.
-Najwyższą skuteczność w planowaniu bezkolizyjnych tras dla wielu robotów uzyskała własna metoda WHCA*3.
-Brak zastosowania skalowania okna czasowego skutkował niższą skutrecznością metody WHCA*2.
-$TODO$ bez dyhnamicznego przydziału priorytetów - gorzej WHCA*1
-$TODO$ najgorzej lra
+Najwyższą skuteczność w planowaniu bezkolizyjnych tras dla wielu robotów uzyskała autorska metoda WHCA*3.
+Brak zastosowania skalowania okna czasowego skutkował niższą skutecznością metody WHCA*2.
+W badanych środowiskach najgorzej wypadły metody LRA* oraz WHCA*1.
+% $TODO$ bez dyhnamicznego przydziału priorytetów - gorzej WHCA*1
+% $TODO$ najgorzej lra
 
-LRA: wyszło całkiem nieźle w przypadku, gdy do celu prowadzi wiele alternatywnych ścieżek i można ominąć wąskie gardło
-potwierdzenie oczekiwań (poprawności) - nigdy nie było tak, żeby LRA był lepszy
+% LRA: wyszło całkiem nieźle w przypadku, gdy do celu prowadzi wiele alternatywnych ścieżek i można ominąć wąskie gardło
+% potwierdzenie oczekiwań (poprawności) - nigdy nie było tak, żeby LRA był lepszy
 
-wolno działa WHCA*3 przy dużych mapach / oknach czasu / robotach. Dałoby się zoptymalizować (RRA)
-autorski WHCA*3 działa dobrze nawet przy rozwiązywaniu dużych deadlocków
+Na dużych mapach oraz przy większej liczbie robotów czas wykonywania obliczeń planowania tras przez metodę WHCA*3 jest stosunkowo długi.
+Obserwacja czasu obliczeń pozwala stwierdzić, że złożoność WHCA*3 ma charakter wykładniczy, co potwierdza oczekiwania.
+Zastosowanie do wyznaczania wartości heurystyki innych, wydajniejszych algorytmów takich jak RRA*, D* Lite lub D* Extra Lite, mogłoby zmniejszyć czas obliczeń, przyspieszając proces planowania bezkolizyjnych tras, w szczególności na większych mapach.
 
-$TODO$ wnioski o zachodzących nierównościach
+% TODO przykład rozwiązania deadlocka w kilku screenach
+% autorski WHCA*3 działa dobrze nawet przy rozwiązywaniu dużych deadlocków
+
+% $TODO$ wnioski o zachodzących nierównościach

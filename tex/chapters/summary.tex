@@ -1,30 +1,30 @@
 \chapter{Podsumowanie}
 \label{ch:podsumowanie}
 
-$TODO$
-Większość popularnych algorytmów wykorzystywanych do planowania tras dla wielu robotów mobilnych (agentów) opiera się o A*.
+$TODO$ zebrać wnioski
+% Większość popularnych algorytmów wykorzystywanych do planowania tras dla wielu robotów mobilnych (agentów) opiera się o A*.
 
-Kooperacyjne planowanie tras jest ogólną techniką koordynacji dróg wielu jednostek.
-Znajduje zastosowanie, gdzie wiele jednostek może komunikować się ze sobą, przekazując informację o ich ścieżkach.
-Poprzez planowanie wprzód w czasie, jak również i w przestrzeni, jednostki potrafią schodzić sobie z drogi nawzajem w celu uniknięcia kolizji.
-Metody kooperacyjnego planowania są bardziej skuteczne i znajdują trasy wyższej jakości niż te uzyskane przez A* z metodą {\it Local Repair}.
+% Kooperacyjne planowanie tras jest ogólną techniką koordynacji dróg wielu jednostek.
+% Znajduje zastosowanie, gdzie wiele jednostek może komunikować się ze sobą, przekazując informację o ich ścieżkach.
+% Poprzez planowanie wprzód w czasie, jak również i w przestrzeni, jednostki potrafią schodzić sobie z drogi nawzajem w celu uniknięcia kolizji.
+% Metody kooperacyjnego planowania są bardziej skuteczne i znajdują trasy wyższej jakości niż te uzyskane przez A* z metodą {\it Local Repair}.
 
-Wiele z udoskonaleń przestrzennego algorytmu A* może być również zaadaptowane do czasoprzestrzennego A*.
-Ponadto, wprowadzenie wymiaru czasu otwiera nowe możliwości do rozwoju algorytmów znajdowania dróg.
+% Wiele z udoskonaleń przestrzennego algorytmu A* może być również zaadaptowane do czasoprzestrzennego A*.
+% Ponadto, wprowadzenie wymiaru czasu otwiera nowe możliwości do rozwoju algorytmów znajdowania dróg.
 
-Najbardziej obiecującym pod względem skuteczności algorytmem wydaje się być metoda WHCA*.
+% Najbardziej obiecującym pod względem skuteczności algorytmem wydaje się być metoda WHCA*.
 
-Aby wydajnie prowadzić obliczenia, zakłada się, że każdy ruch robota trwa tyle samo. 
-Wprowadza to upraszczające, błędne założenie, że ruch robota na pole w kierunku poziomym lub pionowym trwa tyle samo, co na ukos.
+% Aby wydajnie prowadzić obliczenia, zakłada się, że każdy ruch robota trwa tyle samo. 
+% Wprowadza to upraszczające, błędne założenie, że ruch robota na pole w kierunku poziomym lub pionowym trwa tyle samo, co na ukos.
 
-W wielu przypadkach metody do planowania bezkolizyjnych tras w systemach wieloagentowych mogą być wykorzystywane zamiennie zarówno do wyznaczania trajektorii robotów mobilnych, jak i w grach komputerowych, np. strategiach czasu rzeczywistego do planowania tras wielu jednostek.
+% W wielu przypadkach metody do planowania bezkolizyjnych tras w systemach wieloagentowych mogą być wykorzystywane zamiennie zarówno do wyznaczania trajektorii robotów mobilnych, jak i w grach komputerowych, np. strategiach czasu rzeczywistego do planowania tras wielu jednostek.
 
-Zaprezentowane algorytmy mogą znaleźć zastosowanie również w środowiskach z ciągłą przestrzenią oraz w dynamicznych środowiskach, w których to ścieżki muszą być przeliczane po wykryciu zmiany na mapie.
+% Zaprezentowane algorytmy mogą znaleźć zastosowanie również w środowiskach z ciągłą przestrzenią oraz w dynamicznych środowiskach, w których to ścieżki muszą być przeliczane po wykryciu zmiany na mapie.
 
-Zaproponowano własną metodę dynamicznego przydziału priorytetów jako rozszerzenie metody WHCA*, która znacząco poprawia skutecznosć, co wykazały obszerne testy.
-Należy zaznaczyć, że opisywane metody aplikuja się do środowisk specyficznego typu, w innych wypadkach mozliwe, że sprawdzą się dużo prostsze metody.
-Spopularyzpwanioe metody, żeby mogła być używana w robotyce i grach rts.
+% Zaproponowano własną metodę dynamicznego przydziału priorytetów jako rozszerzenie metody WHCA*, która znacząco poprawia skutecznosć, co wykazały obszerne testy.
+% Należy zaznaczyć, że opisywane metody aplikuja się do środowisk specyficznego typu, w innych wypadkach mozliwe, że sprawdzą się dużo prostsze metody.
+% Spopularyzpwanioe metody, żeby mogła być używana w robotyce i grach rts.
 
-Można przyspieszyć metodę, gdyby nie czekać na kolejny krok symulacji tylko od razu replanować.
+% Można przyspieszyć metodę, gdyby nie czekać na kolejny krok symulacji tylko od razu replanować.
 
-W symulacji łatwiej odwzorować problem kolizji. W rzeczywistym środowisku wystarczy, że 2 roboty zmieszcza sie najednym polu
+% W symulacji łatwiej odwzorować problem kolizji. W rzeczywistym środowisku wystarczy, że 2 roboty zmieszcza sie najednym polu
