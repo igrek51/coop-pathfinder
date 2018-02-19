@@ -4,25 +4,35 @@
 Implementacja algorytmu {\it  Windowed Hierarchical Cooperative A*} oparta została na podstawach teoretycznych opisanych w rozdziałach \ref{ch:theory-coop-astar}, \ref{ch:hier_cooperative_a} oraz \ref{ch:whca}, dla których w znacznym stopniu źródłem był artykuł autorstwa Davida Silvera \cite{cooppath}.
 Wspomniana praca nie opisuje jednak szczegółów realizacyjnych algorytmu i należało opracować wiele własnych podejść do zaistniałych problemów, dlatego implmenetacja algorytmu WHCA* w aplikacji jest efektem własnej pracy.
 
-Metoda WHCA* stanowi rozszerzenie metody A* (por. \ref{ch:alg-single-astar}). W rozdziale tym zostaną opisane zmiany wprowadzone w stosunku do bazowej metody A*.
+Metoda WHCA* stanowi rozszerzenie A*, dlatego zostaną tu opisane zmiany wprowadzone w stosunku do bazowego algorytmu A*.
+
+W rozdziale tym przedstawiono wariant metody WHCA* bez dynamicznego przydziału priorytetów.
+Układ priorytetów robotów, a tym samym kolejność wyznaczania tras jest w tym przypadku losowa.
+Wariant ten będziemy nazywać metodą {\bf WHCA*1} -- w odróżnieniu od innych, przedstawionych w dalszej części pracy (por. \ref{ch:alg-priorities-allocation}). 
 
 \subsection{Tablica rezerwacji}
-Dla węzłów na mapie dodano kolejny (trzeci) wymiar - współrzędną czasu, będącą numerem kroku trajektorii robota.
-Stan zajętości pól na mapie w danym kroku czasowym zapisany jest w tablicy rezerwacji.
+Dla węzłów na przestrzennej, dwuwymiarowej mapie dodano kolejny wymiar -- współrzędną czasu, będącą numerem kroku trajektorii robota.
+Stan zajętości pól na mapie w danym kroku czasowym zapisywany jest w tablicy rezerwacji.
 Tablica rezerwacji ma następujące rozmiary: szerokość mapy $\times$ wysokość mapy $\times$ długość okna czasowego.
-Rozmiar okna czasowego w bazowym wariancie WHCA* przyjęto jako wielkość stałą, równą całkowitej liczbie agentów na mapie zwiększonej o 1.
-W dalszym rozdziale (por. \ref{ch:alg-priorities-allocation}) zaproponowano wariant metody WHCA* ze zmiennym oknem czasowym. Przy takim podejściu wspomniana wielkość okna czasowego stanowi jedynie początkową wartość i może się zmieniać w trakcie trwania symulacji.
+Rozmiar okna czasowego w podstawowym wariancie WHCA*1 przyjęto jako wielkość stałą, równą całkowitej liczbie agentów na mapie zwiększonej o 1.
+W dalszej części pracy zaproponowano wariant metody WHCA* ze zmiennym oknem czasowym (por. \ref{ch:alg-priorities-allocation}). Przy takim podejściu wspomniana wielkość okna czasowego stanowi jedynie wartość początkową i może się zmieniać w trakcie trwania symulacji.
 
 Na początku w tablicy rezerwacji wpisywane są położenia przeszkód jako pola zajęte w każdym kroku czasowym.
 Następnie dla każdego z robotów w kolejności ich priorytetów wyznaczana jest ścieżka do określonego celu.
 
 \subsection{Możliwe akcje}
-Spośród możliwych akcji do wykonania robot musi w każdym kroku wybrać ruch o jedno pole poziomo (wzdłuż długości mapy), pionowo (wzdłuż wysokości mapy), na ukos lub pozostanie na tym samym polu.
+W każdym kroku symulacji robot musi wybrać jedną spośród możliwych do wykonania akcji. Są to:
+\begin{itemize}
+	\item ruch o jedno pole poziomo (wzdłuż długości mapy),
+	\item ruch o jedno pole pionowo (wzdłuż wysokości mapy),
+	\item ruch o jedno pole na ukos,
+	\item pozostanie na tym samym polu.
+\end{itemize}
 Odpowiada to odpowiednim przejściom między sąsiednimi węzłami w grafie.
 Z tego powodu dla węzła o współrzędnych $(x, y, t)$ potencjalnymi sąsiadami (możliwymi przejściami do innego stanu) są węzły:
 
 \begin{table}[H]
-\caption{Możliwe przejścia robota do sąsiednich węzłów} \label{tab:node-neighbours} 
+\caption{Możliwe przejścia robota do sąsiednich węzłów z węzła $(x, y, t)$} \label{tab:node-neighbours} 
 \centering
 \begin{tabular}{| c | c | c |}
 \hline
@@ -77,15 +87,13 @@ Po wyznaczeniu ścieżki do kolejki ruchów robota zostają dodane zaplanowane a
 Jeśli wszystkie zaplanowane ruchy zostały wykonane (pusta kolejka akcji), to dokonuje się kolejnego planowania tras.
 Tym razem okno czasowe jest już przesunięte o odpowiednią liczbę wykonanych kroków symylacji.
 
-\subsection{Uzyskane wyniki} % TODO tytuł rozdziału
-%TODO nazwa WHCA*1
+\subsection{Uzyskane wyniki}
 % Jak wykazały testy skuteczności algorytmu WHCA* w kooperacyjnym doprowadzaniu robotów do celu (por. \ref{ch:tests}), algorytm WHCA* potrafi rozwiązywać pewne zagadnienia występowania wąskich gardeł. 
 Sama obserwacja symulowanego zachowania robotów pozwala stwierdzić, że roboty wykazują bardziej "inteligentne" zachowanie w porównaniu np. do metody LRA*. W pewnych sytuacjach potrafią kooperować ze sobą, schodzić sobie z drogi, nawet, gdy już dotarły do swojego celu.
-Algorytm radzi sobie nawet ze stosunkowo dużą liczbą robotów na trudnych mapach z wąskimi gardłami.
+% Wstępne obserwacje pozwalają stwierdzić, że algorytm radzi sobie stosunkowo dobrze nawet na mapach z wąkimi gardłami i dużą liczbą robotów.
 
-% TODO screen jak schodzą sobie z drogi
+Obszerne testy skuteczności oraz innych wskaźników zaprojektowanej metody WHCA*1 zostały opisane dokładniej w dalszym rozdziale \ref{ch:tests}.
+% TODO screen jak schodzą sobie z drogi z zaznaczeniem tras (kolejne screeny)
 
 Wadą i ograniczeniem metody jest niezmienny przydział priorytetów robotów oraz stała szerokość okna czasowego.
-Dopiero wprowadzenie dynamicznego przydzielania priorytetów oraz skalowania okna czasowego, pozwala skuteczniej rozwiązywać skomplikowane problemy zakleszczenia robotów.
-
-Testy skuteczności oraz innych wskaźników zaprojektowanej metody WHCA*1 zostały opisane dokładniej w dalszym rozdziale \ref{ch:tests}.
+W kolejnej części pokażemy, że dopiero wprowadzenie dynamicznego przydzielania priorytetów oraz skalowania okna czasowego, pozwala jeszcze skuteczniej rozwiązywać skomplikowane problemy zakleszczenia robotów.

@@ -1,6 +1,5 @@
 \section{Dynamiczny przydział priorytetów}
 \label{ch:alg-priorities-allocation}
-
 Obok algorytmu WHCA* zrealizowano własną metodę dynamicznego przydziału priorytetów oraz skalowania okna czasowego, która pomaga w zwiększeniu skuteczności planowania ruchu robotów. Stanowi to niejako rozwinięcie metody WHCA*.
 Układ priorytetów w metodzie WHCA* ma znaczący wpływ na wynik planowania tras. Od priorytetów robotów zależy kolejność wyznaczania tras.
 Jest to na tyle istotne, gdyż podczas wyznaczania tras uwzględniane są tylko roboty o priorytetach wyższych (których planowanie odbyło się wcześniej).
@@ -12,6 +11,8 @@ Wykrywanie kolizji odbywa się tak samo, jak w przypadku metody LRA* (por. \ref{
 Należy zaznaczyć, że pod pojęciem wykrywania kolizji rozumiemy wczesne zauważenie kolizji, która wystąpiłaby w następnym kroku. Niepożądane jest doprowadzanie do faktycznych kolizji, dlatego interwencja zachodzi odpowiednio wcześniej.
 
 % TODO screen z przypadku kolizjii
+
+%TODO początkowa wartość okna
 
 Początkowo roboty mają nadane priorytety losowo. Są to kolejne wartości od 1 do liczby wszystkich robotów.
 Zaproponowana meotda polega na zwiększaniu priorytetów robotów w przypadku niepowodzenia w znalezieniu trasy.
