@@ -15,7 +15,6 @@ Dla węzłów na przestrzennej, dwuwymiarowej mapie dodano kolejny wymiar -- wsp
 Stan zajętości pól na mapie w danym kroku czasowym zapisywany jest w tablicy rezerwacji.
 Tablica rezerwacji ma następujące rozmiary: szerokość mapy $\times$ wysokość mapy $\times$ długość okna czasowego.
 Rozmiar okna czasowego w podstawowym wariancie WHCA*1 przyjęto jako wielkość stałą, równą całkowitej liczbie agentów na mapie zwiększonej o 1.
-W dalszej części pracy zaproponowano wariant metody WHCA* ze zmiennym oknem czasowym (por. \ref{ch:alg-priorities-allocation}). Przy takim podejściu wspomniana wielkość okna czasowego stanowi jedynie wartość początkową i może się zmieniać w trakcie trwania symulacji.
 
 Na początku w tablicy rezerwacji wpisywane są położenia przeszkód jako pola zajęte w każdym kroku czasowym.
 Następnie dla każdego z robotów w kolejności ich priorytetów wyznaczana jest ścieżka do określonego celu.
@@ -95,5 +94,5 @@ Sama obserwacja symulowanego zachowania robotów pozwala stwierdzić, że roboty
 Obszerne testy skuteczności oraz innych wskaźników zaprojektowanej metody WHCA*1 zostały opisane dokładniej w dalszym rozdziale \ref{ch:tests}.
 % TODO screen jak schodzą sobie z drogi z zaznaczeniem tras (kolejne screeny)
 
-Wadą i ograniczeniem metody jest niezmienny przydział priorytetów robotów oraz stała szerokość okna czasowego.
-W kolejnej części pokażemy, że dopiero wprowadzenie dynamicznego przydzielania priorytetów oraz skalowania okna czasowego, pozwala jeszcze skuteczniej rozwiązywać skomplikowane problemy zakleszczenia robotów.
+Wadą i ograniczeniem metody jest niezmieniający się przydział priorytetów robotów oraz stała szerokość okna czasowego.
+W kolejnej części pokażemy, że dopiero wprowadzenie dynamicznego przydzielania priorytetów oraz skalowania okna czasowego, pozwoliło jeszcze skuteczniej rozwiązywać skomplikowane problemy zakleszczenia robotów.

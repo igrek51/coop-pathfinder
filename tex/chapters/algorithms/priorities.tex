@@ -1,39 +1,6 @@
 \section{Dynamiczny przydział priorytetów}
 \label{ch:alg-priorities-allocation}
 Obok algorytmu WHCA* zrealizowano własną metodę dynamicznego przydziału priorytetów oraz skalowania okna czasowego, która pomaga w zwiększeniu skuteczności planowania ruchu robotów. Stanowi to niejako rozwinięcie metody WHCA*.
-Układ priorytetów w metodzie WHCA* ma znaczący wpływ na wynik planowania tras. Od priorytetów robotów zależy kolejność wyznaczania tras.
-Jest to na tyle istotne, gdyż podczas wyznaczania tras uwzględniane są tylko roboty o priorytetach wyższych (których planowanie odbyło się wcześniej).
-
-Podobnie jak w algorytmie LRA*, również w metodzie WHCA* należy wykrywać kolizje (odpowiednio wcześniej).
-Nawet w przypadku, gdy roboty podążają wzdłuż zaplanowanych ścieżek, wciąż mogłyby zdarzyć się kolizje.
-Mogłoby to wystąpić w przypadku, gdy robot, który planuje drogę wczesniej (ma wyższy priorytet), nie uwzględnia, że następnemu robotowi może nie udać się wyznaczenie trajektorii (z powodu właśnie zaplanowanej trasy).
-Wykrywanie kolizji odbywa się tak samo, jak w przypadku metody LRA* (por. \ref{ch:alg-collision-avoid}).
-Należy zaznaczyć, że pod pojęciem wykrywania kolizji rozumiemy wczesne zauważenie kolizji, która wystąpiłaby w następnym kroku. Niepożądane jest doprowadzanie do faktycznych kolizji, dlatego interwencja zachodzi odpowiednio wcześniej.
-
-% TODO screen z przypadku kolizjii
-
-%TODO początkowa wartość okna
-
-Początkowo roboty mają nadane priorytety losowo. Są to kolejne wartości od 1 do liczby wszystkich robotów.
-Zaproponowana meotda polega na zwiększaniu priorytetów robotów w przypadku niepowodzenia w znalezieniu trasy.
-Opiera się na kilku regułach:
-\begin{enumerate}
-	\item Przed wykonaniem planowania tras, lista robotów jest sortowana według priorytetów malejąco (wyższa liczba - pierwszeństwo podczas planowania).
-	\item Wykonanie planowania tras zgodnie z aktualnym układem kolejnosci robotów.
-	\item Jeśli dla któregoś robota nie została znaleziona bezkolizyjna ścieżka, to następuje zwiększenie priorytetu tego robota o wartość 1.
-	\begin{enumerate}
-		\item Rozmiar okna czasowego zwiększa się do wartości równej maksymalnemu numerowi priorytetu robota.
-	\end{enumerate}
-	\item Detekcja kolizji dla wszystkich robotów. W przypadku wykrycia, kolejka ruchów obydwu (lub więcej) robotów zostaje zresetowana (opróżniona).
-	\item W następnych krokach zostanie podjęta próba ponownego poszukiwania tras dla robotów, u których wystąpiło niepowodzenie planowania lub wykryta kolizja.
-\end{enumerate}
-
-Sam punkt 3a z powyższych reguł odpowiedzialny jest za skalowanie okna czasowego. Natomiast pozostałe punkty nazywać będziemy procedurą dynamicznego przydziału priorytetów.
-
-Rozszerzanie okna czasowego pozwala na poszukiwanie coraz bardziej skomplikowanych rozwiązań, gdy wciąż nie udaje się znaleźć rozwiązania. Jednocześnie nie przeznaczamy większej mocy obliczeniowej już na początku, gdy prawdopodobnie odbyłoby się planowanie w niepotrzebnie dużej głębi przeszukiwania.
-
-Wykonane testy potwierdziły wzrost skuteczności w wyznaczaniu tras dzięki wprowadzeniu metody zarówno dynamicznego przydziału priorytetów jak i rozszerzania okna czasowego dla algorytmu WHCA* (por. \ref{ch:test-results}).
-
 Dla rozróżnienia poszczególnych wariantów metody WHCA* w dalszej części pracy będziemy posługiwać się skrótowymi nazwami:
 \begin{itemize}
 	\item {\bf WHCA*1} - {\it Windowed Hierarchical Cooperative A*} ze stałym oknem czasowym, bez dynamicznego przydzielania priotytetów,
@@ -41,15 +8,69 @@ Dla rozróżnienia poszczególnych wariantów metody WHCA* w dalszej części pr
 	\item {\bf WHCA*3} - {\it Windowed Hierarchical Cooperative A*} z dynamicznym przydziałem priorytetów oraz skalowaniem okna czasowego.
 \end{itemize}
 
-% TODO przykłady rozwiązywanych problemów
-$TODO$ przbieg przypadku z opisem - zwiększanie priorytetów kolejnych krokach
-$TODO$ przykład chowania się robotów (przepuszczania się VIPów) - z zaznaczeniem i opisem tras
-$TODO$ przykład wzajemnego zaklinowania się, wzrost okna i znalezienie rozwiązania
+Układ priorytetów w metodzie WHCA* ma znaczący wpływ na wynik planowania tras. Od priorytetów robotów zależy kolejność wyznaczania tras.
+Jest to na tyle istotne, gdyż podczas wyznaczania tras uwzględniane są tylko roboty o priorytetach wyższych (których planowanie odbyło się wcześniej).
 
-$TODO$ screeny ciekawych przypadków
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\columnwidth]{img/robopath/puzzle-15}
-	\caption{Metoda WHCA*3: puzzle 15}
-	\label{fig:test-puzzle-15}
-\end{figure}
+\subsection{Detekcja kolizji}
+Podobnie jak w algorytmie LRA*, również w metodzie WHCA* należy wykrywać kolizje (odpowiednio wcześniej).
+Nawet w przypadku, gdy roboty podążają wzdłuż zaplanowanych ścieżek, wciąż istnieje możliwość wystąpienia kolizji.
+Taka sytuacja może wystąpić, gdy robot, który planuje drogę wcześniej (ma wyższy priorytet), nie uwzględnia, że następnemu robotowi może nie udać się wyznaczenie trajektorii (z powodu właśnie zaplanowanej trasy).
+Wykrywanie kolizji odbywa się tak samo, jak w przypadku metody LRA* (por. \ref{ch:alg-collision-avoid}).
+Należy zaznaczyć, że pod pojęciem wykrywania kolizji rozumiemy wczesne zauważenie kolizji, która wystąpiłaby w następnym kroku. Niepożądane jest doprowadzanie do faktycznych kolizji, dlatego interwencja zachodzi odpowiednio wcześniej.
+
+% TODO screen z przypadku kolizjii
+
+\subsection{Wariant WHCA*2}
+%TODO stała wartość okna
+Wariant WHCA*2 został wzbogacony o dynamiczny przydział priorytetów agentów.
+Początkowo roboty mają nadane priorytety losowo. Są to kolejne wartości od 1 do liczby wszystkich robotów.
+Zaproponowane podejście polega na zwiększaniu priorytetów robotów w przypadku niepowodzenia w znalezieniu trasy.
+Opiera się na następujących krokach:
+\begin{enumerate}
+	\item Posortowanie listy robotów malejąco według priorytetów przed wykonaniem planowania tras. Wyższa wartość priorytetu to pierwszeństwo podczas planowania.
+	\item Wykonanie planowania tras zgodnie z aktualnym układem kolejnosci robotów (jak w wariancie WHCA*1).
+	\item Jeśli dla któregoś robota nie została znaleziona bezkolizyjna ścieżka, to następuje zwiększenie priorytetu tego robota o wartość 1. Taki awans priorytetów może nastąpić dla wielu robotów w jednym kroku symulacji.
+	\begin{enumerate}
+		\item Rozmiar okna czasowego zwiększa się do wartości równej maksymalnemu numerowi priorytetu robota.
+	\end{enumerate}
+	\item Detekcja kolizji dla wszystkich robotów. W przypadku wykrycia, kolejka ruchów obydwu (lub więcej) robotów zostaje zresetowana (opróżniona).
+	\item W następnych krokach zostanie podjęta próba ponownego poszukiwania tras dla robotów, u których wystąpiło niepowodzenie planowania lub wykryta kolizja, tym razem z nowym układem priorytetów.
+\end{enumerate}
+
+Rozmiar okna czasowego jest stały i jest równy całkowitej liczbie agentów na mapie zwiększonej o 1.
+
+\subsection{Wariant WHCA*3}
+Wariant WHCA*3 stanowi rozszerzenie WHCA*2 o skalowanie okna czasowego.
+Rozmiar okna czasowego może zmianiać się w trakcie trwania symulacji. Początkowo jest równy całkowitej liczbie agentów na mapie zwiększonej o 1.
+
+Podejście opiera się na następujących krokach:
+\begin{enumerate}
+	\item Posortowanie listy robotów malejąco według priorytetów przed wykonaniem planowania tras. Wyższa wartość priorytetu to pierwszeństwo podczas planowania.
+	\item Wykonanie planowania tras zgodnie z aktualnym układem kolejnosci robotów (jak w wariancie WHCA*1).
+	\item Jeśli dla któregoś robota nie została znaleziona bezkolizyjna ścieżka, to następuje zwiększenie priorytetu tego robota o wartość 1. Taki awans priorytetów może nastąpić dla wielu robotów w jednym kroku symulacji.
+	\begin{enumerate}
+		\item Rozmiar okna czasowego zwiększa się do wartości równej maksymalnemu numerowi priorytetu robota.
+	\end{enumerate}
+	\item Detekcja kolizji dla wszystkich robotów. W przypadku wykrycia, kolejka ruchów obydwu (lub więcej) robotów zostaje zresetowana (opróżniona).
+	\item W następnych krokach zostanie podjęta próba ponownego poszukiwania tras dla robotów, u których wystąpiło niepowodzenie planowania lub wykryta kolizja, tym razem z nowym układem priorytetów.
+\end{enumerate}
+
+Sam punkt 3a z powyższych reguł odpowiedzialny jest za skalowanie okna czasowego. Natomiast pozostałe punkty nazywać będziemy procedurą dynamicznego przydziału priorytetów.
+
+Rozszerzanie okna czasowego pozwala na poszukiwanie coraz bardziej skomplikowanych rozwiązań, gdy wciąż nie udaje się znaleźć rozwiązania. Jednocześnie nie przeznaczamy większej mocy obliczeniowej już na początku, gdy prawdopodobnie odbyłoby się planowanie w niepotrzebnie dużej głębi przeszukiwania.
+
+
+Wykonane testy potwierdziły wzrost skuteczności w wyznaczaniu tras dzięki wprowadzeniu metody zarówno dynamicznego przydziału priorytetów jak i rozszerzania okna czasowego dla algorytmu WHCA* (por. \ref{ch:test-results}).
+
+% TODO przykłady rozwiązywanych problemów
+% $TODO$ przbieg przypadku z opisem - zwiększanie priorytetów kolejnych krokach
+% $TODO$ przykład chowania się robotów (przepuszczania się VIPów) - z zaznaczeniem i opisem tras
+% $TODO$ przykład wzajemnego zaklinowania się, wzrost okna i znalezienie rozwiązania
+
+% $TODO$ screeny ciekawych przypadków
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=0.8\columnwidth]{img/robopath/puzzle-15}
+% 	\caption{Metoda WHCA*3: puzzle 15}
+% 	\label{fig:test-puzzle-15}
+% \end{figure}
