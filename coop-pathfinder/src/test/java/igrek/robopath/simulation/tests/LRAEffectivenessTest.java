@@ -1,6 +1,7 @@
 package igrek.robopath.simulation.tests;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ public class LRAEffectivenessTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testLRAEffectiveness() {
 		int SIMS_COUNT = 100;
 		int mapW = 15, mapH = 15;
