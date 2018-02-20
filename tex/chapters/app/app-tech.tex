@@ -1,7 +1,7 @@
 \section{Wykorzystane technologie}
 Do stworzenia aplikacji wykorzystano wiele technologii, narzędzi deweloperskich oraz technik opisanych w poniższych podrozdziałach.
 
-Aplikacja była rozwijana i testowana na systemach operacyjnych z jądrem Linux (Arch Linux oraz Debian 9), jednak wszystkie zastosowane narzędzia oraz technologie są wieloplatformowe i z powodzeniem mogą być uruchomione na innych systemach opearcyjnych (np. Windows, macOS)
+Aplikacja była rozwijana i testowana na systemach operacyjnych z jądrem Linux (Arch Linux oraz Debian 9), jednak wszystkie zastosowane narzędzia oraz technologie są wieloplatformowe i z powodzeniem mogą zostać uruchomione na innych systemach opearcyjnych (np. macOS lub Windows).
 
 \subsection{Java 8}
 Aplikacja w całości została napisana w języku Java.
@@ -10,14 +10,14 @@ Java jest językiem programowania ogólnego przeznaczenia, zorientowanym obiekto
 Dzięki wieloplatformowości stworzony program może być uruchamiany na każdym systemie operacyjnym z wirtualną maszyną Javy.
 
 W projekcie aplikacji wykorzystano język Java w wersji 8. 
-Pozwoliło to na użycie w projekcie takich elementów języka, jak: wyrażenia lambda i interfejsy funkcyjne (skracające zapis i zwiększające czytelność kodu) oraz strumieni (stream API) - do szybkiego i przejrzystego przekształcania i filtracji danych.
+Pozwoliło to na użycie w projekcie takich elementów języka, jak: wyrażenia lambda i interfejsy funkcyjne (skracające zapis i zwiększające czytelność kodu) oraz strumienie (stream API) - do szybkiego i przejrzystego przekształcania i filtracji zbiorów danych.
 
 \subsection{JavaFX}
 JavaFX jest platformą do tworzenia aplikacji desktopowych (okienkowych) pisanych w języku Java.
-Od wersji 8 JavaFX została właczona do platformy Java Standard Edition.
-Jest to nowsze, obecnie zalecane przez firmę {\it Oracle} rozwiązanie do tworzenia aplikacji okienkowych. Nie zaleca się natomiast korzystania z bibliotek {\it AWT} lub {\it Swing} \cite{javafx-replacing-swing}.
+Od wersji 8 JavaFX została włączona do platformy Java Standard Edition.
+Jest to nowsze, obecnie zalecane przez firmę {\it Oracle} rozwiązanie do tworzenia aplikacji okienkowych. Niezalecane jest natomiast korzystanie z bibliotek {\it AWT} lub {\it Swing} \cite{javafx-replacing-swing}.
 
-Do zbudowania widoków aplikacji wykorzystano specjalny format plików FXML, w którym to JavaFX przechowuje informację o właściwościach komponentów interfejsu użytkownika oraz o ich wzajemnych relacjach.
+Do zbudowania widoków aplikacji wykorzystano specjalny format plików FXML, w którym to JavaFX przechowuje informację o właściwościach komponentów interfejsu użytkownika oraz o ich wzajemnych relacjach i położeniu na ekranie.
 
 \subsection{Spring}
 \subsubsection{Spring Framework}
@@ -29,24 +29,27 @@ W zaprojektowanej aplikacji Spring jest wykorzystywany m.in. do automatycznego d
 Spring Boot jest rozwiązaniem przyspieszającym proces konfiguracji, tworzenia oraz uruchamiania aplikacji opartych na Spring Framework.
 Jest to zestaw wstępnie skonfigurowanych komponentów, dzięki którym jeszcze łatwiejsze staje się dołączenie nowych bibliotek zewnętrznych do projektu. Celem jest pozbycie się zbędnych konfiguracji w plikach XML a zastąpienie ich domyślnym zestawem konfiguratorów, gdyż większość komponentów w aplikacji zazwyczaj konfigurowana jest w typowy, powtarzalny sposób \cite{docs-springboot}.
 
-Spring Boot dostarcza do aplikacji symulacyjnej wiele zależności do bibliotek (np. logback) oraz dostarcza konfigurację dla systemu budowania Maven.
+Spring Boot dostarcza do aplikacji symulacyjnej wiele zależności do bibliotek (np. logback) oraz dostarcza wsparcie dla konfiguracji systemu budowania Maven.
 \subsubsection{Spring Boot JavaFx Support}
-{\it Spring Boot JavaFx Support} jest niewielką biblioteką umożliwiającą użycie Spring Boot w jednym projekcie w połączeniu z JavaFx.
+{\it Spring Boot JavaFx Support} jest niewielką biblioteką umożliwiającą użycie Spring Boot w jednym projekcie w połączeniu z JavaFX.
 
 \subsection{jUnit i Test-driven development}
 \label{ch:junit-tdd}
 jUnit jest frameworkiem do wykonywania testów jednostkowych dla programów napisanych w Javie. Testy jednostkowe weryfikują poprawność działania pojedynczych komponentów aplikacji. Uruchamiane są automatycznie podczas budowania projektu.
 
-W projekcie zastosowano podejście TDD (ang. {\it Test-driven development}) dla procesu rozwoju oprogramowania. Dotyczy to w szczególności rozwoju logiki silnika planowania tras dla algorytmu A* i WHCA*. Algorytm WHCA* jest na tyle złożony, że zdecydowano się najpierw napisać szczególne przypadki testowe, które określały jakie dane wyjściowe (zaplanowane trajektorie) są oczekiwane przy zadanych danych wejśiowych. Dopiero po takim pokryciu testami przystąpiono do implementacji algorytmu. Warunkiem poprawności zaimplementowanego algorytmu było, aby wszystkie testy jednostkowe wykonały się prawidłowo. Na tym właśnie podejściu opiera się proces TDD (ang. {\it Test-driven development}), który jest naturalnie wspierany przez framework jUnit.
+W projekcie zastosowano podejście TDD (ang. {\it Test-driven development}) dla procesu rozwoju oprogramowania. Dotyczy to w szczególności rozwoju logiki silnika planowania tras dla algorytmu A* i WHCA*. Algorytm WHCA* jest na tyle złożony, że zdecydowano się najpierw napisać szczególne przypadki testowe, które określały jakie dane wyjściowe (zaplanowane trajektorie) są oczekiwane przy zadanych danych wejściowych. Dopiero po takim pokryciu testami przystąpiono do implementacji algorytmu. Warunkiem poprawności zaimplementowanego algorytmu było, aby wszystkie testy jednostkowe wykonały się prawidłowo. Na tym podejściu opiera się proces TDD (ang. {\it Test-driven development}), który jest naturalnie wspierany przez framework jUnit.
 
-Bibliotekę jUnit wykorzystano także do wykonania testów skuteczności algorytmów i wszystkich pozostałych testów opisanych w rozdziale \ref{ch:tests}. Pomimo, że nie jest to typowym zastosowaniem biblioteki jUnit, to jednak umożliwia to wykonanie fragmentów logiki w innych, niestandardowych trybach pracy bez zmiany działania głównej aplikacji w normalnym trybie.
+Bibliotekę jUnit wykorzystano także do automatycznego wykonania obszernych testów skuteczności algorytmów i wszystkich pozostałych testów opisanych w rozdziale \ref{ch:tests}. Zastosowanie w tym celu biblioteki jUnit, umożliwia wykonanie fragmentów logiki w innych, niestandardowych trybach pracy, bez jednoczesnej zmiany działania głównej aplikacji.
 
 \subsection{Maven}
 {\it Apache Maven} jest narzędziem do automatyzacji procesu budowania aplikacji napisanych w języku Java.
-Przy pierwszym wykorzystaniu zadeklarowanych bibliotek Maven automatycznie pobiera biblioteki ze swojego repozytorium i rozwiązuje wszystkie brakujące zależności do nich. Użytkownik zatem nie musi martwić się o brakujące biblioteki i o manualne dołaczanie ich do projektu.
+Przy pierwszym wykorzystaniu zadeklarowanych bibliotek Maven automatycznie pobiera biblioteki ze swojego repozytorium i rozwiązuje wszystkie brakujące zależności do nich. Użytkownik zatem nie musi martwić się o brakujące biblioteki i o manualne dołączanie ich do projektu.
 
-Narzędzie to zostało użyte w aplikacji do kompilacji ze źródeł oraz uruchamiania. Konfiguracja procesu budowania dla Maven jest wspomagana przez Spring Boot. Uruchomienie programu z kodów źródłowych następuje po wykonaniu w systemie polecenia: $mvn spring-boot:run$.
-Do kompilacji i uruchomienia całej aplikacji wystarczy zatem, aby w systemie operacyjnym było zainstalowane środowisko Java JDK oraz {\it Apache Maven}. Wszystkie potrzebne biblioteki zostaną pobrane automatycznie przez sieć Internet.
+Narzędzie to zostało użyte w aplikacji do kompilacji ze źródeł oraz uruchamiania. Konfiguracja procesu budowania dla Maven jest wspomagana przez Spring Boot. Zbudowanie programu z kodów źródłowych i uruchomienie następuje po wykonaniu w systemie polecenia:
+\begin{lstlisting}[language=bash]
+mvn spring-boot:run
+\end{lstlisting}
+Do kompilacji i uruchomienia całej aplikacji wystarczy zatem, aby w systemie operacyjnym było zainstalowane oprogramowanie JDK SE w wersji 8 (lub wyższej) oraz {\it Apache Maven}. Wszystkie brakujące biblioteki powinny zostać pobrane automatycznie z sieci Internet.
 
 \subsection{IntelliJ IDEA}
 IntelliJ IDEA jest zintegrowanym środowiskiem deweloperskim przeznaczonym głównie do rozwoju aplikacji w języku Java.
@@ -68,17 +71,24 @@ Do śledzenia i zapisywania zmian wykorzystano w projekcie system kontroli wersj
 Kody źródłowe powstałego programu są ogólnie dostępne w repozytorium git na portalu GitHub \cite{github-coop-pathfinder}.
 
 \subsubsection{Logback}
-Do zapisu dziennika zdarzeń oraz błędów w aplikacji została wykorzystana biblioteka {\it Logback}, która jest domyślnie dostarczana do aplikacji i skonfigurowana dzięki {\it Spring Boot}.
+Do zapisu dziennika zdarzeń oraz błędów zaistniałych w aplikacji została wykorzystana biblioteka {\it Logback}, która jest domyślnie dostarczana do aplikacji i skonfigurowana dzięki {\it Spring Boot}.
 
 
 \section{Struktura aplikacji}
 \subsection{Wzorzec Model-View-Presenter}
 \label{ch:app-mvp}
-Bardzo istotnym aspektem projektowanego oprogramowania okazała się być jego architektura. Przed będącym przedmiotem tego rozdziału symulatorem ruchu robotów zostało postawione wymaganie możliwości wykonania symulacji zarówno w trybie graficznej wizualizacji w czasie rzeczywistym, jak i w trybie przeprowadzenia obszernych testów algorytmów w celu zebrania potrzebnych danych statystycznych.
+Bardzo istotnym aspektem projektowanego oprogramowania okazała się być jego architektura. Przed będącym przedmiotem tego rozdziału symulatorem ruchu robotów zostało postawione wymaganie możliwości wykonania symulacji zarówno w trybie graficznej wizualizacji w czasie rzeczywistym, jak i w trybie przeprowadzenia obszernych automatycznych testów algorytmów w celu zebrania potrzebnych danych statystycznych.
 
 Oprogramowanie zostało zorganizowane w architekturę warstwową.
 Główny szkielet aplikacji zbudowany jest w oparciu o wzorzec architektoniczny MVP (ang. {\it Model-View-Presenter} - Model-Widok-Prezenter), będący pochodną wzorca MVC (ang. {\it Model-View-Controller}).
-Takie podejście zapewnia separację głównej logiki dziedziny programu od warstwy interfejsu użytkownika \cite{mvp}.
+Takie podejście zapewnia separację głównej logiki dziedziny programu od warstwy interfejsu użytkownika \cite{mvp} (por. rys. \ref{fig:app-mvp}).
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\columnwidth]{img/app/mvp}
+	\caption{Relacja pomiędzy poszczególnymi elementami wzorca architektonicznego Model-View-Presenter. Źródło: \cite{mvp}}
+	\label{fig:app-mvp}
+\end{figure}
 
 Wybrano podejście MVP, gdyż (w porównaniu do MVC) oferuje ono łatwiejszą testowalność kodu, możliwość "odczepiania" i wymieniania poszczególnych warstw (w celach testowania). Zapewnia to także większą separację modelu z widokiem, które nie muszą "wiedzieć" o sobie, a komunikują się jedynie za pośrednictwem prezentera.
 
@@ -89,14 +99,7 @@ Każdą zaimplementowaną metodę symulacji ruchu robotów zamknięto w osobnych
 	\item {\bf Prezenter} deleguje dane otrzymane z modelu do widoku, uprzednio przygotowując je do wyświetlenia. Jest w nim zawarta logika warstwy prezentacji.
 \end{itemize}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.6\columnwidth]{img/app/mvp}
-	\caption{Relacja pomiędzy poszczególnymi elementami wzorca architektonicznego Model-View-Presenter. Źródło: \cite{mvp}}
-	\label{fig:app-mvp}
-\end{figure}
-
-Taka separacja warstw prezentacji od warstwy logiki umożliwia łatwe "odpięcie" logiki od interfejsu użytkownika i wykorzystanie jej do wykonania testów skuteczności metod planowania. Pozwala to wtedy na wykonanie "przyspieszonej" symulacji poprzez sekwencyjne uruchamianie kroków symulacji tak szybko, jak to możliwe, zamiast oczekiwania na wyzwolenie ich przez kolejne cykle zegara.
+Taka separacja warstw prezentacji od warstwy logiki umożliwia łatwe "odpięcie" logiki modelu od interfejsu użytkownika i wykorzystanie jej do wykonania testów skuteczności metod planowania. Pozwala to na wykonanie "przyspieszonej" symulacji poprzez sekwencyjne uruchamianie kroków symulacji tak szybko, jak to możliwe, bez oczekiwania na wyzwolenie ich przez kolejne cykle zegara.
 Klasy modelu były projektowane właśnie z myślą o możliwości wykorzystania ich zarówno w wizualizacji w czasie rzeczywistym, jak i w przyspieszonej symulacji w celu przeprowadzenia testów.
 
 \subsection{Wielowątkowość}

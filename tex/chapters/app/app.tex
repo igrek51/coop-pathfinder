@@ -1,7 +1,7 @@
 \chapter{Oprogramowanie symulacyjne}
 \label{ch:simulation-app}
 
-Na potrzeby pracy zostało stworzone oprogramowanie symulacyjne, które posłużyło do przeprowadzenia testów skuteczności algorytmów planowania tras oraz wizualizacji ich działania.
+Na potrzeby pracy zostało stworzone oprogramowanie symulacyjne, które posłużyło do przeprowadzenia testów skuteczności algorytmów planowania tras oraz wizualizacji działania metod.
 W tym rozdziale opisano techniczne rozwiązania wykorzystane podczas tworzenia oprogramowania.
 W aplikacji zostały zaimplementowane algorytmy planowania tras opisane w rozdziale \ref{ch:alg-impl}.
 Prezentacja ich działania odbywa się poprzez wizualizację ruchu robotów mobilnych w czasie rzeczywistym. 
@@ -16,7 +16,7 @@ Aplikacja umożliwia dowolne definiowanie przez użytkownika środowiska, w któ
 
 Aplikacja przeprowadza symulację ruchu robotów w czasie rzeczywistym. W oprogramowaniu zostały zaimplementowane trzy algorytmy planowania ruchu robotów. Są to:
 \begin{itemize}
-	\item Metoda pól potencjałowych (por. \ref{ch:potential-fields})
+	\item Metoda pól potencjałowych (por. \ref{ch:theory-potential-fields})
 	\item Local-Repair A* (por. \ref{ch:alg-collision-avoid})
 	\item WHCA*3 - Windowed Hierarchical Cooperative A* z dynamicznym przydziałem priorytetów oraz skalowaniem okna czasowego (por. \ref{ch:alg-whca}, \ref{ch:alg-priorities-allocation})
 \end{itemize}

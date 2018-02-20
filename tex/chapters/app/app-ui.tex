@@ -1,17 +1,17 @@
 \section{Graficzny interfejs użytkownika}
 Graficzny interfejs użytkownika stanowi desktopowa aplikacja okienkowa, której głównym elementem jest panel zakładek. Każda z zakładek reprezentuje wizualizację osobnego algorytmu planowania ruchu robotów.
 
-Z myślą o spopularyzowaniu opracowanych algorytmów, elementy interfejsu użytkownika (takie, jak etykiety lub przyciski) posiadają tekst w języku angielskim.
+Z myślą o spopularyzowaniu i rozpowszechnieniu opracowanych algorytmów, elementy interfejsu użytkownika (takie, jak etykiety lub przyciski) posiadają tekst w języku angielskim.
 
-Pod każdą z zakładek aplikacji układ wizualny jest podobny. Poniżej opisano graficzny interfejs użytkownika wspólny dla wszystkich zakładek.
+Pod każdą z zakładek aplikacji układ wizualny jest podobny. Poniżej opisano graficzny interfejs użytkownika wspólny dla wszystkich zakładek (por. rys. \ref{fig:robopath-ui-whca}).
 
-Po prawej stronie znajduje się panel przycisków akcji oraz panel rozwijanych właściwości z konfiguracją parametrów mapy oraz symulacji. Natomiast po lewej stronie wyświetlany jest obecny stan mapy i położenia robotów mobilnych. Mapa wyświetlana jest z zaznaczeniem linii siatki pól obrazujących liczbę pól na mapie. Przeszkody wyświetlane są jako czarne kwadraty, zaś roboty jako kolorowe wypełnione koła.
-Kliknięcie prawym przyciskiem myszy (również z możliwością ciągłęgo przytrzymania) powoduje wstawienie lub usunięcie przeszkody na mapie w odpowiednich polach.
-Punkty docelowe, do których podążąją roboty wyświetlane są jako krzyżyki w kolorze takim samym, jaki został przypisany do robota. Liczba robotów nie jest ograniczona przez aplikację. Aby odróżniać roboty między sobą, każdy robot otrzymuje inny kolor wynikającą z równego podziału palety HSV według barwy (ang. {\it hue}) na liczbę robotów.
+Po prawej stronie znajduje się panel przycisków akcji oraz panel rozwijanych właściwości z konfiguracją parametrów mapy oraz symulacji. Natomiast po lewej stronie wyświetlany jest obecny stan mapy i położenie robotów mobilnych. Mapa wyświetlana jest z zaznaczeniem linii siatki pól obrazujących liczbę pól na mapie. Przeszkody wyświetlane są jako czarne kwadraty, zaś roboty jako kolorowe wypełnione koła.
+Kliknięcie prawym przyciskiem myszy (również z możliwością ciągłego przytrzymania) powoduje wstawienie lub usunięcie przeszkody na mapie w odpowiednich polach.
+Punkty docelowe, do których podążąją roboty wyświetlane są jako krzyżyki w kolorze takim samym, jaki został przypisany do robota. Liczba robotów nie jest ograniczona przez aplikację. Aby odróżniać roboty między sobą, każdy robot otrzymuje inny kolor wynikający z równomiernego podziału na liczbę robotów zakresu barwy (ang. {\it hue}) z palety HSV.
 
 Okno aplikacji jest skalowalne i w pełni responsywne. Po zmianie rozmiaru okna przez użytkownika rozmiar mapy dopasowuje się do maksymalnego obszaru, jaki może zająć (z zachowaniem proporcji wymiarów mapy).
 
-Symulacja ruchu robotów rozpoczyna się jak tylko zostanie wyznaczony punkt docelowy dla robota. Dzięki temu, że wykonywanie obliczeń planowania tras zostało przeniesione do osobnych wątków, uzyskano płynność animacji ruchu robotów mobilnych. Uniknięto również problemu braku odpowiedzi interfejsu użytkownika podczas planowania trajektorii.
+Symulacja ruchu robotów rozpoczyna się, gdy tylko zostanie wyznaczony punkt docelowy dla robota. Dzięki temu, że wykonywanie obliczeń planowania tras zostało przeniesione do osobnych wątków, uzyskano płynność animacji ruchu robotów mobilnych. Uniknięto również problemu braku odpowiedzi okna interfejsu użytkownika podczas planowania trajektorii.
 
 \subsection{Metoda pól potencjałowych}
 Na pierwszej zakładce "Potential fields" w oknie aplikacji przedstawiona jest wizualizacja metody pól potencjałowych.
@@ -25,9 +25,9 @@ Na pierwszej zakładce "Potential fields" w oknie aplikacji przedstawiona jest w
 
 Na panelu konfiguracji parametrów, użytkownik może wybrać dowolny rozmiar mapy, podając szerokość i wysokość wyrażone w liczbie pól.
 Po naciśnięciu przycisku "Reset map" tworzona jest nowa mapa o zadanych rozmiarach, natomiast pozycja początkowa robota zostaje wylosowana.
-Naciśnięcie przycisku "Random target" powoduje wyznaczenie losowego punktu na mapie jako cel dla robota i rozpoczęcie podążąnia za nim.
+Naciśnięcie przycisku "Random target" powoduje wyznaczenie losowego punktu na mapie jako celu dla robota i rozpoczęcie podążąnia za nim.
 
-Klikając lewym przyciskiem myszy na mapie, Użytkownik może manualnie wskazać punkt docelowy dla robota.
+Klikając lewym przyciskiem myszy na mapie, użytkownik może manualnie wskazać punkt docelowy dla robota.
 Planowanie i symulacja ruchu robota odbywa się w trybie ciągłym. Robot nie jest ograniczony zdyskretyzowaną siatką pól na mapie, jego przestrzeń poruszania się jest ciągła.
 
 \subsection{Local-Repair A*}
@@ -38,10 +38,10 @@ Na panelu konfiguracji parametrów w sekcji "Map size", użytkownik może wybra�
 Po naciśnięciu przycisku "Reset map" tworzona jest nowa, pusta mapa o zadanych rozmiarach.
 W sekcji "Robots" użytkownik wybiera liczbę robotów (do automatycznego rozmieszczenia) oraz ma możliwosć zaznaczenia opcji "auto-assign next target", co skutkuje automatycznym wyznaczaniem kolejnego punktu docelowego, dla robota, który dotarł do poprzedniego celu.
 Przycisk "Generate maze" pozwala na wygenerowanie labiryntu przy użyciu generatora map (por. \ref{ch:mazegen}).
-Przycisk "Place robots" usuwa wszystkie roboty z mapy i umieszcza na niej wybraną przez użytkownika liczbę robotów w losowych miejscach na mapie (za wyjątkiem zajętych przez przeszkody oraz inne roboty).
+Przycisk "Place robots" usuwa wszystkie roboty z mapy i umieszcza na niej wybraną przez użytkownika liczbę robotów w losowych miejscach na mapie (z pominięciem pól zajętych przez przeszkody oraz inne roboty).
 Przycisk "Random target" losuje punkty docelowe dla wszystkich robotów. Każdy z agentów otrzymuje inny punkt docelowy (nie będący przeszkodą), do którego zmierza. Nadanie punktów docelowych powoduje rozpoczęcie planowania trajektorii i symulację ruchu agentów.
 
-Klikając lewym przyciskiem myszy na mapie, Użytkownik może utworzyć nowego robota. Nowemu agentowi zostaje przydzielony punkt docelowy w miejscu, w którym lewy przycisk myszy został zwolniony.
+Klikając lewym przyciskiem myszy na mapie, użytkownik może utworzyć nowego robota. Nowemu agentowi zostaje przydzielony punkt docelowy w miejscu, w którym lewy przycisk myszy został zwolniony.
 Dodatkowo pokazywane są zaplanowane ścieżki dla każdego robota. Wyświetlane są jako linie łamane w kolorze takim samym, jaki odpowiada robotowi.
 Nad robotem, w jego aktualnym położeniu wyświetlany jest jego numer (identyfikator).
 
