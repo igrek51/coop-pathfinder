@@ -6,7 +6,7 @@ Local-Repair A\* path-finding algorithm simulation (click to play video):
 [![Local-Repair A\* path-finding algorithm simulation](http://img.youtube.com/vi/RVZFUfl6UFk/0.jpg)](http://www.youtube.com/watch?v=RVZFUfl6UFk "Local-Repair A\* path-finding algorithm simulation (click to play video)")
 
 ## How to build & run
-In order to build and run application, you only need JDK 8 and Maven installed.
+In order to build and run application, you only need to have JDK SE 8 and Maven already installed.
 ```
 $ cd coop-pathfinder
 $ mvn spring-boot:run
