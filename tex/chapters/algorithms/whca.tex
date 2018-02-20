@@ -89,7 +89,21 @@ Tym razem okno czasowe jest już przesunięte o odpowiednią liczbę wykonanych 
 \subsection{Uzyskane wyniki}
 % Jak wykazały testy skuteczności algorytmu WHCA* w kooperacyjnym doprowadzaniu robotów do celu (por. \ref{ch:tests}), algorytm WHCA* potrafi rozwiązywać pewne zagadnienia występowania wąskich gardeł. 
 Obserwacja zachowania robotów symulowanego metodą WHCA*1 pozwala stwierdzić, że roboty wykazują bardziej "inteligentne" zachowanie w porównaniu np. do metody LRA*.
-W pewnych sytuacjach potrafią kooperować ze sobą, schodzić sobie z drogi, nawet, gdy już dotarły do swojego celu.
+W pewnych sytuacjach potrafią kooperować ze sobą, schodzić sobie z drogi, nawet, gdy już dotarły do swojego celu (por. rys. \ref{fig:whca-giveway}).
+Warto dodać, że w sytuacji przedstawionej na rysunku \ref{fig:whca-giveway} metoda WHCA*1 nie znalazłaby rozwiązania, gdyby roboty miały odwrotnie przydzielone priorytety.
+\begin{figure}
+	\centering
+		\subfloat[]{\includegraphics[width=0.3\columnwidth]{img/robopath/whca-giveway-1}}
+		\qquad
+		\subfloat[]{\includegraphics[width=0.3\columnwidth]{img/robopath/whca-giveway-2}}
+		\qquad
+		\subfloat[]{\includegraphics[width=0.3\columnwidth]{img/robopath/whca-giveway-3}}
+	\caption{Przykładowa sytuacja "przepuszczania się" robotów uzyskana metodą WHCA*1:
+	(a) Wyznaczona trasa przez robota 2 koliduje z aktualnym położeniem robota 1, który dotarł już do celu.
+	(b) Robot 1 schodzi z drogi robotowi 2, ukrywając się we "wnęce".
+	(c) Robot 2 może bezkolizyjnie dotrzeć do celu. Następnie robot 1 może powrócić do celu.}
+	\label{fig:whca-giveway}
+\end{figure}
 % Wstępne obserwacje pozwalają stwierdzić, że algorytm radzi sobie stosunkowo dobrze nawet na mapach z wąkimi gardłami i dużą liczbą robotów.
 
 Obszerne testy skuteczności oraz innych wskaźników zaprojektowanej metody WHCA*1 zostały opisane dokładniej w dalszym rozdziale \ref{ch:tests}.
