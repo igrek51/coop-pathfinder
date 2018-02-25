@@ -14,6 +14,7 @@ import igrek.robopath.common.TileMap;
 import igrek.robopath.simulation.common.ResizableCanvas;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
@@ -65,25 +66,28 @@ public class LRAPresenter {
 	
 	@FXML
 	public void initialize() {
-		logger.info("initializing presenter " + this.getClass().getSimpleName());
-		
-		drawAreaContainer.widthProperty().addListener(o -> drawAreaContainerResized());
-		drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
-		
-		drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-			mousePressedMap(event);
+		Platform.runLater(() -> { // fixing fxml retarded initialization
+			logger.info("initializing " + this.getClass().getSimpleName());
+			
+			drawAreaContainerResized();
+			drawAreaContainer.widthProperty().addListener(o -> drawAreaContainerResized());
+			drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
+			
+			drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+				mousePressedMap(event);
+			});
+			drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+				mouseDraggedMap(event);
+			});
+			drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+				mouseReleased(event);
+			});
+			
+			params.init(this);
+			params.sendToUI();
+			startSimulationTimer();
+			startRepaintTimer();
 		});
-		drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-			mouseDraggedMap(event);
-		});
-		drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-			mouseReleased(event);
-		});
-		
-		params.init(this);
-		params.sendToUI();
-		startSimulationTimer();
-		startRepaintTimer();
 	}
 	
 	TileMap getMap() {

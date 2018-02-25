@@ -1,6 +1,7 @@
 package igrek.robopath.simulation.container;
 
 import de.felixroske.jfxsupport.FXMLController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -20,10 +21,12 @@ public class ContainerController {
 	
 	@FXML
 	public void initialize() {
-		containerTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-		// select default tab
-		SingleSelectionModel<Tab> selectionModel = containerTabPane.getSelectionModel();
-		selectionModel.select(DEFAULT_TAB_INDEX);
+		Platform.runLater(() -> { // fixing fxml retarded initialization
+			containerTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+			// select default tab
+			SingleSelectionModel<Tab> selectionModel = containerTabPane.getSelectionModel();
+			selectionModel.select(DEFAULT_TAB_INDEX);
+		});
 	}
 	
 }
