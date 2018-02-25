@@ -479,7 +479,7 @@ Przykład uwięzienia robota w takiej "studni potencjału" został przedstawiony
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\columnwidth]{img/robopath/field-potential-hole}
-	\caption{Robot uwięziony w studni potencjału. Zerowa siła wypadkowa nie pozwala mu dotrzeć do celu.}
+	\caption{Robot prowadzony metodą pól potencjałowych uwięziony w studni potencjału. Zerowa siła wypadkowa nie pozwala mu dotrzeć do celu.}
 	\label{fig:test-field-potential-hole}
 \end{figure}
 
@@ -493,7 +493,7 @@ Warto zaznaczyć, że nie dysponujemy zupełną metodą planowania tras, która 
 Niestety brak takiego źródła referencyjnego nie pozwala w pełni ocenić skuteczności badanych metod. W szczególności nie można stwierdzić, czy testowana metoda planowania nie uzyskała rozwiązania z powodu własnych ograniczeń, czy też z powodu tego, że wylosowany układ przeszkód i robotów był sam w sobie niemożliwy do rozwiązania.
 Możliwe natomiast jest porównanie rezultatów różnych metod planowania w tych samych warunkach początkowych, co może dostarczyć pewnych wniosków.
 
-Należy pamiętać, że ze względu na wybraną technologię realizacji (Java), pomiar czasu obliczeń może być obarczony pewnymi błędami wynikającymi z narzutu wirtualnej maszyny JVM oraz działania mechanizmu zwalniania pamięci przez Garbage Collector, co wstrzymuje aplikację.
+Należy pamiętać, że ze względu na wybraną technologię realizacji (Java), pomiar czasu obliczeń mógł być obarczony pewnymi błędami wynikającymi z narzutu wirtualnej maszyny JVM oraz działania mechanizmu zwalniania pamięci przez Garbage Collector, co wstrzymuje aplikację na pewien czas.
 Na takie zdarzenie nie ma wpływu programista, a może ono wystąpić w dowolnym momencie działania aplikacji, powodując przekłamania zmierzonego czasu.
 
 Wyniki testów potwierdziły oczekiwania w stosunku do skuteczności porównywanych metod.

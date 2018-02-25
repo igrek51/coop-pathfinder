@@ -1,61 +1,63 @@
 \chapter{Podsumowanie}
 \label{ch:podsumowanie}
-
-Celem pracy było stworzenie własnej metody planowania bezkolizyjnych tras dla zespołu robotów mobilnych i wizualizacja jej działania w oprogramowaniu symulacyjnym.
+%TODO uporządkować i przeredagować
+Celem pracy było stworzenie własnej metody planowania bezkolizyjnych tras dla zespołu robotów mobilnych oraz wizualizacja jej działania w oprogramowaniu symulacyjnym.
 Dokonano tego na podstawie przeglądu najczęściej wykorzystywanych podejść do kooperacyjnego planowania tras.
-Efektem pracy jest m.in. własna implementacja metody WHCA*3, będącej rozwinięciem algorytmu WHCA* ({\it Windowed Hierarchical Cooperative A*}) o dodatkowe procedury dynamicznego przydziału priorytetów oraz rozszerzalnego okna czasowego.
-Wykonanie obszernych testów automatycznie zarządzanych symulacji pozwoliło stwierdzić, że metoda WHCA*3 uzyskała największą skuteczność w wyznaczaniu bezkolizyjnych tras i prowadzeniu agentów do celów.
-
-Należy zaznaczyć, że opisywane w pracy metody znajdują zastosowanie w specyficznych środowiskach z bardzo dużą liczbą przeszkód, gdzie często tworzą się "wąskie gardła" utrudniające bezkolizyjną nawigację robotów. W środowiskach innego typu (z mniejszą liczbą przeszkód) zadowalające wyniki mogą uzyskać dużo prostsze algorytmy.
+Efektem pracy jest m.in. własna implementacja metody WHCA*3, będąca rozwinięciem algorytmu WHCA* ({\it Windowed Hierarchical Cooperative A*}) o dodatkowe procedury dynamicznego przydziału priorytetów oraz zmiennego okna czasowego.
+Wykonanie obszernych testów automatycznie zarządzanych symulacji pozwoliło stwierdzić, że metoda WHCA*3 uzyskała największą skuteczność w wyznaczaniu bezkolizyjnych tras i prowadzeniu agentów do ich celów.
 
 Problem kooperacyjnego znajdowania tras pojawia się nie tylko w robotyce, ale jest również popularny m.in. w grach komputerowych (np. strategiach czasu rzeczywistego), gdzie wymagane jest wyznaczanie bezkolizyjnych dróg dla wielu jednostek, unikając wzajemnego blokowania się.
-W wielu przypadkach metody do planowania bezkolizyjnych tras w systemach wieloagentowych mogą być wykorzystywane zamiennie zarówno do wyznaczania trajektorii robotów mobilnych, jak i w grach komputerowych, np. strategiach czasu rzeczywistego do planowania tras wielu jednostek.
-W wielu grach zauważa się brak wydajnych i efektywnych algorytmów planowania dróg, co może być spowodowane brakiem ogólnie dostępnych bibliotek {\it open-source} do rozwiązania problemu typu {\it Cooperative Pathfinding}. Świadczy to potrzebie rozwoju i rozpowszechnienia tych metod, co także było celem tej pracy i zostało zrealizowane poprzez opublikowanie kodów źródłowych aplikacji na portalu dla projektów typu {\it open-source}.
+W wielu przypadkach metody do planowania bezkolizyjnych tras w systemach wieloagentowych mogą być wykorzystywane zamiennie zarówno do wyznaczania trajektorii robotów mobilnych, jak i w grach komputerowych.
+Zauważa się brak ogólnie dostępnych, wydajnych i efektywnych algorytmów kooperacyjnego planowania dróg.
+Świadczy to potrzebie rozwoju i rozpowszechnienia metod tego typu, co także było celem tej pracy i zostało zrealizowane poprzez opublikowanie kodów źródłowych opracowanej aplikacji na portalu dla projektów typu {\it open-source}.
+
+Warto dodać, że opisywane w pracy metody znajdują zastosowanie w specyficznych środowiskach z bardzo dużą liczbą przeszkód, gdzie często tworzą się "wąskie gardła" utrudniające bezkolizyjną nawigację robotów.
+W środowiskach innego typu (z mniejszą liczbą przeszkód) zadowalające wyniki mogą uzyskać już dużo prostsze algorytmy.
+Omówione metody znajdują zastosowanie w sytuacjach, w których wspólnym celem wielu agentów jest bezpieczne (bezkolizyjne) dotarcie wszystkich agentów do indywidualnych celów.
+Zaimplementowane i przetestowane metody to: A*, LRA*, trzy warianty metody WHCA* oraz metoda pól potencjałowych.
+Metoda pól potencjałowych nie uzyskała zadowalających rezultatów, dlatego nie była dalej testowana w obszernych eksperymentach.
+
+Na potrzeby pracy zostało stworzone oprogramowanie symulacyjne, które posłużyło do przeprowadzenia testów skuteczności algorytmów planowania tras oraz wizualizacji działania metod.
+Wizualizacja ruchu robotów mobilnych odbywa się w czasie rzeczywistym.
+Aplikacja umożliwia dowolne definiowanie przez użytkownika środowiska, w którym poruszają się roboty.
+
+% testy
+W ramach pracy nie zostały przeprowadzone testy w rzeczywistym środowisku z robotami mobilnymi, gdyż istotą pracy jest sam algorytm planowania tras.
+Ponadto, w symulacji łatwiej odwzorować jest problem kolizji robotów oraz przeprowadzić liczne, automatyczne testy w losowo wygenerowanych środowiskach różnego typu.
+Do generowania losowego układu przeszkód wykorzystano własny generator labiryntów, który zapewnia wygenerowanym mapom pewne pożądane właściwości.
+Na potrzeby wszystkich testów efektywności oraz wydajności badanych metod przeprowadzono łącznie $76\ 800$ automatycznie zarządzanych symulacji ruchu robotów.
+
+Testy zostały przeprowadzone w dużej ilości, w losowych środowiskach, a następnie posłużono się statystyką w celu generalizacji uzyskanych rezultatów.
+Rezultaty testów dla różnych metod planowania porównywane były w tych samych warunkach początkowych.
+% wyniki testów
+Wyniki testów częstotliwości występowania kolizji pokazały, że w badanych środowiskach zagadnienie unikania kolizji jest bardzo istotne i prosty algorytm A* nie jest wystarczający.
+
+Zgodnie z oczekiwaniami uzyskana skuteczność metody WHCA*1 rośnie monotonicznie wraz ze wzrostem rozmiaru okna czasowego, będącego parametrem algorytmu.
+Niestety drastycznie rośnie wtedy także złożonośc obliczeniowa algorytmu, co nie pozwala na użycie przesadnie dużych rozmiarów okna i zmusza do bardziej przemyślanego doboru wielkości okna czasowego.
+
+Wyniki testów potwierdziły oczekiwania w stosunku do skuteczności porównywanych metod.
+Najwyższą skuteczność w planowaniu bezkolizyjnych tras dla wielu robotów uzyskała autorska metoda WHCA*3.
+Brak zastosowania skalowania okna czasowego skutkował niższą skutecznością metody WHCA*2.
+W badanych środowiskach najgorzej wypadły metody LRA* oraz WHCA*1.
+
+We wszystkich testowanych środowiskach nie zdarzyło się ani razu, aby to metoda LRA* doprowadziła wszystkie roboty do celu, podczas gdy metoda WHCA*3 nie odnalazła rozwiązania.
+Zawsze metoda WHCA*3 była tak samo lub bardziej efektywna od algorytmu LRA*.
+Ponadto można stwierdzić, że zachodzi nierówność pomiędzy skutecznościami metod WHCA*1, WHCA*2 i WHCA*3.
+Algorytm WHCA*1 jest najmniej skuteczny, metoda WHCA*2 jest tak samo lub bardziej efektywna. Natomiast WHCA*3 ma najwyższą skuteczność spośród trzech wariantów badanych podejść.
+Oznacza to, że jeśli algorytm WHCA*3 nie odnalazł żadnego rozwiązania, to tym bardziej nie uda się tego dokonać przy pomocy WHCA*2 i WHCA*1.
+Metoda LRA* w nielicznych przypadkach potrafiła uzyskać wiekszą skuteczność niż WHCA*1 i WHCA*2, natomiast nie zdarzyło się tak, aby dokonała lepszego planowania niż WHCA*3.
+
+Na dużej mapie (środowisko M-35x35-5R) od metody WHCA*1 skuteczniejsza okazała się być metoda LRA*. Spowodowane jest to prawdopodobnie tym, że rozmiar okna czasowego w metodzie WHCA*1 jest stały (zależny od rozmiaru mapy) i okazał się być zbyt mały, aby znaleźć rozwiązanie. Dla metody LRA* w ogóle nie isnieje pojęcie okna czasowego a poszukiwanie alternatywnych dróg nie jest ograniczone długością.
+
+Wraz ze wzrostem liczby robotów w metodzie WHCA*2 rośnie także początkowa wartość okna czasowego.
+Od pewnej wielkości wzrost ten nie wpływa już na skuteczność w znajdowaniu poprawnych rozwiązań układu i metoda WHCA*2 sprowadza się do metody WHCA*3, co można zaobserwować w wynikach przeprowadzonych testów.
+
+Obserwacja uzyskanych pomiarów średniej liczby kroków symulacji oraz czasu planowania pozwala stwierdzić, że algorytmy WHCA*1, WHCA*2, WHCA*3 mają wykładniczą złożoność obliczeniową, podczas gdy metoda LRA* charakteryzuje się liniową złożonością.
+Natomiast metoda LRA* potrzebowała większej liczby kroków symulacji do doprowadzenia wszystkich robotów do celu w tych samych warunkach.
+
 
 Opracowane metody mają jeszcze przed sobą perspektywę dalszego rozwoju. Wykorzystanie wydajnieszych algorytmów do ponownego planowania tras na przestrzennej trasie (takich jak RRA*, D* Lite lub D* Extra Lite) powinno przyspieszyć wykonywanie obliczeń, nie wpływając na efektywność metody.
 Szybsze uzyskanie docelowych zaplanowanych tras można uzyskać także poprzez wprowadzenie natychmiastowego wykonania kolejnego planowania z nowym układem priorytetów w przypadku, gdy w obecnym kroku symulacji nie zostało znalezione zadowalające rozwiązanie. W obecnej aplikacji kolejne takie planowanie wykonywane jest dopiero w następnym kroku symulacji w celu wizualizacji działania metody w kolejnych obserwowanych krokach.
 
-Nie zostały przeprowadzone testy w rzeczywistym środowisku z robotami mobilnymi, gdyż istotą pracy jest sama metoda planowania tras.
-Ponadto, w symulacji łatwiej odwzorować jest problem kolizji robotów oraz przeprowadzić obszerne testy w losowych środowiskach różnego typu.
+Zaprezentowane algorytmy mogą znaleźć zastosowanie również w dynamicznych środowiskach, w których to ścieżki muszą być przeliczane na bieżąco po wykryciu zmiany na mapie.
 
-Na potrzeby wszystkich testów efektywności oraz wydajności badanych metod przeprowadzono razem $76\ 800$ automatycznie zarządzanych symulacji ruchu robotów. Wykonano to dla różnych metod planowania, z różnymi parametrami i na różnych mapach oraz układach robotów.
-
-Większość popularnych algorytmów wykorzystywanych do planowania tras dla wielu robotów mobilnych (agentów) opiera się o A*.
-Aby wydajnie prowadzić obliczenia, zakłada się, że każdy ruch robota trwa tyle samo. 
-Wprowadza to upraszczające, błędne założenie, że ruch robota na pole w kierunku poziomym lub pionowym trwa tyle samo, co na ukos.
-
-Zaprezentowane algorytmy mogą znaleźć zastosowanie również w dynamicznych środowiskach, w których to ścieżki muszą być przeliczane po wykryciu zmiany na mapie.
-
-Na potrzeby stworzenia oprogramowania symulacyjnego do planowania bezkolizyjnych tras dla wielu robotów mobilnych należało opracować lub zaimplementować niezbędne algorytmy.
-Wśród nich znalazł się także własny generator labiryntów zapewniający losowo wygenerowanym mapom pewne pożądane własności.
-
-Na potrzeby pracy zostało stworzone oprogramowanie symulacyjne, które posłużyło do przeprowadzenia testów skuteczności algorytmów planowania tras oraz wizualizacji działania metod.
-Prezentacja ich działania odbywa się poprzez wizualizację ruchu robotów mobilnych w czasie rzeczywistym.
-Aplikacja umożliwia dowolne definiowanie przez użytkownika środowiska, w którym poruszają się roboty. Obejmuje to:
-\begin{itemize}
-	\item wybór rozmiaru mapy - dowolną wysokość oraz szerokość. Mapa nie musi być kwadratowa.
-	\item możliwość wygenerowania mapy za pomocą generatora labiryntów (por. \ref{ch:mazegen}) lub manualnego umieszczania przeszkód na mapie za pomocą myszki,
-	\item wybór liczby robotów i dokonanie ich automatycznego rozmieszczenia na mapie (w losowych polach z pominięciem pól zajętych). Użytkownik ma także możliwość manualnego dodawania i usuwania robotów.
-\end{itemize}
-
-Do stworzenia aplikacji wykorzystano wiele technologii, narzędzi deweloperskich oraz technik.
-Bardzo istotnym aspektem projektowanego oprogramowania okazała się być jego architektura. Przed będącym przedmiotem tego rozdziału symulatorem ruchu robotów zostało postawione wymaganie możliwości wykonania symulacji zarówno w trybie graficznej wizualizacji w czasie rzeczywistym, jak i w trybie przeprowadzenia obszernych automatycznych testów algorytmów w celu zebrania potrzebnych danych statystycznych.
-Oprogramowanie zostało zorganizowane w architekturę warstwową.
-Główny szkielet aplikacji zbudowany jest w oparciu o wzorzec architektoniczny MVP (ang. {\it Model-View-Presenter} - Model-Widok-Prezenter), będący pochodną wzorca MVC (ang. {\it Model-View-Controller}).
-Takie podejście zapewnia separację głównej logiki dziedziny programu od warstwy interfejsu użytkownika \cite{mvp} (por. rys. \ref{fig:app-mvp}).
-Taka separacja warstw prezentacji od warstwy logiki umożliwia łatwe "odpięcie" logiki modelu od interfejsu użytkownika i wykorzystanie jej do wykonania testów skuteczności metod planowania. Pozwala to na wykonanie "przyspieszonej" symulacji poprzez sekwencyjne uruchamianie kroków symulacji tak szybko, jak to możliwe, bez oczekiwania na wyzwolenie ich przez kolejne cykle zegara.
-Klasy modelu były projektowane właśnie z myślą o możliwości wykorzystania ich zarówno w wizualizacji w czasie rzeczywistym, jak i w przyspieszonej symulacji w celu przeprowadzenia testów.
-
-% wyniki testów
-Wyniki testów częstotliwości występowania kolizji pokazały, że w badanych środowiskach zagadnienie unikania kolizji jest bardzo istotne i prosty algorytm A* nie jest wystarczający.
-
-Zgodnie z oczekiwaniami skuteczność metody WHCA*1 rośnie monotonicznie wraz ze wzrostem rozmiaru okna czasowego, będącego parametrem algorytmu.
-Niestety drastycznie rośnie wtedy także złożonośc obliczeniowa algorytmu, co nie pozwala na użycie przesadnie dużych rozmiarów okna i zmusza do bardziej przemyślanego doboru wielkości okna czasowego.
-
-Należy także podkreślić, że spośród wszystkich środowisk nie zdarzyło się, aby metoda LRA* dała lepsze rozwiazanie od WHCA*3.
-Potwierdza to oczekiwania w stosunku do metody WHCA*3, która jest znacznie bardziej zaawansowana od metody LRA*.
-
-% $TODO$ zebrać wnioski
-% TODO pola potencjałowe słabo
-% TODO zastosowanie w przypadku, gdy agenci mają wspólny cel: bezpieczne dotarcie wszystkich do celów
-% TODO opisany przez SIlvera algorytm WHCA nie podaje szczegółów implementacyjnych ani nie podaje metody przydziału priorytetów
