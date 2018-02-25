@@ -20,6 +20,7 @@
 \usepackage{ragged2e}
 \usepackage{enumitem} % formatowanie marginesów itemize
 \usepackage{amssymb} % sybmol varnothing
+\usepackage{makecell} % multiline table cells
 
 % numeracja
 \pagestyle{fancy}
@@ -84,6 +85,11 @@
 % \algblock[]{StartBlock}{EndBlock}
 \renewcommand{\algorithmiccomment}[1]{\hfill{\it // #1 }}
 
+% multiline table cells
+\renewcommand\theadalign{cc}
+\renewcommand\theadfont{\bfseries}
+\renewcommand\theadgape{\Gape[4pt]}
+\renewcommand\cellgape{\Gape[4pt]}
 
 \begin{document}
 	\nocite{*} %wszystkie wpisy trafią do bibliografii

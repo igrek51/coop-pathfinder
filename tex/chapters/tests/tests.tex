@@ -13,7 +13,7 @@ Wśród testowanych algorytmów znalazły się:
 	\item Algorytm A* bez rozwiązywania kolizji (por. \ref{ch:alg-single-astar}),
 	\item LRA* - Local-Repair A* (por. \ref{ch:alg-collision-avoid}),
 	\item WHCA*1 - Windowed Hierarchical Cooperative A* bez dynamicznego przydzielania priotytetów, ze stałym oknem czasowym (por. \ref{ch:alg-whca}),
-	\item WHCA*2 - Windowed Hierarchical Cooperative A* z dynamicznym przydziałem priorytetów (por. \ref{ch:alg-priorities-allocation}),
+	\item WHCA*2 - Windowed Hierarchical Cooperative A* z dynamicznym przydziałem priorytetów, ze stałym oknem czasowym (por. \ref{ch:alg-priorities-allocation}),
 	\item WHCA*3 - Windowed Hierarchical Cooperative A* z dynamicznym przydziałem priorytetów oraz skalowaniem okna czasowego (por. \ref{ch:alg-priorities-allocation}).
 \end{itemize}
 
@@ -115,13 +115,13 @@ Kolumna "Przeprowadzone symulacje" wyraża liczbę losowo wygenerowanych środow
 \centering
 \begin{tabular}{| l | r | r | r |}
 \hline
-{\bf \shortstack{Typ\\środowiska}} &
-{\bf \shortstack{Przeprowadzone\\symulacje}} &
-{\bf \shortstack{Skuteczność}} &
-{\bf \shortstack{Występowanie\\kolizji}} \\ \hline
-M-15x15-5R  & 1000 & 10\% & 90\% \\ \hline
-M-15x15-10R & 1000 & 1\%  & 99\%  \\ \hline
-M-35x35-5R  & 1000 & 14\% & 86\% \\ \hline
+\thead{\textbf{\shortstack{Typ\\środowiska}}} &
+\thead{\textbf{\shortstack{Przeprowadzone\\symulacje}}} &
+\thead{\textbf{\shortstack{Skuteczność}}} &
+\thead{\textbf{\shortstack{Występowanie\\kolizji}}} \\ \hline
+M-15x15-5R  & 1000 & 10\% & 90\% \\
+M-15x15-10R & 1000 & 1\%  & 99\%  \\
+M-35x35-5R  & 1000 & 14\% & 86\% \\
 E-15x15-40R & 1000 & 0\%  & 100\%  \\ \hline
 \end{tabular}
 \end{table}
@@ -136,17 +136,19 @@ Dla każdego badanego typu środowiska wylosowano 100 map, dla których powtórz
 Dla rozmiaru okna równego 1 skuteczność metody zawsze jest zerowa, gdyż zaplanowane dla robotów ścieżki są zawsze długości 1, a pierwszym punktem ścieżki jest zawsze aktualna pozycja robota, przez co roboty pozostają w tym samym miejscu.
 Uzyskane wyniki dla każdego środowiska przedstawiono w tabeli \ref{tab:test-whca-window-size} oraz na wykresach \ref{fig:test-whca-window-M-15x15-5R}, \ref{fig:test-whca-window-M-15x15-10R}, \ref{fig:test-whca-window-M-35x35-5R} i \ref{fig:test-whca-window-E-15x15-40R}.
 
+{\renewcommand{\arraystretch}{0.9} % less cell spacing, default 1
 \begin{table}[H]
 \caption{Wpływ wielkości okna czasowego na skuteczność metody WHCA*1 w różnych typach środowisk} 
 \label{tab:test-whca-window-size}
 \centering
+\small
 \begin{tabular}{| r | r | r | r | r |}
 \hline
-{\bf \shortstack{Rozmiar okna\\czasowego}} &
-{\bf \shortstack{M-15x15-5R}} &
-{\bf \shortstack{M-15x15-10R}} &
-{\bf \shortstack{M-35x35-5R}} &
-{\bf \shortstack{E-15x15-40R}} \\ \hline
+\thead{\textbf{\shortstack{Rozmiar \\ okna \\ czasowego}}} &
+\thead{\textbf{\shortstack{M-15x15-5R}}} &
+\thead{\textbf{\shortstack{M-15x15-10R}}} &
+\thead{\textbf{\shortstack{M-35x35-5R}}} &
+\thead{\textbf{\shortstack{E-15x15-40R}}} \\ \hline
 1	& 0\%	& 0\%	& 0\%	& 0\%	\\
 2	& 9\%	& 0\%	& 27\%	& 0\%	\\
 3	& 11\%	& 0\%	& 30\%	& 0\%	\\
@@ -179,29 +181,29 @@ Uzyskane wyniki dla każdego środowiska przedstawiono w tabeli \ref{tab:test-wh
 30	& 69\%	& 35\%	& 100\%	& 100\%	\\
 \hline
 \end{tabular}
-\end{table}
+\end{table}}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.6\columnwidth]{img/plots/test-whca-window-M-15x15-5R}
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-whca-window-M-15x15-5R}
 	\caption{Wykres skuteczności metody WHCA* w zależności od rozmiaru okna czasowego dla środowiska typu M-15x15-5R}
 	\label{fig:test-whca-window-M-15x15-5R}
 \end{figure}
 \begin{figure}
 	\centering
-	\includegraphics[width=0.6\columnwidth]{img/plots/test-whca-window-M-15x15-10R}
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-whca-window-M-15x15-10R}
 	\caption{Wykres skuteczności metody WHCA* w zależności od rozmiaru okna czasowego dla środowiska typu M-15x15-10R}
 	\label{fig:test-whca-window-M-15x15-10R}
 \end{figure}
 \begin{figure}
 	\centering
-	\includegraphics[width=0.6\columnwidth]{img/plots/test-whca-window-M-35x35-5R}
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-whca-window-M-35x35-5R}
 	\caption{Wykres skuteczności metody WHCA* w zależności od rozmiaru okna czasowego dla środowiska typu M-35x35-5R}
 	\label{fig:test-whca-window-M-35x35-5R}
 \end{figure}
 \begin{figure}
 	\centering
-	\includegraphics[width=0.6\columnwidth]{img/plots/test-whca-window-E-15x15-40R}
+	\includegraphics[width=0.8\columnwidth]{img/plots/test-whca-window-E-15x15-40R}
 	\caption{Wykres skuteczności metody WHCA* w zależności od rozmiaru okna czasowego dla środowiska typu E-15x15-40R}
 	\label{fig:test-whca-window-E-15x15-40R}
 \end{figure}
@@ -212,7 +214,8 @@ Zgodnie z oczekiwaniami skuteczność metody WHCA*1 rośnie monotonicznie wraz z
 
 \subsection{Skuteczność LRA* i WHCA*3} %8000
 W następnym eksperymencie przeprowadzono serie testów mających na celu porównanie skuteczności metody LRA* oraz WHCA*3 z dynamicznym przydziałem priorytetów.
-Mapy generowane były losowo, natomiast dla każdego środowiska symulacja została wykonana dwukrotnie: raz wykonując planowanie tras metodą WHCA*3 a następnie metodą LRA* po odtworzeniu tych samych warunków początkowych. Dla każdej takiej symulacji zliczano, ile razy obie metody pomyślnie doprowadziły wszystkie roboty do celu, ile razy powiodła się tylko metoda WHCA*3, ile razy tylko metoda LRA*, oraz ile razy żadna z metod nie zakończyła się powodzeniem.
+Mapy generowane były losowo, natomiast dla każdego środowiska symulacja została wykonana dwukrotnie: raz wykonując planowanie tras metodą WHCA*3 a następnie metodą LRA* po odtworzeniu tych samych warunków początkowych.
+Dla każdej takiej symulacji zliczano, ile razy obie metody pomyślnie doprowadziły wszystkie roboty do celu ("Sukces WHCA*3 i LRA*"), ile razy powiodła się tylko metoda WHCA*3 ("Sukces tylko WHCA*3"), ile razy tylko metoda LRA* ("Sukces tylko LRA*"), oraz ile razy żadna z metod nie zakończyła się powodzeniem ("Brak sukcesu").
 Umożliwiło to porównanie skuteczności metod w dokładnie tych samym warunkach. Wyniki przedstawiono w tabeli \ref{tab:test-lra-whca-effectiveness}.
 Dla każdego typu środowiska wygenerowano 1000 map z różnymi układami robotów.
 W ramach tych testów przeprowadzono razem $8\ 000$ symulacji.
@@ -223,20 +226,20 @@ W ramach tych testów przeprowadzono razem $8\ 000$ symulacji.
 \centering
 \begin{tabular}{| l | r | r | r | r | r |}
 \hline
-{\bf \shortstack{Typ\\środowiska}} &
-{\bf \shortstack{Powodzenie\\WHCA*3 i LRA*}} &
-{\bf \shortstack{Powodzenie\\tylko WHCA*3}} &
-{\bf \shortstack{Powodzenie\\tylko LRA*}} &
-{\bf \shortstack{Brak\\powodzenia}} \\ \hline
-M-15x15-5R  & 23,0\% & 66,7\% & 0\% & 10,3\% \\ \hline
-M-15x15-10R & 1,2\%  & 64,0\% & 0\% & 34,8\% \\ \hline
-M-35x35-5R  & 51,3\% & 47,1\% & 0\% & 1,6\%  \\ \hline
+\thead{\textbf{\shortstack{Typ\\środowiska}}} &
+\thead{\textbf{\shortstack{Sukces\\WHCA*3\\i LRA*}}} &
+\thead{\textbf{\shortstack{Sukces\\tylko\\WHCA*3}}} &
+\thead{\textbf{\shortstack{Sukces\\tylko\\LRA*}}} &
+\thead{\textbf{\shortstack{Brak\\sukcesu}}} \\ \hline
+M-15x15-5R  & 23,0\% & 66,7\% & 0\% & 10,3\% \\ 
+M-15x15-10R & 1,2\%  & 64,0\% & 0\% & 34,8\% \\ 
+M-35x35-5R  & 51,3\% & 47,1\% & 0\% & 1,6\%  \\ 
 E-15x15-40R & 82,3\% & 17,7\% & 0\% & 0\%    \\ \hline
 \end{tabular}
 \end{table}
 
 Warto zaznaczyć, że niepowodzenie metody WHCA*3 może wynikać zarówno z ograniczeń metody, jak i z przypadkowego wylosowania układu przeszkód i robotów, który sam w sobie jest niemożliwy do rozwiązania.
-Należy także podkreślić, że spośród wszystkich środowisk nie zdarzyło się, aby metoda LRA* dała lepsze rozwiazanie od WHCA*3.
+Należy także podkreślić, że spośród wszystkich środowisk nie zdarzyło się, aby metoda LRA* powiodła się, podczas gdy WHCA*3 nie znalazła rozwiązania.
 Potwierdza to oczekiwania w stosunku do metody WHCA*3, która jest znacznie bardziej zaawansowana od metody LRA*.
 
 \subsection{Porównanie wariantów WHCA*} % 16000
@@ -252,14 +255,14 @@ W ramach tych testów przeprowadzono razem $16\ 000$ symulacji.
 \centering
 \begin{tabular}{| l | r | r | r | r | r |}
 \hline
-{\bf \shortstack{Typ\\środowiska}} &
-{\bf \shortstack{Skuteczność\\LRA*}} &
-{\bf \shortstack{Skuteczność\\WHCA*1}} &
-{\bf \shortstack{Skuteczność\\WHCA*2}} &
-{\bf \shortstack{Skuteczność\\WHCA*3}} \\ \hline
-M-15x15-5R  & 22,5\% & 26,3\%  & 54,6\% & 87\%   \\ \hline
-M-15x15-10R & 0,2\%  & 3,4\%   & 48,9\% & 54,5\% \\ \hline
-M-35x35-5R  & 52,7\% & 40,1\%  & 69,7\% & 98,6\% \\ \hline
+\thead{\textbf{\shortstack{Typ\\środowiska}}} &
+\thead{\textbf{\shortstack{Skuteczność\\LRA*}}} &
+\thead{\textbf{\shortstack{Skuteczność\\WHCA*1}}} &
+\thead{\textbf{\shortstack{Skuteczność\\WHCA*2}}} &
+\thead{\textbf{\shortstack{Skuteczność\\WHCA*3}}} \\ \hline
+M-15x15-5R  & 22,5\% & 26,3\%  & 54,6\% & 87\%   \\ 
+M-15x15-10R & 0,2\%  & 3,4\%   & 48,9\% & 54,5\% \\ 
+M-35x35-5R  & 52,7\% & 40,1\%  & 69,7\% & 98,6\% \\ 
 E-15x15-40R & 76,7\% & 99,5\%  & 100\%  & 100\%  \\ \hline
 \end{tabular}
 \end{table}
@@ -275,6 +278,7 @@ Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzeb
 Symulacje przeprowadzano na kwadratowych mapach.
 Rozmiar mapy zmieniał się w zakresie od $3 \times 3$ do $40 \times 40$ (w przypadku mapy z labiryntem) oraz w zakresie od $3 \times 3$ do $25 \times 25$ (w przypadku pustej mapy), generując 100 losowych układów dla każdego rozmiaru mapy, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
 Wszystko powtórzono zarówno dla map z wygenerowanym labiryntem, jak i dla pustych map bez umieszczonych przeszkód.
+
 W ramach tych testów przeprowadzono razem $24\ 400$ symulacji.
 Wyniki przedstawiono na wykresach \ref{fig:test-steps-maze-mapsize-eff}, \ref{fig:test-steps-maze-mapsize-steps}, \ref{fig:test-steps-maze-mapsize-calctime}, \ref{fig:test-steps-empty-mapsize-eff}, \ref{fig:test-steps-empty-mapsize-steps}, \ref{fig:test-steps-empty-mapsize-calctime}.
 
@@ -326,39 +330,39 @@ Wyniki przedstawiono na wykresach \ref{fig:test-steps-maze-mapsize-eff}, \ref{fi
 % \end{tabular}
 % \end{table}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-mapsize-eff}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-maze-mapsize-eff}
 	\caption{Wykres skuteczności metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, z wygenerowanym labiryntem}
 	\label{fig:test-steps-maze-mapsize-eff}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-mapsize-steps}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-maze-mapsize-steps}
 	\caption{Wykres średniej liczby kroków symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, z wygenerowanym labiryntem}
 	\label{fig:test-steps-maze-mapsize-steps}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-mapsize-calctime}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-maze-mapsize-calctime}
 	\caption{Wykres czasu planowania dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, z wygenerowanym labiryntem}
 	\label{fig:test-steps-maze-mapsize-calctime}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-mapsize-eff}
-	\caption{Wykres skuteczności metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, bez przeszkód na mapie}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-empty-mapsize-eff}
+	\caption{Wykres skuteczności metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, bez przeszkód na mapie (wykresy WHCA*1, WHCA*2, WHCA*3 prawie pokrywają się)}
 	\label{fig:test-steps-empty-mapsize-eff}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-mapsize-steps}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-empty-mapsize-steps}
 	\caption{Wykres średniej liczby kroków symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, bez przeszkód na mapie}
 	\label{fig:test-steps-empty-mapsize-steps}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-mapsize-calctime}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-empty-mapsize-calctime}
 	\caption{Wykres czasu planowania dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od rozmiaru mapy, bez przeszkód na mapie}
 	\label{fig:test-steps-empty-mapsize-calctime}
 \end{figure}
@@ -370,6 +374,7 @@ Dla stałego rozmiaru mapy przeprowadzono testy wpływu liczby robotów na skute
 Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzebną do doprowadzenia wszystkich robotów do celów (dla symulacji zakończonych powodzeniem) oraz złożoność obliczeniową samego planowania (średni czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
 Liczbę robotów zwiększano od $1$ do $30$, generując 100 losowych układów dla każdej liczby robotow, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
 Wszystko powtórzono zarówno dla map z wygenerowanym labiryntem o rozmiarze $15 \times 15$, jak i dla pustych map bez umieszczonych przeszkód o rozmiarze $6 \times 6$.
+
 W ramach tych testów przeprowadzono razem $24\ 000$ symulacji.
 Wyniki przedstawiono na wykresach \ref{fig:test-steps-maze-robots-eff}, \ref{fig:test-steps-maze-robots-steps}, \ref{fig:test-steps-maze-robots-calctime}, \ref{fig:test-steps-empty-robots-eff}, \ref{fig:test-steps-empty-robots-steps}, \ref{fig:test-steps-empty-robots-calctime}.
 
@@ -421,39 +426,39 @@ Wyniki przedstawiono na wykresach \ref{fig:test-steps-maze-robots-eff}, \ref{fig
 % \end{tabular}
 % \end{table}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-robots-eff}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-maze-robots-eff}
 	\caption{Wykres skuteczności metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, z wygenerowanym labiryntem}
 	\label{fig:test-steps-maze-robots-eff}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-robots-steps}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-maze-robots-steps}
 	\caption{Wykres średniej liczby kroków symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, z wygenerowanym labiryntem}
 	\label{fig:test-steps-maze-robots-steps}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-maze-robots-calctime}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-maze-robots-calctime}
 	\caption{Wykres czasu planowania dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, z wygenerowanym labiryntem}
 	\label{fig:test-steps-maze-robots-calctime}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-robots-eff}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-empty-robots-eff}
 	\caption{Wykres skuteczności metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, bez przeszkód na mapie}
 	\label{fig:test-steps-empty-robots-eff}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-robots-steps}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-empty-robots-steps}
 	\caption{Wykres średniej liczby kroków symulacji dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, bez przeszkód na mapie}
 	\label{fig:test-steps-empty-robots-steps}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{img/plots/test-steps-empty-robots-calctime}
+	\includegraphics[width=0.9\columnwidth]{img/plots/test-steps-empty-robots-calctime}
 	\caption{Wykres czasu planowania dla metod LRA*, WHCA*1, WHCA*2 i WHCA*3 w zależności od liczby robotów, bez przeszkód na mapie}
 	\label{fig:test-steps-empty-robots-calctime}
 \end{figure}
@@ -471,9 +476,9 @@ Tym bardziej nie nadaje się do skutecznego rozwiązania skomplikowanego zagadni
 Niska skuteczność metody wynika m.in. z charakteru wygenerowanych map, w których robot bardzo często napotyka na lokalne minimum, z którego nie potrafi się wydostać.
 Przykład uwięzienia robota w takiej "studni potencjału" został przedstawiony na rysunku \ref{fig:test-field-potential-hole}.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\columnwidth]{img/robopath/field-potential-hole}
+	\includegraphics[width=0.6\columnwidth]{img/robopath/field-potential-hole}
 	\caption{Robot uwięziony w studni potencjału. Zerowa siła wypadkowa nie pozwala mu dotrzeć do celu.}
 	\label{fig:test-field-potential-hole}
 \end{figure}
