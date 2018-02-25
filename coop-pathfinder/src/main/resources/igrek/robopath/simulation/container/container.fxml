@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.HBox?>
-<HBox prefWidth="800" prefHeight="600" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121"
+<HBox prefWidth="800" prefHeight="600" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.112"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="igrek.robopath.simulation.container.ContainerController">
     <children>
@@ -13,17 +13,18 @@
                     <tabs>
                         <Tab text="Potential fields">
                             <content>
-                                <fx:include source="../potentialfield/potentialfield.fxml"/>
+                                <fx:include
+                                    source="/igrek/robopath/simulation/potentialfield/potentialfield.fxml"/>
                             </content>
                         </Tab>
                         <Tab text="LRA*">
                             <content>
-                                <fx:include source="../lra/lra.fxml"/>
+                                <fx:include source="/igrek/robopath/simulation/lra/lra.fxml"/>
                             </content>
                         </Tab>
                         <Tab text="WHCA*">
                             <content>
-                                <fx:include source="../whca/whca.fxml"/>
+                                <fx:include source="/igrek/robopath/simulation/whca/whca.fxml"/>
                             </content>
                         </Tab>
                     </tabs>
