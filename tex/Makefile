@@ -41,7 +41,7 @@ success:
 spell:
 	# aspell -t --lang=pl -c praca.tex
 	# cat *.tex */*.tex | aspell list -t --lang=pl | sort | uniq
-	cat */*.tex | aspell list -t --lang=pl | sort | uniq
+	cat *.tex */*.tex */*/*.tex | aspell list -t --lang=pl | sort | uniq
 
 clean:
 	rm -f ${OUT}/*
