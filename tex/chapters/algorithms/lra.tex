@@ -3,7 +3,7 @@
 Do zademonstrowania prostego przeciwdziałania kolizjom robotów wykorzystano metodę LRA* ({\it Local-Repair A*}).
 W rozdziale tym opisano własną implementację tej metody.
 Należy zaznaczyć, że jest to bardzo uproszczone podejście i stanowi wstęp do bardziej złożonego algorytmu.
-Dużo skuteczniejsza w zapobieganiu kolizji jesto metoda WHCA* (por. \ref{ch:alg-whca}) z dynamicznym przydziałem priorytetów (por. \ref{ch:alg-priorities-allocation}), która została opisana w późniejszych rozdziałach.
+Dużo skuteczniejsza w zapobieganiu kolizji jest metoda WHCA* (por. \ref{ch:alg-whca}) z dynamicznym przydziałem priorytetów (por. \ref{ch:alg-priorities-allocation}), która została opisana w późniejszych rozdziałach.
 
 Przez kolizję będziemy rozumieć sytuację, w której przynajmniej 2 roboty przebywają w tym samym miejscu (na tym samym polu) i w tym samym czasie (w tym samym kroku czasowym). Warto dodać, że dopuszczalne jest przecinanie się trajektorii robotów w różnym czasie.
 
@@ -14,7 +14,7 @@ Planowanie trajektorii odbywa się dla każdego agenta niezależnie, stosując a
 W każdym kroku symulacji agenci poruszają się wzdłuż wyznaczonych tras. Co prawda w kolejnych krokach ścieżki te mogą być już nieaktualne, jednak agenci wciąż nimi podążają, aż do osiągnięcia punktu docelowego lub wykrycia kolizji.
 Wykrycie kolizji w tym przypadku nie oznacza odnotowania faktycznego zderzenia (przebywania więcej niż jednego robota na tym samym polu), lecz detekcję wystąpienia takiej niepożądanej sytuacji w następnym kroku symulacji.
 
-Detekcja potencjalnej kolizji sprowadza się do przeanalizowania dla każdego robota jego zaplanowanego położenia z następnego kroku. Jeśli robot nie ma zaplanowanej żadnej ścieżki, oznacza to, że jego położenie w następnym kroku będzie takie samo, jak w obecnym. Uznaje się, że kolizja może wystapić w dwóch przypadkach:
+Detekcja potencjalnej kolizji sprowadza się do przeanalizowania dla każdego robota jego zaplanowanego położenia z następnego kroku. Jeśli robot nie ma zaplanowanej żadnej ścieżki, oznacza to, że jego położenie w następnym kroku będzie takie samo, jak w obecnym. Uznaje się, że kolizja może wystąpić w dwóch przypadkach:
 \begin{itemize}
 	\item w przypadku, gdy zaplanowane położenie robota w następnym kroku jest takie samo, jak aktualne położenie innego robota;
 	\item w przypadku, gdy zaplanowane położenie robota w następnym kroku jest takie samo, jak zaplanowane położenie innego robota w następnym kroku.
@@ -35,7 +35,7 @@ W celu poprawy wydajności technikę tą można połączyć z algorytmem D* Lite
 		\subfloat[]{\includegraphics[width=0.4\columnwidth]{img/robopath/lra-cycle-1}}
 		\qquad
 		\subfloat[]{\includegraphics[width=0.4\columnwidth]{img/robopath/lra-cycle-2}}
-	\caption{Przykład układu z powtarzająm się cyklem akcji planowanych przez metodę LRA*:
+	\caption{Przykład układu z powtarzającym się cyklem akcji planowanych przez metodę LRA*:
 	(a) Dwa roboty wyznaczają niezależnie drogi do swoich celów.
 	(b) Chcąc uniknąć zderzenia w wąskim przejściu po lewej stronie, roboty wyznaczą trajektorie przechodzące przez alternatywną ścieżkę po prawej stronie, gdzie ponownie dojdzie do przecięcia się trajektorii.}
 	\label{fig:robopath-lra-cycle}

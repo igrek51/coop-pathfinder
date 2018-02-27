@@ -7,7 +7,7 @@ Pod każdą z zakładek aplikacji układ wizualny jest podobny. Poniżej opisano
 
 Po prawej stronie znajduje się panel przycisków akcji oraz panel rozwijanych właściwości z konfiguracją parametrów mapy oraz symulacji. Natomiast po lewej stronie wyświetlany jest obecny stan mapy i położenie robotów mobilnych. Mapa wyświetlana jest z zaznaczeniem linii siatki pól obrazujących liczbę pól na mapie. Przeszkody wyświetlane są jako czarne kwadraty, zaś roboty jako kolorowe wypełnione koła.
 Kliknięcie prawym przyciskiem myszy (również z możliwością ciągłego przytrzymania) powoduje wstawienie lub usunięcie przeszkody na mapie w odpowiednich polach.
-Punkty docelowe, do których podążąją roboty wyświetlane są jako krzyżyki w kolorze takim samym, jaki został przypisany do robota. Liczba robotów nie jest ograniczona przez aplikację. Aby odróżniać roboty między sobą, każdy robot otrzymuje inny kolor wynikający z równomiernego podziału na liczbę robotów zakresu barwy (ang. {\it hue}) z palety HSV.
+Punkty docelowe, do których podążają roboty wyświetlane są jako krzyżyki w kolorze takim samym, jaki został przypisany do robota. Liczba robotów nie jest ograniczona przez aplikację. Aby odróżniać roboty między sobą, każdy robot otrzymuje inny kolor wynikający z równomiernego podziału na liczbę robotów zakresu barwy (ang. {\it hue}) z palety HSV.
 
 Okno aplikacji jest skalowalne i w pełni responsywne. Po zmianie rozmiaru okna przez użytkownika rozmiar mapy dopasowuje się do maksymalnego obszaru, jaki może zająć (z zachowaniem proporcji wymiarów mapy).
 
@@ -25,7 +25,7 @@ Na pierwszej zakładce "Potential fields" w oknie aplikacji przedstawiona jest w
 
 Na panelu konfiguracji parametrów, użytkownik może wybrać dowolny rozmiar mapy, podając szerokość i wysokość wyrażone w liczbie pól.
 Po naciśnięciu przycisku "Reset map" tworzona jest nowa mapa o zadanych rozmiarach, natomiast pozycja początkowa robota zostaje wylosowana.
-Naciśnięcie przycisku "Random target" powoduje wyznaczenie losowego punktu na mapie jako celu dla robota i rozpoczęcie podążąnia za nim.
+Naciśnięcie przycisku "Random target" powoduje wyznaczenie losowego punktu na mapie jako celu dla robota i rozpoczęcie podążania za nim.
 
 Klikając lewym przyciskiem myszy na mapie, użytkownik może manualnie wskazać punkt docelowy dla robota.
 Planowanie i symulacja ruchu robota odbywa się w trybie ciągłym. Robot nie jest ograniczony zdyskretyzowaną siatką pól na mapie, jego przestrzeń poruszania się jest ciągła.
@@ -36,7 +36,7 @@ Pod kolejną zakładką "LRA*" w oknie aplikacji dostępna jest wizualizacja met
 
 Na panelu konfiguracji parametrów w sekcji "Map size", użytkownik może wybrać dowolny rozmiar mapy, podając szerokość i wysokość wyrażone w liczbie pól.
 Po naciśnięciu przycisku "Reset map" tworzona jest nowa, pusta mapa o zadanych rozmiarach.
-W sekcji "Robots" użytkownik wybiera liczbę robotów (do automatycznego rozmieszczenia) oraz ma możliwosć zaznaczenia opcji "auto-assign next target", co skutkuje automatycznym wyznaczaniem kolejnego punktu docelowego, dla robota, który dotarł do poprzedniego celu.
+W sekcji "Robots" użytkownik wybiera liczbę robotów (do automatycznego rozmieszczenia) oraz ma możliwość zaznaczenia opcji "auto-assign next target", co skutkuje automatycznym wyznaczaniem kolejnego punktu docelowego, dla robota, który dotarł do poprzedniego celu.
 Przycisk "Generate maze" pozwala na wygenerowanie labiryntu przy użyciu generatora map (por. \ref{ch:mazegen}).
 Przycisk "Place robots" usuwa wszystkie roboty z mapy i umieszcza na niej wybraną przez użytkownika liczbę robotów w losowych miejscach na mapie (z pominięciem pól zajętych przez przeszkody oraz inne roboty).
 Przycisk "Random target" losuje punkty docelowe dla wszystkich robotów. Każdy z agentów otrzymuje inny punkt docelowy (nie będący przeszkodą), do którego zmierza. Nadanie punktów docelowych powoduje rozpoczęcie planowania trajektorii i symulację ruchu agentów.

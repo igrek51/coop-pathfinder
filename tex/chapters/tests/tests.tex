@@ -3,7 +3,7 @@
 W tym rozdziale omówione zostało przeprowadzenie testów zaimplementowanych algorytmów.
 
 Należy zaznaczyć, że wspomniane w tym rozdziale testy powinny być rozumiane jako eksperymenty przeprowadzenia symulacji planowania tras dla wielu robotów mobilnych, mające na celu zebranie statystycznych danych o przebiegu i rezultatach tych symulacji. Zatem już z założenia część tych testów może zakończyć się niepowodzeniem.
-Nie należy mylić tego z automatycznymi testami poprawności wykonywanymi podczas rozwijania aplikacji w ramach podejścia TDD ({\it Test-Driven Developmnet}), które zostały opisane w jednym z poprzenich rozdziałów (por. \ref{ch:junit-tdd}).
+Nie należy mylić tego z automatycznymi testami poprawności wykonywanymi podczas rozwijania aplikacji w ramach podejścia TDD ({\it Test-Driven Development}), które zostały opisane w jednym z poprzednich rozdziałów (por. \ref{ch:junit-tdd}).
 
 W ramach testów metod planowania tras wykonano pomiary skuteczności oraz wydajności w różnych środowiskach. 
 Środowiska te były generowane w sposób losowy, dlatego z obszernych pomiarów zbierano statystyczne wyniki będące wartością średnią mierzonych wskaźników.
@@ -12,7 +12,7 @@ Wśród testowanych algorytmów znalazły się:
 \begin{itemize}
 	\item Algorytm A* bez rozwiązywania kolizji (por. \ref{ch:alg-single-astar}),
 	\item LRA* - Local-Repair A* (por. \ref{ch:alg-collision-avoid}),
-	\item WHCA*1 - Windowed Hierarchical Cooperative A* bez dynamicznego przydzielania priotytetów, ze stałym oknem czasowym (por. \ref{ch:alg-whca}),
+	\item WHCA*1 - Windowed Hierarchical Cooperative A* bez dynamicznego przydzielania priorytetów, ze stałym oknem czasowym (por. \ref{ch:alg-whca}),
 	\item WHCA*2 - Windowed Hierarchical Cooperative A* z dynamicznym przydziałem priorytetów, ze stałym oknem czasowym (por. \ref{ch:alg-priorities-allocation}),
 	\item WHCA*3 - Windowed Hierarchical Cooperative A* z dynamicznym przydziałem priorytetów oraz skalowaniem okna czasowego (por. \ref{ch:alg-priorities-allocation}).
 \end{itemize}
@@ -29,12 +29,12 @@ Na potrzeby wszystkich testów, których wyniki zamieszczono w rozdziale \ref{ch
 
 Do automatycznego wykonywania symulacji wykorzystano bibliotekę {\it jUnit}. Choć w standardowym zastosowaniu służy ona do wykonywania automatycznych testów jednostkowych sprawdzających poprawność pojedynczych komponentów aplikacji, to jednak wykorzystano ją tutaj ze względu na możliwość uruchomienia istniejących fragmentów aplikacji w innym trybie.
 Pozwala to na wykonanie serii symulacji bez wyświetlania graficznego interfejsu użytkownika.
-Jednocześnie nie powoduje to jakiejkolwiek ingerencji w kod źródłowy głównej aplikacji graficznego sumulatora.
+Jednocześnie nie powoduje to jakiejkolwiek ingerencji w kod źródłowy głównej aplikacji graficznego symulatora.
 Takie podejście możliwe jest również dzięki zastosowaniu warstwowej architektury MVP w aplikacji (por. \ref{ch:app-mvp}).
 
 Przykładem automatycznego zarządzania symulacjami jest fragment aplikacji utworzony na potrzeby testów przedstawionych w rozdziale \ref{ch:tests-function-robots}.
 W pętli dla kolejnych wartości liczby robotów (od 1 do 30) generowana jest losowa mapa z labiryntem o ustalonej wielkości.
-Nastepnie na mapie umieszczane są roboty w losowych polach i przydzielane są im losowe punkty docelowe.
+Następnie na mapie umieszczane są roboty w losowych polach i przydzielane są im losowe punkty docelowe.
 Stanowi to warunki początkowe dla wykonywanej symulacji. Kolejne kroki symulacji wykonywane są sekwencyjnie, w sposób ciągły, bez ograniczeń czasowych (bez oczekiwania na kolejne cykle zegarowe, jak w przypadku wizualizacji z graficznym interfejsem użytkownika).
 Następnie odtwarzane są te same warunki początkowe a symulacja wykonywana jest ponownie, tym razem z wykorzystaniem innych metod planowania.
 Wszystko to jest powtarzane 1000 razy (dla różnych losowych środowisk) a ze zmierzonych wskaźników obliczana jest wartość średnia.
@@ -94,7 +94,7 @@ Warto zaznaczyć, że testowane środowiska są bardzo trudnymi warunkami dla me
 	\label{fig:test-env-15-15-empty-40}
 \end{figure}
 
-Dla każdego typu środowiska za każdym razem generowana jest nowa, losowa mapa. Również położenie początkowe i docelowe robotów jest lososwane. Zatem w każdej symulacji wykorzystywane jest inne środowisko, chyba, że porównywane są między sobą różne metody. Wtedy rekonstruowane są te same warunki początkowe, aby przeprowadzić symulację ponownie z wykorzystaniem innej metody planowania.
+Dla każdego typu środowiska za każdym razem generowana jest nowa, losowa mapa. Również położenie początkowe i docelowe robotów jest losowane. Zatem w każdej symulacji wykorzystywane jest inne środowisko, chyba, że porównywane są między sobą różne metody. Wtedy rekonstruowane są te same warunki początkowe, aby przeprowadzić symulację ponownie z wykorzystaniem innej metody planowania.
 
 Każdy z robotów otrzymuje losowe położenie początkowe. Jest to zawsze pole, na którym nie znajduje się przeszkoda, ani nie ma na nim innego robota.
 Punkty docelowe także są losowane. Mogą to być pola, na których obecnie znajduje się jakiś robot, natomiast nie może to być punkt docelowy należący do innego robota, gdyż w przeciwnym wypadku uniemożliwiłoby to znalezienie rozwiązania, niezależnie od metody planowania.
@@ -103,14 +103,14 @@ Punkty docelowe także są losowane. Mogą to być pola, na których obecnie zna
 \label{ch:test-results}
 \subsection{Częstotliwość występowania potencjalnych kolizji} % 4000
 Na początku przeprowadzamy testy częstotliwości występowania potencjalnych kolizji w badanych środowiskach, aby ocenić znaczenie tego problemu.
-Dla każdego robota wykonujemy planowanie trasy za pomocą prostego algorytmu A*. Następnie przeprowadzamy symulację ruchu. W momencie wykrycia kolizji robotów zatrzymujemy symulację i zliczamy ilość takich sytuacji. W ten sposób mierzymy, jak często występują kolizję miedzy robotami, jeśli planowanie odbywa się za pomocą algorytmu wyznaczania najkrótszych tras (bez unikania kolizji).
-Słuszne jest założenie, że algorytm A* powinien zawsze znaleźć drogę do celu (z pominieciem pozostałych agentów), gdyż w tego typu środowiskach zawsze istnieje połaczenie miedzy dwoma dowolnymi polami na mapie \ref{ch:mazegen}.
+Dla każdego robota wykonujemy planowanie trasy za pomocą prostego algorytmu A*. Następnie przeprowadzamy symulację ruchu. W momencie wykrycia kolizji robotów zatrzymujemy symulację i zliczamy ilość takich sytuacji. W ten sposób mierzymy, jak często występują kolizję między robotami, jeśli planowanie odbywa się za pomocą algorytmu wyznaczania najkrótszych tras (bez unikania kolizji).
+Słuszne jest założenie, że algorytm A* powinien zawsze znaleźć drogę do celu (z pominięciem pozostałych agentów), gdyż w tego typu środowiskach zawsze istnieje połączenie między dwoma dowolnymi polami na mapie \ref{ch:mazegen}.
 
 W tabeli \ref{tab:test-collision-frequency} przedstawiono wyniki eksperymentów. Skuteczność oznacza w tym przypadku procentową liczbę symulacji, w których ruch wzdłuż zaplanowanych tras odbył się bez żadnych kolizji i wszystkie roboty zostały doprowadzone do celu.
 Kolumna "Przeprowadzone symulacje" wyraża liczbę losowo wygenerowanych środowisk określonego typu.
 
 \begin{table}[H]
-\caption{Częstotliwosć występowania kolizji w środowiskach zmierzona za pomocą skuteczności algorytmu A*}
+\caption{Częstotliwość występowania kolizji w środowiskach zmierzona za pomocą skuteczności algorytmu A*}
 \label{tab:test-collision-frequency}
 \centering
 \begin{tabular}{| l | r | r | r |}
@@ -128,7 +128,7 @@ E-15x15-40R & 1000 & 0\%  & 100\%  \\ \hline
 
 W tym teście przeprowadzono razem $4\ 000$ symulacji.
 
-Uzyskane niskie wskaźniki skuteczności potwierdzają, że w tego typu środowiskach, problem występowania kolzji jest bardzo istotny i sam prosty algorytm A* nie wystarcza, aby poradzić sobie z bezkolizyjnym doprowadzeniem wszystkich robotów do celów.
+Uzyskane niskie wskaźniki skuteczności potwierdzają, że w tego typu środowiskach, problem występowania kolizji jest bardzo istotny i sam prosty algorytm A* nie wystarcza, aby poradzić sobie z bezkolizyjnym doprowadzeniem wszystkich robotów do celów.
 
 \subsection{Wpływ wielkości okna czasowego} % 400
 Zbadano skuteczność metody WHCA*1 (bez dynamicznego przydziału priorytetów) w zależności od wielkości okna czasowego, które to pozostaje stałe w trakcie trwania jednej symulacji.
@@ -267,13 +267,13 @@ E-15x15-40R & 76,7\% & 99,5\%  & 100\%  & 100\%  \\ \hline
 \end{tabular}
 \end{table}
 
-Wyniki potwierdzają oczekiwaną nierówność zachodzącą pomiedzy średnimi skutecznościami poszczególnych metod dla każdego z badanych typów środowisk.
+Wyniki potwierdzają oczekiwaną nierówność zachodzącą pomiędzy średnimi skutecznościami poszczególnych metod dla każdego z badanych typów środowisk.
 % skuteczność LRA* $\le$ skuteczność WHCA*1 $\le$ skuteczność WHCA*2 $\le$ skuteczność WHCA*3.
 % Warto dodać, że w pewnych sytuacjach algorytm LRA* pomyślnie doprowadził wszystkie roboty do ich celów, podczas gdy w tych samych warunkach metody WHCA*1 i WHCA*2 nie znalazły rozwiązania.
 
 \subsection{Wpływ rozmiaru mapy} % 24400 = 15200 + 9200
 \label{ch:tests-function-mapsize}
-Dla stałej liczby robotów (rownej 5) przeprowadzono testy wpływu rozmiaru mapy na skuteczność metod LRA*, WHCA*1, WHCA*2 oraz WHCA*3.
+Dla stałej liczby robotów (równej 5) przeprowadzono testy wpływu rozmiaru mapy na skuteczność metod LRA*, WHCA*1, WHCA*2 oraz WHCA*3.
 Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzebną do doprowadzenia wszystkich robotów do celów (dla symulacji zakończonych powodzeniem) oraz złożoność obliczeniową samego planowania (średni czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
 Symulacje przeprowadzano na kwadratowych mapach.
 Rozmiar mapy zmieniał się w zakresie od $3 \times 3$ do $40 \times 40$ (w przypadku mapy z labiryntem) oraz w zakresie od $3 \times 3$ do $25 \times 25$ (w przypadku pustej mapy), generując 100 losowych układów dla każdego rozmiaru mapy, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
@@ -372,7 +372,7 @@ Wyniki przedstawiono na wykresach \ref{fig:test-steps-maze-mapsize-eff}, \ref{fi
 \label{ch:tests-function-robots}
 Dla stałego rozmiaru mapy przeprowadzono testy wpływu liczby robotów na skuteczność metod LRA*, WHCA*1, WHCA*2 oraz WHCA*3.
 Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzebną do doprowadzenia wszystkich robotów do celów (dla symulacji zakończonych powodzeniem) oraz złożoność obliczeniową samego planowania (średni czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
-Liczbę robotów zwiększano od $1$ do $30$, generując 100 losowych układów dla każdej liczby robotow, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
+Liczbę robotów zwiększano od $1$ do $30$, generując 100 losowych układów dla każdej liczby robotów, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
 Wszystko powtórzono zarówno dla map z wygenerowanym labiryntem o rozmiarze $15 \times 15$, jak i dla pustych map bez umieszczonych przeszkód o rozmiarze $6 \times 6$.
 
 W ramach tych testów przeprowadzono razem $24\ 000$ symulacji.
@@ -465,7 +465,7 @@ Wyniki przedstawiono na wykresach \ref{fig:test-steps-maze-robots-eff}, \ref{fig
 
 Na wykresach średniej liczby kroków symulacji oraz czasu planowania widoczne są "ucięte" serie pomiarów. Oznacza to zerową skuteczność w tych obszarach i tym samym brak możliwości wyznaczenia tych wartości z powodu zerowej liczby pomyślnie zakończonych symulacji dla danej metody planowania.
 
-% Wyniki potwierdzają oczekiwaną nierówność zachodzącą pomiedzy średnimi skutecznościami poszczególnych metod dla każdego z badanych typów środowisk:
+% Wyniki potwierdzają oczekiwaną nierówność zachodzącą pomiędzy średnimi skutecznościami poszczególnych metod dla każdego z badanych typów środowisk:
 % skuteczność WHCA*1 $\le$ skuteczność WHCA*2 $\le$ skuteczność WHCA*3.
 Zgodny z oczekiwaniami jest niewątpliwy fakt, iż zwiększenie liczby robotów utrudnia znalezienie rozwiązania, zmniejszając skuteczność metod.
 % Na pustych mapach bez przeszkód metody WHCA*2 i WHCA*3 mają wysoką skuteczność, ale ilość kroków symulacji potrzebnych do znalezienia rozwiązania jest większa niż dla metody WHCA*1.

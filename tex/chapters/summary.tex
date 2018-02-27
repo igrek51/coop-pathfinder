@@ -32,7 +32,7 @@ Rezultaty testów dla różnych metod planowania porównywane były w tych samyc
 Wyniki testów częstotliwości występowania kolizji pokazały, że w badanych środowiskach zagadnienie unikania kolizji jest bardzo istotne i prosty algorytm A* nie jest wystarczający.
 
 Zgodnie z oczekiwaniami uzyskana skuteczność metody WHCA*1 rośnie monotonicznie wraz ze wzrostem rozmiaru okna czasowego, będącego parametrem algorytmu.
-Niestety drastycznie rośnie wtedy także złożonośc obliczeniowa algorytmu, co nie zachęca do używania przesadnie dużych rozmiarów okna i zmusza do bardziej przemyślanego doboru wielkości okna czasowego.
+Niestety drastycznie rośnie wtedy także złożoność obliczeniowa algorytmu, co nie zachęca do używania przesadnie dużych rozmiarów okna i zmusza do bardziej przemyślanego doboru wielkości okna czasowego.
 
 Wyniki testów potwierdziły oczekiwania w stosunku do skuteczności porównywanych metod.
 Najwyższą skuteczność w planowaniu bezkolizyjnych tras dla wielu robotów uzyskała autorska metoda WHCA*3.
@@ -41,9 +41,9 @@ W badanych środowiskach najgorzej wypadły metody LRA* oraz WHCA*1 bez dynamicz
 Ponadto można stwierdzić, że zachodzi nierówność pomiędzy skutecznościami metod WHCA*1, WHCA*2 i WHCA*3.
 WHCA*3 ma najwyższą skuteczność spośród trzech wariantów badanych podejść.
 Oznacza to, że jeśli algorytm WHCA*3 nie odnalazł żadnego rozwiązania, to tym bardziej nie uda się tego dokonać przy pomocy WHCA*2 i WHCA*1.
-Metoda LRA* w nielicznych przypadkach potrafiła uzyskać wiekszą skuteczność niż WHCA*1 i WHCA*2, natomiast nie zdarzyło się tak, aby dokonała lepszego planowania niż WHCA*3.
+Metoda LRA* w nielicznych przypadkach potrafiła uzyskać większą skuteczność niż WHCA*1 i WHCA*2, natomiast nie zdarzyło się tak, aby dokonała lepszego planowania niż WHCA*3.
 
-Na dużej mapie (środowisko M-35x35-5R) od metody WHCA*1 skuteczniejsza okazała się być metoda LRA*. Spowodowane jest to prawdopodobnie tym, że rozmiar okna czasowego w metodzie WHCA*1 jest stały (zależny od rozmiaru mapy) i okazał się być zbyt mały, aby znaleźć rozwiązanie. Dla metody LRA* w ogóle nie isnieje pojęcie okna czasowego a poszukiwanie alternatywnych dróg nie jest ograniczone długością.
+Na dużej mapie (środowisko M-35x35-5R) od metody WHCA*1 skuteczniejsza okazała się być metoda LRA*. Spowodowane jest to prawdopodobnie tym, że rozmiar okna czasowego w metodzie WHCA*1 jest stały (zależny od rozmiaru mapy) i okazał się być zbyt mały, aby znaleźć rozwiązanie. Dla metody LRA* w ogóle nie istnieje pojęcie okna czasowego a poszukiwanie alternatywnych dróg nie jest ograniczone długością.
 
 Wraz ze wzrostem liczby robotów w metodzie WHCA*2 rośnie także początkowa wartość okna czasowego.
 Od pewnej wielkości wzrost ten nie wpływa już na skuteczność w znajdowaniu poprawnych rozwiązań układu i metoda WHCA*2 sprowadza się do metody WHCA*3, co można zaobserwować na wynikach przeprowadzonych testów.
@@ -53,7 +53,7 @@ Metoda LRA* potrzebowała większej liczby kroków symulacji do doprowadzenia ws
 
 
 Opracowane podejścia mają jeszcze przed sobą perspektywę dalszego rozwoju.
-Wykorzystanie wydajnieszych algorytmów do ponownego planowania tras na przestrzennej trasie (takich jak RRA*, D* Lite lub D* Extra Lite) powinno przyspieszyć wykonywanie obliczeń, nie wpływając na efektywność metody.
+Wykorzystanie wydajniejszych algorytmów do ponownego planowania tras na przestrzennej trasie (takich jak RRA*, D* Lite lub D* Extra Lite) powinno przyspieszyć wykonywanie obliczeń, nie wpływając na efektywność metody.
 Szybsze uzyskanie docelowych zaplanowanych tras można uzyskać także poprzez wprowadzenie natychmiastowego wykonania kolejnego planowania z nowym układem priorytetów w przypadku, gdy w obecnym kroku symulacji nie zostało znalezione zadowalające rozwiązanie.
 W obecnej aplikacji kolejne takie planowanie wykonywane jest dopiero w następnym kroku symulacji w celu wizualizacji działania metody i prezentacji kolejnych kroków algorytmu.
 

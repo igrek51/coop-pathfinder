@@ -2,7 +2,7 @@
 \label{ch:alg-whca}
 
 Implementacja algorytmu {\it  Windowed Hierarchical Cooperative A*} oparta została na podstawach teoretycznych opisanych w rozdziałach \ref{ch:theory-coop-astar}, \ref{ch:hier_cooperative_a} oraz \ref{ch:whca}, dla których w znacznym stopniu źródłem był artykuł autorstwa Davida Silvera \cite{cooppath}.
-Wspomniana praca nie opisuje jednak szczegółów realizacyjnych algorytmu i należało opracować wiele własnych podejść do zaistniałych problemów, dlatego implmenetacja algorytmu WHCA* w aplikacji jest efektem własnej pracy.
+Wspomniana praca nie opisuje jednak szczegółów realizacyjnych algorytmu i należało opracować wiele własnych podejść do zaistniałych problemów, dlatego implementacja algorytmu WHCA* w aplikacji jest efektem własnej pracy.
 
 Metoda WHCA* stanowi rozszerzenie A*, dlatego zostaną tu opisane zmiany wprowadzone w stosunku do bazowego algorytmu A*.
 
@@ -45,7 +45,7 @@ Warto zauważyć, że każdy z sąsiadów ma krok czasowy zwiększony o $1$ od w
 Każdy taki potencjalny sąsiad zostaje zweryfikowany pod kątem poprawności wykonania ruchu oraz zajętości pola w tablicy rezerwacji.
 
 \subsection{Funkcja kosztu}
-W ogólnym przypadku koszt wykonania ruchu jest równy reczywistej przebytej odległosci (odległości euklidesowej).
+W ogólnym przypadku koszt wykonania ruchu jest równy rzeczywistej przebytej odległości (odległości euklidesowej).
 
 Do powyższej reguły wprowadzono pewne odstępstwo, które eliminuje efekt "opóźnionego" docierania do celu przez agentów.
 Koszt akcji pozostania na tym samym polu otrzymał wartość równą $1 / maxF$, gdzie $maxF = w \cdot h$ oznacza zakładaną maksymalną wartość funkcji będącej sumą kosztu i heurystyki.
@@ -54,7 +54,7 @@ Wspomniane zwiększenie kosztu pozostania w miejscu o niewielką wartość "zach
 Modyfikacja funkcji kosztu o niewielką wartość nie koliduje z wartościami wyznaczonymi na podstawie przebytej odległości.
 Gdyby funkcja kosztu zależna była jedynie od rzeczywistej przebytej drogi, to agenci mogliby zatrzymywać się niepotrzebnie przed dotarciem do celu, gdyż nie wpływałoby to w żaden sposób na koszt ich trajektorii. Zależałoby to tylko od czynników losowych z powodu równego traktowania takich sytuacji.
 Takie zachowanie było obserwowane przed wprowadzeniem wspomnianej modyfikacji funkcji kosztu.
-Roboty zatrzymywały się na kilka kroków przed osiągnięciem celu, mimo iż nic nie stało na przeszkodzie, aby dotrzeć do celu wcześniej. Było to spowodowane tym, że rozwiązanie spełniało swoje załozenie - nadal miało minimalny koszt i mieściło się w wyznaczonym oknie czasowym.
+Roboty zatrzymywały się na kilka kroków przed osiągnięciem celu, mimo iż nic nie stało na przeszkodzie, aby dotrzeć do celu wcześniej. Było to spowodowane tym, że rozwiązanie spełniało swoje założenie - nadal miało minimalny koszt i mieściło się w wyznaczonym oknie czasowym.
 Zatem "zniechęcanie" do postoju poprzez sztuczne zwiększenie kosztu przejścia między węzłami okazało się skutecznie zapobiegać takim, niepożądanym zachowaniom robotów.
 
 \subsection{Funkcja heurystyczna}
@@ -67,7 +67,7 @@ Jest to mapa (w sensie kolekcji) o dwóch kluczach całkowitoliczbowych (współ
 W przypadku, gdy przestrzenny algorytm A* nie potrafi znaleźć rozwiązania (brak istnienia drogi do celu) jako wartość heurystyki algorytmu WHCA* zwracana jest maksymalna wartość $maxF$.
 
 \subsection{Wybór najbardziej obiecującego rozwiązania}
-Przeszukiwanie węzłów jest ograniczone wielkością okna czasowego. Jeśli po przejściu wszystkich węzłów nie znaleziono węzła będącego punktem docelowym, to po zakończeniu głównej pętli algorytmu należy wybrać rozwiazanie spośród listy odwiedzonych węzłów.
+Przeszukiwanie węzłów jest ograniczone wielkością okna czasowego. Jeśli po przejściu wszystkich węzłów nie znaleziono węzła będącego punktem docelowym, to po zakończeniu głównej pętli algorytmu należy wybrać rozwiązanie spośród listy odwiedzonych węzłów.
 Należy zaznaczyć, że w takiej sytuacji algorytm nie zwraca optymalnej ścieżki i należy wybrać najbardziej obiecujące rozwiązanie.
 W zaproponowanej implementacji algorytmu WHCA* najbardziej obiecujące rozwiązanie wybierane jest z listy {\it zamkniętych} (węzłów odwiedzonych i przeanalizowanych):
 \begin{enumerate}
@@ -81,10 +81,10 @@ W zaproponowanej implementacji algorytmu WHCA* najbardziej obiecujące rozwiąza
 \end{enumerate}
 
 Dla wybranego w ten sposób węzła tworzona jest ścieżka, która jest budowana poprzez rekurencyjne przechodzenie po kolejnych rodzicach przypisanych do węzłów.
-Zatem wynikiem algorytmu planowania może być tylko częściowa ścieżka (zależna od długości okna czasowego), którą robot bedzie podążał w dalszych krokach symulacji.
-Po wyznaczeniu ścieżki do kolejki ruchów robota zostają dodane zaplanowane akcje oraz zaznaczana jest obecność robota w odpowiendich polach i czasie w tablicy rezerwacji.
+Zatem wynikiem algorytmu planowania może być tylko częściowa ścieżka (zależna od długości okna czasowego), którą robot będzie podążał w dalszych krokach symulacji.
+Po wyznaczeniu ścieżki do kolejki ruchów robota zostają dodane zaplanowane akcje oraz zaznaczana jest obecność robota w odpowiednich polach i czasie w tablicy rezerwacji.
 Jeśli wszystkie zaplanowane ruchy zostały wykonane (pusta kolejka akcji), to dokonuje się kolejnego planowania tras.
-Tym razem okno czasowe jest już przesunięte o odpowiednią liczbę wykonanych kroków symylacji.
+Tym razem okno czasowe jest już przesunięte o odpowiednią liczbę wykonanych kroków symulacji.
 
 \subsection{Uzyskane wyniki}
 % Jak wykazały testy skuteczności algorytmu WHCA* w kooperacyjnym doprowadzaniu robotów do celu (por. \ref{ch:tests}), algorytm WHCA* potrafi rozwiązywać pewne zagadnienia występowania wąskich gardeł. 
