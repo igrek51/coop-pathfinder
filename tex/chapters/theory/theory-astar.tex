@@ -19,13 +19,13 @@ A* jest algorytmem heurystycznym służącym do przeszukiwania grafu w celu znal
 \end{gather}
  gdzie:
 
- $g(n)$ - dotychczasowy koszt dotarcia do węzła $n$, dokładna odległość miedzy węzłem $n$ a węzłem początkowym
+ $g(n)$ - dotychczasowy koszt dotarcia do węzła $n$, dokładna odległość miedzy węzłem $n$ a węzłem początkowym,
 
- $h(n)$ - heurystyka, przewidywana pozostała droga od węzła bieżącego do węzła docelowego
+ $h(n)$ - heurystyka, przewidywana pozostała droga od węzła bieżącego do węzła docelowego,
 
- $f(n)$ - oszacowanie pełnego kosztu ścieżki od węzła startowego do węzła docelowego prowadzącej przez węzeł $n$
+ $f(n)$ - oszacowanie pełnego kosztu ścieżki od węzła startowego do węzła docelowego prowadzącej przez węzeł $n$,
 
- $n$ - bieżący węzeł, wierzchołek przeszukiwanego grafu
+ $n$ - bieżący węzeł, wierzchołek przeszukiwanego grafu.
 
 W każdym kroku przeszukiwany jest węzeł o najmniejszej wartości funkcji $f(n)$.
 Dzięki takiemu podejściu najpierw sprawdzane są najbardziej "obiecujące" rozwiązania, co pozwala szybciej otrzymać wynik (w porównaniu do algorytmu Dijkstry).
@@ -53,7 +53,7 @@ Od wyboru sposobu obliczania heurystyki zależy czas wykonywania algorytmu oraz 
 \end{gather}
  gdzie:
 
- $h^*(n)$ - rzeczywisty koszt ścieżki od węzła $n$ do celu
+ $h^*(n)$ - rzeczywisty koszt ścieżki od węzła $n$ do celu.
 \end{definition}
 
 Innymi słowy, heurystyka dopuszczalna to taka, która nigdy nie przeszacowuje pozostałej do przebycia drogi. Wtedy algorytm A* zwraca optymalną (najkrótszą) ścieżkę \cite{cooppath}.
@@ -119,7 +119,7 @@ Wartym uwagi jest także algorytm {\it D* Extra Lite} charakteryzujący się jes
 \section{Cooperative A*}
 \label{ch:theory-coop-astar}
 Cooperative A* jest algorytmem do rozwiązywania problemu kooperacyjnego znajdowania tras.
-Metoda może być również nazywana czasoprzestrzennym algorytmem A* ({\it time-space A* search})
+Metoda może być również nazywana czasoprzestrzennym algorytmem A* ({\it time-space A* search}).
 Zadanie planowania jest rozdzielone na serię pojedynczych poszukiwań dla poszczególnych agentów.
 Pojedyncze poszukiwania są wykonywane w trójwymiarowej czasoprzestrzeni i biorą pod uwagę zaplanowane ścieżki przez pozostałych agentów.
 Akcja wykonania postoju (pozostania w tym samym miejscu) jest uwzględniona w zbiorze akcji możliwych do wykonania.

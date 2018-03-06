@@ -9,7 +9,8 @@ Po prawej stronie znajduje się panel przycisków akcji oraz panel rozwijanych w
 Kliknięcie prawym przyciskiem myszy (również z możliwością ciągłego przytrzymania) powoduje wstawienie lub usunięcie przeszkody na mapie w odpowiednich polach.
 Punkty docelowe, do których podążają roboty wyświetlane są jako krzyżyki w kolorze takim samym, jaki został przypisany do robota. Liczba robotów nie jest ograniczona przez aplikację. Aby odróżniać roboty między sobą, każdy robot otrzymuje inny kolor wynikający z równomiernego podziału na liczbę robotów zakresu barwy (ang. {\it hue}) z palety HSV.
 
-Okno aplikacji jest skalowalne i w pełni responsywne. Po zmianie rozmiaru okna przez użytkownika rozmiar mapy dopasowuje się do maksymalnego obszaru, jaki może zająć (z zachowaniem proporcji wymiarów mapy).
+Okno aplikacji jest skalowalne a zawartość dostosowuje się do aktualnych wymiarów okna.
+Po przeskalowaniu okna przez użytkownika rozmiar mapy dopasowuje się do maksymalnego obszaru, jaki może zająć (z zachowaniem proporcji wymiarów mapy).
 
 Symulacja ruchu robotów rozpoczyna się, gdy tylko zostanie wyznaczony punkt docelowy dla robota. Dzięki temu, że wykonywanie obliczeń planowania tras zostało przeniesione do osobnych wątków, uzyskano płynność animacji ruchu robotów mobilnych. Uniknięto również problemu braku odpowiedzi okna interfejsu użytkownika podczas planowania trajektorii.
 
@@ -25,7 +26,7 @@ Na pierwszej zakładce "Potential fields" w oknie aplikacji przedstawiona jest w
 
 Na panelu konfiguracji parametrów, użytkownik może wybrać dowolny rozmiar mapy, podając szerokość i wysokość wyrażone w liczbie pól.
 Po naciśnięciu przycisku "Reset map" tworzona jest nowa mapa o zadanych rozmiarach, natomiast pozycja początkowa robota zostaje wylosowana.
-Naciśnięcie przycisku "Random target" powoduje wyznaczenie losowego punktu na mapie jako celu dla robota i rozpoczęcie podążania za nim.
+Naciśnięcie przycisku "Random target" powoduje wyznaczenie losowego punktu na mapie jako celu dla robota i rozpoczęcie podążania do celu.
 
 Klikając lewym przyciskiem myszy na mapie, użytkownik może manualnie wskazać punkt docelowy dla robota.
 Planowanie i symulacja ruchu robota odbywa się w trybie ciągłym. Robot nie jest ograniczony zdyskretyzowaną siatką pól na mapie, jego przestrzeń poruszania się jest ciągła.

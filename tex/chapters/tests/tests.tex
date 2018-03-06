@@ -21,7 +21,7 @@ Mierzonymi wskaźnikami były:
 \begin{itemize}
 	\item liczba wystąpień pomyślnego, bezkolizyjnego doprowadzenia wszystkich robotów do ich celów oraz "skuteczność" rozumiana jako iloraz liczby udanych planowań do liczby wszystkich symulacji,
 	\item liczba kroków symulacji (minimalny czas wykonywania akcji w rzeczywistym środowisku do momentu doprowadzenia wszystkich robotów do celu),
-	\item złożoność obliczeniowa planowania (czas wykonywania obliczeń dla samego wyznaczania tras w ciągu całej symulacji).
+	\item czas planowania (czas wykonywania obliczeń dla samego wyznaczania tras w ciągu całej symulacji).
 \end{itemize}
 
 \section{Automatyczne zarządzanie symulacjami}
@@ -52,11 +52,11 @@ Wartość maksymalnej liczby kroków $stepsLimit$ w symulacji została przyjęta
 \end{gather}
  gdzie:
 
- $w$ - szerokość mapy wyrażona w liczbie pól
+ $w$ - szerokość mapy wyrażona w liczbie pól,
 
- $h$ - wysokość mapy wyrażona w liczbie pól
+ $h$ - wysokość mapy wyrażona w liczbie pól,
 
- $r$ - liczba robotów na mapie
+ $r$ - liczba robotów na mapie.
 
 \section{Środowiska testowe}
 Część testów została przeprowadzona na czterech typach losowych środowisk, którym dla uproszczenia zapisu nadano nazwy:
@@ -103,7 +103,7 @@ Punkty docelowe także są losowane. Mogą to być pola, na których obecnie zna
 \label{ch:test-results}
 \subsection{Częstotliwość występowania potencjalnych kolizji} % 4000
 Na początku przeprowadzamy testy częstotliwości występowania potencjalnych kolizji w badanych środowiskach, aby ocenić znaczenie tego problemu.
-Dla każdego robota wykonujemy planowanie trasy za pomocą prostego algorytmu A*. Następnie przeprowadzamy symulację ruchu. W momencie wykrycia kolizji robotów zatrzymujemy symulację i zliczamy ilość takich sytuacji. W ten sposób mierzymy, jak często występują kolizję między robotami, jeśli planowanie odbywa się za pomocą algorytmu wyznaczania najkrótszych tras (bez unikania kolizji).
+Dla każdego robota wykonujemy planowanie trasy za pomocą prostego algorytmu A*. Następnie przeprowadzamy symulację ruchu. W momencie wykrycia kolizji robotów zatrzymujemy symulację i zliczamy liczbę takich sytuacji. W ten sposób mierzymy, jak często występują kolizję między robotami, jeśli planowanie odbywa się za pomocą algorytmu wyznaczania najkrótszych tras (bez unikania kolizji).
 Słuszne jest założenie, że algorytm A* powinien zawsze znaleźć drogę do celu (z pominięciem pozostałych agentów), gdyż w tego typu środowiskach zawsze istnieje połączenie między dwoma dowolnymi polami na mapie \ref{ch:mazegen}.
 
 W tabeli \ref{tab:test-collision-frequency} przedstawiono wyniki eksperymentów. Skuteczność oznacza w tym przypadku procentową liczbę symulacji, w których ruch wzdłuż zaplanowanych tras odbył się bez żadnych kolizji i wszystkie roboty zostały doprowadzone do celu.
@@ -145,10 +145,10 @@ Uzyskane wyniki dla każdego środowiska przedstawiono w tabeli \ref{tab:test-wh
 \begin{tabular}{| r | r | r | r | r |}
 \hline
 \thead{\textbf{\shortstack{Rozmiar \\ okna \\ czasowego}}} &
-\thead{\textbf{\shortstack{M-15x15-5R}}} &
-\thead{\textbf{\shortstack{M-15x15-10R}}} &
-\thead{\textbf{\shortstack{M-35x35-5R}}} &
-\thead{\textbf{\shortstack{E-15x15-40R}}} \\ \hline
+\thead{\textbf{\shortstack{skuteczność dla\\M-15x15-5R}}} &
+\thead{\textbf{\shortstack{skuteczność dla\\M-15x15-10R}}} &
+\thead{\textbf{\shortstack{skuteczność dla\\M-35x35-5R}}} &
+\thead{\textbf{\shortstack{skuteczność dla\\E-15x15-40R}}} \\ \hline
 1	& 0\%	& 0\%	& 0\%	& 0\%	\\
 2	& 9\%	& 0\%	& 27\%	& 0\%	\\
 3	& 11\%	& 0\%	& 30\%	& 0\%	\\
@@ -274,7 +274,7 @@ Wyniki potwierdzają oczekiwaną nierówność zachodzącą pomiędzy średnimi 
 \subsection{Wpływ rozmiaru mapy} % 24400 = 15200 + 9200
 \label{ch:tests-function-mapsize}
 Dla stałej liczby robotów (równej 5) przeprowadzono testy wpływu rozmiaru mapy na skuteczność metod LRA*, WHCA*1, WHCA*2 oraz WHCA*3.
-Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzebną do doprowadzenia wszystkich robotów do celów (dla symulacji zakończonych powodzeniem) oraz złożoność obliczeniową samego planowania (średni czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
+Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzebną do doprowadzenia wszystkich robotów do celów (dla symulacji zakończonych powodzeniem) oraz czas planowania (średni czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
 Symulacje przeprowadzano na kwadratowych mapach.
 Rozmiar mapy zmieniał się w zakresie od $3 \times 3$ do $40 \times 40$ (w przypadku mapy z labiryntem) oraz w zakresie od $3 \times 3$ do $25 \times 25$ (w przypadku pustej mapy), generując 100 losowych układów dla każdego rozmiaru mapy, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
 Wszystko powtórzono zarówno dla map z wygenerowanym labiryntem, jak i dla pustych map bez umieszczonych przeszkód.
@@ -371,7 +371,7 @@ Wyniki przedstawiono na wykresach \ref{fig:test-steps-maze-mapsize-eff}, \ref{fi
 \subsection{Wpływ liczby robotów} % 24000
 \label{ch:tests-function-robots}
 Dla stałego rozmiaru mapy przeprowadzono testy wpływu liczby robotów na skuteczność metod LRA*, WHCA*1, WHCA*2 oraz WHCA*3.
-Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzebną do doprowadzenia wszystkich robotów do celów (dla symulacji zakończonych powodzeniem) oraz złożoność obliczeniową samego planowania (średni czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
+Dla każdej z metod zmierzono także średnią liczbę kroków symulacji potrzebną do doprowadzenia wszystkich robotów do celów (dla symulacji zakończonych powodzeniem) oraz czas planowania (średni czas wykonywania obliczeń dla wyznaczania tras w ciągu całej symulacji).
 Liczbę robotów zwiększano od $1$ do $30$, generując 100 losowych układów dla każdej liczby robotów, następnie dla każdego takiego układu wykonano symulację każdą z 4 badanych metod.
 Wszystko powtórzono zarówno dla map z wygenerowanym labiryntem o rozmiarze $15 \times 15$, jak i dla pustych map bez umieszczonych przeszkód o rozmiarze $6 \times 6$.
 
@@ -507,7 +507,7 @@ W badanych środowiskach najgorzej wypadły metody LRA* oraz WHCA*1.
 % potwierdzenie oczekiwań (poprawności) - nigdy nie było tak, żeby LRA był lepszy
 
 Na dużych mapach oraz przy większej liczbie robotów czas wykonywania obliczeń planowania tras przez metodę WHCA*3 jest stosunkowo długi.
-Obserwacja czasu obliczeń pozwala stwierdzić, że złożoność WHCA*3 ma charakter wykładniczy, co także potwierdza oczekiwania.
+Obserwacja czasu obliczeń pozwala stwierdzić, że czas planowania WHCA*3 ma charakter wykładniczy, co także potwierdza oczekiwania.
 Zastosowanie do wyznaczania wartości heurystyki innych, wydajniejszych algorytmów takich jak RRA*, D* Lite lub D* Extra Lite, mogłoby zmniejszyć czas obliczeń, przyspieszając proces planowania bezkolizyjnych tras, w szczególności na większych mapach.
 
 % TODO przykład rozwiązania deadlocka w kilku screenach

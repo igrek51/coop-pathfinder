@@ -90,7 +90,8 @@ Takie podejście zapewnia separację głównej logiki dziedziny programu od wars
 	\label{fig:app-mvp}
 \end{figure}
 
-Wybrano podejście MVP, gdyż (w porównaniu do MVC) oferuje ono łatwiejszą testowalność kodu, możliwość "odczepiania" i wymieniania poszczególnych warstw (w celach testowania). Zapewnia to także większą separację modelu z widokiem, które nie muszą "wiedzieć" o sobie, a komunikują się jedynie za pośrednictwem prezentera.
+Wybrano podejście MVP, gdyż (w porównaniu do MVC) oferuje ono łatwiejsze testowanie fragmentów kodu, możliwość "odczepiania" i wymieniania poszczególnych warstw.
+Zapewnia to także większą separację modelu z widokiem, które nie muszą "wiedzieć" o sobie, a komunikują się jedynie za pośrednictwem prezentera.
 
 Każdą zaimplementowaną metodę symulacji ruchu robotów zamknięto w osobnych modułach (pakietach). Każdy z tych modułów posiada swoje osobne klasy pochodzące z architektury MVP:
 \begin{itemize}
