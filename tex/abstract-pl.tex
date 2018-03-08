@@ -5,24 +5,35 @@
 % interlinia 0
 \begin{singlespacing}
 
-$TODO$ uzupełnić
-% wyciągnąć z podsumowania i z intro
-% w pracy zawarto szczegółową implementację, aby rozpowszechnić użycie algorytmów planowania (zauważalny brak)
+Przedmiotem niniejszej pracy jest przegląd, implementacja i wykonanie testów wybranych metod planowania bezkolizyjnych tras w systemach wielorobotowych.
+W ramach pracy zostały opracowane własne metody wyznaczania dróg dla wielu robotów mobilnych na dwuwymiarowych mapach.
+Metody te znajdują zastosowanie w środowiskach z dużą liczbą przeszkód i wąskimi gardłami, gdzie często występuje problem zakleszczania robotów.
 
-% Zakres pracy:
-% \begin{itemize}
-% 	\item Projekt algorytmu wyznaczania trajektorii dla pojedynczego robota
-% 	\item Algorytm detekcji i zapobiegania kolizjom między robotami
-% 	\item Implementacja oprogramowania symulacyjnego
-% 	\item Przeprowadzenie testów symulacyjnych
-% \end{itemize}
+% wstęp teoretyczny - przegląd metod
+W pierwszych rozdziałach dokonano przeglądu i analizy najczęściej wykorzystywanych podejść do kooperacyjnego planowania tras.
 
-% Podstawowe wymagania:
-% \begin{itemize}
-% 	\item Aplikacja powinna umożliwiać symulację ruchu robotów oraz definiowanie położenia przeszkód przez użytkownika.
-% 	\item Planowanie tras dotyczy robotów holonomicznych.
-% \end{itemize}
+% algorytmy
+W kolejnej części omówiono algorytmy opracowane na potrzeby oprogramowania symulacyjnego.
+Efektem pracy jest m.in. własna implementacja algorytmu {\it Windowed Hierarchical Cooperative A*} rozszerzonego o dodatkowe procedury dynamicznego przydziału priorytetów oraz zmiennego okna czasowego.
 
+% oprogramowanie symulacyjne
+Efektem pracy jest oprogramowanie pozwalające na symulację oraz wizualizację metod planowania tras w systemach wielorobotowych.
+Opracowana aplikacja realizuje założone funkcjonalności.
+W następnym rozdziale zostały omówione techniczne rozwiązania wykorzystane podczas jej tworzenia.
+Wizualizacja ruchu robotów mobilnych odbywa się w czasie rzeczywistym.
+
+% testy
+W kolejnej części przedstawiono wyniki automatycznie przeprowadzonych testów zaimplementowanych metod planowania.
+Stworzone oprogramowanie symulacyjne posłużyło również do przeprowadzenia testów skuteczności algorytmów planowania tras.
+Wykonanie obszernych testów automatycznie zarządzanych symulacji pozwoliło stwierdzić, że opracowana własna metoda uzyskała największą skuteczność w wyznaczaniu bezkolizyjnych tras i prowadzeniu agentów do ich celów w porównaniu do pozostałych metod.
+Na potrzeby wszystkich testów efektywności oraz wydajności badanych metod przeprowadzono łącznie $76\ 800$ automatycznie zarządzanych symulacji ruchu robotów.
+Testy zostały przeprowadzone w losowo wygenerowanych środowiskach, następnie posłużono się statystyką w celu generalizacji uzyskanych wyników.
+
+
+Zauważalny brak ogólnie dostępnych, wydajnych i efektywnych algorytmów kooperacyjnego planowania dróg świadczy o potrzebie rozwoju i rozpowszechnienia metod tego typu, co także było celem pracy i zostało zrealizowane poprzez opublikowanie kodów źródłowych opracowanej aplikacji na portalu dla projektów typu {\it open-source}.
+
+Na podstawie obserwacji zachowań robotów sterowanych przez opracowaną metodę planowania tras można stwierdzić, że roboty te niekiedy potrafią wykazywać się "inteligentną" koordynacją ruchu.
+Przystosowując się do zmiennych warunków, roboty potrafią podejmować akcje, które z pozoru nie byłyby korzystne dla indywidualnego agenta (np. oddalają go od celu), jednak pozwalają one osiągnąć wspólny cel dzięki koooperacji.
 
 \flushbottom
 \textbf{\\Słowa kluczowe: }planowanie tras, systemy wielorobotowe
