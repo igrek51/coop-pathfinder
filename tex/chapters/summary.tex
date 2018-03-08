@@ -2,9 +2,9 @@
 \label{ch:podsumowanie}
 %TODO uporządkować i przeredagować 
 Celem niniejszej pracy było stworzenie własnej metody planowania bezkolizyjnych tras dla zespołu robotów mobilnych oraz wizualizacja jej działania w oprogramowaniu symulacyjnym.
-Dokonano tego na podstawie przeglądu najczęściej wykorzystywanych podejść do kooperacyjnego planowania tras.
-Efektem pracy jest m.in. własna implementacja metody WHCA*3, będąca rozwinięciem algorytmu WHCA* ({\it Windowed Hierarchical Cooperative A*}) o dodatkowe procedury dynamicznego przydziału priorytetów oraz zmiennego okna czasowego.
-Wykonanie obszernych testów automatycznie zarządzanych symulacji pozwoliło stwierdzić, że metoda WHCA*3 uzyskała największą skuteczność w wyznaczaniu bezkolizyjnych tras i prowadzeniu agentów do ich celów.
+Dokonano tego na podstawie przeglądu i analizy najczęściej wykorzystywanych podejść do kooperacyjnego planowania tras.
+Efektem pracy jest m.in. własna implementacja metody WHCA*3, będąca rozwinięciem algorytmu {\it Windowed Hierarchical Cooperative A*} o dodatkowe procedury dynamicznego przydziału priorytetów oraz zmiennego okna czasowego.
+Wykonanie obszernych testów automatycznie zarządzanych symulacji pozwoliło stwierdzić, że metoda WHCA*3 uzyskała największą skuteczność w wyznaczaniu bezkolizyjnych tras i doprowadzaniu agentów do ich celów.
 
 Problem kooperacyjnego znajdowania tras pojawia się nie tylko w robotyce, ale jest również popularny m.in. w grach komputerowych (np. strategiach czasu rzeczywistego), gdzie wymagane jest wyznaczanie bezkolizyjnych dróg dla wielu jednostek, unikając wzajemnego blokowania się.
 W wielu przypadkach metody do planowania bezkolizyjnych tras w systemach wieloagentowych mogą być wykorzystywane zamiennie zarówno do wyznaczania trajektorii robotów mobilnych, jak i w grach komputerowych.
@@ -13,26 +13,27 @@ Zauważa się brak ogólnie dostępnych, wydajnych i efektywnych algorytmów koo
 
 Warto dodać, że opisywane w pracy metody znajdują zastosowanie w specyficznych środowiskach z bardzo dużą liczbą przeszkód, gdzie często tworzą się "wąskie gardła" utrudniające bezkolizyjną nawigację robotów.
 W środowiskach innego typu (z mniejszą liczbą przeszkód) zadowalające wyniki mogą uzyskać już dużo prostsze algorytmy.
-Omówione metody znajdują zastosowanie w sytuacjach, w których wspólnym celem wielu agentów jest bezpieczne (bezkolizyjne) dotarcie wszystkich agentów do indywidualnych celów.
+Omówione metody znajdują zastosowanie w sytuacjach, w których wspólnym celem wielu agentów jest bezpieczne (bezkolizyjne) dotarcie wszystkich agentów do ich indywidualnych celów.
 Zaimplementowane i przetestowane metody to: A*, LRA*, trzy warianty metody WHCA* oraz metoda pól potencjałowych.
 Metoda pól potencjałowych nie uzyskała zadowalających rezultatów, dlatego nie była dalej testowana w obszernych eksperymentach.
 
-Na potrzeby pracy zostało stworzone oprogramowanie symulacyjne, które posłużyło do przeprowadzenia testów skuteczności algorytmów planowania tras oraz wizualizacji działania metod.
+Na potrzeby pracy zostało stworzone oprogramowanie symulacyjne, które posłużyło do przeprowadzenia testów skuteczności algorytmów planowania tras oraz wizualizacji ich działania.
 Wizualizacja ruchu robotów mobilnych odbywa się w czasie rzeczywistym.
 Aplikacja umożliwia dowolne definiowanie przez użytkownika środowiska, w którym poruszają się roboty.
 
 % testy
-W ramach pracy nie zostały przeprowadzone testy w rzeczywistym środowisku z robotami mobilnymi, gdyż istotą pracy jest sam algorytm planowania tras.
-Ponadto, w symulacji łatwiej odwzorować jest problem kolizji robotów oraz przeprowadzić liczne, automatyczne testy w losowo wygenerowanych środowiskach różnego typu.
+W ramach pracy nie zostały przeprowadzone testy w rzeczywistym środowisku z robotami mobilnymi, gdyż istotą tej pracy jest sam algorytm planowania tras.
+Ponadto, w symulacji łatwiej jest odwzorować problem kolizji robotów oraz przeprowadzić liczne, automatyczne testy w losowo wygenerowanych środowiskach różnego typu.
 Do generowania losowego układu przeszkód wykorzystano własny generator labiryntów, który zapewnia wygenerowanym mapom pewne pożądane właściwości.
 Na potrzeby wszystkich testów efektywności oraz wydajności badanych metod przeprowadzono łącznie $76\ 800$ automatycznie zarządzanych symulacji ruchu robotów.
-Testy zostały przeprowadzone w dużej ilości, w losowych środowiskach, a następnie posłużono się statystyką w celu generalizacji uzyskanych wyników.
+Liczne testy zostały przeprowadzone, w losowych środowiskach, a następnie posłużono się statystyką w celu generalizacji uzyskanych wyników.
 Rezultaty testów dla różnych metod planowania porównywane były w tych samych warunkach początkowych.
+
 % wyniki testów
 Wyniki testów częstotliwości występowania kolizji pokazały, że w badanych środowiskach zagadnienie unikania kolizji jest bardzo istotne i prosty algorytm A* nie jest wystarczający.
 
 Zgodnie z oczekiwaniami uzyskana skuteczność metody WHCA*1 rośnie monotonicznie wraz ze wzrostem rozmiaru okna czasowego, będącego parametrem algorytmu.
-Niestety drastycznie rośnie wtedy także złożoność obliczeniowa algorytmu, co nie zachęca do używania przesadnie dużych rozmiarów okna i zmusza do bardziej przemyślanego doboru wielkości okna czasowego.
+Niestety drastycznie rośnie wtedy także złożoność obliczeniowa algorytmu, co zdecydowanie nie skłania ku używaniu przesadnie dużych okien i zmusza to do bardziej przemyślanego doboru wielkości okna czasowego.
 
 Wyniki testów potwierdziły oczekiwania w stosunku do skuteczności porównywanych metod.
 Najwyższą skuteczność w planowaniu bezkolizyjnych tras dla wielu robotów uzyskała autorska metoda WHCA*3.
@@ -43,13 +44,13 @@ WHCA*3 ma najwyższą skuteczność spośród trzech wariantów badanych podejś
 Oznacza to, że jeśli algorytm WHCA*3 nie odnalazł żadnego rozwiązania, to tym bardziej nie uda się tego dokonać przy pomocy WHCA*2 i WHCA*1.
 Metoda LRA* w nielicznych przypadkach potrafiła uzyskać większą skuteczność niż WHCA*1 i WHCA*2, natomiast nie zdarzyło się tak, aby dokonała lepszego planowania niż WHCA*3.
 
-Na dużej mapie (środowisko M-35x35-5R) od metody WHCA*1 skuteczniejsza okazała się być metoda LRA*. Spowodowane jest to prawdopodobnie tym, że rozmiar okna czasowego w metodzie WHCA*1 jest stały (zależny od rozmiaru mapy) i okazał się być zbyt mały, aby znaleźć rozwiązanie. Dla metody LRA* w ogóle nie istnieje pojęcie okna czasowego a poszukiwanie alternatywnych dróg nie jest ograniczone długością.
+Na dużej mapie (środowisko M-35x35-5R) od metody WHCA*1 skuteczniejsza okazała się być metoda LRA*. Spowodowane jest to najprawdopodobniej tym, że rozmiar okna czasowego w metodzie WHCA*1 jest stały (zależny od rozmiaru mapy) a okazał się być zbyt mały, aby znaleźć rozwiązanie. Dla metody LRA* w ogóle nie istnieje pojęcie okna czasowego a poszukiwanie alternatywnych dróg nie jest ograniczone długością ścieżek.
 
 Wraz ze wzrostem liczby robotów w metodzie WHCA*2 rośnie także początkowa wartość okna czasowego.
 Od pewnej wielkości wzrost ten nie wpływa już na skuteczność w znajdowaniu poprawnych rozwiązań układu i metoda WHCA*2 sprowadza się do metody WHCA*3, co można zaobserwować na wynikach przeprowadzonych testów.
 
 Obserwacja uzyskanych pomiarów średniej liczby kroków symulacji oraz czasu planowania pozwala stwierdzić, że algorytmy WHCA*1, WHCA*2, WHCA*3 mają wykładniczą złożoność obliczeniową, podczas gdy metoda LRA* charakteryzuje się liniową złożonością.
-Metoda LRA* potrzebowała większej liczby kroków symulacji do doprowadzenia wszystkich robotów do celu w tych samych warunkach.
+Metoda LRA* potrzebowała zazwyczaj większej liczby kroków symulacji do doprowadzenia wszystkich robotów do celu w tych samych warunkach.
 
 
 Opracowane podejścia mają jeszcze przed sobą perspektywę dalszego rozwoju.
@@ -60,5 +61,5 @@ W obecnej aplikacji kolejne takie planowanie wykonywane jest dopiero w następny
 Zaprezentowane algorytmy mogą znaleźć zastosowanie również w dynamicznych środowiskach, w których to ścieżki muszą być przeliczane na bieżąco po wykryciu zmiany na mapie.
 
 Na podstawie obserwacji zachowań robotów sterowanych metodą WHCA*3 można niejednokrotnie stwierdzić, że roboty te potrafią wykazywać się "inteligentną" koordynacją ruchu.
-Roboty potrafią schodzić sobie z drogi, przepuszczać się, nawet gdy same osiągnęły już punkt docelowy.
-Przystosowując się do zmiennych warunków, roboty potrafią niekiedy podejmować akcje, które z pozoru nie byłyby korzystne dla indywidualnego agenta (np. oddalają go od celu), jednak pozwalają one osiągnąć wspólny cel dzięki koooperacji.
+Są w stanie schodzić sobie z drogi, przepuszczać się, nawet gdy same osiągnęły już punkt docelowy.
+Przystosowując się do zmiennych warunków, roboty potrafią niekiedy podejmować akcje, które z pozoru nie byłyby korzystne dla indywidualnego agenta (np. oddalają go od celu), jednak pozwalają osiągnąć wspólny cel dzięki koooperacji.
