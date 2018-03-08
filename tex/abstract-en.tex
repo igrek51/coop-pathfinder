@@ -6,18 +6,18 @@
 \begin{singlespacing}
 
 The subject of this thesis is to review, implement and test some of the selected noncolliding path planning methods in multi-agent systems.
-As part of the thesis, own routes planning methods for many mobile robots on two-dimensional maps have been developed.
+Own routes planning methods for many mobile robots on two-dimensional maps have been developed.
 These methods are used in environments with a large number of obstacles and bottlenecks where the deadlock problem is significant.
 
 The first chapters review and analyze the most commonly used approaches for cooperative path planning.
-There was pointed out the similarity of related issue in computer games.
+There was pointed out the similarity of related issue in robotics and in computer games.
 
 The next part describes the algorithms developed for the simulation software.
-One of the final results is the own implementation of the {\it Windowed Hierarchical Cooperative A *} algorithm which was extended with additional procedure for dynamic priorities promotion and time window scaling.
+One of the final results is the own implementation of the {\it Windowed Hierarchical Cooperative A *} algorithm which was extended with additional procedures for dynamic priorities promotion and time window scaling.
 
 As part of the thesis, simulation software was made to visualize the path planning methods in multi-agent systems.
-The developed desktop application implements all of the assumed functionalities.
-The user has the ability to define custom environment. The visualization of the mobile robots movement is rendered in real time.
+Developed desktop application implements all of the assumed functionalities.
+The user has the ability to define custom environment. The visualization of the mobile robots movement is displayed in real time.
 One of the chapters discusses technical solutions which were used during application development.
 
 The simulation software was also used to perform tests for path planning algorithms.
@@ -25,12 +25,12 @@ The next part presents the results of automatically invoked tests.
 Based on performed numerous experiments, I state that my own planning method was the most effective in routes planning compared to the other algorithms variants.
 A total of $76\ 800$ automatically managed simulations of robot movements were executed for the purpose of all the effectiveness and efficiency tests.
 These tests were performed in randomly generated environments with different conditions.
-Statistics have been used in order to generalize the obtained results.
+Statistics tools have been used in order to generalize the obtained results.
 
 
-The noticeable lack of public, efficient and effective algorithms for cooperative path planning confirms the need to develop such methods, which was also the goal of this thesis. The source code of the developed application have been published on the portal for {\it open-source} projects.
+The noticeable lack of common, efficient and effective algorithms for cooperative path planning confirms the need to develop such methods, which was also the goal of this thesis. The source code of the developed application have been published on the portal for open-source projects and it's commonly available.
 
-Observing the behaviours of robots controlled by own path planning method, I could conclude that these robots can act as "intelligent" in path coordination.
+Observing the behaviours of robots controlled by my own path planning method, I could conclude that these robots can act as "intelligent" in path coordination.
 By adapting to volatile conditions, robots can sometimes choose actions that ostensibly would not be beneficial to an individual agent (e.g. they move away further from the target), but actually it allows them to achieve their common goal thanks to cooperation.
 
 \flushbottom
