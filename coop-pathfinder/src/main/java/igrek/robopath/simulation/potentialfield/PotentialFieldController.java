@@ -83,47 +83,53 @@ public class PotentialFieldController {
 	@FXML
 	public void initialize() {
 		Platform.runLater(() -> { // fixing fxml retarded initialization
-			logger.info("initializing " + this.getClass().getSimpleName());
-			
-			drawAreaContainerResized();
-			drawAreaContainer.widthProperty().addListener(o -> drawAreaContainerResized());
-			drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
-			
-			drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-				mousePressedMap(event);
-			});
-			
-			drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-				mouseDraggedMap(event);
-			});
-			
-			drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-			
-			});
-			
-			updateParams();
-			drawMap();
-			
-			// repainting timer
-			final double FPS = 30;
-			Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.millis(1000 / FPS), new EventHandler<ActionEvent>() {
+			try {
+				logger.info("initializing " + this.getClass().getSimpleName());
 				
-				private long lastTime = System.currentTimeMillis();
+				Thread.sleep(100); // FIXME still view isn't guaranteed to be initialized :(
 				
-				@Override
-				public void handle(ActionEvent event) {
-					try {
-						long current = System.currentTimeMillis();
-						timeLapse(((double) (current - lastTime)) / 1000);
-						lastTime = current;
-						drawMap();
-					} catch (Throwable t) {
-						logger.error(t.getMessage(), t);
+				drawAreaContainerResized();
+				drawAreaContainer.widthProperty().addListener(o -> drawAreaContainerResized());
+				drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
+				
+				drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+					mousePressedMap(event);
+				});
+				
+				drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+					mouseDraggedMap(event);
+				});
+				
+				drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+				
+				});
+				
+				updateParams();
+				drawMap();
+				
+				// repainting timer
+				final double FPS = 30;
+				Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.millis(1000 / FPS), new EventHandler<ActionEvent>() {
+					
+					private long lastTime = System.currentTimeMillis();
+					
+					@Override
+					public void handle(ActionEvent event) {
+						try {
+							long current = System.currentTimeMillis();
+							timeLapse(((double) (current - lastTime)) / 1000);
+							lastTime = current;
+							drawMap();
+						} catch (Throwable t) {
+							logger.error(t.getMessage(), t);
+						}
 					}
-				}
-			}));
-			fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-			fiveSecondsWonder.play();
+				}));
+				fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+				fiveSecondsWonder.play();
+			} catch (Throwable t) {
+				logger.error(t.getMessage());
+			}
 		});
 	}
 	

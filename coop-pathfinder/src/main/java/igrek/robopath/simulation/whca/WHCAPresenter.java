@@ -72,26 +72,32 @@ public class WHCAPresenter {
 	@FXML
 	public void initialize() {
 		Platform.runLater(() -> { // fixing fxml retarded initialization
-			logger.info("initializing " + this.getClass().getSimpleName());
-			
-			drawAreaContainerResized();
-			drawAreaContainer.widthProperty().addListener(o -> drawAreaContainerResized());
-			drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
-			
-			drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-				mousePressed(event);
-			});
-			drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-				mouseDragged(event);
-			});
-			drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
-				mouseReleased(event);
-			});
-			
-			params.init(this);
-			params.sendToUI();
-			startSimulationTimer();
-			startRepaintTimer();
+			try {
+				logger.info("initializing " + this.getClass().getSimpleName());
+				
+				Thread.sleep(100); // FIXME still view isn't guaranteed to be initialized :(
+				
+				drawAreaContainerResized();
+				drawAreaContainer.widthProperty().addListener(o -> drawAreaContainerResized());
+				drawAreaContainer.heightProperty().addListener(o -> drawAreaContainerResized());
+				
+				drawArea.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+					mousePressed(event);
+				});
+				drawArea.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+					mouseDragged(event);
+				});
+				drawArea.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+					mouseReleased(event);
+				});
+				
+				params.init(this);
+				params.sendToUI();
+				startSimulationTimer();
+				startRepaintTimer();
+			} catch (Throwable t) {
+				logger.error(t.getMessage());
+			}
 		});
 	}
 	
